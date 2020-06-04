@@ -27,6 +27,9 @@
     <ClInclude Include="Utils.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="NKH\BloonSDK.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
