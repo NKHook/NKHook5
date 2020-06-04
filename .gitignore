@@ -20,3 +20,5 @@ NKHook5/NKHook5-Injector/obj/Release/NKHook5-Injector.csproj.FileListAbsolute.tx
 NKHook5/NKHook5/Debug/NKHook5.vcxproj.FileListAbsolute.txt
 *.pch
 *.res
+*.p7s
+*.lib
