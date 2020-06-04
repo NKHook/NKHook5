@@ -1,0 +1,7 @@
+
+*.db
+*.opendb
+*.ipch
+*.cache
+*.rc
+NKHook5/.vs/NKHook5/v16/.suo
