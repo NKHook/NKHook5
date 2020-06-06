@@ -14,4 +14,3 @@ public:
 	static HMODULE getThisModule();
 	static DWORD findPattern(DWORD rangeStart, DWORD rangeEnd, const char* pattern);
 };
-

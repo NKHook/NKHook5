@@ -1,8 +1,11 @@
+// dllmain.cpp : Definisce il punto di ingresso per l'applicazione DLL.
+
 #include "pch.h"
 #include <Windows.h>
 #include <cstdio>
 #include <iostream>
 #include "NKH/Hooks.h"
+
 
 using namespace std;
 void StartNKH(HMODULE hModule) {
@@ -14,7 +17,10 @@ void StartNKH(HMODULE hModule) {
 
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+BOOL APIENTRY DllMain( HMODULE hModule,
+                       DWORD  ul_reason_for_call,
+                       LPVOID lpReserved
+                     )
 {
     switch (ul_reason_for_call)
     {
@@ -27,3 +33,4 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     }
     return TRUE;
 }
+

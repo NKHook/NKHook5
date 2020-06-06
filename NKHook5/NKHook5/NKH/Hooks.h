@@ -5,4 +5,3 @@ public:
 	static Hooks* instance;
 	Hooks();
 };
-

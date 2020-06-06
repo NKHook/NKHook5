@@ -6,27 +6,26 @@
 #include <functional>
 
 #include <MinHook.h>
-#include "BloonSDK.h"
+#include "BloonsSDK.h"
 
 using namespace std;
-typedef void* (__fastcall* FlagToString)(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5);
+typedef void* (__thiscall* FlagToString)(CFlagStringConvertor* conv);
 FlagToString flagToStringOriginal;
 
-void* __fastcall flagToStringCallback(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5) {
-
-    int* xd = (int*)(0x0);
-    int ciao = *xd;
-
+__declspec(dllexport) void* __fastcall flagToStringCallback(CFlagStringConvertor* conv) {
     cout << "PRE CALL -------------" << endl;
     cout << "This: " << hex << conv << endl;
-    cout << "Flag: " << hex << param_2 << endl;
-    cout << "Flag: " << hex << param_3 << endl;
-    void* ret = flagToStringOriginal(conv, flag, param_2, param_3, param_4, param_5);
+    /*cout << "FlagA: " << hex << flagA << endl;
+    cout << "FlagB: " << hex << flagB << endl;
+    cout << "FlagC: " << hex << flagC << endl;*/
+    void* ret = flagToStringOriginal(conv);
     cout << "POST CALL -------------" << endl;
     cout << "This: " << hex << conv << endl;
-    cout << "Flag: " << hex << param_2 << endl;
-    cout << "Flag: " << hex << param_3 << endl;
+    /*cout << "FlagA: " << hex << flagA << endl;
+    cout << "FlagB: " << hex << flagB << endl;
+    cout << "FlagC: " << hex << flagC << endl;*/
     cout << "END -------------" << endl;
+    while(1){}
     return ret;
 }
 
@@ -51,5 +50,5 @@ Hooks::Hooks()
     else {
         cout << "MinHook failed to load!";
     }
-    
+
 }
