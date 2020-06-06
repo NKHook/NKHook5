@@ -32,9 +32,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>

@@ -22,3 +22,7 @@ NKHook5/NKHook5/Debug/NKHook5.vcxproj.FileListAbsolute.txt
 *.res
 *.p7s
 *.lib
+*.db-shm
+*.db-wal
+*.ilk
+*.idb

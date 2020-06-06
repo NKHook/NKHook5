@@ -11,7 +11,7 @@ namespace NKHook5_Injector
 {
     class Program
     {
-
+        static bool startupDebug = false;
         public static string dataDir = Environment.ExpandEnvironmentVariables(@"%appdata%\NKHook5");
 
         public static Process game;
@@ -59,16 +59,36 @@ namespace NKHook5_Injector
         {
             while (true)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(10);
                 Process[] possiblilties = Process.GetProcessesByName("BTD5-Win");
                 if (possiblilties.Length < 1)
                 {
                     continue;
                 }
                 Process tempGame = possiblilties[0];
+                if (tempGame.MainWindowHandle == null)
+                {
+                    continue;
+                }
+                StringBuilder sb = new StringBuilder("Bloons TD5".Length + 1);
+                Win32.GetWindowText(tempGame.MainWindowHandle, sb, "Bloons TD5".Length + 1);
+                if (sb.ToString().CompareTo("Bloons TD5") != 0)
+                {
+                    continue;
+                }
                 game = tempGame;
                 pHandle = Win32.OpenProcess(0x1F0FFF, true, game.Id);
                 break;
+            }
+            if (startupDebug)
+            {
+                while (true)
+                {
+                    Win32.SuspendProcess(game.Id);
+                    Console.ReadLine();
+                    Win32.ResumeProcess(game.Id);
+                    Console.ReadLine();
+                }
             }
         }
 
