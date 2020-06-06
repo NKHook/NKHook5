@@ -9,28 +9,21 @@
 #include "BloonSDK.h"
 
 using namespace std;
-void (__thiscall* FlagToString)(CFlagStringConvertor* conv, string buffer, uint64_t flag);
-//FlagToString flagToStringOriginal;
+typedef void* (__fastcall* FlagToString)(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5);
+FlagToString flagToStringOriginal;
 
-void __fastcall flagToStringCallback(CFlagStringConvertor* conv, string buffer, uint64_t flag) {
+FlagToString flagToStringCallback(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5) {
     cout << "PRE CALL -------------" << endl;
-    /*cout << "This: " << hex << conv << endl;
-    cout << "Buffer: " << hex << buffer << endl;
-    cout << "Flag: " << hex << flag << endl;*/
-    /*cout << "Param1: " << hex << param_1 << endl;
-    cout << "Param2: " << hex << param_2 << endl;
-    cout << "Param3: " << hex << param_3 << endl;
-    cout << "Param4: " << hex << param_4 << endl;*/
-    FlagToString(conv, buffer, flag);
+    cout << "This: " << hex << conv << endl;
+    cout << "Flag: " << hex << param_2 << endl;
+    cout << "Flag: " << hex << param_3 << endl;
+    void* ret = flagToStringOriginal(conv, flag, param_2, param_3, param_4, param_5);
     cout << "POST CALL -------------" << endl;
     cout << "This: " << hex << conv << endl;
-    cout << "Buffer: " << hex << buffer << endl;
-    cout << "Flag: " << hex << flag << endl;
-    /*cout << "Param1: " << hex << param_1 << endl;
-    cout << "Param2: " << hex << param_2 << endl;
-    cout << "Param3: " << hex << param_3 << endl;
-    cout << "Param4: " << hex << param_4 << endl;*/
+    cout << "Flag: " << hex << param_2 << endl;
+    cout << "Flag: " << hex << param_3 << endl;
     cout << "END -------------" << endl;
+    return ret;
 }
 
 Hooks::Hooks()
@@ -38,7 +31,7 @@ Hooks::Hooks()
     if (MH_Initialize() == MH_OK) {
         int flagToString = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 57 ff 75 0C C7 45 FC 00 00 00 00 E8 E9") - 6;
         cout << "FlagToString:" << hex << flagToString << endl;
-        if (MH_CreateHook((LPVOID)flagToString, flagToStringCallback, reinterpret_cast<LPVOID*>(&FlagToString)) == MH_OK) {
+        if (MH_CreateHook((LPVOID)flagToString, &flagToStringCallback, (LPVOID*)&flagToStringOriginal) == MH_OK) {
             cout << "Hook created!" << endl;
             if (MH_EnableHook((LPVOID)flagToString) == MH_OK) {
                 cout << "Hook enabled!" << endl;
