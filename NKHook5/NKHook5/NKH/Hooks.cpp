@@ -12,7 +12,11 @@ using namespace std;
 typedef void* (__fastcall* FlagToString)(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5);
 FlagToString flagToStringOriginal;
 
-FlagToString flagToStringCallback(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5) {
+void* __fastcall flagToStringCallback(CFlagStringConvertor* conv, uint64_t flag, int param_2, int param_3, int param_4, int param_5) {
+
+    int* xd = (int*)(0x0);
+    int ciao = *xd;
+
     cout << "PRE CALL -------------" << endl;
     cout << "This: " << hex << conv << endl;
     cout << "Flag: " << hex << param_2 << endl;
