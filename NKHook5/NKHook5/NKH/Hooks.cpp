@@ -9,23 +9,22 @@
 #include "BloonsSDK.h"
 
 using namespace std;
-typedef void* (__thiscall* FlagToString)(CFlagStringConvertor* conv);
+typedef void* (__stdcall* FlagToString)(void* puParm1, int uParm2, int uParm3, int uParm4);
 FlagToString flagToStringOriginal;
 
-__declspec(dllexport) void* __fastcall flagToStringCallback(CFlagStringConvertor* conv) {
+__declspec(dllexport) void* __stdcall flagToStringCallback(void* puParm1, int uParm2, int uParm3, int uParm4) {
     cout << "PRE CALL -------------" << endl;
-    cout << "This: " << hex << conv << endl;
-    /*cout << "FlagA: " << hex << flagA << endl;
-    cout << "FlagB: " << hex << flagB << endl;
-    cout << "FlagC: " << hex << flagC << endl;*/
-    void* ret = flagToStringOriginal(conv);
+    cout << "This: " << hex << puParm1 << endl;
+    cout << "FlagA: " << hex << uParm2 << endl;
+    cout << "FlagB: " << hex << uParm3 << endl;
+    cout << "FlagC: " << hex << uParm4 << endl;
+    void* ret = flagToStringOriginal(puParm1, uParm2, uParm3, uParm4);
     cout << "POST CALL -------------" << endl;
-    cout << "This: " << hex << conv << endl;
-    /*cout << "FlagA: " << hex << flagA << endl;
-    cout << "FlagB: " << hex << flagB << endl;
-    cout << "FlagC: " << hex << flagC << endl;*/
+    cout << "This: " << hex << puParm1 << endl;
+    cout << "FlagA: " << hex << uParm2 << endl;
+    cout << "FlagB: " << hex << uParm3 << endl;
+    cout << "FlagC: " << hex << uParm4 << endl;
     cout << "END -------------" << endl;
-    while(1){}
     return ret;
 }
 
