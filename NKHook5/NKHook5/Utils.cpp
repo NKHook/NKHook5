@@ -43,3 +43,30 @@ DWORD Utils::findPattern(DWORD rangeStart, DWORD rangeEnd, const char* pattern)
 	}
 	return NULL;
 }
+
+//Source: https://guidedhacking.com/threads/code-detouring-hooking-guide.14185/
+bool Utils::Detour32(void* src, void* dst, int len)
+{
+	if (len < 5) return false;
+
+	DWORD curProtection;
+	VirtualProtect(src, len, PAGE_EXECUTE_READWRITE, &curProtection);
+
+	memset(src, 0x90, len);
+
+	uintptr_t relativeAddress = ((uintptr_t)dst - (uintptr_t)src) - 5;
+
+	*(BYTE*)src = 0xE9;
+	*(uintptr_t*)((uintptr_t)src + 1) = relativeAddress;
+
+	DWORD temp;
+	VirtualProtect(src, len, curProtection, &temp);
+
+	return true;
+}
+
+CBloonsTD5Game* Utils::getGame()
+{
+	int modbase = getModuleBase();
+	return (CBloonsTD5Game*)(modbase + 0x00888474);
+}
