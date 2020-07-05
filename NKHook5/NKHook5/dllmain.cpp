@@ -15,7 +15,8 @@ void StartNKH(HMODULE hModule) {
     cout << "NKH is injected! Lets get things rolling!" << endl;
 
     Hooks();
-    FlagHacker();
+    FlagHacker* fhacker = new FlagHacker();
+    fhacker->addHackedFlag(FlagType::Tower, new string("HackMonkey"), 0x4001);
 
 }
 

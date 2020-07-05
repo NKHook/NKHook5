@@ -10,6 +10,6 @@ class FlagHacker
 {
 public:
 	FlagHacker();
-	void addHackedFlag(FlagType* type, string* name, long flag);
+	void addHackedFlag(FlagType type, string* name, long flag);
 };
 
