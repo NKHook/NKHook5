@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <iostream>
 #include "NKH/Hooks.h"
+#include "NKH/Patches/FlagHacker.h"
 
 
 using namespace std;
@@ -14,6 +15,7 @@ void StartNKH(HMODULE hModule) {
     cout << "NKH is injected! Lets get things rolling!" << endl;
 
     Hooks();
+    FlagHacker();
 
 }
 

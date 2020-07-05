@@ -159,14 +159,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="NKH\Patches\FlagHacker.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="NKH\Hooks.h" />
+    <ClInclude Include="NKH\Patches\pch.h" />
     <ClInclude Include="NKH\pch.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="NKH\Patches\FlagHacker.cpp" />
     <ClCompile Include="NKH\BloonsSDK.h" />
     <ClCompile Include="NKH\Hooks.cpp" />
     <ClCompile Include="pch.cpp">
