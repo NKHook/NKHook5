@@ -145,25 +145,42 @@ int post_f2s_JmpBack = 0;
 
 void __cdecl checkTypes(long* flag) {
 
-    long* eax_actualFlag = (long*)(((int)flag)-0x18);
+    long* eax_actualFlag_l = (long*)(((int)flag)-0x18);
+    long* eax_actualFlag_h = (long*)(((int)flag)+0x30);
+    long* ebp_actualFlag = (long*)(((int)registers[6]) + 0x10);
     long* esp_actualFlag = (long*)(((int)esPre)+0xC);
 
-    cout << "eax_actualFlag: " << hex << *eax_actualFlag << endl;
+
+    /*cout << "eax_actualFlag_l: " << hex << *eax_actualFlag_l << endl;
+    cout << "eax_actualFlag_h: " << hex << *eax_actualFlag_h << endl;
     cout << "esp_actualFlag: " << hex << *esp_actualFlag << endl;
+    cout << "ebp_actualFlag: " << hex << *ebp_actualFlag << endl;*/
 
     bool foundHacked = false;
     for (int i = 0; i < flags.size(); i++) {
-        if (*eax_actualFlag == flags[i]->flag) {
+        if (*eax_actualFlag_l == flags[i]->flag) {
             currentFlag = flags[i];
             foundHacked = true;
-            *eax_actualFlag = 0;
-            //cout << "Found hacked flag (eax)" << endl;
+            *eax_actualFlag_l = 0;
+            cout << "Found hacked flag (eax_l)" << endl;
+        }
+        if (*eax_actualFlag_h == flags[i]->flag) {
+            currentFlag = flags[i];
+            foundHacked = true;
+            *eax_actualFlag_h = 0;
+            cout << "Found hacked flag (eax_h)" << endl;
         }
         if (*esp_actualFlag == flags[i]->flag) {
             currentFlag = flags[i];
             foundHacked = true;
             *esp_actualFlag = 0;
-            //cout << "Found hacked flag (esp)" << endl;
+            cout << "Found hacked flag (esp)" << endl;
+        }
+        if (*ebp_actualFlag == flags[i]->flag) {
+            currentFlag = flags[i];
+            foundHacked = true;
+            *ebp_actualFlag = 0;
+            cout << "Found hacked flag (ebp)" << endl;
         }
     }
     if (!foundHacked) {
