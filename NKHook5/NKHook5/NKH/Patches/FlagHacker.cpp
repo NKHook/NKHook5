@@ -77,37 +77,7 @@ void __cdecl setHackedFlag() {
         cout << "Type hacked" << endl;
     }
 }
-
-long long __declspec(naked) __cdecl post_A_stringToFlagDetour() {
-    __asm {
-        mov registers[0 * 4], eax
-        mov registers[1 * 4], ebx
-        mov registers[2 * 4], ecx
-        mov registers[3 * 4], edx
-        mov registers[4 * 4], esi
-        mov registers[5 * 4], edi
-        mov registers[6 * 4], ebp
-        mov registers[7 * 4], esp
-    }
-    setHackedFlag();
-    __asm {
-        mov eax, registers[0 * 4]
-        mov ebx, registers[1 * 4]
-        mov ecx, registers[2 * 4]
-        mov edx, registers[3 * 4]
-        mov esi, registers[4 * 4]
-        mov edi, registers[5 * 4]
-        mov ebp, registers[6 * 4]
-        mov esp, registers[7 * 4]
-
-        mov esp, ebp
-        pop ebp
-        ret 0x0008
-
-        jmp pre_s2f_JmpBack
-    }
-}
-long long __declspec(naked) __cdecl post_B_stringToFlagDetour() {
+long long __declspec(naked) __cdecl post_stringToFlagDetour() {
     __asm {
         mov registers[0 * 4], eax
         mov registers[1 * 4], ebx
@@ -143,44 +113,50 @@ Flag to String hackerinos
 int pre_f2s_JmpBack = 0;
 int post_f2s_JmpBack = 0;
 
+int pre_f2s_registers[9];
+int post_f2s_registers[9];
+
 void __cdecl checkTypes(long* flag) {
 
     long* eax_actualFlag_l = (long*)(((int)flag)-0x18);
     long* eax_actualFlag_h = (long*)(((int)flag)+0x30);
-    long* ebp_actualFlag = (long*)(((int)registers[6]) + 0x10);
+    int* ebx_actualFlag = (int*)(&pre_f2s_registers[1]);
+    long* ebp_actualFlag = (long*)(((int)pre_f2s_registers[6]) + 0x10);
     long* esp_actualFlag = (long*)(((int)esPre)+0xC);
 
 
     /*cout << "eax_actualFlag_l: " << hex << *eax_actualFlag_l << endl;
     cout << "eax_actualFlag_h: " << hex << *eax_actualFlag_h << endl;
+    cout << "ebx_actualFlag: " << hex << *ebx_actualFlag << endl;
     cout << "esp_actualFlag: " << hex << *esp_actualFlag << endl;
     cout << "ebp_actualFlag: " << hex << *ebp_actualFlag << endl;*/
 
     bool foundHacked = false;
     for (int i = 0; i < flags.size(); i++) {
         if (*eax_actualFlag_l == flags[i]->flag) {
-            currentFlag = flags[i];
             foundHacked = true;
             *eax_actualFlag_l = 0;
-            cout << "Found hacked flag (eax_l)" << endl;
+            currentFlag = flags[i];
         }
         if (*eax_actualFlag_h == flags[i]->flag) {
-            currentFlag = flags[i];
             foundHacked = true;
             *eax_actualFlag_h = 0;
-            cout << "Found hacked flag (eax_h)" << endl;
+            currentFlag = flags[i];
         }
         if (*esp_actualFlag == flags[i]->flag) {
-            currentFlag = flags[i];
             foundHacked = true;
             *esp_actualFlag = 0;
-            cout << "Found hacked flag (esp)" << endl;
+            currentFlag = flags[i];
         }
         if (*ebp_actualFlag == flags[i]->flag) {
-            currentFlag = flags[i];
             foundHacked = true;
             *ebp_actualFlag = 0;
-            cout << "Found hacked flag (ebp)" << endl;
+            currentFlag = flags[i];
+        }
+        if (*ebx_actualFlag == flags[i]->flag) {
+            foundHacked = true;
+            *ebx_actualFlag = 0;
+            currentFlag = flags[i];
         }
     }
     if (!foundHacked) {
@@ -196,25 +172,25 @@ long long __declspec(naked) __cdecl pre_flagToStringDetour(long* flag) {
         mov ebp, esp
         sub esp, 0x08
 
-        mov registers[0 * 4], eax
-        mov registers[1 * 4], ebx
-        mov registers[2 * 4], ecx
-        mov registers[3 * 4], edx
-        mov registers[4 * 4], esi
-        mov registers[5 * 4], edi
-        mov registers[6 * 4], ebp
-        mov registers[7 * 4], esp
+        mov pre_f2s_registers[0 * 4], eax
+        mov pre_f2s_registers[1 * 4], ebx
+        mov pre_f2s_registers[2 * 4], ecx
+        mov pre_f2s_registers[3 * 4], edx
+        mov pre_f2s_registers[4 * 4], esi
+        mov pre_f2s_registers[5 * 4], edi
+        mov pre_f2s_registers[6 * 4], ebp
+        mov pre_f2s_registers[7 * 4], esp
     }
     checkTypes(flag);
     __asm {
-        mov eax, registers[0 * 4]
-        mov ebx, registers[1 * 4]
-        mov ecx, registers[2 * 4]
-        mov edx, registers[3 * 4]
-        mov esi, registers[4 * 4]
-        mov edi, registers[5 * 4]
-        mov ebp, registers[6 * 4]
-        mov esp, registers[7 * 4]
+        mov eax, pre_f2s_registers[0 * 4]
+        mov ebx, pre_f2s_registers[1 * 4]
+        mov ecx, pre_f2s_registers[2 * 4]
+        mov edx, pre_f2s_registers[3 * 4]
+        mov esi, pre_f2s_registers[4 * 4]
+        mov edi, pre_f2s_registers[5 * 4]
+        mov ebp, pre_f2s_registers[6 * 4]
+        mov esp, pre_f2s_registers[7 * 4]
 
         jmp pre_f2s_JmpBack
     }
@@ -227,14 +203,14 @@ void __declspec(naked) __cdecl setHackedType() {
         cout << "Current flag is not null, hacking..." << endl;
         hackedTypeStr = *currentFlag->name;
         __asm {
-            mov eax, registers[0 * 4]
-            mov ebx, registers[1 * 4]
-            mov ecx, registers[2 * 4]
-            mov edx, registers[3 * 4]
-            mov esi, registers[4 * 4]
-            mov edi, registers[5 * 4]
-            mov ebp, registers[6 * 4]
-            mov esp, registers[7 * 4]
+            mov eax, post_f2s_registers[0 * 4]
+            mov ebx, post_f2s_registers[1 * 4]
+            mov ecx, post_f2s_registers[2 * 4]
+            mov edx, post_f2s_registers[3 * 4]
+            mov esi, post_f2s_registers[4 * 4]
+            mov edi, post_f2s_registers[5 * 4]
+            mov ebp, post_f2s_registers[6 * 4]
+            mov esp, post_f2s_registers[7 * 4]
 
             push [hackedTypeStr+0x4]
             jmp post_f2s_JmpBack
@@ -243,14 +219,14 @@ void __declspec(naked) __cdecl setHackedType() {
     else {
         cout << "Current flag is null, skipping..." << endl;
         __asm {
-            mov eax, registers[0 * 4]
-            mov ebx, registers[1 * 4]
-            mov ecx, registers[2 * 4]
-            mov edx, registers[3 * 4]
-            mov esi, registers[4 * 4]
-            mov edi, registers[5 * 4]
-            mov ebp, registers[6 * 4]
-            mov esp, registers[7 * 4]
+            mov eax, post_f2s_registers[0 * 4]
+            mov ebx, post_f2s_registers[1 * 4]
+            mov ecx, post_f2s_registers[2 * 4]
+            mov edx, post_f2s_registers[3 * 4]
+            mov esi, post_f2s_registers[4 * 4]
+            mov edi, post_f2s_registers[5 * 4]
+            mov ebp, post_f2s_registers[6 * 4]
+            mov esp, post_f2s_registers[7 * 4]
 
             push invalid
             jmp post_f2s_JmpBack
@@ -260,14 +236,14 @@ void __declspec(naked) __cdecl setHackedType() {
 
 long long __declspec(naked) __cdecl post_flagToStringDetour() {
     __asm {
-        mov registers[0 * 4], eax
-        mov registers[1 * 4], ebx
-        mov registers[2 * 4], ecx
-        mov registers[3 * 4], edx
-        mov registers[4 * 4], esi
-        mov registers[5 * 4], edi
-        mov registers[6 * 4], ebp
-        mov registers[7 * 4], esp
+        mov post_f2s_registers[0 * 4], eax
+        mov post_f2s_registers[1 * 4], ebx
+        mov post_f2s_registers[2 * 4], ecx
+        mov post_f2s_registers[3 * 4], edx
+        mov post_f2s_registers[4 * 4], esi
+        mov post_f2s_registers[5 * 4], edi
+        mov post_f2s_registers[6 * 4], ebp
+        mov post_f2s_registers[7 * 4], esp
 
         jmp setHackedType
     }
@@ -280,8 +256,9 @@ FlagHacker::FlagHacker() {
     int stringToFlag = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "53 56 57 ff 75 08 e8 1f") - 6;
     pre_s2f_JmpBack = stringToFlag + 6;
     Utils::Detour32((void*)stringToFlag, &pre_stringToFlagDetour, 6);
-    Utils::Detour32((void*)(stringToFlag+0xDD), &post_A_stringToFlagDetour, 6);
-    Utils::Detour32((void*)(stringToFlag+0xF5), &post_B_stringToFlagDetour, 6);
+    Utils::Detour32((void*)(stringToFlag+0xD2), &post_stringToFlagDetour, 6);
+    Utils::Detour32((void*)(stringToFlag+0xDD), &post_stringToFlagDetour, 6);
+    Utils::Detour32((void*)(stringToFlag+0xF5), &post_stringToFlagDetour, 6);
 
     /*
     FlagToString detours
