@@ -255,6 +255,17 @@ long long __declspec(naked) __cdecl post_flagToStringDetour() {
 
 FlagHacker::FlagHacker() {
     /*
+    Remove locks
+
+    Tower unlockng and locking needs to be removed for adding towers to work properly
+    */
+    int getTowerUnlocked = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 83 EC 08 8B C1 8B 4D 08 56");
+    cout << "getTowerUnlocked" << hex << getTowerUnlocked << endl;
+    short* patchloc = (short*)(getTowerUnlocked + 0x7D);
+    Utils::UnprotectMem(patchloc, 2);
+    *patchloc = (short)0x01B0;
+
+    /*
     StringToFlag detours
     */
     int stringToFlag = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "53 56 57 ff 75 08 e8 1f") - 6;

@@ -44,6 +44,11 @@ DWORD Utils::findPattern(DWORD rangeStart, DWORD rangeEnd, const char* pattern)
 	return NULL;
 }
 
+void Utils::UnprotectMem(void* addr, int len) {
+	DWORD curProtection;
+	VirtualProtect(addr, len, PAGE_EXECUTE_READWRITE, &curProtection);
+}
+
 //Source: https://guidedhacking.com/threads/code-detouring-hooking-guide.14185/
 bool Utils::Detour32(void* src, void* dst, int len)
 {
