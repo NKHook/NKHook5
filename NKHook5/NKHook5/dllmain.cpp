@@ -6,7 +6,7 @@
 #include <iostream>
 #include "NKH/Hooks.h"
 #include "NKH/Patches/FlagHacker.h"
-#include "NKH/Blue/PyMain.h"
+#include "NKH/Blue/Chai.h"
 
 
 using namespace std;
@@ -17,10 +17,10 @@ void StartNKH(HMODULE hModule) {
 
     Hooks();
     FlagHacker();
-    FlagHacker::addHackedFlag(new string("HackMonkey"), 0x4001);
-    FlagHacker::addHackedFlag(new string("Gaming"), 0x4002);
+    //FlagHacker::addHackedFlag(new string("HackMonkey"), 0x4001);
+    //FlagHacker::addHackedFlag(new string("Gaming"), 0x4002);
 
-    PyMain::setupPython();
+    Chai::startChai();
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,

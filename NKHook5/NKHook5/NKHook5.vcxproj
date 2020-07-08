@@ -96,13 +96,13 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>
       </RuntimeTypeInfo>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\python.3.9.0-b4\tools\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\ChaiScript-6.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)packages\python.3.9.0-b4\tools\libs\python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Debug\NKHook5.dll" "$(AppData)\NKHook5\NKHook5.dll"</Command>
@@ -136,7 +136,9 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>
       </RuntimeTypeInfo>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\pythonx86.3.9.0-b4\tools\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\ChaiScript-6.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)packages\python.3.9.0-b4\tools\libs\python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Release\NKHook5.dll" "$(AppData)\NKHook5\NKHook5.dll"</Command>
@@ -170,8 +172,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="NKH\Blue\Chai.h" />
     <ClInclude Include="NKH\Blue\pch.h" />
-    <ClInclude Include="NKH\Blue\PyMain.h" />
     <ClInclude Include="NKH\Patches\FlagHacker.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="NKH\Hooks.h" />
@@ -181,8 +183,8 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="NKH\Blue\Chai.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="NKH\Blue\PyMain.cpp" />
     <ClCompile Include="NKH\Patches\FlagHacker.cpp" />
     <ClCompile Include="NKH\BloonsSDK.h" />
     <ClCompile Include="NKH\Hooks.cpp" />

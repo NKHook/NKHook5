@@ -39,7 +39,7 @@
     <ClInclude Include="NKH\Blue\pch.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="NKH\Blue\PyMain.h">
+    <ClInclude Include="NKH\Blue\Chai.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,7 +62,7 @@
     <ClCompile Include="NKH\Patches\FlagHacker.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="NKH\Blue\PyMain.cpp">
+    <ClCompile Include="NKH\Blue\Chai.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
