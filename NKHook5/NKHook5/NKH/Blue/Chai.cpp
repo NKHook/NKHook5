@@ -10,11 +10,22 @@ void injectFlag(const string& name, int flag) {
 	string* str = new string(name.c_str());
 	FlagHacker::addHackedFlag(str, flag);
 }
+typedef std::function<void(const char&)> onKeyCallback;
+vector<onKeyCallback> onKeyCallbacks;
+void onKey(const onKeyCallback& keyFunc)
+{
+	onKeyCallbacks.push_back(keyFunc);
+}
+void Chai::invokeKeyCallbacks(char key) {
+	for (int i = 0; i < onKeyCallbacks.size(); i++) {
+		const onKeyCallback leCallback = onKeyCallbacks[i];
+		leCallback(key);
+	}
+}
 
 /*
 Setup
 */
-
 using namespace chaiscript;
 namespace fs = std::filesystem;
 
@@ -29,6 +40,7 @@ void Chai::startChai()
 	chai = new ChaiScript();
 
 	chai->add(fun(&injectFlag), "injectFlag");
+	chai->add(fun(&onKey), "onKey");
 
 	string appdata = string(getenv("APPDATA"));
 	string nkhookdir = appdata.append("/NKHook5");

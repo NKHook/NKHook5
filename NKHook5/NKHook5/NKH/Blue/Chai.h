@@ -4,4 +4,5 @@ class Chai
 {
 public:
 	static void startChai();
+	static void invokeKeyCallbacks(char key);
 };
