@@ -27,3 +27,5 @@ NKHook5/NKHook5/Debug/NKHook5.vcxproj.FileListAbsolute.txt
 *.ilk
 *.idb
 packages/
+*.iobj
+*.ipdb
