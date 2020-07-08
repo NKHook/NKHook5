@@ -16,7 +16,8 @@ void StartNKH(HMODULE hModule) {
 
     Hooks();
     FlagHacker* fhacker = new FlagHacker();
-    fhacker->addHackedFlag(FlagType::Tower, new string("HackMonkey"), 0x4001);
+    fhacker->addHackedFlag(new string("HackMonkey"), 0x4001);
+    fhacker->addHackedFlag(new string("Gaming"), 0x4002);
 
 }
 

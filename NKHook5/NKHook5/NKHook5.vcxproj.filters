@@ -36,6 +36,12 @@
     <ClInclude Include="NKH\Patches\pch.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="NKH\Blue\pch.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="NKH\Blue\PyMain.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -56,8 +62,12 @@
     <ClCompile Include="NKH\Patches\FlagHacker.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="NKH\Blue\PyMain.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="NKH\Blue\NKH_Blue.md" />
   </ItemGroup>
 </Project>

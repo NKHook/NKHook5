@@ -26,3 +26,4 @@ NKHook5/NKHook5/Debug/NKHook5.vcxproj.FileListAbsolute.txt
 *.db-wal
 *.ilk
 *.idb
+packages/

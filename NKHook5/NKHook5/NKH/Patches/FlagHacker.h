@@ -3,13 +3,10 @@
 
 using namespace std;
 
-enum class FlagType {
-	Tower
-};
 class FlagHacker
 {
 public:
 	FlagHacker();
-	void addHackedFlag(FlagType type, string* name, long flag);
+	static void addHackedFlag(string* name, long flag);
 };
 

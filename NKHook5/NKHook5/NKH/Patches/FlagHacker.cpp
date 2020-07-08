@@ -7,7 +7,6 @@
 
 struct Flag {
 public:
-    FlagType type;
     string* name;
     long flag;
 };
@@ -275,10 +274,9 @@ FlagHacker::FlagHacker() {
     post_f2s_JmpBack = flagToString + 0xB6 + 0x5;
 }
 
-void FlagHacker::addHackedFlag(FlagType type, string* name, long flag)
+void FlagHacker::addHackedFlag(string* name, long flag)
 {
     Flag* sflag = new Flag();
-    sflag->type = type;
     sflag->name = name;
     sflag->flag = flag;
     flags.push_back(sflag);
