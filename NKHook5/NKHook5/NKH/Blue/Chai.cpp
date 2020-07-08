@@ -14,12 +14,21 @@ void injectFlag(const string& name, int flag) {
 /*
 Setup
 */
+
 using namespace chaiscript;
 namespace fs = std::filesystem;
+
+ChaiScript* chai;
+
+void runChaiFile(string path) {
+	chai->eval_file(path);
+}
+
 void Chai::startChai()
 {
-	ChaiScript chai;
-	chai.add(fun(&injectFlag), "injectFlag");
+	chai = new ChaiScript();
+
+	chai->add(fun(&injectFlag), "injectFlag");
 
 	string appdata = string(getenv("APPDATA"));
 	string nkhookdir = appdata.append("/NKHook5");
@@ -28,8 +37,7 @@ void Chai::startChai()
 	for (auto& p : fs::recursive_directory_iterator(pluginDir.c_str()))
 	{
 		if (p.path().extension() == ext) {
-			//cout << p.path().u8string() << endl;
-			chai.eval_file(p.path().u8string());
+			new thread(runChaiFile, p.path().u8string());
 		}
 	}
 }
