@@ -10,14 +10,15 @@
 
 using namespace std;
 
-typedef void (__thiscall* Keypressed)(WinInput*, char, int);
+typedef uint32_t uint;
+
+typedef void (__fastcall* Keypressed)(WinInput* self, int param_1, char key);
 Keypressed keypressed_original;
-void __fastcall keypressedCallback(WinInput* self, char key, int UNKNOWN) {
+void __fastcall keypressedCallback(WinInput* self, int param_1, char key) {
 	cout << hex << self << endl;
+	cout << param_1 << endl;
 	cout << key << endl;
-	cout << hex << UNKNOWN << endl;
-	system("pause");
-	keypressed_original(self, key, UNKNOWN);
+	return keypressed_original(self, param_1, key);
 }
 
 Hooks::Hooks()
