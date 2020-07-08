@@ -25,19 +25,19 @@ int esPre = 0;
 String to flag hackerinos
 */
 
-Flag* currentFlag = nullptr;
+Flag* s2f_currentFlag = nullptr;
 int pre_s2f_JmpBack = 0;
 void __cdecl checkStrings(void* factory_cftsc, char* type) {
     bool foundHacked = false;
     for (int i = 0; i < flags.size(); i++) {
         if (strcmp(type, flags[i]->name->c_str()) == 0) {
-            currentFlag = flags[i];
+            s2f_currentFlag = flags[i];
             foundHacked = true;
             cout << "Found hacked type" << endl;
         }
     }
     if (!foundHacked) {
-        currentFlag = nullptr;
+        s2f_currentFlag = nullptr;
     }
 }
 
@@ -72,8 +72,8 @@ long long __declspec(naked) __cdecl pre_stringToFlagDetour(void* factory_cftsc, 
 }
 
 void __cdecl setHackedFlag() {
-    if (currentFlag != nullptr) {
-        registers[0] = currentFlag->flag;
+    if (s2f_currentFlag != nullptr) {
+        registers[0] = s2f_currentFlag->flag;
         cout << "Type hacked" << endl;
     }
 }
@@ -110,6 +110,8 @@ long long __declspec(naked) __cdecl post_stringToFlagDetour() {
 /*
 Flag to String hackerinos
 */
+
+Flag* f2s_currentFlag = nullptr;
 int pre_f2s_JmpBack = 0;
 int post_f2s_JmpBack = 0;
 
@@ -136,31 +138,31 @@ void __cdecl checkTypes(long* flag) {
         if (*eax_actualFlag_l == flags[i]->flag) {
             foundHacked = true;
             *eax_actualFlag_l = 0;
-            currentFlag = flags[i];
+            f2s_currentFlag = flags[i];
         }
         if (*eax_actualFlag_h == flags[i]->flag) {
             foundHacked = true;
             *eax_actualFlag_h = 0;
-            currentFlag = flags[i];
+            f2s_currentFlag = flags[i];
         }
         if (*esp_actualFlag == flags[i]->flag) {
             foundHacked = true;
             *esp_actualFlag = 0;
-            currentFlag = flags[i];
+            f2s_currentFlag = flags[i];
         }
         if (*ebp_actualFlag == flags[i]->flag) {
             foundHacked = true;
             *ebp_actualFlag = 0;
-            currentFlag = flags[i];
+            f2s_currentFlag = flags[i];
         }
         if (*ebx_actualFlag == flags[i]->flag) {
             foundHacked = true;
             *ebx_actualFlag = 0;
-            currentFlag = flags[i];
+            f2s_currentFlag = flags[i];
         }
     }
     if (!foundHacked) {
-        currentFlag = nullptr;
+        f2s_currentFlag = nullptr;
     }
 }
 
@@ -196,12 +198,15 @@ long long __declspec(naked) __cdecl pre_flagToStringDetour(long* flag) {
     }
 }
 
+const char* hackedTypeCharPtr;
 string hackedTypeStr;
 string invalid = string("INVALID");
 void __declspec(naked) __cdecl setHackedType() {
-    if (currentFlag != nullptr) {
+    if (f2s_currentFlag != nullptr) {
         cout << "Current flag is not null, hacking..." << endl;
-        hackedTypeStr = *currentFlag->name;
+        hackedTypeStr = *f2s_currentFlag->name;
+        cout << "Hacked type: " << hackedTypeStr << endl;
+        hackedTypeCharPtr = hackedTypeStr.c_str();
         __asm {
             mov eax, post_f2s_registers[0 * 4]
             mov ebx, post_f2s_registers[1 * 4]
@@ -212,7 +217,7 @@ void __declspec(naked) __cdecl setHackedType() {
             mov ebp, post_f2s_registers[6 * 4]
             mov esp, post_f2s_registers[7 * 4]
 
-            push [hackedTypeStr+0x4]
+            push hackedTypeCharPtr
             jmp post_f2s_JmpBack
         }
     }
