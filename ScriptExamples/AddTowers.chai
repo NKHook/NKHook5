@@ -1,7 +1,9 @@
 //Print to the console we are loading our plugin
 print("loading AddTowers...")
+
 //Inject new tower types
 injectFlag("HackMonkey", 0x4001)
 injectFlag("Gaming", 0x4002)
+
 //Print that we are done
 print("AddTowers is loaded!")
