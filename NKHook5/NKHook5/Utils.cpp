@@ -73,5 +73,5 @@ bool Utils::Detour32(void* src, void* dst, int len)
 CBloonsTD5Game* Utils::getGame()
 {
 	int modbase = getModuleBase();
-	return (CBloonsTD5Game*)(modbase + 0x00888474);
+	return *(CBloonsTD5Game**)(modbase + 0x00888474);
 }

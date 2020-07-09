@@ -7,6 +7,7 @@
 #include "NKH/Hooks.h"
 #include "NKH/Patches/FlagHacker.h"
 #include "NKH/Blue/Chai.h"
+#include "Utils.h"
 
 
 using namespace std;
@@ -19,6 +20,9 @@ void StartNKH(HMODULE hModule) {
     FlagHacker();
     //FlagHacker::addHackedFlag(new string("HackMonkey"), 0x4001);
     //FlagHacker::addHackedFlag(new string("Gaming"), 0x4002);
+
+    while (Utils::getGame() == nullptr) { Sleep(100); }
+    while (Utils::getGame()->CGameSystemPointers == nullptr) { Sleep(100); }
 
     Chai::startChai();
 }

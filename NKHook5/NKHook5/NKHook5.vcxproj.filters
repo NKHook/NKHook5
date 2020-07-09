@@ -177,6 +177,12 @@
     <ClInclude Include="NKH\NMath.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="NKH\SDK\CBaseTower.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="NKH\SDK\CCompoundSprite.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

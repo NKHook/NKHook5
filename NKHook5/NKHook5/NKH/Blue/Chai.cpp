@@ -6,6 +6,9 @@
 #include "../SDK/CGameSystemPointers.h"
 #include "../SDK/WinInput.h"
 #include "../../Utils.h"
+#include "../SDK/CTowerManager.h"
+#include "../SDK/CBaseTower.h"
+#include "../SDK/CCompoundSprite.h"
 
 /*
 Chai format funcs
@@ -29,6 +32,7 @@ void Chai::invokeKeyCallbacks(char key) {
 CBloonsTD5Game getGame() {
 	return *Utils::getGame();
 }
+
 
 
 /*
@@ -58,7 +62,8 @@ void Chai::startChai()
 		{ 
 		},
 		{ 
-			{fun(&CBloonsTD5Game::getWinInput), "getWinInput"}
+			{fun(&CBloonsTD5Game::getWinInput), "getWinInput"},
+			{fun(&CBloonsTD5Game::getCGameSystemPointers), "getCGameSystemPointers"}
 		}
 	);
 	utility::add_class<WinInput>(*m,
@@ -66,7 +71,41 @@ void Chai::startChai()
 		{
 		},
 		{
+			{fun(&WinInput::getClickState), "getClickState"},
+			{fun(&WinInput::getClickStartPos), "getClickStartPos"},
+			{fun(&WinInput::getClickedMousePos), "getClickedMousePos"},
 			{fun(&WinInput::getMousePos), "getMousePos"}
+		}
+	);
+	utility::add_class<CGameSystemPointers>(*m,
+		"CGameSystemPointers",
+		{
+		},
+		{
+			{fun(&CGameSystemPointers::getCTowerManager), "getCTowerManager"}
+		}
+	);
+	utility::add_class<CTowerManager>(*m,
+		"CTowerManager",
+		{
+		},
+		{
+			{fun(&CTowerManager::getTower), "getTower"},
+			{fun(&CTowerManager::getLastTower), "getLastTower"},
+			{fun(&CTowerManager::getTowerCount), "getTowerCount"},
+			{fun(&CTowerManager::forEachTower), "forEachTower"}
+		}
+	);
+	utility::add_class<CBaseTower>(*m,
+		"CBaseTower",
+		{
+		},
+		{
+			{fun(&CBaseTower::getPosition), "getPosition"},
+			{fun(&CBaseTower::getTypeFlag), "getTypeFlag"},
+			{fun(&CBaseTower::isSelected), "isSelected"},
+			{fun(&CBaseTower::getCCompoundSprite), "getCCompoundSprite"},
+			{fun(&CBaseTower::isHovered), "isHovered"}
 		}
 	);
 	utility::add_class<Vector2>(*m,
@@ -74,8 +113,12 @@ void Chai::startChai()
 		{
 		},
 		{
+			{fun(&Vector2::x), "X"},
+			{fun(&Vector2::y), "Y"},
 			{fun(&Vector2::getX), "getX"},
-			{fun(&Vector2::getY), "getY"}
+			{fun(&Vector2::getY), "getY"},
+			{fun(&Vector2::setX), "setX"},
+			{fun(&Vector2::setY), "setY"}
 		}
 	);
 
@@ -84,11 +127,16 @@ void Chai::startChai()
 	string appdata = string(getenv("APPDATA"));
 	string nkhookdir = appdata.append("/NKHook5");
 	string pluginDir = nkhookdir.append("/Plugins");
-	std::string ext(".chai");
+	string ext(".chai");
 	for (auto& p : fs::recursive_directory_iterator(pluginDir.c_str()))
 	{
 		if (p.path().extension() == ext) {
-			new thread(runChaiFile, p.path().u8string());
+			try {
+				new thread(runChaiFile, p.path().u8string());
+			}
+			catch (...) {
+				cout << "An error occoured in " << p.path().filename() << endl;
+			}
 		}
 	}
 }

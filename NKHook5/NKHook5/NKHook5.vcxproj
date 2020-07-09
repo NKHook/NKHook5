@@ -182,10 +182,12 @@
     <ClInclude Include="NKH\pch.h" />
     <ClInclude Include="NKH\SDK\CAircraftManager.h" />
     <ClInclude Include="NKH\SDK\CAssetBag.h" />
+    <ClInclude Include="NKH\SDK\CBaseTower.h" />
     <ClInclude Include="NKH\SDK\CBloonAbilityFactory.h" />
     <ClInclude Include="NKH\SDK\CBloonFactory.h" />
     <ClInclude Include="NKH\SDK\CBloonManager.h" />
     <ClInclude Include="NKH\SDK\CBloonsTD5Game.h" />
+    <ClInclude Include="NKH\SDK\CCompoundSprite.h" />
     <ClInclude Include="NKH\SDK\CCurlHttpRequestManager.h" />
     <ClInclude Include="NKH\SDK\CDailyQuestManager.h" />
     <ClInclude Include="NKH\SDK\CEveryplayInterface.h" />

@@ -56,4 +56,9 @@ public:
 	class CProjectileSkinDataList* CProjectileSkinDataList; //0x010C
 	class CProjectileSkinDataList* CProjectileSkinDataList2; //0x0110
 	char pad_0114[16]; //0x0114
+
+public:
+	class CTowerManager& getCTowerManager() {
+		return *this->CTowerManager;
+	}
 }; //Size: 0x0124

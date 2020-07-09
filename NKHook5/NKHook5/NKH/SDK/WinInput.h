@@ -10,7 +10,16 @@ public:
 	Vector2 MousePos; //0x0020
 	char pad_0028[4]; //0x0028
 
-	Vector2 getMousePos() {
+	int& getClickState() {
+		return ClickState;
+	}
+	class Vector2& getClickStartPos() {
+		return ClickStartPos;
+	}
+	class Vector2& getClickedMousePos() {
+		return ClickedMousePos;
+	}
+	class Vector2& getMousePos() {
 		return this->MousePos;
 	}
 }; //Size: 0x002C

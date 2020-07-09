@@ -41,4 +41,7 @@ public:
 	class WinInput& getWinInput() {
 		return *this->WinInput;
 	}
+	class CGameSystemPointers& getCGameSystemPointers() {
+		return *this->CGameSystemPointers;
+	}
 }; //Size: 0x0238
