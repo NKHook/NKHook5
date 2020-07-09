@@ -1,0 +1,51 @@
+//Print that we are loading
+print("loading Movable towers...");
+//Create basic variables
+var game := getGame();
+var input := game.getWinInput();
+var ptrs := game.getCGameSystemPointers();
+var towerManager := ptrs.getCTowerManager();
+//Make our variables global so that they can be accessed on any thread
+//We need to do this because onKey and forEachTower run on the game's thread
+add_global(game, "game")
+add_global(input, "input")
+add_global(ptrs, "ptrs")
+add_global(towerManager, "towerManager")
+//Create a variable for if we are moving towers
+var mov = 0
+add_global(mov, "moving")
+onKey(fun(key)
+{
+	//Capital letters mean shift + the letter need to be pressed
+	//Caps lock also works
+	//You can use "if(key=='D'||key=='d')" to ignore casing
+	if(key=='D')
+	{
+		moving = moving + 1
+	}
+});
+//Let user know our plugin finished loading
+print("Movable Towers loaded!")
+//Main loop for our plugin
+//Plugins run on their own threads, so this wont cause the game to stop
+//Running a while(true) loop in a game thread (such as onKey) *will* cause the game to freeze
+while(true){
+	//If moving is an even number
+	if(even(moving)){
+		//Loop through all of the towers
+		//fun(x){} creates a new function, this function needs to take a tower as a parameter
+		//This will run the code for all of the towers placed down
+		towerManager.forEachTower(fun(tower)
+		{
+			//If the tower is selected
+			if(tower.isSelected()){
+				//create a var for the tower position and mouse position
+				var towerPos := tower.getPosition();
+				var mousePos := input.getMousePos();
+				//Set the positions
+				towerPos.setX(mousePos.getX());
+				towerPos.setY(mousePos.getY());
+			}
+		});
+	}
+}
