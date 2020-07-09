@@ -32,7 +32,7 @@ void __cdecl checkStrings(void* factory_cftsc, char* type) {
         if (strcmp(type, flags[i]->name->c_str()) == 0) {
             s2f_currentFlag = flags[i];
             foundHacked = true;
-            cout << "Found hacked type" << endl;
+            //cout << "Found hacked type" << endl;
         }
     }
     if (!foundHacked) {
@@ -73,7 +73,7 @@ long long __declspec(naked) __cdecl pre_stringToFlagDetour(void* factory_cftsc, 
 void __cdecl setHackedFlag() {
     if (s2f_currentFlag != nullptr) {
         registers[0] = s2f_currentFlag->flag;
-        cout << "Type hacked" << endl;
+        //cout << "Type hacked" << endl;
     }
 }
 long long __declspec(naked) __cdecl post_stringToFlagDetour() {
@@ -202,9 +202,9 @@ string hackedTypeStr;
 string invalid = string("INVALID");
 void __declspec(naked) __cdecl setHackedType() {
     if (f2s_currentFlag != nullptr) {
-        cout << "Current flag is not null, hacking..." << endl;
+        //cout << "Current flag is not null, hacking..." << endl;
         hackedTypeStr = *f2s_currentFlag->name;
-        cout << "Hacked type: " << hackedTypeStr << endl;
+        //cout << "Hacked type: " << hackedTypeStr << endl;
         hackedTypeCharPtr = hackedTypeStr.c_str();
         __asm {
             mov eax, post_f2s_registers[0 * 4]
@@ -221,7 +221,7 @@ void __declspec(naked) __cdecl setHackedType() {
         }
     }
     else {
-        cout << "Current flag is null, skipping..." << endl;
+        //cout << "Current flag is null, skipping..." << endl;
         __asm {
             mov eax, post_f2s_registers[0 * 4]
             mov ebx, post_f2s_registers[1 * 4]
@@ -260,7 +260,7 @@ FlagHacker::FlagHacker() {
     Tower unlockng and locking needs to be removed for adding towers to work properly
     */
     int getTowerUnlocked = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 83 EC 08 8B C1 8B 4D 08 56");
-    cout << "getTowerUnlocked" << hex << getTowerUnlocked << endl;
+    //cout << "getTowerUnlocked" << hex << getTowerUnlocked << endl;
     short* patchloc = (short*)(getTowerUnlocked + 0x7D);
     Utils::UnprotectMem(patchloc, 2);
     *patchloc = (short)0x01B0;

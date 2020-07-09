@@ -3,7 +3,7 @@
 #include <Psapi.h>
 #include <tlhelp32.h>
 #include <iostream>
-#include "NKH/BloonsSDK.h"
+#include "NKH/SDK/CBloonsTD5Game.h"
 
 class Utils
 {
