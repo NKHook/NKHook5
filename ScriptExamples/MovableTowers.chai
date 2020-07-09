@@ -30,6 +30,8 @@ print("Movable Towers loaded!")
 //Plugins run on their own threads, so this wont cause the game to stop
 //Running a while(true) loop in a game thread (such as onKey) *will* cause the game to freeze
 while(true){
+	//Sleep 10 milliseconds to not take up a shit ton of cpu
+	Sleep(10)
 	//If moving is an even number
 	if(even(moving)){
 		//Loop through all of the towers

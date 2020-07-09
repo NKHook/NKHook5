@@ -32,6 +32,9 @@ void Chai::invokeKeyCallbacks(char key) {
 CBloonsTD5Game getGame() {
 	return *Utils::getGame();
 }
+void cSleep(int millis) {
+	Sleep(millis);
+}
 
 
 
@@ -53,6 +56,7 @@ void Chai::startChai()
 
 	chaiscript::ModulePtr m = chaiscript::ModulePtr(new chaiscript::Module());
 
+	chai->add(fun(&cSleep), "Sleep");
 	chai->add(fun(&injectFlag), "injectFlag");
 	chai->add(fun(&onKey), "onKey");
 	chai->add(fun(&getGame), "getGame");
