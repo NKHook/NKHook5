@@ -37,6 +37,7 @@ public:
 	class CTextObject* N0000030D; //0x0160
 	char pad_0164[212]; //0x0164
 
+public:
 	class WinInput& getWinInput() {
 		return *this->WinInput;
 	}

@@ -26,7 +26,7 @@ void Chai::invokeKeyCallbacks(char key) {
 		leCallback(key);
 	}
 }
-CBloonsTD5Game& getGame() {
+CBloonsTD5Game getGame() {
 	return *Utils::getGame();
 }
 
@@ -74,8 +74,8 @@ void Chai::startChai()
 		{
 		},
 		{
-			{fun(&Vector2::getX), "x"},
-			{fun(&Vector2::getY), "y"}
+			{fun(&Vector2::getX), "getX"},
+			{fun(&Vector2::getY), "getY"}
 		}
 	);
 
