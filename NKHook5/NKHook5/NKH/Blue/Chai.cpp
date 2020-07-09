@@ -2,6 +2,10 @@
 #include "Chai.h"
 #include "../Patches/FlagHacker.h"
 #include <filesystem>
+#include "../SDK/CBloonsTD5Game.h"
+#include "../SDK/CGameSystemPointers.h"
+#include "../SDK/WinInput.h"
+#include "../../Utils.h"
 
 /*
 Chai format funcs
@@ -22,6 +26,10 @@ void Chai::invokeKeyCallbacks(char key) {
 		leCallback(key);
 	}
 }
+CBloonsTD5Game& getGame() {
+	return *Utils::getGame();
+}
+
 
 /*
 Setup
@@ -39,8 +47,39 @@ void Chai::startChai()
 {
 	chai = new ChaiScript();
 
+	chaiscript::ModulePtr m = chaiscript::ModulePtr(new chaiscript::Module());
+
 	chai->add(fun(&injectFlag), "injectFlag");
 	chai->add(fun(&onKey), "onKey");
+	chai->add(fun(&getGame), "getGame");
+
+	utility::add_class<CBloonsTD5Game>(*m,
+		"CBloonsTD5Game",
+		{ 
+		},
+		{ 
+			{fun(&CBloonsTD5Game::getWinInput), "getWinInput"}
+		}
+	);
+	utility::add_class<WinInput>(*m,
+		"WinInput",
+		{
+		},
+		{
+			{fun(&WinInput::getMousePos), "getMousePos"}
+		}
+	);
+	utility::add_class<Vector2>(*m,
+		"Vector2",
+		{
+		},
+		{
+			{fun(&Vector2::getX), "x"},
+			{fun(&Vector2::getY), "y"}
+		}
+	);
+
+	chai->add(m);
 
 	string appdata = string(getenv("APPDATA"));
 	string nkhookdir = appdata.append("/NKHook5");

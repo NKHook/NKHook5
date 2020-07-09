@@ -9,4 +9,8 @@ public:
 	Vector2 ClickedMousePos; //0x0018
 	Vector2 MousePos; //0x0020
 	char pad_0028[4]; //0x0028
+
+	Vector2& getMousePos() {
+		return this->MousePos;
+	}
 }; //Size: 0x002C

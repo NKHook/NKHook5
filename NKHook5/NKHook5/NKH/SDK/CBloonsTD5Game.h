@@ -36,4 +36,8 @@ public:
 	class CTextObject* CTextObject; //0x015C
 	class CTextObject* N0000030D; //0x0160
 	char pad_0164[212]; //0x0164
+
+	class WinInput& getWinInput() {
+		return *this->WinInput;
+	}
 }; //Size: 0x0238
