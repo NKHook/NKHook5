@@ -116,7 +116,7 @@ void Chai::startChai()
 	chai->add(fun(&cSleep), "Sleep");
 	chai->add(fun(&injectFlag), "injectFlag");
 	chai->add(fun(&onKey), "onKey");
-	chai->add(fun(&onKey), "onBloonEscaped");
+	chai->add(fun(&onBloonEscaped), "onBloonEscaped");
 	chai->add(fun(&getGame), "getGame");
 
 	utility::add_class<CBloonsTD5Game>(*m,
