@@ -48,6 +48,7 @@ Hooks::Hooks()
 	}
 
 	/*Bloon escaped hook*/
+	/*
 	int bloonEscaped = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "68 64 BF ?? ?? 64 A1") - 5;
 	if (MH_CreateHook((void*)bloonEscaped, &bloonEscapedCallback, reinterpret_cast<LPVOID*>(&bloonEscaped_original))==MH_OK) {
 		if (MH_EnableHook((void*)bloonEscaped)==MH_OK) {
@@ -60,4 +61,5 @@ Hooks::Hooks()
 	else {
 		cout << "Failed to create bloonEscaped hook!" << endl;
 	}
+	*/
 }
