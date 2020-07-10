@@ -183,7 +183,9 @@
     <ClInclude Include="NKH\SDK\CAircraftManager.h" />
     <ClInclude Include="NKH\SDK\CAssetBag.h" />
     <ClInclude Include="NKH\SDK\CBaseTower.h" />
+    <ClInclude Include="NKH\SDK\CBloon.h" />
     <ClInclude Include="NKH\SDK\CBloonAbilityFactory.h" />
+    <ClInclude Include="NKH\SDK\CBloonEscapedEvent.h" />
     <ClInclude Include="NKH\SDK\CBloonFactory.h" />
     <ClInclude Include="NKH\SDK\CBloonManager.h" />
     <ClInclude Include="NKH\SDK\CBloonsTD5Game.h" />

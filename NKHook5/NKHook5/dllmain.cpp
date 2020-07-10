@@ -14,6 +14,9 @@ using namespace std;
 void StartNKH(HMODULE hModule) {
     AllocConsole();
     freopen("CONOUT$", "w", stdout);
+    freopen("CONIN$", "r", stdin);
+    freopen("CONOUT$", "w", stderr);
+
     cout << "NKH is injected! Lets get things rolling!" << endl;
 
     Hooks();
@@ -25,6 +28,24 @@ void StartNKH(HMODULE hModule) {
     while (Utils::getGame()->CGameSystemPointers == nullptr) { Sleep(100); }
 
     Chai::startChai();
+
+    cout << "using main thread for inputs" << endl;
+    string line;
+    while (true) {
+        getline(cin, line);
+        if (strcmp(line.c_str(), "help") == 0) {
+            cout << "Commands aren't supported yet." << endl
+                << "Existing commands:" << endl
+                << "- help" << endl
+                << "- reload" << endl;
+        }
+        else if (strcmp(line.c_str(), "reload") == 0) {
+            Chai::reloadScripts();
+        }
+        else {
+            cout << "Unknown command" << endl;
+        }
+    }
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,

@@ -10,6 +10,8 @@
 #include "../SDK/CBaseTower.h"
 #include "../SDK/CCompoundSprite.h"
 #include "../SDK/GameData.h"
+#include "../SDK/CBloonEscapedEvent.h"
+#include "../SDK/CBloon.h"
 
 /*
 Chai format funcs
@@ -30,6 +32,19 @@ void Chai::invokeKeyCallbacks(char key) {
 		leCallback(key);
 	}
 }
+typedef std::function<void(CBloonEscapedEvent* eventPtr)> onBloonEscapedCallback;
+vector<onBloonEscapedCallback> onBloonEscapedCallbacks;
+void onBloonEscaped(const onBloonEscapedCallback& theFunc)
+{
+	onBloonEscapedCallbacks.push_back(theFunc);
+}
+void Chai::invokeBloonEscapedCallbacks(CBloonEscapedEvent* eventPtr)
+{
+	for (int i = 0; i < onBloonEscapedCallbacks.size(); i++) {
+		const onBloonEscapedCallback leCallback = onBloonEscapedCallbacks[i];
+		leCallback(eventPtr);
+	}
+}
 CBloonsTD5Game getGame() {
 	return *Utils::getGame();
 }
@@ -42,13 +57,54 @@ void cSleep(int millis) {
 /*
 Setup
 */
+vector<thread*> chaiThreads;
+
+
 using namespace chaiscript;
 namespace fs = std::filesystem;
 
 ChaiScript* chai;
 
 void runChaiFile(string path) {
-	chai->eval_file(path);
+	try {
+		chai->eval_file(path);
+	}
+	catch (std::exception ex) {
+		cout << "An error occoured in file " << path << endl;
+		cout << ex.what() << endl;
+	}
+}
+
+
+void runAllChaiFiles() {
+	string appdata = string(getenv("APPDATA"));
+	string nkhookdir = appdata.append("/NKHook5");
+	string pluginDir = nkhookdir.append("/Plugins");
+	string ext(".chai");
+	for (auto& p : fs::recursive_directory_iterator(pluginDir.c_str()))
+	{
+		if (p.path().extension() == ext) {
+			chaiThreads.push_back(new thread(runChaiFile, p.path().u8string()));
+		}
+	}
+}
+
+void Chai::reloadScripts()
+{
+	cout << "Removing event hooks..." << endl;
+	onKeyCallbacks.clear();
+	onBloonEscapedCallbacks.clear();
+	cout << "Removed event hooks" << endl;
+	cout << "Killing chai threads..." << endl;
+	for (int i = 0; i < chaiThreads.size(); i++) {
+		TerminateThread(chaiThreads[i]->native_handle(), 0);
+	}
+	chaiThreads.clear();
+	cout << "Killed chai threads" << endl;
+	cout << "Clearing chai from memory" << endl;
+	delete chai;
+	cout << "Starting scripts..." << endl;
+	startChai();
 }
 
 void Chai::startChai()
@@ -60,6 +116,7 @@ void Chai::startChai()
 	chai->add(fun(&cSleep), "Sleep");
 	chai->add(fun(&injectFlag), "injectFlag");
 	chai->add(fun(&onKey), "onKey");
+	chai->add(fun(&onKey), "onBloonEscaped");
 	chai->add(fun(&getGame), "getGame");
 
 	utility::add_class<CBloonsTD5Game>(*m,
@@ -139,22 +196,23 @@ void Chai::startChai()
 			{fun(&GameData::setHealth), "setHealth"}
 		}
 	);
+	utility::add_class<CBloonEscapedEvent>(*m,
+		"CBloonEscapedEvent",
+		{
+		},
+		{
+			{fun(&CBloonEscapedEvent::getEscapedBloon), "getEscapedBloon"}
+		}
+	);
+	utility::add_class<CBloon>(*m,
+		"CBloon",
+		{
+		},
+		{
+		}
+	);
 
 	chai->add(m);
 
-	string appdata = string(getenv("APPDATA"));
-	string nkhookdir = appdata.append("/NKHook5");
-	string pluginDir = nkhookdir.append("/Plugins");
-	string ext(".chai");
-	for (auto& p : fs::recursive_directory_iterator(pluginDir.c_str()))
-	{
-		if (p.path().extension() == ext) {
-			try {
-				new thread(runChaiFile, p.path().u8string());
-			}
-			catch (...) {
-				cout << "An error occoured in " << p.path().filename() << endl;
-			}
-		}
-	}
+	runAllChaiFiles();
 }
