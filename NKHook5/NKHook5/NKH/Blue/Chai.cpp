@@ -9,6 +9,7 @@
 #include "../SDK/CTowerManager.h"
 #include "../SDK/CBaseTower.h"
 #include "../SDK/CCompoundSprite.h"
+#include "../SDK/GameData.h"
 
 /*
 Chai format funcs
@@ -86,7 +87,8 @@ void Chai::startChai()
 		{
 		},
 		{
-			{fun(&CGameSystemPointers::getCTowerManager), "getCTowerManager"}
+			{fun(&CGameSystemPointers::getCTowerManager), "getCTowerManager"},
+			{fun(&CGameSystemPointers::getGameData), "getGameData"}
 		}
 	);
 	utility::add_class<CTowerManager>(*m,
@@ -123,6 +125,18 @@ void Chai::startChai()
 			{fun(&Vector2::getY), "getY"},
 			{fun(&Vector2::setX), "setX"},
 			{fun(&Vector2::setY), "setY"}
+		}
+	);
+	utility::add_class<GameData>(*m,
+		"GameData",
+		{
+		},
+		{
+			{fun(&GameData::getCash), "getCash"},
+			{fun(&GameData::getHealth), "getHealth"},
+			{fun(&GameData::getCurrentMap), "getCurrentMap"},
+			{fun(&GameData::setCash), "setCash"},
+			{fun(&GameData::setHealth), "setHealth"}
 		}
 	);
 

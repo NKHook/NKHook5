@@ -2,6 +2,7 @@
 print("loading Movable towers...");
 
 //Create basic variables
+//The := operator is like the = in any other language, except for classes & structs.
 var game := getGame();
 var input := game.getWinInput();
 var ptrs := game.getCGameSystemPointers();
@@ -20,6 +21,7 @@ add_global(towerManager, "towerManager")
 //The global version of "mov" is "moving" and so we want to use "moving" instead of "mov" now
 var mov = 0
 add_global(mov, "moving")
+//onKey is a function that calls any given function inside whenever the game receives a key press.
 onKey(fun(key)
 {
 	//Capital letters mean shift + the letter need to be pressed
@@ -27,6 +29,7 @@ onKey(fun(key)
 	//You can use "if(key=='D'||key=='d')" to ignore casing
 	if(key=='D')
 	{
+		//Adds 1 to moving (aka "mov" as defined above)
 		moving = moving + 1
 	}
 });
@@ -43,6 +46,7 @@ while(true)
 	//Sleep 10 milliseconds to not take up a shit ton of cpu
 	Sleep(10)
 	//If moving is an even number
+	//This way the moving can be toggled by the key press
 	if(even(moving))
 	{
 		//Loop through all of the towers

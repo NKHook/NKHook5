@@ -2,6 +2,8 @@
 print("loading AddTowers...")
 
 //Inject new tower types
+//First param is the Typename/Factoryname
+//Second param is the Tower's ID
 injectFlag("HackMonkey", 0x4001)
 injectFlag("Gaming", 0x4002)
 

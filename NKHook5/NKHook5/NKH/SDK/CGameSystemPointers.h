@@ -41,7 +41,10 @@ public:
 	class CSpecialtyFactory* CSpecialtyFactory; //0x00B8
 	class CLabFactory* CLabFactory; //0x00BC
 	class CBloonAbilityFactory* CBloonAbilityFactory; //0x00C0
-	char pad_00C4[16]; //0x00C4
+	char pad_00C4[4]; //0x00C4
+	class GameData* GameData; //0x00C8
+	char pad_00CC[4]; //0x00CC
+	char* CurrentMap; //0x00D0
 	class CSteamCloud* CSteamCloud; //0x00D4
 	char pad_00D8[8]; //0x00D8
 	class CSocialLeaderboard* CSocialLeaderboard; //0x00E0
@@ -55,10 +58,13 @@ public:
 	char pad_0108[4]; //0x0108
 	class CProjectileSkinDataList* CProjectileSkinDataList; //0x010C
 	class CProjectileSkinDataList* CProjectileSkinDataList2; //0x0110
-	char pad_0114[16]; //0x0114
+	char pad_0114[1040]; //0x0114
 
 public:
 	class CTowerManager& getCTowerManager() {
 		return *this->CTowerManager;
+	}
+	class GameData& getGameData() {
+		return *this->GameData;
 	}
 }; //Size: 0x0124

@@ -221,6 +221,7 @@
     <ClInclude Include="NKH\SDK\CWeaponFactory.h" />
     <ClInclude Include="NKH\SDK\CWeaponTaskManager.h" />
     <ClInclude Include="NKH\SDK\DGAnalytics_Redshift.h" />
+    <ClInclude Include="NKH\SDK\GameData.h" />
     <ClInclude Include="NKH\SDK\SteamStoreInterface.h" />
     <ClInclude Include="NKH\SDK\WinFileIO.h" />
     <ClInclude Include="NKH\SDK\WinInput.h" />
