@@ -7,6 +7,7 @@
 
 #include <MinHook.h>
 #include "SDK/WinInput.h"
+#include "SDK/CBloonEscapedEvent.h"
 
 #include "Blue/Chai.h"
 
@@ -65,8 +66,7 @@ void __declspec(naked) bloonEscapedCallback() {
 		jmp saveRegisters;
 	saveRegistersJmpBack:
 	}
-	//cout << "Bloon escaped!" << endl;
-	Chai::invokeBloonEscapedCallbacks((class CBloonEscapedEvent*)the_registers[1]);
+	Chai::invokeBloonEscapedCallbacks(*((CBloonEscapedEvent*)the_registers[1]));
 	__asm {
 		push eax;
 		mov eax, restoreRegistersJmpBack;

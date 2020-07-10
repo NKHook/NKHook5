@@ -180,6 +180,7 @@
     <ClInclude Include="NKH\Hooks.h" />
     <ClInclude Include="NKH\Patches\pch.h" />
     <ClInclude Include="NKH\pch.h" />
+    <ClInclude Include="NKH\SDK\BloonData.h" />
     <ClInclude Include="NKH\SDK\CAircraftManager.h" />
     <ClInclude Include="NKH\SDK\CAssetBag.h" />
     <ClInclude Include="NKH\SDK\CBaseTower.h" />

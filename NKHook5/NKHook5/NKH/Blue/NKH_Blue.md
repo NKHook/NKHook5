@@ -25,3 +25,6 @@ The first parameter ("CustomMonkey") is our tower type. This is often seen in th
 The second parameter is the ID/Flag. This must be unique, as if it isnt it could cause some serious issues with other mods or straight up just crash the game.
 
 To use this in your plugin, you can simply copy the example into your file. NKHook will fild the file and automatically load it.
+
+## Scripting
+NKH allows a lot more than just adding towers. NKH features events in it's ChaiScript api that can be used to change game logic. For example, you could write a script that takes away money instead of health when a bloon escapes. You can find an example of money being taken when a bloon escapes [here](https://github.com/TDToolbox/BTD-Docs/blob/master/md/Solidarity/btd5/NKHook5/Events/Events.md)

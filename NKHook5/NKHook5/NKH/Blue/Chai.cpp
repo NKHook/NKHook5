@@ -12,6 +12,7 @@
 #include "../SDK/GameData.h"
 #include "../SDK/CBloonEscapedEvent.h"
 #include "../SDK/CBloon.h"
+#include "../SDK/BloonData.h"
 
 /*
 Chai format funcs
@@ -26,19 +27,20 @@ void onKey(const onKeyCallback& keyFunc)
 {
 	onKeyCallbacks.push_back(keyFunc);
 }
-void Chai::invokeKeyCallbacks(char key) {
+void Chai::invokeKeyCallbacks(char key) 
+{
 	for (int i = 0; i < onKeyCallbacks.size(); i++) {
 		const onKeyCallback leCallback = onKeyCallbacks[i];
 		leCallback(key);
 	}
 }
-typedef std::function<void(CBloonEscapedEvent* eventPtr)> onBloonEscapedCallback;
+typedef std::function<void(CBloonEscapedEvent&)> onBloonEscapedCallback;
 vector<onBloonEscapedCallback> onBloonEscapedCallbacks;
 void onBloonEscaped(const onBloonEscapedCallback& theFunc)
 {
 	onBloonEscapedCallbacks.push_back(theFunc);
 }
-void Chai::invokeBloonEscapedCallbacks(CBloonEscapedEvent* eventPtr)
+void Chai::invokeBloonEscapedCallbacks(CBloonEscapedEvent& eventPtr)
 {
 	for (int i = 0; i < onBloonEscapedCallbacks.size(); i++) {
 		const onBloonEscapedCallback leCallback = onBloonEscapedCallbacks[i];
@@ -209,6 +211,19 @@ void Chai::startChai()
 		{
 		},
 		{
+			{fun(&CBloon::getSpriteSize), "getSpriteSize"},
+			{fun(&CBloon::getBloonData), "getBloonData"}
+		}
+	);
+	utility::add_class<BloonData>(*m,
+		"BloonData",
+		{
+		},
+		{
+			{fun(&BloonData::getChildBloonFileName), "getChildBloonFileName"},
+			{fun(&BloonData::getTypeName), "getTypeName"},
+			{fun(&BloonData::getType), "getType"},
+			{fun(&BloonData::getDamage), "getDamage"}
 		}
 	);
 
