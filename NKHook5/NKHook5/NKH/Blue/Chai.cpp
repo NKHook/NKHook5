@@ -111,7 +111,7 @@ void Chai::startChai()
 {
 	chai = new ChaiScript();
 
-	chaiscript::ModulePtr m = chaiscript::ModulePtr(new chaiscript::Module());
+	ModulePtr m = ModulePtr(new chaiscript::Module());
 
 	chai->add(fun(&cSleep), "Sleep");
 	chai->add(fun(&injectFlag), "injectFlag");
