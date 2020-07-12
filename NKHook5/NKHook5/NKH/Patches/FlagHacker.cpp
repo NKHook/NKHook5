@@ -199,14 +199,16 @@ long long __declspec(naked) pre_flagToStringDetour(long* flag) {
 
 const char* hackedTypeCharPtr;
 string hackedTypeStr;
+const char* invalidTypeCharPtr;
 string invalid = string("INVALID");
-void __declspec(naked) setHackedType() {
+void __declspec(naked) __cdecl setHackedType() {
+    cout << "";
     if (f2s_currentFlag != nullptr) {
         //cout << "Current flag is not null, hacking..." << endl;
-        cout << "";
+        //cout << "";
         hackedTypeStr = *f2s_currentFlag->name;
         //cout << "Hacked type: " << hackedTypeStr << endl;
-        cout << "";
+        //cout << "";
         hackedTypeCharPtr = hackedTypeStr.c_str();
         __asm {
             mov eax, post_f2s_registers[0 * 4]
@@ -224,7 +226,8 @@ void __declspec(naked) setHackedType() {
     }
     else {
         //cout << "Current flag is null, skipping..." << endl;
-        cout << "";
+        //cout << "";
+        //invalidTypeCharPtr = invalid.c_str();
         __asm {
             mov eax, post_f2s_registers[0 * 4]
             mov ebx, post_f2s_registers[1 * 4]
@@ -236,13 +239,13 @@ void __declspec(naked) setHackedType() {
             mov esp, post_f2s_registers[7 * 4]
 
             sub esp, 0x4
-            //push invalid
+            //push invalidTypeCharPtr
             jmp post_f2s_JmpBack
         }
     }
 }
 
-long long __declspec(naked) post_flagToStringDetour() {
+long long __declspec(naked) __cdecl post_flagToStringDetour() {
     __asm {
         mov post_f2s_registers[0 * 4], eax
         mov post_f2s_registers[1 * 4], ebx
