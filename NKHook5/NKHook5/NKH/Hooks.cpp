@@ -86,10 +86,32 @@ void __declspec(naked) bloonEscapedCallback() {
 	}
 }
 
-typedef void(__thiscall* UpgradeTower)(CTowerManager* self, CBaseTower* tower, int path);
-UpgradeTower upgradeTower_original;
+int upgradeTowerJmpBack = 0;
 void __declspec(naked) upgradeTowerCallback() {
-	upgradeTower_original(self, tower, path);
+	__asm {
+		push eax;
+		mov eax, saveRegistersJmpBack;
+		mov[saveRegisters_jmpBack], eax;
+		pop eax;
+		jmp saveRegisters;
+	saveRegistersJmpBack:
+	}
+	Chai::invokeTowerUpgradedCallbacks(*((CTowerManager*)the_registers[2]), **((CBaseTower**)(the_registers[7]+0x4)), *((int*)(the_registers[7]+0x8)));
+	__asm {
+		push eax;
+		mov eax, restoreRegistersJmpBack;
+		mov[restoreRegisters_jmpBack], eax;
+		pop eax;
+		jmp restoreRegisters;
+	RestoreRegistersJmpBack:
+	}
+	__asm {
+		push ebp
+		mov ebp, esp
+		and esp, -0x08
+
+		jmp [upgradeTowerJmpBack]
+	}
 }
 
 Hooks::Hooks()
@@ -120,15 +142,6 @@ Hooks::Hooks()
 
 	/*Tower upgraded*/
 	int upgradeTower = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "83 EC 44 53 8B 5D 08 8B") - 6;
-	if (MH_CreateHook((void*)upgradeTower, &upgradeTowerCallback, reinterpret_cast<LPVOID*>(&upgradeTower_original)) == MH_OK) {
-		if (MH_EnableHook((void*)upgradeTower) == MH_OK) {
-			cout << "Upgrade tower hook created!" << endl;
-		}
-		else {
-			cout << "Failed to enabled upgradeTower hook" << endl;
-		}
-	}
-	else {
-		cout << "Failed to create upgrade tower hook!" << endl;
-	}
+	Utils::Detour32((void*)upgradeTower, &upgradeTowerCallback, 6);
+	upgradeTowerJmpBack = upgradeTower + 6;
 }

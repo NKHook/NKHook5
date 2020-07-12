@@ -47,6 +47,22 @@ void Chai::invokeBloonEscapedCallbacks(CBloonEscapedEvent& eventPtr)
 		leCallback(eventPtr);
 	}
 }
+typedef std::function<void(CTowerManager&, CBaseTower&, const int&)> onTowerUpgradeCallback;
+vector<onTowerUpgradeCallback> onTowerUpgradeCallbacks;
+void onTowerUpgrade(const onTowerUpgradeCallback& theFunc)
+{
+	onTowerUpgradeCallbacks.push_back(theFunc);
+}
+void Chai::invokeTowerUpgradedCallbacks(CTowerManager& towerManager, CBaseTower& tower, int upgradePath)
+{
+	/*cout << hex << &towerManager << endl;
+	cout << hex << &tower << endl;
+	cout << hex << upgradePath << endl;*/
+	for (int i = 0; i < onTowerUpgradeCallbacks.size(); i++) {
+		const onTowerUpgradeCallback leCallback = onTowerUpgradeCallbacks[i];
+		leCallback(towerManager, tower, upgradePath);
+	}
+}
 CBloonsTD5Game getGame() {
 	return *Utils::getGame();
 }
@@ -96,6 +112,7 @@ void Chai::reloadScripts()
 	cout << "Removing event hooks..." << endl;
 	onKeyCallbacks.clear();
 	onBloonEscapedCallbacks.clear();
+	onTowerUpgradeCallbacks.clear();
 	cout << "Removed event hooks" << endl;
 	cout << "Killing chai threads..." << endl;
 	for (int i = 0; i < chaiThreads.size(); i++) {
@@ -119,6 +136,7 @@ void Chai::startChai()
 	chai->add(fun(&injectFlag), "injectFlag");
 	chai->add(fun(&onKey), "onKey");
 	chai->add(fun(&onBloonEscaped), "onBloonEscaped");
+	chai->add(fun(&onTowerUpgrade), "onTowerUpgrade");
 	chai->add(fun(&getGame), "getGame");
 
 	utility::add_class<CBloonsTD5Game>(*m,
