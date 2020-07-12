@@ -55,6 +55,7 @@ namespace NKHook5_Injector
             InjectDll(dataDir + "/NKHook5.dll");
         }
 
+        static bool started = false;
         public static void awaitGame()
         {
             while (true)
@@ -63,6 +64,11 @@ namespace NKHook5_Injector
                 Process[] possiblilties = Process.GetProcessesByName("BTD5-Win");
                 if (possiblilties.Length < 1)
                 {
+                    if (!started)
+                    {
+                        Process.Start("steam://rungameid/306020");
+                        started = true;
+                    }
                     continue;
                 }
                 Process tempGame = possiblilties[0];
@@ -103,8 +109,8 @@ namespace NKHook5_Injector
                     return;
             }
 
-            if (!game.Responding)
-                return;
+            /*if (!game.Responding)
+                return;*/
 
             int lenWrite = strDllName.Length + 1;
             UIntPtr allocMem = Win32.VirtualAllocEx(pHandle, (UIntPtr)null, (uint)lenWrite, 0x00001000 | 0x00002000, 0x04);

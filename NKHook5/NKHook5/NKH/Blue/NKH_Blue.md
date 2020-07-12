@@ -27,4 +27,8 @@ The second parameter is the ID/Flag. This must be unique, as if it isnt it could
 To use this in your plugin, you can simply copy the example into your file. NKHook will fild the file and automatically load it.
 
 ## Scripting
-NKH allows a lot more than just adding towers. NKH features events in it's ChaiScript api that can be used to change game logic. For example, you could write a script that takes away money instead of health when a bloon escapes. You can find an example of money being taken when a bloon escapes [here](https://github.com/TDToolbox/BTD-Docs/blob/master/md/Solidarity/btd5/NKHook5/Events/Events.md)
+NKH allows a lot more than just adding towers. NKH features events in it's ChaiScript api that can be used to change game logic. For example, you could write a script that takes away money instead of health when a bloon escapes. You can find an example of this feature [here](https://github.com/TDToolbox/BTD-Docs/blob/master/md/Solidarity/btd5/NKHook5/Events/Events.md)
+
+Each plugin has their own thread, meaning you can create "while(true)" loops without freezing the game, however using one in a game thread (such as on an event) will cause the game to freeze.
+
+You can also modify, add or remove scripts from the game without closing or crashing it. The console window can be typed into. Use the "reload" command to make NKHook kill all script threads, remove all script hooks and then load in any new scripts or modified ones. This is helpful in cases where you make small mistakes, you can simply reload and make fixes.

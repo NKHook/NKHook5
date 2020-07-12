@@ -29,3 +29,5 @@ NKHook5/NKHook5/Debug/NKHook5.vcxproj.FileListAbsolute.txt
 packages/
 *.iobj
 *.ipdb
+*.exp
+*.enc
