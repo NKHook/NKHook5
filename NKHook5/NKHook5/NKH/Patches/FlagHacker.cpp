@@ -227,7 +227,7 @@ void __declspec(naked) __cdecl setHackedType() {
     else {
         //cout << "Current flag is null, skipping..." << endl;
         //cout << "";
-        //invalidTypeCharPtr = invalid.c_str();
+        invalidTypeCharPtr = invalid.c_str();
         __asm {
             mov eax, post_f2s_registers[0 * 4]
             mov ebx, post_f2s_registers[1 * 4]
@@ -238,8 +238,8 @@ void __declspec(naked) __cdecl setHackedType() {
             mov ebp, post_f2s_registers[6 * 4]
             mov esp, post_f2s_registers[7 * 4]
 
-            sub esp, 0x4
-            //push invalidTypeCharPtr
+            //sub esp, 0x4
+            push invalidTypeCharPtr
             jmp post_f2s_JmpBack
         }
     }
