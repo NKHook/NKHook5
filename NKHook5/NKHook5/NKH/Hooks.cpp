@@ -8,6 +8,8 @@
 #include <MinHook.h>
 #include "SDK/WinInput.h"
 #include "SDK/CBloonEscapedEvent.h"
+#include "SDK/CTowerManager.h"
+#include "SDK/CBaseTower.h"
 
 #include "Blue/Chai.h"
 
@@ -84,6 +86,12 @@ void __declspec(naked) bloonEscapedCallback() {
 	}
 }
 
+typedef void(__thiscall* UpgradeTower)(CTowerManager* self, CBaseTower* tower, int path);
+UpgradeTower upgradeTower_original;
+void __declspec(naked) upgradeTowerCallback() {
+	upgradeTower_original(self, tower, path);
+}
+
 Hooks::Hooks()
 {
 	if (MH_Initialize() != MH_OK) {
@@ -109,4 +117,18 @@ Hooks::Hooks()
 	int bloonEscaped = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "68 64 BF ?? ?? 64 A1") - 5;
 	Utils::Detour32((void*)bloonEscaped, &bloonEscapedCallback, 5);
 	bloonEscapedJmpBack = bloonEscaped + 0x5;
+
+	/*Tower upgraded*/
+	int upgradeTower = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "83 EC 44 53 8B 5D 08 8B") - 6;
+	if (MH_CreateHook((void*)upgradeTower, &upgradeTowerCallback, reinterpret_cast<LPVOID*>(&upgradeTower_original)) == MH_OK) {
+		if (MH_EnableHook((void*)upgradeTower) == MH_OK) {
+			cout << "Upgrade tower hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enabled upgradeTower hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create upgrade tower hook!" << endl;
+	}
 }
