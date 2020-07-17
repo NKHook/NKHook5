@@ -8,6 +8,8 @@
 #include "NKH/Patches/FlagHacker.h"
 #include "NKH/Blue/Chai.h"
 #include "Utils.h"
+#include "NKH/SDK/CGameSystemPointers.h"
+#include "NKH/SDK/CTowerManager.h"
 
 
 using namespace std;
@@ -25,6 +27,7 @@ void StartNKH(HMODULE hModule) {
     //FlagHacker::addHackedFlag(new string("Gaming"), 0x4002);
 
     while (Utils::getGame() == nullptr) { Sleep(100); }
+    //cout << "Get game returned: " << Utils::getGame() << endl;
     while (Utils::getGame()->CGameSystemPointers == nullptr) { Sleep(100); }
 
     Chai::startChai();
@@ -33,17 +36,18 @@ void StartNKH(HMODULE hModule) {
     string line;
     while (true) {
         getline(cin, line);
-        if (strcmp(line.c_str(), "help") == 0) {
+        if (line == "help") {
             cout << "Commands aren't supported yet." << endl
                 << "Existing commands:" << endl
                 << "- help" << endl
                 << "- reload" << endl;
         }
-        else if (strcmp(line.c_str(), "reload") == 0) {
+        else if (line == "reload") {
             Chai::reloadScripts();
         }
         else {
             cout << "Unknown command" << endl;
+            cout << hex << Utils::getGame()->CGameSystemPointers->CTowerManager->getTowerCount() << endl;
         }
     }
 }

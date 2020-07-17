@@ -51,6 +51,34 @@ void __declspec(naked) restoreRegisters() {
 
 
 /*Hooks*/
+int gameInstanceTickHookThingIdfkJmpBack = 0;
+void __declspec(naked) __fastcall gameInstanceTickHookThingIdfkCallback() {
+	__asm {
+		push eax;
+		mov eax, saveRegistersJmpBack;
+		mov[saveRegisters_jmpBack], eax;
+		pop eax;
+		jmp saveRegisters;
+	saveRegistersJmpBack:
+	}
+	Utils::updateGameBase(the_registers[2]);
+	__asm {
+		push eax;
+		mov eax, restoreRegistersJmpBack;
+		mov[restoreRegisters_jmpBack], eax;
+		pop eax;
+		jmp restoreRegisters;
+	RestoreRegistersJmpBack:
+	}
+	__asm {
+		mov eax, [ecx]
+		call dword ptr[eax + 0x38]
+
+		jmp gameInstanceTickHookThingIdfkJmpBack;
+	}
+}
+
+
 typedef void (__fastcall* Keypressed)(WinInput* self, int param_1, char key);
 Keypressed keypressed_original;
 void __fastcall keypressedCallback(WinInput* self, int param_1, char key) {
@@ -120,6 +148,11 @@ Hooks::Hooks()
 		cout << "Failed to initialize minhook!" << endl;
 		return;
 	}
+
+	/*Game Instance tick hook thing*/
+	int gameInstanceTickHookThingIdfk = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "85 C0 7E 16 83 F8") - 5;
+	Utils::Detour32((void*)gameInstanceTickHookThingIdfk, &gameInstanceTickHookThingIdfkCallback, 5);
+	gameInstanceTickHookThingIdfkJmpBack = gameInstanceTickHookThingIdfk + 5;
 
 	/*Keypress hook*/
 	int keypressed = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "8B 7D 08 8B D9 81 FF 00 01 00 00 73 3A") - 5;

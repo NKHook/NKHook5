@@ -70,8 +70,16 @@ bool Utils::Detour32(void* src, void* dst, int len)
 	return true;
 }
 
+int gameBase = 0;
+void Utils::updateGameBase(int base)
+{
+	gameBase = base;
+}
+
 CBloonsTD5Game* Utils::getGame()
 {
-	int modbase = getModuleBase();
-	return *(CBloonsTD5Game**)(modbase + 0x00888474);
+	if (gameBase != 0) {
+		return (CBloonsTD5Game*)(gameBase);
+	}
+	return nullptr;
 }

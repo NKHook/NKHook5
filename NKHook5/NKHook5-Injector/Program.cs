@@ -13,6 +13,7 @@ namespace NKHook5_Injector
     {
         static bool startupDebug = false;
         public static string dataDir = Environment.ExpandEnvironmentVariables(@"%appdata%\NKHook5");
+        public static string pluginDir = Environment.ExpandEnvironmentVariables(@"%appdata%\NKHook5\Plugins");
 
         public static Process game;
         public static IntPtr pHandle;
@@ -41,6 +42,10 @@ namespace NKHook5_Injector
             if (!Directory.Exists(dataDir))
             {
                 Directory.CreateDirectory(dataDir);
+            }
+            if (!Directory.Exists(pluginDir))
+            {
+                Directory.CreateDirectory(pluginDir);
             }
             if (!File.Exists(dataDir + "/NKHook5.dll"))
             {

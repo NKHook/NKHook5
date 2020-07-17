@@ -16,5 +16,6 @@ public:
 	static DWORD findPattern(DWORD rangeStart, DWORD rangeEnd, const char* pattern);
 	static void UnprotectMem(void* addr, int len);
 	static bool Detour32(void* src, void* dst, int len);
+	static void updateGameBase(int base);
 	static CBloonsTD5Game* getGame();
 };

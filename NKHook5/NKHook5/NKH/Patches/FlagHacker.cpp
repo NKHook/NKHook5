@@ -202,7 +202,7 @@ string hackedTypeStr;
 const char* invalidTypeCharPtr;
 string invalid = string("INVALID");
 void __declspec(naked) __cdecl setHackedType() {
-    cout << "";
+    //cout << "";
     if (f2s_currentFlag != nullptr) {
         //cout << "Current flag is not null, hacking..." << endl;
         //cout << "";
@@ -267,7 +267,7 @@ FlagHacker::FlagHacker() {
     Tower unlockng and locking needs to be removed for adding towers to work properly
     */
     int getTowerUnlocked = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 83 EC 08 8B C1 8B 4D 08 56");
-    cout << "getTowerUnlocked" << hex << getTowerUnlocked << endl;
+    //cout << "getTowerUnlocked" << hex << getTowerUnlocked << endl;
     short* patchloc = (short*)(getTowerUnlocked + 0x7D);
     Utils::UnprotectMem(patchloc, 2);
     *patchloc = (short)0x01B0;
@@ -294,6 +294,16 @@ FlagHacker::FlagHacker() {
 
 void FlagHacker::addHackedFlag(string* name, long flag)
 {
+    for (int i = 0; i < flags.size(); i++) {
+        if (strcmp(flags[i]->name->c_str(), name->c_str()) == 0) {
+            cout << "A Flag with the name " << *name << " has already been injected!" << endl;
+            return;
+        }
+        if (flags[i]->flag == flag) {
+            cout << "A Flag with the ID " << hex << flag << " has already been injected!" << endl;
+            return;
+        }
+    }
     Flag* sflag = new Flag();
     sflag->name = name;
     sflag->flag = flag;
