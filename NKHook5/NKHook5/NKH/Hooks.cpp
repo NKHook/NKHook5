@@ -12,6 +12,7 @@
 #include "SDK/CBaseTower.h"
 
 #include "Blue/Chai.h"
+#include "SDK/CTextObject.h"
 
 using namespace std;
 typedef uint32_t uint;
@@ -156,9 +157,44 @@ HDC hdc;
 typedef BOOL(WINAPI* PeekMessageW_Original)(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, UINT  wMsgFilterMax, UINT  wRemoveMsg);
 PeekMessageW_Original peekMessageW_Original;
 BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, UINT  wMsgFilterMax, UINT  wRemoveMsg) {
-	cout << hex << lpMsg->message << endl;
+	//cout << hex << lpMsg->message << endl;
 	BOOL ret = peekMessageW_Original(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
 	return ret;
+}
+
+
+int CTextObject_draw_jmpBack = 0;
+void CTextObjectDrawThingIdek() {
+	CTextObject* self = (CTextObject*)the_registers[2];
+	cout << hex << self << endl;
+	basic_string<char>* nkhText = new basic_string<char>("NKHook5");
+	self->SetText(nkhText);
+}
+void __declspec(naked) __fastcall CTextObject_draw_Callback() {
+	__asm {
+		push eax;
+		mov eax, saveRegistersJmpBack;
+		mov [saveRegisters_jmpBack], eax;
+		pop eax;
+		jmp saveRegisters;
+	saveRegistersJmpBack:
+	}
+	CTextObjectDrawThingIdek();
+	__asm {
+		push eax;
+		mov eax, restoreRegistersJmpBack;
+		mov [restoreRegisters_jmpBack], eax;
+		pop eax;
+		jmp restoreRegisters;
+	RestoreRegistersJmpBack:
+	}
+	__asm {
+		push ebp
+		mov ebp, esp
+		push -01
+
+		jmp [CTextObject_draw_jmpBack]
+	}
 }
 
 
@@ -226,4 +262,10 @@ Hooks::Hooks()
 	else {
 		cout << "Failed to create PeekMessageW hook!" << endl;
 	}
+	
+	
+	/*CTextObject draw hook*/
+	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 e9 fb");
+	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
+	CTextObject_draw_jmpBack = CTextObject_draw + 5;
 }

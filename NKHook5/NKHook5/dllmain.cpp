@@ -10,6 +10,7 @@
 #include "Utils.h"
 #include "NKH/SDK/CGameSystemPointers.h"
 #include "NKH/SDK/CTowerManager.h"
+#include "NKH/SDK/CTextObject.h"
 
 
 using namespace std;
@@ -40,10 +41,21 @@ void StartNKH(HMODULE hModule) {
             cout << "Commands aren't supported yet." << endl
                 << "Existing commands:" << endl
                 << "- help" << endl
-                << "- reload" << endl;
+                << "- reload" << endl
+                << "- setText" << endl;
         }
         else if (line == "reload") {
             Chai::reloadScripts();
+        }
+        else if (line == "setText") {
+            string text;
+            getline(cin, text);
+            string address;
+            getline(cin, address);
+
+            CTextObject* cto;
+            cto = (CTextObject*)std::stoul(address, nullptr, 16);
+            cto->SetText(&text);
         }
         else {
             cout << "Unknown command" << endl;
