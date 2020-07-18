@@ -9,7 +9,8 @@ public:
 	float posX; //0x0090
 	float posY; //0x0094
 	float posZ; //0x0098
-	char pad_009C[44]; //0x009C
+	float Angle; //0x009C
+	char pad_00A0[40]; //0x00A0
 	char Text[16]; //0x00C8
 	int32_t TextLength; //0x00D8
 	char pad_00DC[308]; //0x00DC
@@ -35,7 +36,7 @@ public:
 	virtual void Function18();
 	virtual void Function19();
 	virtual void Function20();
-	virtual void Function21();
+	virtual void SetAngle(float angle);
 	virtual void Function22();
 	virtual void Function23();
 	virtual void Function24();

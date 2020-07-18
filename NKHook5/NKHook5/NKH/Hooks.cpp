@@ -167,8 +167,8 @@ int CTextObject_draw_jmpBack = 0;
 void CTextObjectDrawThingIdek() {
 	CTextObject* self = (CTextObject*)the_registers[2];
 	cout << hex << self << endl;
-	basic_string<char>* nkhText = new basic_string<char>("NKHook5");
-	self->SetText(nkhText);
+	//basic_string<char>* nkhText = new basic_string<char>("NKHook5");
+	self->SetAngle(self->Angle + 1);
 }
 void __declspec(naked) __fastcall CTextObject_draw_Callback() {
 	__asm {
