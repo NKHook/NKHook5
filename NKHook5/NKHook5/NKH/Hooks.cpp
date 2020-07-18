@@ -142,6 +142,26 @@ void __declspec(naked) upgradeTowerCallback() {
 	}
 }
 
+typedef LRESULT(WINAPI* DispatchMessageW_Original)(const MSG* lpMsg);
+DispatchMessageW_Original dispatchMessageW_Original;
+LRESULT WINAPI DispatchMessageW_Callback(const MSG* lpMsg) {
+	//cout << hex << lpMsg->message << endl;
+	return dispatchMessageW_Original(lpMsg);
+}
+
+
+PAINTSTRUCT ps;
+HDC hdc;
+
+typedef BOOL(WINAPI* PeekMessageW_Original)(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, UINT  wMsgFilterMax, UINT  wRemoveMsg);
+PeekMessageW_Original peekMessageW_Original;
+BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, UINT  wMsgFilterMax, UINT  wRemoveMsg) {
+	cout << hex << lpMsg->message << endl;
+	BOOL ret = peekMessageW_Original(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	return ret;
+}
+
+
 Hooks::Hooks()
 {
 	if (MH_Initialize() != MH_OK) {
@@ -177,4 +197,33 @@ Hooks::Hooks()
 	int upgradeTower = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "83 EC 44 53 8B 5D 08 8B") - 6;
 	Utils::Detour32((void*)upgradeTower, &upgradeTowerCallback, 6);
 	upgradeTowerJmpBack = upgradeTower + 6;
+
+	/*game main hook (ignore)*/
+	int gameMain = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 CF 5F");
+
+	/*Dispatch message hook*/
+	if (MH_CreateHook(&DispatchMessageW, &DispatchMessageW_Callback, reinterpret_cast<LPVOID*>(&dispatchMessageW_Original)) == MH_OK) {
+		if (MH_EnableHook(&DispatchMessageW) == MH_OK) {
+			cout << "DispatchMessageW hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable DispatchMessageW hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create DispatchMessageW hook!" << endl;
+	}
+	
+	/*Dispatch message hook*/
+	if (MH_CreateHook(&PeekMessageW, &PeekMessageW_Callback, reinterpret_cast<LPVOID*>(&peekMessageW_Original)) == MH_OK) {
+		if (MH_EnableHook(&PeekMessageW) == MH_OK) {
+			cout << "PeekMessageW hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable PeekMessageW hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create PeekMessageW hook!" << endl;
+	}
 }
