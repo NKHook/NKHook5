@@ -204,9 +204,9 @@ int CBasePositionableObject_draw_jmpBack = 0;
 void CBasePositionableObjectDrawThingIdek() {
 	CBasePositionableObject* self = (CBasePositionableObject*)the_registers[2];
 	//cout << "self: " << hex << self << endl;
-	float lastAngle = self->Angle;
+	/*float lastAngle = self->Angle;
 	float xd = 0.01 * (rand() % 100);
-	self->SetAngle(lastAngle + (xd*2+.5));
+	self->SetAngle(lastAngle + (xd*2+.5));*/
 }
 void __declspec(naked) __fastcall CBasePositionableObject_draw_Callback() {
 	__asm {

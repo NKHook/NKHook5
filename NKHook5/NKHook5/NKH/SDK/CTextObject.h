@@ -30,7 +30,9 @@ public:
 	virtual void Function60();
 
 public:
-	CTextObject(string text) {
-
+	CTextObject(string text) : CBasePositionableObject() {
+		int vTableAddr = Utils::getModuleBase() + 0x727508; // "BTD5-Win.exe"+727508 
+		memcpy(this, &vTableAddr, 4);
+		SetText(&text);
 	}
 }; //Size: 0x0210

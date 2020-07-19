@@ -11,6 +11,7 @@
 #include "NKH/SDK/CGameSystemPointers.h"
 #include "NKH/SDK/CTowerManager.h"
 #include "NKH/SDK/CTextObject.h"
+#include "NKH/SDK/CBasePositionableObject.h"
 
 
 using namespace std;
@@ -32,6 +33,9 @@ void StartNKH(HMODULE hModule) {
     while (Utils::getGame()->CGameSystemPointers == nullptr) { Sleep(100); }
 
     Chai::startChai();
+
+    CBasePositionableObject* cbpo = new CBasePositionableObject();
+    cout << hex << "CBPO: " << cbpo << endl;
 
     cout << "using main thread for inputs" << endl;
     string line;
