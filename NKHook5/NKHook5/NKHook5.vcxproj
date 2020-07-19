@@ -193,6 +193,7 @@
     <ClInclude Include="NKH\SDK\BloonData.h" />
     <ClInclude Include="NKH\SDK\CAircraftManager.h" />
     <ClInclude Include="NKH\SDK\CAssetBag.h" />
+    <ClInclude Include="NKH\SDK\CBasePositionableObject.h" />
     <ClInclude Include="NKH\SDK\CBaseTower.h" />
     <ClInclude Include="NKH\SDK\CBloon.h" />
     <ClInclude Include="NKH\SDK\CBloonAbilityFactory.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="NKH\SDK\CLicensing.h" />
     <ClInclude Include="NKH\SDK\CLoc.h" />
     <ClInclude Include="NKH\SDK\CManualWeaponManager.h" />
+    <ClInclude Include="NKH\SDK\CMatrix.h" />
     <ClInclude Include="NKH\SDK\CMemoryTracker.h" />
     <ClInclude Include="NKH\SDK\CMixNMatchManager.h" />
     <ClInclude Include="NKH\SDK\CMonkeyTeamManager.h" />

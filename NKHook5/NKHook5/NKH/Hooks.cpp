@@ -162,13 +162,15 @@ BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, U
 	return ret;
 }
 
-
+CTextObject* nkhBranding;
 int CTextObject_draw_jmpBack = 0;
 void CTextObjectDrawThingIdek() {
-	CTextObject* self = (CTextObject*)the_registers[2];
-	cout << hex << self << endl;
-	//basic_string<char>* nkhText = new basic_string<char>("NKHook5");
-	self->SetAngle(self->Angle + 1);
+	/*CTextObject* self = (CTextObject*)the_registers[2];
+	cout << "self: " << hex << self << endl;
+	float lastAngle = self->Angle;
+	self->SetText(new basic_string<char>("NKHook5"));
+	float xd = 0.01 * (rand() % 100);
+	self->SetAngle(lastAngle + (xd*2+.5));*/
 }
 void __declspec(naked) __fastcall CTextObject_draw_Callback() {
 	__asm {
@@ -194,6 +196,43 @@ void __declspec(naked) __fastcall CTextObject_draw_Callback() {
 		push -01
 
 		jmp [CTextObject_draw_jmpBack]
+	}
+}
+
+
+int CBasePositionableObject_draw_jmpBack = 0;
+void CBasePositionableObjectDrawThingIdek() {
+	CBasePositionableObject* self = (CBasePositionableObject*)the_registers[2];
+	//cout << "self: " << hex << self << endl;
+	float lastAngle = self->Angle;
+	float xd = 0.01 * (rand() % 100);
+	self->SetAngle(lastAngle + (xd*2+.5));
+}
+void __declspec(naked) __fastcall CBasePositionableObject_draw_Callback() {
+	__asm {
+		push eax;
+		mov eax, saveRegistersJmpBack;
+		mov [saveRegisters_jmpBack], eax;
+		pop eax;
+		jmp saveRegisters;
+	saveRegistersJmpBack:
+	}
+	CBasePositionableObjectDrawThingIdek();
+	__asm {
+		push eax;
+		mov eax, restoreRegistersJmpBack;
+		mov [restoreRegisters_jmpBack], eax;
+		pop eax;
+		jmp restoreRegisters;
+	RestoreRegistersJmpBack:
+	}
+	__asm {
+		push ebp
+		mov ebp, esp
+		push esi
+		mov esi, ecx
+
+		jmp [CBasePositionableObject_draw_jmpBack]
 	}
 }
 
@@ -268,4 +307,8 @@ Hooks::Hooks()
 	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 e9 fb");
 	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
 	CTextObject_draw_jmpBack = CTextObject_draw + 5;
+	
+	int CBasePositionableObject_draw = Utils::findPattern(Utils::getModuleBase()+0x300000, Utils::getBaseModuleEnd(), "55 8b ec 56 8b f1 80 7e 0c 00 74 1a");
+	Utils::Detour32((void*)CBasePositionableObject_draw, &CBasePositionableObject_draw_Callback, 6);
+	CBasePositionableObject_draw_jmpBack = CBasePositionableObject_draw + 6;
 }

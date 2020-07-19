@@ -195,6 +195,12 @@
     <ClInclude Include="NKH\SDK\BloonData.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="NKH\SDK\CBasePositionableObject.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="NKH\SDK\CMatrix.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
