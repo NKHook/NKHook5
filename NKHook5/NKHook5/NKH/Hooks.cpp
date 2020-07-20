@@ -162,9 +162,19 @@ BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, U
 	return ret;
 }
 
-CTextObject* nkhBranding;
 int CTextObject_draw_jmpBack = 0;
 void CTextObjectDrawThingIdek() {
+	CTextObject* self = (CTextObject*)the_registers[2];
+	if (self->TextLength != 7) {
+		CTextObject* nkhBranding = new CTextObject();
+		string* teckst = new string("NKHook5");
+		nkhBranding->SetText(teckst);
+		cout << "Setted teckst: " << hex << teckst << endl;
+		nkhBranding->Draw(true);
+		cout << "Drawed: " << hex << nkhBranding << endl;
+		delete nkhBranding;
+		delete teckst;
+	}
 	/*CTextObject* self = (CTextObject*)the_registers[2];
 	cout << "self: " << hex << self << endl;
 	float lastAngle = self->Angle;
@@ -315,7 +325,7 @@ Hooks::Hooks()
 	
 	
 	/*CTextObject draw hook*/
-	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 e9 fb");
+	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "e9 fb cc 00") - 6;//?? ?? ?? ?? ?? ?? e9 fb
 	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
 	CTextObject_draw_jmpBack = CTextObject_draw + 5;
 	

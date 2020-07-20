@@ -36,6 +36,9 @@ void StartNKH(HMODULE hModule) {
 
     CBasePositionableObject* cbpo = new CBasePositionableObject();
     cout << hex << "CBPO: " << cbpo << endl;
+    CTextObject* cto = new CTextObject();
+    cto->SetText(new basic_string<char>("Retard"));
+    cout << hex << "CTO: " << cto << endl;
 
     cout << "using main thread for inputs" << endl;
     string line;
