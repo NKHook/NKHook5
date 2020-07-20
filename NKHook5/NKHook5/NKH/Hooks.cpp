@@ -236,6 +236,13 @@ void __declspec(naked) __fastcall CBasePositionableObject_draw_Callback() {
 	}
 }
 
+int fpsCap_jmpBack = 0;
+void __declspec(naked) __fastcall fpsCap_Callback() {
+	__asm {
+		jmp [fpsCap_jmpBack]
+	}
+}
+
 
 Hooks::Hooks()
 {
@@ -275,6 +282,10 @@ Hooks::Hooks()
 
 	/*game main hook (ignore)*/
 	int gameMain = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 CF 5F");
+	int fpsCap = gameMain + 0xE0F;
+	Utils::Detour32((void*)fpsCap, &fpsCap_Callback, 7);
+	fpsCap_jmpBack = fpsCap + 7;
+
 
 	/*Dispatch message hook*/
 	if (MH_CreateHook(&DispatchMessageW, &DispatchMessageW_Callback, reinterpret_cast<LPVOID*>(&dispatchMessageW_Original)) == MH_OK) {
