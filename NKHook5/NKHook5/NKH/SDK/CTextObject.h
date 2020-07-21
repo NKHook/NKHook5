@@ -42,7 +42,7 @@ public:
 	virtual void Function48() {};
 	virtual void Function49() {};
 	virtual void Function50() {};
-	virtual void SetTexture() {};
+	virtual void SetTexture(CTexture* texture) {};
 	virtual void Function52() {};
 	virtual void Function53() {};
 	virtual void Function54() {};

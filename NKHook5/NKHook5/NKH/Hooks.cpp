@@ -17,6 +17,7 @@
 using namespace std;
 typedef uint32_t uint;
 
+#pragma region Registers
 /*Register saving shit*/
 int the_registers[8];
 int saveRegisters_jmpBack = 0;
@@ -49,8 +50,13 @@ void __declspec(naked) restoreRegisters() {
 		jmp restoreRegisters_jmpBack
 	}
 }
+#pragma endregion
+
+
+#pragma region Hooks
 
 /*Hooks*/
+#pragma region GameInstance
 int gameInstanceTickHookThingIdfkJmpBack = 0;
 void __declspec(naked) __fastcall gameInstanceTickHookThingIdfkCallback() {
 	__asm {
@@ -77,21 +83,22 @@ void __declspec(naked) __fastcall gameInstanceTickHookThingIdfkCallback() {
 		jmp gameInstanceTickHookThingIdfkJmpBack;
 	}
 }
-
-
-typedef void (__fastcall* Keypressed)(WinInput* self, int param_1, char key);
+#pragma endregion
+#pragma region Keypressed
+typedef void(__fastcall* Keypressed)(WinInput* self, int param_1, char key);
 Keypressed keypressed_original;
 void __fastcall keypressedCallback(WinInput* self, int param_1, char key) {
 	Chai::invokeKeyCallbacks(key);
 	return keypressed_original(self, param_1, key);
 }
-
+#pragma endregion
+#pragma region Bloon Escaped
 int bloonEscapedJmpBack = 0;
 void __declspec(naked) bloonEscapedCallback() {
 	__asm {
 		push eax;
 		mov eax, saveRegistersJmpBack;
-		mov [saveRegisters_jmpBack], eax;
+		mov[saveRegisters_jmpBack], eax;
 		pop eax;
 		jmp saveRegisters;
 	saveRegistersJmpBack:
@@ -100,7 +107,7 @@ void __declspec(naked) bloonEscapedCallback() {
 	__asm {
 		push eax;
 		mov eax, restoreRegistersJmpBack;
-		mov [restoreRegisters_jmpBack], eax;
+		mov[restoreRegisters_jmpBack], eax;
 		pop eax;
 		jmp restoreRegisters;
 	RestoreRegistersJmpBack:
@@ -110,10 +117,11 @@ void __declspec(naked) bloonEscapedCallback() {
 		mov ebp, esp
 		push - 01
 
-		jmp [bloonEscapedJmpBack]
+		jmp[bloonEscapedJmpBack]
 	}
 }
-
+#pragma endregion
+#pragma region UpgradeTower
 int upgradeTowerJmpBack = 0;
 void __declspec(naked) upgradeTowerCallback() {
 	__asm {
@@ -124,7 +132,7 @@ void __declspec(naked) upgradeTowerCallback() {
 		jmp saveRegisters;
 	saveRegistersJmpBack:
 	}
-	Chai::invokeTowerUpgradedCallbacks(*((CTowerManager*)the_registers[2]), **((CBaseTower**)(the_registers[7]+0x4)), *((int*)(the_registers[7]+0x8)));
+	Chai::invokeTowerUpgradedCallbacks(*((CTowerManager*)the_registers[2]), **((CBaseTower**)(the_registers[7] + 0x4)), *((int*)(the_registers[7] + 0x8)));
 	__asm {
 		push eax;
 		mov eax, restoreRegistersJmpBack;
@@ -138,21 +146,19 @@ void __declspec(naked) upgradeTowerCallback() {
 		mov ebp, esp
 		and esp, -0x08
 
-		jmp [upgradeTowerJmpBack]
+		jmp[upgradeTowerJmpBack]
 	}
 }
-
+#pragma endregion
+#pragma region DispatchMessageW
 typedef LRESULT(WINAPI* DispatchMessageW_Original)(const MSG* lpMsg);
 DispatchMessageW_Original dispatchMessageW_Original;
 LRESULT WINAPI DispatchMessageW_Callback(const MSG* lpMsg) {
 	//cout << hex << lpMsg->message << endl;
 	return dispatchMessageW_Original(lpMsg);
 }
-
-
-PAINTSTRUCT ps;
-HDC hdc;
-
+#pragma endregion
+#pragma region PeekMessageW
 typedef BOOL(WINAPI* PeekMessageW_Original)(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, UINT  wMsgFilterMax, UINT  wRemoveMsg);
 PeekMessageW_Original peekMessageW_Original;
 BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, UINT  wMsgFilterMax, UINT  wRemoveMsg) {
@@ -160,8 +166,8 @@ BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, U
 	BOOL ret = peekMessageW_Original(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
 	return ret;
 }
-
-CTextObject* nkhBrand;
+#pragma endregion
+#pragma region CTextObject Draw
 int CTextObject_draw_jmpBack = 0;
 bool canRender = false;
 //int regEcx;
@@ -197,8 +203,8 @@ void __declspec(naked) __fastcall CTextObject_draw_Callback() {
 		jmp[CTextObject_draw_jmpBack]
 	}
 }
-
-
+#pragma endregion
+#pragma region CBasePositionableObject Draw
 int CBasePositionableObject_draw_jmpBack = 0;
 void CBasePositionableObjectDrawThingIdek() {
 	CBasePositionableObject* self = (CBasePositionableObject*)the_registers[2];
@@ -211,7 +217,7 @@ void __declspec(naked) __fastcall CBasePositionableObject_draw_Callback() {
 	__asm {
 		push eax;
 		mov eax, saveRegistersJmpBack;
-		mov [saveRegisters_jmpBack], eax;
+		mov[saveRegisters_jmpBack], eax;
 		pop eax;
 		jmp saveRegisters;
 	saveRegistersJmpBack:
@@ -220,7 +226,7 @@ void __declspec(naked) __fastcall CBasePositionableObject_draw_Callback() {
 	__asm {
 		push eax;
 		mov eax, restoreRegistersJmpBack;
-		mov [restoreRegisters_jmpBack], eax;
+		mov[restoreRegisters_jmpBack], eax;
 		pop eax;
 		jmp restoreRegisters;
 	RestoreRegistersJmpBack:
@@ -231,64 +237,106 @@ void __declspec(naked) __fastcall CBasePositionableObject_draw_Callback() {
 		push esi
 		mov esi, ecx
 
-		jmp [CBasePositionableObject_draw_jmpBack]
+		jmp[CBasePositionableObject_draw_jmpBack]
 	}
 }
-
+#pragma endregion
+#pragma region Fps Cap Removal
 int fpsCap_jmpBack = 0;
 void __declspec(naked) __fastcall fpsCap_Callback() {
 	__asm {
-		jmp [fpsCap_jmpBack]
+		jmp[fpsCap_jmpBack]
 	}
 }
+#pragma endregion
+#pragma region CBaseScreen Draw
+#pragma region Registers
+/*Register saving shit*/
+int cbsd_the_registers[8];
+int cbsd_saveRegisters_jmpBack = 0;
+void __declspec(naked) cbsd_saveRegisters() {
+	__asm {
+		mov cbsd_the_registers[0 * 4], eax
+		mov cbsd_the_registers[1 * 4], ebx
+		mov cbsd_the_registers[2 * 4], ecx
+		mov cbsd_the_registers[3 * 4], edx
+		mov cbsd_the_registers[4 * 4], esi
+		mov cbsd_the_registers[5 * 4], edi
+		mov cbsd_the_registers[6 * 4], ebp
+		mov cbsd_the_registers[7 * 4], esp
 
+		jmp cbsd_saveRegisters_jmpBack;
+	}
+}
+int cbsd_restoreRegisters_jmpBack = 0;
+void __declspec(naked) cbsd_restoreRegisters() {
+	__asm {
+		mov eax, cbsd_the_registers[0 * 4]
+		mov ebx, cbsd_the_registers[1 * 4]
+		mov ecx, cbsd_the_registers[2 * 4]
+		mov edx, cbsd_the_registers[3 * 4]
+		mov esi, cbsd_the_registers[4 * 4]
+		mov edi, cbsd_the_registers[5 * 4]
+		mov ebp, cbsd_the_registers[6 * 4]
+		mov esp, cbsd_the_registers[7 * 4]
+
+		jmp cbsd_restoreRegisters_jmpBack
+	}
+}
+#pragma endregion
+CTextObject* nkhBrand;
+string nkhString = "NKHook5";
 void __fastcall CBaseScreenCallback() {
-	cout << "start" << endl;
+	//cout << "start" << endl;
 	if (nkhBrand == nullptr) {
 		if (Utils::getFontTexture() != nullptr) {
-			nkhBrand = new CTextObject("NKHook5");
-			/*nkhBrand->SetScale(1, 1);
-			nkhBrand->SetWH(100, 100);
-			nkhBrand->SetXY(256, 5);*/
+			nkhBrand = new CTextObject(nkhString);
 		}
 	}
 	else {
-		cout << "Drawing..." << endl;
+		//cout << "Drawing..." << endl;
+		nkhBrand->SetText(&nkhString);
+		nkhBrand->SetScale(1, 1);
+		nkhBrand->SetWH(100, 100);
+		nkhBrand->SetXY(0, 256);
+		nkhBrand->SetTexture(Utils::getFontTexture());
 		nkhBrand->Draw(false);
-		cout << hex << nkhBrand << endl;
+		//cout << hex << nkhBrand << endl;
 		//called = true;
-		cout << "Drawn" << endl;
+		//cout << "Drawn" << endl;
 		//system("pause");
-		return;
 	}
-	cout << "end" << endl;
+	//cout << "end" << endl;
 }
 int CBaseScreen_draw_drawChild_jmpBack = 0;
 void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
 	__asm {
 		push eax;
-		mov eax, saveRegistersJmpBack;
-		mov[saveRegisters_jmpBack], eax;
+		mov eax, cbsd_saveRegistersJmpBack;
+		mov[cbsd_saveRegisters_jmpBack], eax;
 		pop eax;
-		jmp saveRegisters;
-	saveRegistersJmpBack:
+		jmp cbsd_saveRegisters;
+	cbsd_saveRegistersJmpBack:
 	}
 	CBaseScreenCallback();
 	__asm {
 		push eax;
-		mov eax, restoreRegistersJmpBack;
-		mov[restoreRegisters_jmpBack], eax;
+		mov eax, cbsd_restoreRegistersJmpBack;
+		mov[cbsd_restoreRegisters_jmpBack], eax;
 		pop eax;
-		jmp restoreRegisters;
-	RestoreRegistersJmpBack:
+		jmp cbsd_restoreRegisters;
+	cbsd_RestoreRegistersJmpBack:
 	}
 	__asm {
-		mov ecx, 0//[esi + 0x00000234]
+		mov ecx, [esi + 0x00000234]
 		jmp[CBaseScreen_draw_drawChild_jmpBack]
 	}
 }
+#pragma endregion
 
+#pragma endregion
 
+#pragma region Constructor
 Hooks::Hooks()
 {
 	if (MH_Initialize() != MH_OK) {
@@ -304,8 +352,8 @@ Hooks::Hooks()
 
 	/*Keypress hook*/
 	int keypressed = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "8B 7D 08 8B D9 81 FF 00 01 00 00 73 3A") - 5;
-	if (MH_CreateHook((void*)keypressed, &keypressedCallback, reinterpret_cast<LPVOID*>(&keypressed_original))==MH_OK) {
-		if (MH_EnableHook((void*)keypressed)==MH_OK) {
+	if (MH_CreateHook((void*)keypressed, &keypressedCallback, reinterpret_cast<LPVOID*>(&keypressed_original)) == MH_OK) {
+		if (MH_EnableHook((void*)keypressed) == MH_OK) {
 			//cout << "Keypressed hook created!" << endl;
 		}
 		else {
@@ -348,7 +396,7 @@ Hooks::Hooks()
 	else {
 		cout << "Failed to create DispatchMessageW hook!" << endl;
 	}
-	
+
 	/*Dispatch message hook*/
 	if (MH_CreateHook(&PeekMessageW, &PeekMessageW_Callback, reinterpret_cast<LPVOID*>(&peekMessageW_Original)) == MH_OK) {
 		if (MH_EnableHook(&PeekMessageW) == MH_OK) {
@@ -361,16 +409,16 @@ Hooks::Hooks()
 	else {
 		cout << "Failed to create PeekMessageW hook!" << endl;
 	}
-	
-	
+
+
 	/*CTextObject draw hook*/
 	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "68 e9 fb ?? 00") - 5;//?? ?? ?? ?? ?? 68 e9 fb ?? 00
 	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
 	CTextObject_draw_jmpBack = CTextObject_draw + 5;
 	cout << "CTextObject draw hook created" << endl;
-	
+
 	/*CBasePositionableObject draw hook*/
-	int CBasePositionableObject_draw = Utils::findPattern(Utils::getModuleBase()+0x300000, Utils::getBaseModuleEnd(), "55 8b ec 56 8b f1 80 7e 0c 00 74 1a");
+	int CBasePositionableObject_draw = Utils::findPattern(Utils::getModuleBase() + 0x300000, Utils::getBaseModuleEnd(), "55 8b ec 56 8b f1 80 7e 0c 00 74 1a");
 	Utils::Detour32((void*)CBasePositionableObject_draw, &CBasePositionableObject_draw_Callback, 6);
 	CBasePositionableObject_draw_jmpBack = CBasePositionableObject_draw + 6;
 	cout << "CBasePositionableObject draw hook created" << endl;
@@ -383,3 +431,4 @@ Hooks::Hooks()
 	CBaseScreen_draw_drawChild_jmpBack = CBaseScreen_draw_drawChild + 6;
 	cout << "CBaseScreen draw hook created" << endl;
 }
+#pragma endregion
