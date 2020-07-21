@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "CBasePositionableObject.h"
+#include "CFont.h"
+#include "CTexture.h"
 
 using namespace std;
 class CTextObject : public CBasePositionableObject
@@ -10,10 +12,28 @@ public:
 	char pad_00AC[20]; //0x00AC
 	class CTexture* FontTexture; //0x00C0
 	char pad_00C4[4]; //0x00C4
-	char Text[16]; //0x00C8
-	int TextLength; //0x00D8
-	int FifteenI; //0x00DC //chars until it should be a pointer
+	string text;
+	//char Text[16]; //0x00C8
+	//int TextLength; //0x00D8
+	//int fifteenI; //0x00DC
 	class CFont* Font; //0x00E0
+	char pad_00E4[24]; //0x00E4
+	float pointZeroFour; //0x00FC
+	char pad_0100[8]; //0x0100
+	float onef_2; //0x0108
+	float onef_3; //0x010C
+	int zerozerozeroeighty; //0x0110
+	float onef_4; //0x0114
+	float onef_5; //0x0118
+	float onef_6; //0x011C
+	float onef_7; //0x0120
+	char pad_0124[8]; //0x0124
+	int eightI; //0x012C
+	char pad_0130[4]; //0x0130
+	int zerozerozeroone; //0x0134
+	int onei; //0x0138
+	char pad_013C[64]; //0x013C
+
 
 	virtual void Function44() {};
 	virtual void Function45() {};
@@ -35,10 +55,24 @@ public:
 
 public:
 	//You have to set the text *after* construction
-	CTextObject() : CBasePositionableObject() {
+	CTextObject(string text) : CBasePositionableObject() {
 		int vTableAddr = Utils::getModuleBase() + 0x727508; // "BTD5-Win.exe"+727508 
 		memcpy(this, &vTableAddr, 4);
 
+		this->FontTexture = Utils::getFontTexture();
+		this->text = text;
 		this->Font = Utils::getGame()->CFont;
+		this->zerozerozeroone = 0x1000000;
+		this->onei = 1;
+		this->pointZeroFour = .04f;
+		this->pointZeroFour = .04f;
+		this->onef_2 = 1.0f;
+		this->onef_3 = 1.0f;
+		this->zerozerozeroeighty = 0x80000000;
+		this->onef_4 = 1.0f;
+		this->onef_5 = 1.0f;
+		this->onef_6 = 1.0f;
+		this->onef_7 = 1.0f;
+		this->eightI = 8;
 	}
 }; //Size: 0x0210

@@ -27,7 +27,7 @@ public:
 	float ScaleY; //0x00A4
 
 	virtual void Function0() {};
-	virtual void Draw(bool) {};
+	virtual void Draw(bool drawChildren) {};
 	virtual void DrawOverlay() {};
 	virtual void Process_r() {};
 	virtual void Function4() {};

@@ -226,6 +226,7 @@
     <ClInclude Include="NKH\SDK\CSteamCloud.h" />
     <ClInclude Include="NKH\SDK\CSteamInterface.h" />
     <ClInclude Include="NKH\SDK\CTextObject.h" />
+    <ClInclude Include="NKH\SDK\CTexture.h" />
     <ClInclude Include="NKH\SDK\CTextureLoader.h" />
     <ClInclude Include="NKH\SDK\CTheCrucibleManager.h" />
     <ClInclude Include="NKH\SDK\CTimerTracker.h" />

@@ -83,3 +83,16 @@ CBloonsTD5Game* Utils::getGame()
 	}
 	return nullptr;
 }
+
+CTexture* cached;
+void Utils::CacheFontTexture(CTexture* toCache)
+{
+	if (cached == nullptr) {
+		cached = toCache;
+	}
+}
+
+CTexture* Utils::getFontTexture()
+{
+	return cached;
+}

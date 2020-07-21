@@ -14,6 +14,7 @@
 #include "NKH/SDK/CBasePositionableObject.h"
 
 
+
 using namespace std;
 void StartNKH(HMODULE hModule) {
     AllocConsole();
@@ -34,11 +35,18 @@ void StartNKH(HMODULE hModule) {
 
     Chai::startChai();
 
+    while (Utils::getFontTexture() == nullptr) { Sleep(100); }
+
     CBasePositionableObject* cbpo = new CBasePositionableObject();
     cout << hex << "CBPO: " << cbpo << endl;
-    CTextObject* cto = new CTextObject();
-    cto->SetText(new basic_string<char>("Retard"));
+    CTextObject* cto = new CTextObject("NKHook5");
+    //cto->SetText(new basic_string<char>("Retard"));
     cout << hex << "CTO: " << cto << endl;
+
+    //renderCTO(cto);
+
+    /*cout << "String size: " << sizeof(string) << endl;
+    cout << "basic_string size: " << sizeof(basic_string<char>) << endl;*/
 
     cout << "using main thread for inputs" << endl;
     string line;
@@ -63,6 +71,9 @@ void StartNKH(HMODULE hModule) {
             CTextObject* cto;
             cto = (CTextObject*)std::stoul(address, nullptr, 16);
             cto->SetText(&text);
+        }
+        else if (line == "kill") {
+            *(int*)0 = 0;
         }
         else {
             cout << "Unknown command" << endl;

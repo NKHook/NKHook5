@@ -4,6 +4,7 @@
 #include <tlhelp32.h>
 #include <iostream>
 #include "NKH/SDK/CBloonsTD5Game.h"
+#include "NKH/SDK/CTexture.h"
 
 class Utils
 {
@@ -18,4 +19,6 @@ public:
 	static bool Detour32(void* src, void* dst, int len);
 	static void updateGameBase(int base);
 	static CBloonsTD5Game* getGame();
+	static void CacheFontTexture(CTexture* toCache);
+	static CTexture* getFontTexture();
 };
