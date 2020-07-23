@@ -5,6 +5,8 @@
 #include "CBaseTower.h"
 #include "CTowerFactory.h"
 
+using namespace std;
+
 
 void* CTowerFactory_UpdateSpriteGraphic_Addr = 0;
 void CTowerFactory::UpdateSpriteGraphic(CBaseTower* tower, class STowerInfo* towerInfo) {
@@ -20,11 +22,13 @@ void CBaseTower::IncrementUpgradeLevel(int path) {
 	if(CBaseTower_IncrementUpgradeLevel_Addr == 0)
 		CBaseTower_IncrementUpgradeLevel_Addr = (void*)(Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "51 53 56 57 8B 7D 08 8B F1 8D 04")-6);
 	if (CBaseTower_IncrementUpgradeLevel_Addr != 0) {
-		void(__thiscall * CBaseTower_IncrementUpgradeLevel_Func)(CBaseTower*, int) = 0;
+		cout << "Func found" << endl;
+		void(__thiscall* CBaseTower_IncrementUpgradeLevel_Func)(CBaseTower*, int)=0;
 		memcpy(CBaseTower_IncrementUpgradeLevel_Func, CBaseTower_IncrementUpgradeLevel_Addr, 4);
+		cout << hex << "CBaseTower_IncrementUpgradeLevel_Func: " << CBaseTower_IncrementUpgradeLevel_Func << endl;
 		CBaseTower_IncrementUpgradeLevel_Func(this, path);
 	}
 	else {
-		std::cout << "Function not found!" << std::endl;
+		cout << "Function not found!" << endl;
 	}
 }
