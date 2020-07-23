@@ -17,23 +17,36 @@
 /*
 Chai format funcs
 */
+#pragma region Functions
 void injectFlag(const string& name, int flag) {
 	string* str = new string(name.c_str());
 	FlagHacker::addHackedFlag(str, flag);
 }
+CBloonsTD5Game getGame() {
+	return *Utils::getGame();
+}
+void cSleep(int millis) {
+	Sleep(millis);
+}
+#pragma endregion
+
+#pragma region Events
+#pragma region onKey
 typedef std::function<void(const char&)> onKeyCallback;
 vector<onKeyCallback> onKeyCallbacks;
 void onKey(const onKeyCallback& keyFunc)
 {
 	onKeyCallbacks.push_back(keyFunc);
 }
-void Chai::invokeKeyCallbacks(char key) 
+void Chai::invokeKeyCallbacks(char key)
 {
 	for (int i = 0; i < onKeyCallbacks.size(); i++) {
 		const onKeyCallback leCallback = onKeyCallbacks[i];
 		leCallback(key);
 	}
 }
+#pragma endregion
+#pragma region onBloonEscaped
 typedef std::function<void(CBloonEscapedEvent&)> onBloonEscapedCallback;
 vector<onBloonEscapedCallback> onBloonEscapedCallbacks;
 void onBloonEscaped(const onBloonEscapedCallback& theFunc)
@@ -47,6 +60,8 @@ void Chai::invokeBloonEscapedCallbacks(CBloonEscapedEvent& eventPtr)
 		leCallback(eventPtr);
 	}
 }
+#pragma endregion
+#pragma region onTowerUpgrade
 typedef std::function<void(CTowerManager&, CBaseTower&, const int&)> onTowerUpgradeCallback;
 vector<onTowerUpgradeCallback> onTowerUpgradeCallbacks;
 void onTowerUpgrade(const onTowerUpgradeCallback& theFunc)
@@ -63,12 +78,23 @@ void Chai::invokeTowerUpgradedCallbacks(CTowerManager& towerManager, CBaseTower&
 		leCallback(towerManager, tower, upgradePath);
 	}
 }
-CBloonsTD5Game getGame() {
-	return *Utils::getGame();
+#pragma endregion
+#pragma region onGameDataInitialized
+typedef std::function<void()> onGameDataInitializedCallback;
+vector<onGameDataInitializedCallback> onGameDataInitializedCallbacks;
+void onGameDataInitialized(const onGameDataInitializedCallback& theFunc)
+{
+	onGameDataInitializedCallbacks.push_back(theFunc);
 }
-void cSleep(int millis) {
-	Sleep(millis);
+void Chai::invokeGameDataInitializedCallbacks()
+{
+	for (int i = 0; i < onGameDataInitializedCallbacks.size(); i++) {
+		const onGameDataInitializedCallback leCallback = onGameDataInitializedCallbacks[i];
+		leCallback();
+	}
 }
+#pragma endregion
+#pragma endregion
 
 
 
@@ -77,10 +103,11 @@ Setup
 */
 vector<thread*> chaiThreads;
 
-
+//If you complain ill have a problem
 using namespace chaiscript;
 namespace fs = std::filesystem;
 
+//Chaiscript object
 ChaiScript* chai;
 
 void runChaiFile(string path) {
@@ -92,8 +119,6 @@ void runChaiFile(string path) {
 		cout << ex.what() << endl;
 	}
 }
-
-
 void runAllChaiFiles() {
 	string appdata = string(getenv("APPDATA"));
 	string nkhookdir = appdata.append("/NKHook5");
@@ -106,7 +131,6 @@ void runAllChaiFiles() {
 		}
 	}
 }
-
 void Chai::reloadScripts()
 {
 	cout << "Removing event hooks..." << endl;
@@ -126,28 +150,36 @@ void Chai::reloadScripts()
 	startChai();
 }
 
+
 void Chai::startChai()
 {
+	//Initialize chai
 	chai = new ChaiScript();
 
+	//Create the module
 	ModulePtr m = ModulePtr(new chaiscript::Module());
 
+#pragma region ChaiInitFuncs
 	chai->add(fun(&cSleep), "Sleep");
 	chai->add(fun(&injectFlag), "injectFlag");
+	chai->add(fun(&getGame), "getGame");
+#pragma endregion
+#pragma region ChaiInitEvents
 	chai->add(fun(&onKey), "onKey");
 	chai->add(fun(&onBloonEscaped), "onBloonEscaped");
 	chai->add(fun(&onTowerUpgrade), "onTowerUpgrade");
-	chai->add(fun(&getGame), "getGame");
-
+	chai->add(fun(&onGameDataInitialized), "onGameDataInit");
+#pragma endregion
+#pragma region ChaiInitClasses
 	utility::add_class<CBloonsTD5Game>(*m,
 		"CBloonsTD5Game",
-		{ 
+		{
 		},
-		{ 
+		{
 			{fun(&CBloonsTD5Game::getWinInput), "getWinInput"},
 			{fun(&CBloonsTD5Game::getCGameSystemPointers), "getCGameSystemPointers"}
 		}
-	);
+		);
 	utility::add_class<WinInput>(*m,
 		"WinInput",
 		{
@@ -158,7 +190,7 @@ void Chai::startChai()
 			{fun(&WinInput::getClickedMousePos), "getClickedMousePos"},
 			{fun(&WinInput::getMousePos), "getMousePos"}
 		}
-	);
+		);
 	utility::add_class<CGameSystemPointers>(*m,
 		"CGameSystemPointers",
 		{
@@ -167,7 +199,7 @@ void Chai::startChai()
 			{fun(&CGameSystemPointers::getCTowerManager), "getCTowerManager"},
 			{fun(&CGameSystemPointers::getGameData), "getGameData"}
 		}
-	);
+		);
 	utility::add_class<CTowerManager>(*m,
 		"CTowerManager",
 		{
@@ -178,7 +210,7 @@ void Chai::startChai()
 			{fun(&CTowerManager::getTowerCount), "getTowerCount"},
 			{fun(&CTowerManager::forEachTower), "forEachTower"}
 		}
-	);
+		);
 	utility::add_class<CBaseTower>(*m,
 		"CBaseTower",
 		{
@@ -190,7 +222,7 @@ void Chai::startChai()
 			{fun(&CBaseTower::getCCompoundSprite), "getCCompoundSprite"},
 			{fun(&CBaseTower::isHovered), "isHovered"}
 		}
-	);
+		);
 	utility::add_class<Vector2>(*m,
 		"Vector2",
 		{
@@ -203,7 +235,7 @@ void Chai::startChai()
 			{fun(&Vector2::setX), "setX"},
 			{fun(&Vector2::setY), "setY"}
 		}
-	);
+		);
 	utility::add_class<GameData>(*m,
 		"GameData",
 		{
@@ -215,7 +247,7 @@ void Chai::startChai()
 			{fun(&GameData::setCash), "setCash"},
 			{fun(&GameData::setHealth), "setHealth"}
 		}
-	);
+		);
 	utility::add_class<CBloonEscapedEvent>(*m,
 		"CBloonEscapedEvent",
 		{
@@ -223,7 +255,7 @@ void Chai::startChai()
 		{
 			{fun(&CBloonEscapedEvent::getEscapedBloon), "getEscapedBloon"}
 		}
-	);
+		);
 	utility::add_class<CBloon>(*m,
 		"CBloon",
 		{
@@ -232,7 +264,7 @@ void Chai::startChai()
 			{fun(&CBloon::getSpriteSize), "getSpriteSize"},
 			{fun(&CBloon::getBloonData), "getBloonData"}
 		}
-	);
+		);
 	utility::add_class<BloonData>(*m,
 		"BloonData",
 		{
@@ -243,9 +275,12 @@ void Chai::startChai()
 			{fun(&BloonData::getType), "getType"},
 			{fun(&BloonData::getDamage), "getDamage"}
 		}
-	);
+		);
+#pragma endregion
 
+	//Add module with classes and shit
 	chai->add(m);
 
+	//Start all of the chai files
 	runAllChaiFiles();
 }

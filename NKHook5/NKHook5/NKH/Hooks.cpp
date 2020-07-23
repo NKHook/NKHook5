@@ -294,11 +294,13 @@ void __fastcall CBaseScreenCallback() {
 		}
 	}
 	else {
+		/*CTextObject* nextChild = (CTextObject*)(cbsd_the_registers[4] + 0x234);
+		nextChild = nkhBrand;*/
 		//cout << "Drawing..." << endl;
 		nkhBrand->SetText(&nkhString);
 		nkhBrand->SetScale(1, 1);
 		nkhBrand->SetWH(100, 100);
-		nkhBrand->SetXY(0, 256);
+		nkhBrand->SetXY(256, 0);
 		nkhBrand->SetTexture(Utils::getFontTexture());
 		nkhBrand->Draw(false);
 		//cout << hex << nkhBrand << endl;
@@ -328,11 +330,39 @@ void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
 	cbsd_RestoreRegistersJmpBack:
 	}
 	__asm {
-		mov ecx, [esi + 0x00000234]
+		mov ecx, [esi + 0x00000190]
 		jmp[CBaseScreen_draw_drawChild_jmpBack]
 	}
 }
 #pragma endregion
+#pragma region initializeGameData
+int initializeGameData_u_end_jmpBack = 0;
+void __declspec(naked) __fastcall initializeGameData_u_end_Callback() {
+	__asm {
+		push eax;
+		mov eax, saveRegistersJmpBack;
+		mov[saveRegisters_jmpBack], eax;
+		pop eax;
+		jmp saveRegisters;
+	saveRegistersJmpBack:
+	}
+	//cout << "Initialized Game Data" << endl;
+	Chai::invokeGameDataInitializedCallbacks();
+	__asm {
+		push eax;
+		mov eax, restoreRegistersJmpBack;
+		mov[restoreRegisters_jmpBack], eax;
+		pop eax;
+		jmp restoreRegisters;
+	RestoreRegistersJmpBack:
+	}
+	__asm {
+		ret 4
+		jmp initializeGameData_u_end_jmpBack
+	}
+}
+#pragma endregion
+
 
 #pragma endregion
 
@@ -397,7 +427,7 @@ Hooks::Hooks()
 		cout << "Failed to create DispatchMessageW hook!" << endl;
 	}
 
-	/*Dispatch message hook*/
+	/*Peek message hook*/
 	if (MH_CreateHook(&PeekMessageW, &PeekMessageW_Callback, reinterpret_cast<LPVOID*>(&peekMessageW_Original)) == MH_OK) {
 		if (MH_EnableHook(&PeekMessageW) == MH_OK) {
 			cout << "PeekMessageW hook created!" << endl;
@@ -410,9 +440,8 @@ Hooks::Hooks()
 		cout << "Failed to create PeekMessageW hook!" << endl;
 	}
 
-
 	/*CTextObject draw hook*/
-	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "68 e9 fb ?? 00") - 5;//?? ?? ?? ?? ?? 68 e9 fb ?? 00
+	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase() + 0x300000, Utils::getBaseModuleEnd(), "68 e9 fb ?? ??") - 5;//?? ?? ?? ?? ?? 68 e9 fb ?? ??
 	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
 	CTextObject_draw_jmpBack = CTextObject_draw + 5;
 	cout << "CTextObject draw hook created" << endl;
@@ -426,9 +455,16 @@ Hooks::Hooks()
 	/*CBaseScreen draw hook*/
 	//nkhBrand = new CTextObject();
 	int CBaseScreen_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 8B F1 83 BE 40 01 00"); //56 8B F1 83 BE 40 01 00
-	int CBaseScreen_draw_drawChild = CBaseScreen_draw + 0x40;
+	int CBaseScreen_draw_drawChild = CBaseScreen_draw + 0x133;
 	Utils::Detour32((void*)CBaseScreen_draw_drawChild, &CBaseScreen_draw_drawChild_Callback, 6);
 	CBaseScreen_draw_drawChild_jmpBack = CBaseScreen_draw_drawChild + 6;
 	cout << "CBaseScreen draw hook created" << endl;
+
+	/*GameData initialized hook*/
+	int initializeGameData_u = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 4B ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8"); //55 8B EC 6A FF 68 4B ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8
+	int initializeGameData_u_end = initializeGameData_u + 0x584;
+	Utils::Detour32((void*)initializeGameData_u_end, &initializeGameData_u_end_Callback, 5);
+	initializeGameData_u_end_jmpBack = initializeGameData_u_end + 5;
+	cout << "initialzeGameData hook created" << endl;
 }
 #pragma endregion
