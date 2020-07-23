@@ -32,4 +32,5 @@ public:
 	bool& isHovered() {
 		return this->Hovered;
 	}
+	void IncrementUpgradeLevel(int path);
 }; //Size: 0x0184
