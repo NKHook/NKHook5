@@ -401,7 +401,7 @@ Hooks::Hooks()
 	cout << "Bloon escaped hook created" << endl;
 
 	/*Tower upgraded*/
-	int upgradeTower = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "83 EC 44 53 8B 5D 08 8B") - 6;
+	int upgradeTower = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "83 EC 44 53 8B 5D 08 8B") - 6; //?? ?? ?? ?? ?? ?? 83 EC 44 53 8B 5D 08 8B
 	Utils::Detour32((void*)upgradeTower, &upgradeTowerCallback, 6);
 	upgradeTowerJmpBack = upgradeTower + 6;
 	cout << "Tower Upgraded hook created" << endl;

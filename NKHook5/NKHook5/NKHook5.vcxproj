@@ -238,6 +238,7 @@
     <ClInclude Include="NKH\SDK\CWeaponTaskManager.h" />
     <ClInclude Include="NKH\SDK\DGAnalytics_Redshift.h" />
     <ClInclude Include="NKH\SDK\GameData.h" />
+    <ClInclude Include="NKH\SDK\pch.h" />
     <ClInclude Include="NKH\SDK\SteamStoreInterface.h" />
     <ClInclude Include="NKH\SDK\WinFileIO.h" />
     <ClInclude Include="NKH\SDK\WinInput.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="NKH\Patches\FlagHacker.cpp" />
     <ClCompile Include="NKH\Hooks.cpp" />
+    <ClCompile Include="NKH\SDK\SigResults.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
