@@ -24,7 +24,8 @@ void CBaseTower::IncrementUpgradeLevel(int path) {
 	if (CBaseTower_IncrementUpgradeLevel_Addr != 0) {
 		cout << "Func found" << endl;
 		void(__thiscall* CBaseTower_IncrementUpgradeLevel_Func)(CBaseTower*, int)=0;
-		memcpy(CBaseTower_IncrementUpgradeLevel_Func, CBaseTower_IncrementUpgradeLevel_Addr, 4);
+		cout << "Created void func shit" << endl;
+		memcpy(&CBaseTower_IncrementUpgradeLevel_Func, &CBaseTower_IncrementUpgradeLevel_Addr, 4);
 		cout << hex << "CBaseTower_IncrementUpgradeLevel_Func: " << CBaseTower_IncrementUpgradeLevel_Func << endl;
 		CBaseTower_IncrementUpgradeLevel_Func(this, path);
 	}
