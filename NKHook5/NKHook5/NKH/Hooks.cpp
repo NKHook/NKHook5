@@ -123,10 +123,6 @@ void __declspec(naked) bloonEscapedCallback() {
 #pragma endregion
 #pragma region UpgradeTower
 int upgradeTowerJmpBack = 0;
-void testFunc() {
-	CBaseTower* tower = *((CBaseTower**)(the_registers[7] + 0x4));
-	tower->IncrementUpgradeLevel(0);
-}
 void __declspec(naked) upgradeTowerCallback() {
 	__asm {
 		push eax;
@@ -136,7 +132,6 @@ void __declspec(naked) upgradeTowerCallback() {
 		jmp saveRegisters;
 	saveRegistersJmpBack:
 	}
-	testFunc();
 	Chai::invokeTowerUpgradedCallbacks(*((CTowerManager*)the_registers[2]), **((CBaseTower**)(the_registers[7] + 0x4)), *((int*)(the_registers[7] + 0x8)));
 	__asm {
 		push eax;

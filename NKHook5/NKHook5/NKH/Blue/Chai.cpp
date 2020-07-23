@@ -220,7 +220,8 @@ void Chai::startChai()
 			{fun(&CBaseTower::getTypeFlag), "getTypeFlag"},
 			{fun(&CBaseTower::isSelected), "isSelected"},
 			{fun(&CBaseTower::getCCompoundSprite), "getCCompoundSprite"},
-			{fun(&CBaseTower::isHovered), "isHovered"}
+			{fun(&CBaseTower::isHovered), "isHovered"},
+			{fun(&CBaseTower::incrementUpgradeLevel), "incrementUpgradeLevel"}
 		}
 		);
 	utility::add_class<Vector2>(*m,

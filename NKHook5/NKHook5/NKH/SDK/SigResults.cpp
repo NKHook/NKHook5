@@ -18,7 +18,7 @@ void CTowerFactory::UpdateSpriteGraphic(CBaseTower* tower, class STowerInfo* tow
 }
 
 void* CBaseTower_IncrementUpgradeLevel_Addr = 0;
-void CBaseTower::IncrementUpgradeLevel(int path) {
+void CBaseTower::incrementUpgradeLevel(int path) {
 	if(CBaseTower_IncrementUpgradeLevel_Addr == 0)
 		CBaseTower_IncrementUpgradeLevel_Addr = (void*)(Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "51 53 56 57 8B 7D 08 8B F1 8D 04")-6);
 	if (CBaseTower_IncrementUpgradeLevel_Addr != 0) {
