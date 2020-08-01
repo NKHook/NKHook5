@@ -1,0 +1,2 @@
+# NKH Orange
+NKH Orange is a C# API for NKHook5. This is useful for modders who want to do more advanced things with their mods, such as using Discord's API for Rich Presence or creating files to save data.
