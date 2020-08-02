@@ -207,6 +207,12 @@
     <ClInclude Include="NKH\SDK\pch.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="NKH\Orange\pch.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="NKH\Orange\Sharp.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -230,9 +236,13 @@
     <ClCompile Include="NKH\SDK\SigResults.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="NKH\Orange\Sharp.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="NKH\Blue\NKH_Blue.md" />
+    <None Include="NKH\Orange\NKH_Orange.md" />
   </ItemGroup>
 </Project>
