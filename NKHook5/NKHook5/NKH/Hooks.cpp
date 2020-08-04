@@ -14,6 +14,9 @@
 #include "Blue/Chai.h"
 #include "SDK/CTextObject.h"
 
+#include <gl/GL.h>
+#pragma lib(opengl32, "opengl32.lib");
+
 using namespace std;
 typedef uint32_t uint;
 
@@ -362,8 +365,36 @@ void __declspec(naked) __fastcall initializeGameData_u_end_Callback() {
 	}
 }
 #pragma endregion
+#pragma region glSwapBuffers
+typedef BOOL(WINAPI* glSwapBuff_Original)(HDC hDevice);
+glSwapBuff_Original _glSwapBuff_Original;
+BOOL WINAPI glSwapBuff_Callback(HDC hDevice) {
+	//cout << "swap!" << endl;
 
+	/*glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glPushMatrix();
+	glDisable(GL_DEPTH_TEST);*/
 
+	glBegin(GL_LINES);
+
+	glLineWidth(2);
+	glColor3b(0xFF, 0xFF, 0xFF);
+
+	glVertex2f(0, 0);
+	glVertex2f(0, 100);
+
+	glVertex2f(0, 100);
+	glVertex2f(100, 100);
+
+	glEnd();
+
+	/*glPopMatrix();
+	glPopAttrib();*/
+
+	BOOL ret = _glSwapBuff_Original(hDevice);
+	return ret;
+}
+#pragma endregion
 #pragma endregion
 
 #pragma region Constructor
@@ -466,5 +497,20 @@ Hooks::Hooks()
 	Utils::Detour32((void*)initializeGameData_u_end, &initializeGameData_u_end_Callback, 5);
 	initializeGameData_u_end_jmpBack = initializeGameData_u_end + 5;
 	cout << "initialzeGameData hook created" << endl;
+
+	/*OpenGL32 swap buffers hook (for drawing shiz)*/
+	int glSwapBuff = (int)GetProcAddress(GetModuleHandleA("OPENGL32.dll"), "wglSwapBuffers");
+	cout << "glSwapBuff" << hex << glSwapBuff << endl;
+	if (MH_CreateHook((void*)glSwapBuff, &glSwapBuff_Callback, reinterpret_cast<LPVOID*>(&_glSwapBuff_Original)) == MH_OK) {
+		if (MH_EnableHook((void*)glSwapBuff) == MH_OK) {
+			cout << "wglSwapBuffers hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable wglSwapBuffers hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create wglSwapBuffers hook!" << endl;
+	}
 }
 #pragma endregion

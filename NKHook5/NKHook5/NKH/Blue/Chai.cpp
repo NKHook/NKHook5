@@ -95,7 +95,7 @@ void Chai::invokeGameDataInitializedCallbacks()
 }
 #pragma endregion
 #pragma region onConsoleInput
-typedef std::function<void(string&)> onConsoleInputCallback;
+typedef std::function<bool(string&)> onConsoleInputCallback;
 vector<onConsoleInputCallback> onConsoleInputCallbacks;
 void onConsoleInput(const onConsoleInputCallback& theFunc)
 {
@@ -106,8 +106,9 @@ bool Chai::invokeConsoleInputCallbacks(string& input)
 	bool called = false;
 	for (int i = 0; i < onConsoleInputCallbacks.size(); i++) {
 		const onConsoleInputCallback leCallback = onConsoleInputCallbacks[i];
-		leCallback(input);
-		called = true;
+		if (leCallback(input)) {
+			called = true;
+		}
 	}
 	return called;
 }

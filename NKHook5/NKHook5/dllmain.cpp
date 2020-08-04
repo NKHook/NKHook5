@@ -78,7 +78,7 @@ void StartNKH(HMODULE hModule) {
         else {
             if (!Chai::invokeConsoleInputCallbacks(line)) {
                 cout << "Unknown command" << endl;
-                cout << hex << Utils::getGame()->CGameSystemPointers->CTowerManager->getTowerCount() << endl;
+                //cout << hex << Utils::getGame()->CGameSystemPointers->CTowerManager->getTowerCount() << endl;
             }
         }
     }
