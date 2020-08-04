@@ -185,7 +185,6 @@
     <ClInclude Include="NKH\Blue\Chai.h" />
     <ClInclude Include="NKH\Blue\pch.h" />
     <ClInclude Include="NKH\NMath.h" />
-    <ClInclude Include="NKH\Orange\pch.h" />
     <ClInclude Include="NKH\Patches\FlagHacker.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="NKH\Hooks.h" />
@@ -246,7 +245,6 @@
     <ClInclude Include="NKH\SDK\WinMusicManager.h" />
     <ClInclude Include="NKH\SDK\WinSoundManager.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="NKH\Orange\Sharp.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -261,12 +259,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="NKH\Orange\Sharp.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NKH\Blue\NKH_Blue.md" />
-    <None Include="NKH\Orange\NKH_Orange.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

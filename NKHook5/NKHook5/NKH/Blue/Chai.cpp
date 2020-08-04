@@ -109,6 +109,7 @@ bool Chai::invokeConsoleInputCallbacks(string& input)
 		leCallback(input);
 		called = true;
 	}
+	return called;
 }
 #pragma endregion
 #pragma endregion

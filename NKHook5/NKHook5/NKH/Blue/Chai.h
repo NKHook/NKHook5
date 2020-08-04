@@ -1,5 +1,8 @@
 #pragma once
 #include <chaiscript/chaiscript.hpp>
+#include <string>
+
+using namespace std;
 class Chai
 {
 public:
