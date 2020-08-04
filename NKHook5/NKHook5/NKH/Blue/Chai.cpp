@@ -94,6 +94,23 @@ void Chai::invokeGameDataInitializedCallbacks()
 	}
 }
 #pragma endregion
+#pragma region onConsoleInput
+typedef std::function<void(string&)> onConsoleInputCallback;
+vector<onConsoleInputCallback> onConsoleInputCallbacks;
+void onConsoleInput(const onConsoleInputCallback& theFunc)
+{
+	onConsoleInputCallbacks.push_back(theFunc);
+}
+bool Chai::invokeConsoleInputCallbacks(string& input)
+{
+	bool called = false;
+	for (int i = 0; i < onConsoleInputCallbacks.size(); i++) {
+		const onConsoleInputCallback leCallback = onConsoleInputCallbacks[i];
+		leCallback(input);
+		called = true;
+	}
+}
+#pragma endregion
 #pragma endregion
 
 
@@ -169,6 +186,7 @@ void Chai::startChai()
 	chai->add(fun(&onBloonEscaped), "onBloonEscaped");
 	chai->add(fun(&onTowerUpgrade), "onTowerUpgrade");
 	chai->add(fun(&onGameDataInitialized), "onGameDataInit");
+	chai->add(fun(&onConsoleInput), "onConsoleInput");
 #pragma endregion
 #pragma region ChaiInitClasses
 	utility::add_class<CBloonsTD5Game>(*m,
