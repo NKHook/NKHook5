@@ -155,6 +155,7 @@ void Chai::reloadScripts()
 	onKeyCallbacks.clear();
 	onBloonEscapedCallbacks.clear();
 	onTowerUpgradeCallbacks.clear();
+	onConsoleInputCallbacks.clear();
 	cout << "Removed event hooks" << endl;
 	cout << "Killing chai threads..." << endl;
 	for (int i = 0; i < chaiThreads.size(); i++) {
