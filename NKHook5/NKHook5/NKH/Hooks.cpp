@@ -369,30 +369,28 @@ void __declspec(naked) __fastcall initializeGameData_u_end_Callback() {
 typedef BOOL(WINAPI* glSwapBuff_Original)(HDC hDevice);
 glSwapBuff_Original _glSwapBuff_Original;
 BOOL WINAPI glSwapBuff_Callback(HDC hDevice) {
-	//cout << "swap!" << endl;
+	cout << "swap!" << endl;
 
-	/*glPushAttrib(GL_ALL_ATTRIB_BITS);
-	glPushMatrix();
-	glDisable(GL_DEPTH_TEST);*/
+	GLint wid(2);
+	glLineWidth(wid);
 
-	glBegin(GL_LINES);
+	glColor4f(GLfloat(1), GLfloat(0), GLfloat(0), GLfloat(1));
 
-	glLineWidth(2);
-	glColor3b(0xFF, 0xFF, 0xFF);
-
-	glVertex2f(0, 0);
-	glVertex2f(0, 100);
-
-	glVertex2f(0, 100);
-	glVertex2f(100, 100);
-
+	glBegin(GL_QUADS);
+	glVertex2d(0, 0);
+	glVertex2d(0, 512);
+	glVertex2d(512, 512);
+	glVertex2d(512, 0);
 	glEnd();
 
-	/*glPopMatrix();
-	glPopAttrib();*/
+	glColor4f(GLfloat(0), GLfloat(0), GLfloat(0), GLfloat(1));
 
-	BOOL ret = _glSwapBuff_Original(hDevice);
-	return ret;
+	glBegin(GL_LINES);
+	glVertex2d(0, 0);
+	glVertex2d(512, 512);
+	glEnd();
+	
+	return _glSwapBuff_Original(hDevice);
 }
 #pragma endregion
 #pragma endregion
