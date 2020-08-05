@@ -14,8 +14,10 @@
 #include "Blue/Chai.h"
 #include "SDK/CTextObject.h"
 
-#include <gl/GL.h>
+#include <gl\gl.h>
+#include <gl\glu.h>
 #pragma lib(opengl32, "opengl32.lib");
+#pragma comment(lib,"GLu32.lib")
 
 using namespace std;
 typedef uint32_t uint;
@@ -55,6 +57,23 @@ void __declspec(naked) restoreRegisters() {
 }
 #pragma endregion
 
+void SetupOrtho()
+{
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glViewport(0, 0, viewport[2], viewport[3]);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, viewport[2], viewport[3], 0, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glDisable(GL_DEPTH_TEST);
+}
+
+void RestoreGL()
+{
+	glEnable(GL_DEPTH_TEST);
+}
 
 #pragma region Hooks
 
@@ -371,28 +390,64 @@ glSwapBuff_Original _glSwapBuff_Original;
 BOOL WINAPI glSwapBuff_Callback(HDC hDevice) {
 	cout << "swap!" << endl;
 
-	GLint wid(2);
-	glLineWidth(wid);
-
-	glColor4f(GLfloat(1), GLfloat(0), GLfloat(0), GLfloat(1));
-
-	glBegin(GL_QUADS);
-	glVertex2d(0, 0);
-	glVertex2d(0, 512);
-	glVertex2d(512, 512);
-	glVertex2d(512, 0);
-	glEnd();
-
-	glColor4f(GLfloat(0), GLfloat(0), GLfloat(0), GLfloat(1));
-
+	glPushMatrix();
+	glDisable(GL_DEPTH_TEST);
 	glBegin(GL_LINES);
-	glVertex2d(0, 0);
-	glVertex2d(512, 512);
+	glVertex2i(0, 0);
+	glVertex2i(500, 500);
 	glEnd();
-	
-	return _glSwapBuff_Original(hDevice);
+	glPopMatrix();
+
+	BOOL ret = _glSwapBuff_Original(hDevice);
+	return ret;
 }
 #pragma endregion
+#pragma region glFinish
+typedef void(WINAPI* glFinish_Original)();
+glFinish_Original _glFinish_Original;
+void WINAPI glFinish_Callback() {
+	cout << "finish!" << endl;
+	//cout << "swap!" << endl;
+
+	glPushMatrix();
+	glDisable(GL_DEPTH_TEST);
+	glBegin(GL_LINES);
+	glVertex2i(0, 0);
+	glVertex2i(500, 500);
+	glEnd();
+	glPopMatrix();
+
+	_glFinish_Original();
+}
+#pragma endregion
+#pragma region glFlush
+typedef void(WINAPI* glFlush_Original)();
+glFlush_Original _glFlush_Original;
+void WINAPI glFlush_Callback() {
+	cout << "flush!" << endl;
+	/*cout << "swap!" << endl;
+
+	SetupOrtho();
+
+	glBegin(GL_LINES);
+	glVertex2i(0, 0);
+	glVertex2i(50, 50);
+	glEnd();
+
+	RestoreGL();*/
+
+	glPushMatrix();
+	glDisable(GL_DEPTH_TEST);
+	glBegin(GL_LINES);
+	glVertex2i(0, 0);
+	glVertex2i(500, 500);
+	glEnd();
+	glPopMatrix();
+
+	_glFlush_Original();
+}
+#pragma endregion
+
 #pragma endregion
 
 #pragma region Constructor
@@ -509,6 +564,36 @@ Hooks::Hooks()
 	}
 	else {
 		cout << "Failed to create wglSwapBuffers hook!" << endl;
+	}
+	
+	/*OpenGL32 finish hook (for drawing shiz)*/
+	int glFinish = (int)GetProcAddress(GetModuleHandleA("OPENGL32.dll"), "glFinish");
+	cout << "glFinish" << hex << glFinish << endl;
+	if (MH_CreateHook((void*)glFinish, &glFinish_Callback, reinterpret_cast<LPVOID*>(&_glFinish_Original)) == MH_OK) {
+		if (MH_EnableHook((void*)glFinish) == MH_OK) {
+			cout << "glFinish hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable glFinish hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create glFinish hook!" << endl;
+	}
+	
+	/*OpenGL32 flush hook (for drawing shiz)*/
+	int glFlush = (int)GetProcAddress(GetModuleHandleA("OPENGL32.dll"), "glFlush");
+	cout << "glFinish" << hex << glFlush << endl;
+	if (MH_CreateHook((void*)glFlush, &glFlush_Callback, reinterpret_cast<LPVOID*>(&_glFlush_Original)) == MH_OK) {
+		if (MH_EnableHook((void*)glFlush) == MH_OK) {
+			cout << "glFlush hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable glFlush hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create glFlush hook!" << endl;
 	}
 }
 #pragma endregion
