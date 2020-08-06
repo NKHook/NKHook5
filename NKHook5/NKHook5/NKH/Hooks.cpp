@@ -388,10 +388,11 @@ void __declspec(naked) __fastcall initializeGameData_u_end_Callback() {
 typedef BOOL(WINAPI* glSwapBuff_Original)(HDC hDevice);
 glSwapBuff_Original _glSwapBuff_Original;
 BOOL WINAPI glSwapBuff_Callback(HDC hDevice) {
-	cout << "swap!" << endl;
+	//cout << "swap!" << endl;
 
 	glPushMatrix();
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH);
 	glBegin(GL_LINES);
 	glVertex2i(0, 0);
 	glVertex2i(500, 500);
@@ -406,7 +407,7 @@ BOOL WINAPI glSwapBuff_Callback(HDC hDevice) {
 typedef void(WINAPI* glFinish_Original)();
 glFinish_Original _glFinish_Original;
 void WINAPI glFinish_Callback() {
-	cout << "finish!" << endl;
+	//cout << "finish!" << endl;
 	//cout << "swap!" << endl;
 
 	glPushMatrix();
@@ -424,7 +425,7 @@ void WINAPI glFinish_Callback() {
 typedef void(WINAPI* glFlush_Original)();
 glFlush_Original _glFlush_Original;
 void WINAPI glFlush_Callback() {
-	cout << "flush!" << endl;
+	//cout << "flush!" << endl;
 	/*cout << "swap!" << endl;
 
 	SetupOrtho();
