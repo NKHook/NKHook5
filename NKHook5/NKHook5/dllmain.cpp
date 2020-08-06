@@ -24,6 +24,9 @@ void StartNKH(HMODULE hModule) {
 
     cout << "NKH is injected! Lets get things rolling!" << endl;
 
+    //Epic window title
+    SetWindowTextA(GetConsoleWindow(), "NKHook5 - Console");
+
     Hooks();
     FlagHacker();
     //FlagHacker::addHackedFlag(new string("HackMonkey"), 0x4001);

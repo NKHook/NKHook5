@@ -288,31 +288,8 @@ void __declspec(naked) cbsd_restoreRegisters() {
 	}
 }
 #pragma endregion
-CTextObject* nkhBrand;
-string nkhString = "NKHook5";
 void __fastcall CBaseScreenCallback() {
-	//cout << "start" << endl;
-	if (nkhBrand == nullptr) {
-		if (Utils::getFontTexture() != nullptr) {
-			nkhBrand = new CTextObject(nkhString);
-		}
-	}
-	else {
-		/*CTextObject* nextChild = (CTextObject*)(cbsd_the_registers[4] + 0x234);
-		nextChild = nkhBrand;*/
-		//cout << "Drawing..." << endl;
-		nkhBrand->SetText(&nkhString);
-		nkhBrand->SetScale(1, 1);
-		nkhBrand->SetWH(100, 100);
-		nkhBrand->SetXY(256, 0);
-		nkhBrand->SetTexture(Utils::getFontTexture());
-		nkhBrand->Draw(false);
-		//cout << hex << nkhBrand << endl;
-		//called = true;
-		//cout << "Drawn" << endl;
-		//system("pause");
-	}
-	//cout << "end" << endl;
+	
 }
 int CBaseScreen_draw_drawChild_jmpBack = 0;
 void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
@@ -391,7 +368,63 @@ void WINAPI glFlush_Callback() {
 	_glFlush_Original();
 }
 #pragma endregion
+#pragma region glBegin
+typedef void(WINAPI* glBegin_Original)(GLenum mode);
+glBegin_Original _glBegin_Original;
+RECT rect = { 0,0,100,100 };
+void WINAPI glBegin_Callback(GLenum mode) {
+	//cout << "begin!" << endl;
+	_glBegin_Original(mode);
+}
+#pragma endregion
+#pragma region EndFrame
+typedef void(__thiscall* EndFrame_Original)(void* WinRenderLayer);
+EndFrame_Original endFrame_Original;
 
+CTextObject* nkhBrand;
+string nkhString = "NKHook5";
+void __fastcall EndFrame_Callback(void* WinRenderLayer) {
+	cout << "end frame!" << endl;
+
+	
+	/*if (nkhBrand == nullptr) {
+		if (Utils::getFontTexture() != nullptr) {
+			nkhBrand = new CTextObject(nkhString);
+			nkhBrand->SetText(&nkhString);
+			nkhBrand->SetXY(0, 0);
+			nkhBrand->SetWH(100, 100);
+			nkhBrand->SetTexture(Utils::getFontTexture());
+		}
+	}
+	else {
+		nkhBrand->Draw(false);
+		cout << hex << nkhBrand << endl;
+	}*/
+	
+
+	//glClear(GL_COLOR_BUFFER_BIT);
+
+
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
+
+	glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // Set background color to black and opaque
+	glClear(GL_COLOR_BUFFER_BIT);         // Clear the color buffer (background)
+
+	// Draw a Red 1x1 Square centered at origin
+	glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
+	//glColor3f(0.0f, 0.0f, 1.0f); // Blue
+	glColor3i(0, 0, 0xFFFFFFFF);
+	glVertex2f(0, 0);    // x, y
+	glVertex2f(0, 512);
+	glVertex2f(512, 512);
+	glVertex2f(512, 0);
+	glEnd();
+
+	glFlush();  // Render now
+
+	endFrame_Original(WinRenderLayer);
+}
+#pragma endregion
 #pragma endregion
 
 #pragma region Constructor
@@ -538,6 +571,36 @@ Hooks::Hooks()
 	}
 	else {
 		cout << "Failed to create glFlush hook!" << endl;
+	}
+	
+	/*OpenGL32 begin hook (for drawing shiz)*/
+	int glBegin = (int)GetProcAddress(GetModuleHandleA("OPENGL32.dll"), "glBegin");
+	cout << "glBegin" << hex << glBegin << endl;
+	if (MH_CreateHook((void*)glBegin, &glBegin_Callback, reinterpret_cast<LPVOID*>(&_glBegin_Original)) == MH_OK) {
+		if (MH_EnableHook((void*)glBegin) == MH_OK) {
+			cout << "glBegin hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable glBegin hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create glBegin hook!" << endl;
+	}
+	
+	/*WinRenderLayer EndFrame hook (for drawing shiz)*/
+	int EndFrame = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "e8 ?? ?? 04 00 e8 ?? ?? ea ff ff 35 ?? 21"); //e8 ?b 4? 04 00 e8 ?6 //e8 ?? ?? 04 00 e8 ?? ?? ea ff ff 35 ?? 21
+	cout << "EndFrame" << hex << EndFrame << endl;
+	if (MH_CreateHook((void*)EndFrame, &EndFrame_Callback, reinterpret_cast<LPVOID*>(&endFrame_Original)) == MH_OK) {
+		if (MH_EnableHook((void*)EndFrame) == MH_OK) {
+			cout << "EndFrame hook created!" << endl;
+		}
+		else {
+			cout << "Failed to enable EndFrame hook" << endl;
+		}
+	}
+	else {
+		cout << "Failed to create EndFrame hook!" << endl;
 	}
 }
 #pragma endregion
