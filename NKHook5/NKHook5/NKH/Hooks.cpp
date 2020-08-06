@@ -57,24 +57,6 @@ void __declspec(naked) restoreRegisters() {
 }
 #pragma endregion
 
-void SetupOrtho()
-{
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glViewport(0, 0, viewport[2], viewport[3]);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, viewport[2], viewport[3], 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glDisable(GL_DEPTH_TEST);
-}
-
-void RestoreGL()
-{
-	glEnable(GL_DEPTH_TEST);
-}
-
 #pragma region Hooks
 
 /*Hooks*/
@@ -389,16 +371,6 @@ typedef BOOL(WINAPI* glSwapBuff_Original)(HDC hDevice);
 glSwapBuff_Original _glSwapBuff_Original;
 BOOL WINAPI glSwapBuff_Callback(HDC hDevice) {
 	//cout << "swap!" << endl;
-
-	glPushMatrix();
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_DEPTH);
-	glBegin(GL_LINES);
-	glVertex2i(0, 0);
-	glVertex2i(500, 500);
-	glEnd();
-	glPopMatrix();
-
 	BOOL ret = _glSwapBuff_Original(hDevice);
 	return ret;
 }
@@ -408,16 +380,6 @@ typedef void(WINAPI* glFinish_Original)();
 glFinish_Original _glFinish_Original;
 void WINAPI glFinish_Callback() {
 	//cout << "finish!" << endl;
-	//cout << "swap!" << endl;
-
-	glPushMatrix();
-	glDisable(GL_DEPTH_TEST);
-	glBegin(GL_LINES);
-	glVertex2i(0, 0);
-	glVertex2i(500, 500);
-	glEnd();
-	glPopMatrix();
-
 	_glFinish_Original();
 }
 #pragma endregion
@@ -426,25 +388,6 @@ typedef void(WINAPI* glFlush_Original)();
 glFlush_Original _glFlush_Original;
 void WINAPI glFlush_Callback() {
 	//cout << "flush!" << endl;
-	/*cout << "swap!" << endl;
-
-	SetupOrtho();
-
-	glBegin(GL_LINES);
-	glVertex2i(0, 0);
-	glVertex2i(50, 50);
-	glEnd();
-
-	RestoreGL();*/
-
-	glPushMatrix();
-	glDisable(GL_DEPTH_TEST);
-	glBegin(GL_LINES);
-	glVertex2i(0, 0);
-	glVertex2i(500, 500);
-	glEnd();
-	glPopMatrix();
-
 	_glFlush_Original();
 }
 #pragma endregion
