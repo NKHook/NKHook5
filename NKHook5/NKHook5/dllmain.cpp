@@ -57,9 +57,9 @@ void StartNKH(HMODULE hModule) {
         getline(cin, line);
         if (line == "help") {
             //cout << "Commands aren't supported yet." << endl
-            cout<< "NKH commands:" << endl
+            cout << "NKH commands:" << endl
                 << "- help" << endl
-                << "- reload" << endl
+                << "- reload" << endl;
         }
         else if (line == "reload") {
             Chai::reloadScripts();
