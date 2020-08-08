@@ -217,6 +217,7 @@
     <ClInclude Include="NKH\SDK\CMemoryTracker.h" />
     <ClInclude Include="NKH\SDK\CMixNMatchManager.h" />
     <ClInclude Include="NKH\SDK\CMonkeyTeamManager.h" />
+    <ClInclude Include="NKH\SDK\Color.h" />
     <ClInclude Include="NKH\SDK\CPreferredMonkeyManager.h" />
     <ClInclude Include="NKH\SDK\CProjectileSkinDataList.h" />
     <ClInclude Include="NKH\SDK\CRoundFactory.h" />
