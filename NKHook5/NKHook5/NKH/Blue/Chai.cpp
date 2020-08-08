@@ -192,6 +192,7 @@ void Chai::startChai()
 	chai->add(fun(&onConsoleInput), "onConsoleInput");
 #pragma endregion
 #pragma region ChaiInitClasses
+#pragma region CBloonsTD5Game
 	utility::add_class<CBloonsTD5Game>(*m,
 		"CBloonsTD5Game",
 		{
@@ -200,7 +201,9 @@ void Chai::startChai()
 			{fun(&CBloonsTD5Game::getWinInput), "getWinInput"},
 			{fun(&CBloonsTD5Game::getCGameSystemPointers), "getCGameSystemPointers"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region WinInput
 	utility::add_class<WinInput>(*m,
 		"WinInput",
 		{
@@ -211,7 +214,9 @@ void Chai::startChai()
 			{fun(&WinInput::getClickedMousePos), "getClickedMousePos"},
 			{fun(&WinInput::getMousePos), "getMousePos"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region CGameSystemPointers
 	utility::add_class<CGameSystemPointers>(*m,
 		"CGameSystemPointers",
 		{
@@ -220,7 +225,9 @@ void Chai::startChai()
 			{fun(&CGameSystemPointers::getCTowerManager), "getCTowerManager"},
 			{fun(&CGameSystemPointers::getGameData), "getGameData"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region CTowerManager
 	utility::add_class<CTowerManager>(*m,
 		"CTowerManager",
 		{
@@ -231,7 +238,9 @@ void Chai::startChai()
 			{fun(&CTowerManager::getTowerCount), "getTowerCount"},
 			{fun(&CTowerManager::forEachTower), "forEachTower"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region CBaseTower
 	utility::add_class<CBaseTower>(*m,
 		"CBaseTower",
 		{
@@ -245,7 +254,9 @@ void Chai::startChai()
 			{fun(&CBaseTower::isHovered), "isHovered"},
 			{fun(&CBaseTower::incrementUpgradeLevel), "incrementUpgradeLevel"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region Vector2
 	utility::add_class<Vector2>(*m,
 		"Vector2",
 		{
@@ -258,7 +269,9 @@ void Chai::startChai()
 			{fun(&Vector2::setX), "setX"},
 			{fun(&Vector2::setY), "setY"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region GameData
 	utility::add_class<GameData>(*m,
 		"GameData",
 		{
@@ -270,7 +283,9 @@ void Chai::startChai()
 			{fun(&GameData::setCash), "setCash"},
 			{fun(&GameData::setHealth), "setHealth"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region CBloonEscapedEvent
 	utility::add_class<CBloonEscapedEvent>(*m,
 		"CBloonEscapedEvent",
 		{
@@ -278,7 +293,9 @@ void Chai::startChai()
 		{
 			{fun(&CBloonEscapedEvent::getEscapedBloon), "getEscapedBloon"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region CBloon
 	utility::add_class<CBloon>(*m,
 		"CBloon",
 		{
@@ -287,7 +304,9 @@ void Chai::startChai()
 			{fun(&CBloon::getSpriteSize), "getSpriteSize"},
 			{fun(&CBloon::getBloonData), "getBloonData"}
 		}
-		);
+	);
+#pragma endregion
+#pragma region BloonData
 	utility::add_class<BloonData>(*m,
 		"BloonData",
 		{
@@ -298,7 +317,8 @@ void Chai::startChai()
 			{fun(&BloonData::getType), "getType"},
 			{fun(&BloonData::getDamage), "getDamage"}
 		}
-		);
+	);
+#pragma endregion
 #pragma endregion
 
 	//Add module with classes and shit
