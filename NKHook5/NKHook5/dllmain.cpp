@@ -56,24 +56,13 @@ void StartNKH(HMODULE hModule) {
     while (true) {
         getline(cin, line);
         if (line == "help") {
-            cout << "Commands aren't supported yet." << endl
-                << "Existing commands:" << endl
+            //cout << "Commands aren't supported yet." << endl
+            cout<< "NKH commands:" << endl
                 << "- help" << endl
                 << "- reload" << endl
-                << "- setText" << endl;
         }
         else if (line == "reload") {
             Chai::reloadScripts();
-        }
-        else if (line == "setText") {
-            string text;
-            getline(cin, text);
-            string address;
-            getline(cin, address);
-
-            CTextObject* cto;
-            cto = (CTextObject*)std::stoul(address, nullptr, 16);
-            cto->SetText(&text);
         }
         else if (line == "kill") {
             *(int*)0 = 0;
