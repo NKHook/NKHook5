@@ -12,6 +12,7 @@
 #include "NKH/SDK/CTowerManager.h"
 #include "NKH/SDK/CTextObject.h"
 #include "NKH/SDK/CBasePositionableObject.h"
+#include "NKH/SDK/CBaseTower.h"
 
 
 
@@ -66,6 +67,17 @@ void StartNKH(HMODULE hModule) {
         }
         else if (line == "kill") {
             *(int*)0 = 0;
+        }
+        else if (line == "test") {
+            Utils::getGame()->CGameSystemPointers->CTowerManager->forEachTower([](CBaseTower& tower) {
+                cout << hex << tower.getId() << endl;
+            });
+        }
+        else if (line == "test2") {
+            Utils::getGame()->CGameSystemPointers->CTowerManager->forEachTower([](CBaseTower& tower) {
+                tower.setId(1);
+                cout << hex << tower.getId() << endl;
+            });
         }
         else {
             if (!Chai::invokeConsoleInputCallbacks(line)) {

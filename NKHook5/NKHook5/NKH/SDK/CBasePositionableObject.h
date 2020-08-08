@@ -1,4 +1,5 @@
 #pragma once
+#include "../NMath.h"
 #include "CMatrix.h"
 // Created with ReClass.NET 1.2 by KN4CK3R
 
@@ -14,9 +15,11 @@ public:
 	float Width; //0x0020
 	float Height; //0x0024
 	class CMatrix CMatrix; //0x0028
-	float PosX; //0x0068
-	float PosY; //0x006C
-	float PosZ; //0x0070
+	union {
+		float PosArr[3]; //0x0068
+		Vector2 Pos;
+		Vector3 pos3;
+	};
 	float onef; //0x0074
 	char pad_0078[24]; //0x0078
 	float AlignmentX; //0x0090

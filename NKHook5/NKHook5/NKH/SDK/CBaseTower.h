@@ -30,14 +30,20 @@ public:
 
 public:
 	Vector2& getPosition() {
-		Vector2 toRet = Vector2(this->PosX, this->PosY);
-		return toRet;
+		return this->Pos;
 	}
+
 	long long& getTypeFlag() {
 		return this->TypeFlag;
 	}
 	void setTypeFlag(long& type) {
 		this->TypeFlag = type;
+	}
+	int getId() {
+		return log2(this->TypeFlag);
+	}
+	void setId(int id) {
+		this->TypeFlag = pow(2, id);
 	}
 	bool& isSelected() {
 		return this->Selected;
