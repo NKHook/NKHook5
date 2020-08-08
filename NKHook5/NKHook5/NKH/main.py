@@ -11,6 +11,8 @@ errors = []
 
 for i in glob.glob("./sdk/*.h"):
     try:
+        if("pch" in i):
+            continue
         b = os.path.basename(i)
         f, e = os.path.splitext(b)
         h = CppHeaderParser.CppHeader(i)
