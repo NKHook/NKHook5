@@ -407,20 +407,20 @@ void __fastcall EndFrame_Callback(void* WinRenderLayer) {
 
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
 
-	glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // Set background color to black and opaque
-	glClear(GL_COLOR_BUFFER_BIT);         // Clear the color buffer (background)
+	//glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // Set background color to black and opaque
+	//glClear(GL_COLOR_BUFFER_BIT);         // Clear the color buffer (background)
 
 	// Draw a Red 1x1 Square centered at origin
-	glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
+	//glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
 	//glColor3f(0.0f, 0.0f, 1.0f); // Blue
-	glColor3i(0, 0, 0xFFFFFFFF);
-	glVertex2f(0, 0);    // x, y
-	glVertex2f(0, 512);
-	glVertex2f(512, 512);
-	glVertex2f(512, 0);
-	glEnd();
-
-	glFlush();  // Render now
+	//glColor3i(0, 0, 0xFFFFFFFF);
+	//glVertex2f(0, 0);    // x, y
+	//glVertex2f(0, 512);
+	//glVertex2f(512, 512);
+	//glVertex2f(512, 0);
+	//glEnd();
+	//
+	//glFlush();  // Render now
 
 	endFrame_Original(WinRenderLayer);
 }
