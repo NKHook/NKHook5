@@ -384,7 +384,7 @@ EndFrame_Original endFrame_Original;
 CTextObject* nkhBrand;
 string nkhString = "NKHook5";
 void __fastcall EndFrame_Callback(void* WinRenderLayer) {
-	cout << "end frame!" << endl;
+	//cout << "end frame!" << endl;
 
 	
 	/*if (nkhBrand == nullptr) {

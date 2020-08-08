@@ -31,3 +31,4 @@ packages/
 *.ipdb
 *.exp
 *.enc
+*.recipe
