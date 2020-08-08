@@ -239,6 +239,7 @@ void Chai::startChai()
 		{
 			{fun(&CBaseTower::getPosition), "getPosition"},
 			{fun(&CBaseTower::getTypeFlag), "getTypeFlag"},
+			{fun(&CBaseTower::setTypeFlag), "setTypeFlag"},
 			{fun(&CBaseTower::isSelected), "isSelected"},
 			{fun(&CBaseTower::getCCompoundSprite), "getCCompoundSprite"},
 			{fun(&CBaseTower::isHovered), "isHovered"},

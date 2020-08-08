@@ -13,4 +13,10 @@ struct Vector2 {
 	void setY(float value) {
 		y = value;
 	}
+
+public:
+	Vector2(float x, float y) {
+		this->x = x;
+		this->y = y;
+	}
 };
