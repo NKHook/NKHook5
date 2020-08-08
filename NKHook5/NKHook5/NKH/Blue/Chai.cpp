@@ -240,13 +240,59 @@ void Chai::startChai()
 		}
 	);
 #pragma endregion
+#pragma region CBasePositionableObject
+	utility::add_class<CBasePositionableObject>(*m,
+		"CBasePositionableObject",
+		{
+		},
+		{
+			//Custom funcs
+			{fun(&CBasePositionableObject::getPosition), "getPosition"},
+
+			//VTable funcs
+			{fun(&CBasePositionableObject::Draw), "Draw"},
+			{fun(&CBasePositionableObject::DrawOverlay), "DrawOverlay"},
+			{fun(&CBasePositionableObject::Process_r), "Process_r"},
+			{fun(&CBasePositionableObject::DeleteChildren), "DeleteChildren"},
+			{fun(&CBasePositionableObject::SetXYZ), "SetXYZ"},
+			{fun(&CBasePositionableObject::SetXY), "SetXY"},
+			{fun(&CBasePositionableObject::SetX), "SetX"},
+			{fun(&CBasePositionableObject::SetY), "SetY"},
+			{fun(&CBasePositionableObject::SetZ), "SetZ"},
+			{fun(&CBasePositionableObject::MoveXYZ), "MoveXYZ"},
+			{fun(&CBasePositionableObject::MoveXY), "MoveXY"},
+			{fun(&CBasePositionableObject::MoveX), "MoveY"},
+			{fun(&CBasePositionableObject::MoveZ), "MoveZ"},
+			{fun(&CBasePositionableObject::SetScale), "SetScale"},
+			{fun(&CBasePositionableObject::SetScaleX), "SetScaleX"},
+			{fun(&CBasePositionableObject::SetScaleY), "SetScaleY"},
+			{fun(&CBasePositionableObject::SetAngle), "SetAngle"},
+			{fun(&CBasePositionableObject::SetWH), "SetWH"},
+			{fun(&CBasePositionableObject::SetW), "SetW"},
+			{fun(&CBasePositionableObject::SetH), "SetH"},
+			{fun(&CBasePositionableObject::SetAlignmentX), "SetAlignmentX"},
+			{fun(&CBasePositionableObject::SetAlignmentY), "SetAlignmentY"},
+			{fun(&CBasePositionableObject::SetAlignmentXY), "SetAlignmentXY"},
+			{fun(&CBasePositionableObject::GetXYZ), "GetXYZ"},
+			{fun(&CBasePositionableObject::GetXY), "GetXY"},
+			{fun(&CBasePositionableObject::GetX), "GetX"},
+			{fun(&CBasePositionableObject::GetY), "GetY"},
+			{fun(&CBasePositionableObject::GetZ), "GetZ"},
+			{fun(&CBasePositionableObject::GetWH), "GetWH"},
+			{fun(&CBasePositionableObject::GetW), "GetW"},
+			{fun(&CBasePositionableObject::GetH), "GetH"},
+			{fun(&CBasePositionableObject::SetScreenTransition), "SetScreenTransition"},
+			{fun(&CBasePositionableObject::SetDefaultDirtyState), "SetDefaultDirtyState"},
+			{fun(&CBasePositionableObject::BaseDrawChildren), "BaseDrawChildren"}
+		}
+	);
+#pragma endregion
 #pragma region CBaseTower
 	utility::add_class<CBaseTower>(*m,
 		"CBaseTower",
 		{
 		},
 		{
-			{fun(&CBaseTower::getPosition), "getPosition"},
 			{fun(&CBaseTower::getTypeFlag), "getTypeFlag"},
 			{fun(&CBaseTower::setTypeFlag), "setTypeFlag"},
 			{fun(&CBaseTower::getId), "getId"},
@@ -257,6 +303,7 @@ void Chai::startChai()
 			{fun(&CBaseTower::incrementUpgradeLevel), "incrementUpgradeLevel"}
 		}
 	);
+	chai->add(chaiscript::base_class<CBasePositionableObject, CBaseTower>());
 #pragma endregion
 #pragma region Vector2
 	utility::add_class<Vector2>(*m,
@@ -270,6 +317,24 @@ void Chai::startChai()
 			{fun(&Vector2::getY), "getY"},
 			{fun(&Vector2::setX), "setX"},
 			{fun(&Vector2::setY), "setY"}
+		}
+	);
+#pragma endregion
+#pragma region Vector3
+	utility::add_class<Vector3>(*m,
+		"Vector3",
+		{
+		},
+		{
+			{fun(&Vector3::x), "X"},
+			{fun(&Vector3::y), "Y"},
+			{fun(&Vector3::z), "Z"},
+			{fun(&Vector3::getX), "getX"},
+			{fun(&Vector3::getY), "getY"},
+			{fun(&Vector3::getZ), "getZ"},
+			{fun(&Vector3::setX), "setX"},
+			{fun(&Vector3::setY), "setY"},
+			{fun(&Vector3::setZ), "setZ"}
 		}
 	);
 #pragma endregion

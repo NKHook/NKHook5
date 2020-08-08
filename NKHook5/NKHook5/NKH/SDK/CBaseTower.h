@@ -29,10 +29,6 @@ public:
 	char pad_0216[175]; //0x0216
 
 public:
-	Vector2& getPosition() {
-		return this->Pos;
-	}
-
 	long long& getTypeFlag() {
 		return this->TypeFlag;
 	}

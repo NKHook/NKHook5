@@ -59,24 +59,19 @@ void StartNKH(HMODULE hModule) {
         if (line == "help") {
             //cout << "Commands aren't supported yet." << endl
             cout << "NKH commands:" << endl
-                << "- help" << endl
-                << "- reload" << endl;
+                << "- help: show the help menu" << endl
+                << "- reload: reload all scripts" << endl
+                << "- crash: crash the game" << endl;
         }
         else if (line == "reload") {
             Chai::reloadScripts();
         }
-        else if (line == "kill") {
+        else if (line == "crash") {
             *(int*)0 = 0;
         }
         else if (line == "test") {
             Utils::getGame()->CGameSystemPointers->CTowerManager->forEachTower([](CBaseTower& tower) {
-                cout << hex << tower.getId() << endl;
-            });
-        }
-        else if (line == "test2") {
-            Utils::getGame()->CGameSystemPointers->CTowerManager->forEachTower([](CBaseTower& tower) {
-                tower.setId(1);
-                cout << hex << tower.getId() << endl;
+                tower.SetXY(50, 50);
             });
         }
         else {

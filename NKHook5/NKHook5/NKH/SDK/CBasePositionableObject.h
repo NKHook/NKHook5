@@ -15,11 +15,7 @@ public:
 	float Width; //0x0020
 	float Height; //0x0024
 	class CMatrix CMatrix; //0x0028
-	union {
-		float PosArr[3]; //0x0068
-		Vector2 Pos;
-		Vector3 pos3;
-	};
+	Vector3 Pos;
 	float onef; //0x0074
 	char pad_0078[24]; //0x0078
 	float AlignmentX; //0x0090
@@ -57,12 +53,12 @@ public:
 	virtual void SetAlignmentX(float x) {};
 	virtual void SetAlignmentY(float y) {};
 	virtual void SetAlignmentXY(float x, float y) {};
-	virtual void GetXYZ(float* xyz) {};
-	virtual void GetXY(float* xy) {};
+	virtual void GetXYZ(Vector3* xyz) {};
+	virtual void GetXY(Vector2* xy) {};
 	virtual void GetX(float* x) {};
 	virtual void GetY(float* y) {};
 	virtual void GetZ(float* z) {};
-	virtual void GetWH(float* wh) {};
+	virtual void GetWH(Vector2* wh) {};
 	virtual void GetW(float* w) {};
 	virtual void GetH(float* h) {};
 	virtual void Function36() {};
@@ -85,5 +81,10 @@ public:
 		onef = 1;
 		ScaleX = 1.0;
 		ScaleY = 1.0;
+	}
+	Vector3& getPosition() {
+		Vector3* thePos = new Vector3();
+		this->GetXYZ(thePos);
+		return *thePos;
 	}
 }; //Size: 0x00C0
