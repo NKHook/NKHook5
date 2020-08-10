@@ -6,7 +6,7 @@ public:
 	class CTextureLoader* CTextureLoader; //0x000C
 	class WinInput* WinInput; //0x0010
 	class CBloonsTD5Game* Self; //0x0014
-	char pad_0018[4]; //0x0018
+	class CXmlFontImporter*** CXmlFontImporter; //0x0018
 	class WinFileIO* WinFileIO; //0x001C
 	class CScreenManager* CScreenManager; //0x0020
 	class WinSoundManager* WinSoundManager; //0x0024

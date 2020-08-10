@@ -238,6 +238,7 @@
     <ClInclude Include="NKH\SDK\CUpgradeFactory.h" />
     <ClInclude Include="NKH\SDK\CWeaponFactory.h" />
     <ClInclude Include="NKH\SDK\CWeaponTaskManager.h" />
+    <ClInclude Include="NKH\SDK\CXmlFontImporter.h" />
     <ClInclude Include="NKH\SDK\DGAnalytics_Redshift.h" />
     <ClInclude Include="NKH\SDK\GameData.h" />
     <ClInclude Include="NKH\SDK\pch.h" />

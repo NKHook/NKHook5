@@ -45,7 +45,7 @@ void StartNKH(HMODULE hModule) {
     cout << hex << "CBPO: " << cbpo << endl;
     CRenderableTextureObject* crto = new CRenderableTextureObject();
     cout << hex << "CRTO: " << crto << endl;
-    CTextObject* cto = new CTextObject("NKHook5");
+    CTextObject* cto = new CTextObject(new Vector2{ 0,256 }, new string("NKHook5"));
     cout << hex << "CTO: " << cto << endl;
 
     //renderCTO(cto);

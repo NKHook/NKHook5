@@ -6,6 +6,7 @@
 #include "CTowerFactory.h"
 #include "CBasePositionableObject.h"
 #include "CRenderableTextureObject.h"
+#include "CTextObject.h"
 
 using namespace std;
 
@@ -57,12 +58,26 @@ void CRenderableTextureObject::Constructor(CRenderableTextureObject* self) {
 	if (CRenderableTextureObject_Constructor_Addr == 0) {
 		CRenderableTextureObject_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 8b f1 e8 ?? ?? ?? ?? a0");
 		if (CRenderableTextureObject_Constructor_Addr == 0) {
-			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CBPO!" << endl;
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CRTO!" << endl;
 		}
 	}
 	void (__thiscall * CRenderableTextureObject_Constructor_Func)(void*);
 	memcpy(&CRenderableTextureObject_Constructor_Func, &CRenderableTextureObject_Constructor_Addr, 4);
 	CRenderableTextureObject_Constructor_Func(self);
+}
+#pragma endregion
+#pragma region CTextObject_Constructor
+void* CTextObject_Constructor_Addr = 0;
+void CTextObject::Constructor(CTextObject* self, Vector2* position, CFont** font, string* text) {
+	if (CTextObject_Constructor_Addr == 0) {
+		CTextObject_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 83 ec 30 a1 ?? ?? ?? ?? 33 c5 89 45 ec 53 56 57 50 8d 45 f4 64 a3 00 00 00 00 8b f1 89 75 d0");
+		if (CTextObject_Constructor_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CTO!" << endl;
+		}
+	}
+	void (__thiscall * CTextObject_Constructor_Func)(void*, void*, void*, void*);
+	memcpy(&CTextObject_Constructor_Func, &CTextObject_Constructor_Addr, 4);
+	CTextObject_Constructor_Func(self, position, font, text);
 }
 #pragma endregion
 

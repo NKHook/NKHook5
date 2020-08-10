@@ -50,25 +50,30 @@ public:
 	virtual void Function60() {};
 
 public:
-	//You have to set the text *after* construction
-	CTextObject(string text) : CRenderableTextureObject() {
-		int vTableAddr = Utils::getModuleBase() + 0x727508; // "BTD5-Win.exe"+727508 
-		memcpy(this, &vTableAddr, 4);
-
-		this->Texture = Utils::getFontTexture();
-		this->text = text;
-		this->Font = Utils::getGame()->CFont;
-		this->zerozerozeroone = 0x1000000;
-		this->onei = 1;
-		this->pointZeroFour = .04f;
-		this->pointZeroFour = .04f;
-		this->onef_2 = 1.0f;
-		this->onef_3 = 1.0f;
-		this->zerozerozeroeighty = 0x80000000;
-		this->onef_4 = 1.0f;
-		this->onef_5 = 1.0f;
-		this->onef_6 = 1.0f;
-		this->onef_7 = 1.0f;
-		this->eightI = 8;
+	CTextObject(Vector2* position, string* text) : CRenderableTextureObject() {
+		//this->Texture = Utils::getFontTexture();
+		Constructor(this, position, &Utils::getGame()->CFont, text);
 	}
+	void Constructor(CTextObject* self, Vector2* position, CFont** font, string* text);
+	//You have to set the text *after* construction
+	//CTextObject(string text) : CRenderableTextureObject() {
+	//	int vTableAddr = Utils::getModuleBase() + 0x727508; // "BTD5-Win.exe"+727508 
+	//	memcpy(this, &vTableAddr, 4);
+
+	//	this->Texture = Utils::getFontTexture();
+	//	this->text = text;
+	//	this->Font = Utils::getGame()->CFont;
+	//	this->zerozerozeroone = 0x1000000;
+	//	this->onei = 1;
+	//	this->pointZeroFour = .04f;
+	//	this->pointZeroFour = .04f;
+	//	this->onef_2 = 1.0f;
+	//	this->onef_3 = 1.0f;
+	//	this->zerozerozeroeighty = 0x80000000;
+	//	this->onef_4 = 1.0f;
+	//	this->onef_5 = 1.0f;
+	//	this->onef_6 = 1.0f;
+	//	this->onef_7 = 1.0f;
+	//	this->eightI = 8;
+	//}
 }; //Size: 0x0210

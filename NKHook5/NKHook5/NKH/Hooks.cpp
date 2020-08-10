@@ -253,7 +253,7 @@ void __declspec(naked) __fastcall fpsCap_Callback() {
 	}
 }
 #pragma endregion
-#pragma region CBaseScreen Draw
+#pragma region CMainMenuScreen Draw
 #pragma region Registers
 /*Register saving shit*/
 int cbsd_the_registers[8];
@@ -288,11 +288,37 @@ void __declspec(naked) cbsd_restoreRegisters() {
 	}
 }
 #pragma endregion
-void __fastcall CBaseScreenCallback() {
-	
+CTextObject* nkhWorking;
+string nkhString = "NKHook5 successfully injected!";
+void __fastcall CMainMenuScreenCallback() {
+	if (nkhWorking == nullptr) {
+		if (Utils::getFontTexture() != nullptr) {
+			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhString);
+			nkhWorking->SetText(&nkhString);
+			nkhWorking->SetXY(105, 5);
+			nkhWorking->SetTexture(Utils::getFontTexture());
+		}
+	}
+	else {
+		nkhWorking->Draw(false);
+		if (GetAsyncKeyState(VK_DOWN)) {
+			nkhWorking->MoveY(1);
+		}
+		if (GetAsyncKeyState(VK_UP)) {
+			nkhWorking->MoveY(-1);
+		}
+		if (GetAsyncKeyState(VK_LEFT)) {
+			nkhWorking->MoveX(-1);
+		}
+		if (GetAsyncKeyState(VK_RIGHT)) {
+			nkhWorking->MoveX(1);
+		}
+		cout << hex << nkhWorking->getPosition().y << endl;
+		cout << hex << nkhWorking->getPosition().x << endl;
+	}
 }
-int CBaseScreen_draw_drawChild_jmpBack = 0;
-void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
+int CMainMenuScreen_draw_drawChild_jmpBack = 0;
+void __declspec(naked) __fastcall CMainMenuScreen_draw_drawChild_Callback() {
 	__asm {
 		push eax;
 		mov eax, cbsd_saveRegistersJmpBack;
@@ -301,7 +327,7 @@ void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
 		jmp cbsd_saveRegisters;
 	cbsd_saveRegistersJmpBack:
 	}
-	CBaseScreenCallback();
+	CMainMenuScreenCallback();
 	__asm {
 		push eax;
 		mov eax, cbsd_restoreRegistersJmpBack;
@@ -312,7 +338,7 @@ void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
 	}
 	__asm {
 		mov ecx, [esi + 0x00000190]
-		jmp[CBaseScreen_draw_drawChild_jmpBack]
+		jmp[CMainMenuScreen_draw_drawChild_jmpBack]
 	}
 }
 #pragma endregion
@@ -380,48 +406,7 @@ void WINAPI glBegin_Callback(GLenum mode) {
 #pragma region EndFrame
 typedef void(__thiscall* EndFrame_Original)(void* WinRenderLayer);
 EndFrame_Original endFrame_Original;
-
-CTextObject* nkhBrand;
-string nkhString = "NKHook5";
 void __fastcall EndFrame_Callback(void* WinRenderLayer) {
-	//cout << "end frame!" << endl;
-
-	
-	/*if (nkhBrand == nullptr) {
-		if (Utils::getFontTexture() != nullptr) {
-			nkhBrand = new CTextObject(nkhString);
-			nkhBrand->SetText(&nkhString);
-			nkhBrand->SetXY(0, 0);
-			nkhBrand->SetWH(100, 100);
-			nkhBrand->SetTexture(Utils::getFontTexture());
-		}
-	}
-	else {
-		nkhBrand->Draw(false);
-		cout << hex << nkhBrand << endl;
-	}*/
-	
-
-	//glClear(GL_COLOR_BUFFER_BIT);
-
-
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
-
-	//glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // Set background color to black and opaque
-	//glClear(GL_COLOR_BUFFER_BIT);         // Clear the color buffer (background)
-
-	// Draw a Red 1x1 Square centered at origin
-	//glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
-	//glColor3f(0.0f, 0.0f, 1.0f); // Blue
-	//glColor3i(0, 0, 0xFFFFFFFF);
-	//glVertex2f(0, 0);    // x, y
-	//glVertex2f(0, 512);
-	//glVertex2f(512, 512);
-	//glVertex2f(512, 0);
-	//glEnd();
-	//
-	//glFlush();  // Render now
-
 	endFrame_Original(WinRenderLayer);
 }
 #pragma endregion
@@ -513,13 +498,13 @@ Hooks::Hooks()
 	CBasePositionableObject_draw_jmpBack = CBasePositionableObject_draw + 6;
 	cout << "CBasePositionableObject draw hook created" << endl;
 
-	/*CBaseScreen draw hook*/
+	/*CMainMenuScreen draw hook*/
 	//nkhBrand = new CTextObject();
-	int CBaseScreen_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 8B F1 83 BE 40 01 00"); //56 8B F1 83 BE 40 01 00
-	int CBaseScreen_draw_drawChild = CBaseScreen_draw + 0x133;
-	Utils::Detour32((void*)CBaseScreen_draw_drawChild, &CBaseScreen_draw_drawChild_Callback, 6);
-	CBaseScreen_draw_drawChild_jmpBack = CBaseScreen_draw_drawChild + 6;
-	cout << "CBaseScreen draw hook created" << endl;
+	int CMainMenuScreen_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 8B F1 83 BE 40 01 00"); //56 8B F1 83 BE 40 01 00
+	int CMainMenuScreen_draw_drawChild = CMainMenuScreen_draw + 0x133;
+	Utils::Detour32((void*)CMainMenuScreen_draw_drawChild, &CMainMenuScreen_draw_drawChild_Callback, 6);
+	CMainMenuScreen_draw_drawChild_jmpBack = CMainMenuScreen_draw_drawChild + 6;
+	cout << "CMainMenuScreen draw hook created" << endl;
 
 	/*GameData initialized hook*/
 	int initializeGameData_u = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 4B ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8"); //55 8B EC 6A FF 68 4B ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8
