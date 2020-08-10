@@ -295,12 +295,12 @@ void __fastcall CMainMenuScreenCallback() {
 		if (Utils::getFontTexture() != nullptr) {
 			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
 			nkhWorking->SetText(&nkhWorkStr);
-			nkhWorking->SetXY(105, 5);
+			nkhWorking->SetXY(105, 375);
 			nkhWorking->SetTexture(Utils::getFontTexture());
 		}
 	}
 	else {
-		nkhWorking->Draw(false);
+		nkhWorking->Draw(false);/*
 		if (GetAsyncKeyState(VK_DOWN)) {
 			nkhWorking->MoveY(1);
 		}
@@ -314,7 +314,7 @@ void __fastcall CMainMenuScreenCallback() {
 			nkhWorking->MoveX(1);
 		}
 		cout << hex << nkhWorking->getPosition().y << endl;
-		cout << hex << nkhWorking->getPosition().x << endl;
+		cout << hex << nkhWorking->getPosition().x << endl;*/
 	}
 }
 int CMainMenuScreen_draw_drawChild_jmpBack = 0;
@@ -447,6 +447,7 @@ void __declspec(naked) cbsd_restoreRegisters() {
 #pragma endregion
 CTextObject* nkhBrand;
 string nkhString = "NKHook5";
+bool Hooks::spinBrand = false;
 void __fastcall CBaseScreenCallback() {
 	if (nkhBrand == nullptr) {
 		if (Utils::getFontTexture() != nullptr) {
@@ -457,21 +458,11 @@ void __fastcall CBaseScreenCallback() {
 		}
 	}
 	else {
-		nkhBrand->Draw(false);/*
-		if (GetAsyncKeyState(VK_DOWN)) {
-			nkhWorking->MoveY(1);
-		}
-		if (GetAsyncKeyState(VK_UP)) {
-			nkhWorking->MoveY(-1);
-		}
-		if (GetAsyncKeyState(VK_LEFT)) {
-			nkhWorking->MoveX(-1);
-		}
-		if (GetAsyncKeyState(VK_RIGHT)) {
-			nkhWorking->MoveX(1);
-		}
-		cout << hex << nkhWorking->getPosition().y << endl;
-		cout << hex << nkhWorking->getPosition().x << endl;*/
+		if (Hooks::spinBrand)
+			nkhBrand->SetAngle(nkhBrand->Angle + .5);
+		else
+			nkhBrand->SetAngle(0);
+		nkhBrand->Draw(false);
 	}
 }
 int CBaseScreen_draw_drawChild_jmpBack = 0;

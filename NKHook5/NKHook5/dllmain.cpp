@@ -70,10 +70,8 @@ void StartNKH(HMODULE hModule) {
         else if (line == "crash") {
             *(int*)0 = 0;
         }
-        else if (line == "test") {
-            Utils::getGame()->CGameSystemPointers->CTowerManager->forEachTower([](CBaseTower& tower) {
-                tower.SetXY(50, 50);
-            });
+        else if (line == "spinny" || line == "teckst") {
+            Hooks::spinBrand = !Hooks::spinBrand;
         }
         else {
             if (!Chai::invokeConsoleInputCallbacks(line)) {
