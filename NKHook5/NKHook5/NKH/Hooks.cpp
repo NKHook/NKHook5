@@ -256,45 +256,45 @@ void __declspec(naked) __fastcall fpsCap_Callback() {
 #pragma region CMainMenuScreen Draw
 #pragma region Registers
 /*Register saving shit*/
-int cbsd_the_registers[8];
-int cbsd_saveRegisters_jmpBack = 0;
-void __declspec(naked) cbsd_saveRegisters() {
+int cmmsd_the_registers[8];
+int cmmsd_saveRegisters_jmpBack = 0;
+void __declspec(naked) cmmsd_saveRegisters() {
 	__asm {
-		mov cbsd_the_registers[0 * 4], eax
-		mov cbsd_the_registers[1 * 4], ebx
-		mov cbsd_the_registers[2 * 4], ecx
-		mov cbsd_the_registers[3 * 4], edx
-		mov cbsd_the_registers[4 * 4], esi
-		mov cbsd_the_registers[5 * 4], edi
-		mov cbsd_the_registers[6 * 4], ebp
-		mov cbsd_the_registers[7 * 4], esp
+		mov cmmsd_the_registers[0 * 4], eax
+		mov cmmsd_the_registers[1 * 4], ebx
+		mov cmmsd_the_registers[2 * 4], ecx
+		mov cmmsd_the_registers[3 * 4], edx
+		mov cmmsd_the_registers[4 * 4], esi
+		mov cmmsd_the_registers[5 * 4], edi
+		mov cmmsd_the_registers[6 * 4], ebp
+		mov cmmsd_the_registers[7 * 4], esp
 
-		jmp cbsd_saveRegisters_jmpBack;
+		jmp cmmsd_saveRegisters_jmpBack;
 	}
 }
-int cbsd_restoreRegisters_jmpBack = 0;
-void __declspec(naked) cbsd_restoreRegisters() {
+int cmmsd_restoreRegisters_jmpBack = 0;
+void __declspec(naked) cmmsd_restoreRegisters() {
 	__asm {
-		mov eax, cbsd_the_registers[0 * 4]
-		mov ebx, cbsd_the_registers[1 * 4]
-		mov ecx, cbsd_the_registers[2 * 4]
-		mov edx, cbsd_the_registers[3 * 4]
-		mov esi, cbsd_the_registers[4 * 4]
-		mov edi, cbsd_the_registers[5 * 4]
-		mov ebp, cbsd_the_registers[6 * 4]
-		mov esp, cbsd_the_registers[7 * 4]
+		mov eax, cmmsd_the_registers[0 * 4]
+		mov ebx, cmmsd_the_registers[1 * 4]
+		mov ecx, cmmsd_the_registers[2 * 4]
+		mov edx, cmmsd_the_registers[3 * 4]
+		mov esi, cmmsd_the_registers[4 * 4]
+		mov edi, cmmsd_the_registers[5 * 4]
+		mov ebp, cmmsd_the_registers[6 * 4]
+		mov esp, cmmsd_the_registers[7 * 4]
 
-		jmp cbsd_restoreRegisters_jmpBack
+		jmp cmmsd_restoreRegisters_jmpBack
 	}
 }
 #pragma endregion
 CTextObject* nkhWorking;
-string nkhString = "NKHook5 successfully injected!";
+string nkhWorkStr = "NKHook5 successfully injected!";
 void __fastcall CMainMenuScreenCallback() {
 	if (nkhWorking == nullptr) {
 		if (Utils::getFontTexture() != nullptr) {
-			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhString);
-			nkhWorking->SetText(&nkhString);
+			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
+			nkhWorking->SetText(&nkhWorkStr);
 			nkhWorking->SetXY(105, 5);
 			nkhWorking->SetTexture(Utils::getFontTexture());
 		}
@@ -321,20 +321,20 @@ int CMainMenuScreen_draw_drawChild_jmpBack = 0;
 void __declspec(naked) __fastcall CMainMenuScreen_draw_drawChild_Callback() {
 	__asm {
 		push eax;
-		mov eax, cbsd_saveRegistersJmpBack;
-		mov[cbsd_saveRegisters_jmpBack], eax;
+		mov eax, cmmsd_saveRegistersJmpBack;
+		mov[cmmsd_saveRegisters_jmpBack], eax;
 		pop eax;
-		jmp cbsd_saveRegisters;
-	cbsd_saveRegistersJmpBack:
+		jmp cmmsd_saveRegisters;
+	cmmsd_saveRegistersJmpBack:
 	}
 	CMainMenuScreenCallback();
 	__asm {
 		push eax;
-		mov eax, cbsd_restoreRegistersJmpBack;
-		mov[cbsd_restoreRegisters_jmpBack], eax;
+		mov eax, cmmsd_restoreRegistersJmpBack;
+		mov[cmmsd_restoreRegisters_jmpBack], eax;
 		pop eax;
-		jmp cbsd_restoreRegisters;
-	cbsd_RestoreRegistersJmpBack:
+		jmp cmmsd_restoreRegisters;
+	cmmsd_RestoreRegistersJmpBack:
 	}
 	__asm {
 		mov ecx, [esi + 0x00000190]
@@ -408,6 +408,99 @@ typedef void(__thiscall* EndFrame_Original)(void* WinRenderLayer);
 EndFrame_Original endFrame_Original;
 void __fastcall EndFrame_Callback(void* WinRenderLayer) {
 	endFrame_Original(WinRenderLayer);
+}
+#pragma endregion
+#pragma region CBaseScreen Draw
+#pragma region Registers
+/*Register saving shit*/
+int cbsd_the_registers[8];
+int cbsd_saveRegisters_jmpBack = 0;
+void __declspec(naked) cbsd_saveRegisters() {
+	__asm {
+		mov cbsd_the_registers[0 * 4], eax
+		mov cbsd_the_registers[1 * 4], ebx
+		mov cbsd_the_registers[2 * 4], ecx
+		mov cbsd_the_registers[3 * 4], edx
+		mov cbsd_the_registers[4 * 4], esi
+		mov cbsd_the_registers[5 * 4], edi
+		mov cbsd_the_registers[6 * 4], ebp
+		mov cbsd_the_registers[7 * 4], esp
+
+		jmp cbsd_saveRegisters_jmpBack;
+	}
+}
+int cbsd_restoreRegisters_jmpBack = 0;
+void __declspec(naked) cbsd_restoreRegisters() {
+	__asm {
+		mov eax, cbsd_the_registers[0 * 4]
+		mov ebx, cbsd_the_registers[1 * 4]
+		mov ecx, cbsd_the_registers[2 * 4]
+		mov edx, cbsd_the_registers[3 * 4]
+		mov esi, cbsd_the_registers[4 * 4]
+		mov edi, cbsd_the_registers[5 * 4]
+		mov ebp, cbsd_the_registers[6 * 4]
+		mov esp, cbsd_the_registers[7 * 4]
+
+		jmp cbsd_restoreRegisters_jmpBack
+	}
+}
+#pragma endregion
+CTextObject* nkhBrand;
+string nkhString = "NKHook5";
+void __fastcall CBaseScreenCallback() {
+	if (nkhBrand == nullptr) {
+		if (Utils::getFontTexture() != nullptr) {
+			nkhBrand = new CTextObject(new Vector2(0, 0), &nkhString);
+			nkhBrand->SetText(&nkhString);
+			nkhBrand->SetXY(30, 5);
+			nkhBrand->SetTexture(Utils::getFontTexture());
+		}
+	}
+	else {
+		nkhBrand->Draw(false);/*
+		if (GetAsyncKeyState(VK_DOWN)) {
+			nkhWorking->MoveY(1);
+		}
+		if (GetAsyncKeyState(VK_UP)) {
+			nkhWorking->MoveY(-1);
+		}
+		if (GetAsyncKeyState(VK_LEFT)) {
+			nkhWorking->MoveX(-1);
+		}
+		if (GetAsyncKeyState(VK_RIGHT)) {
+			nkhWorking->MoveX(1);
+		}
+		cout << hex << nkhWorking->getPosition().y << endl;
+		cout << hex << nkhWorking->getPosition().x << endl;*/
+	}
+}
+int CBaseScreen_draw_drawChild_jmpBack = 0;
+void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {
+	__asm {
+		push eax;
+		mov eax, cbsd_saveRegistersJmpBack;
+		mov[cbsd_saveRegisters_jmpBack], eax;
+		pop eax;
+		jmp cbsd_saveRegisters;
+	cbsd_saveRegistersJmpBack:
+	}
+	CBaseScreenCallback();
+	__asm {
+		push eax;
+		mov eax, cbsd_restoreRegistersJmpBack;
+		mov[cbsd_restoreRegisters_jmpBack], eax;
+		pop eax;
+		jmp cbsd_restoreRegisters;
+	cbsd_RestoreRegistersJmpBack:
+	}
+	__asm {
+		pop edi
+		pop esi
+		pop ebx
+		mov esp, ebp
+		//mov ecx, [esi + 0x00000190]
+		jmp[CBaseScreen_draw_drawChild_jmpBack]
+	}
 }
 #pragma endregion
 #pragma endregion
@@ -587,5 +680,13 @@ Hooks::Hooks()
 	else {
 		cout << "Failed to create EndFrame hook!" << endl;
 	}
+
+	/*CBaseScreen draw hook*/
+	//nkhBrand = new CTextObject();
+	int CBaseScreen_draw = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 83 EC 10 53 56 8B D9 57 89 5D F0 E8"); //55 8B EC 83 EC 10 53 56 8B D9 57 89 5D F0 E8
+	int CBaseScreen_draw_child = CBaseScreen_draw + 0x105;
+	Utils::Detour32((void*)CBaseScreen_draw_child, &CBaseScreen_draw_drawChild_Callback, 5);
+	CBaseScreen_draw_drawChild_jmpBack = CBaseScreen_draw_child + 5;
+	cout << "CBaseScreen draw hook created" << endl;
 }
 #pragma endregion
