@@ -22,13 +22,13 @@ public:
 	float onef_4; //0x0114
 	float onef_5; //0x0118
 	float onef_6; //0x011C
-	float onef_7; //0x0120
+	float onef_7; //0x0120B
 	char pad_0124[8]; //0x0124
 	int eightI; //0x012C
 	char pad_0130[4]; //0x0130
 	int zerozerozeroone; //0x0134
 	int onei; //0x0138
-	char pad_013C[64]; //0x013C
+	char pad_013C[28]; //0x013C
 
 
 	virtual void Function44() {};

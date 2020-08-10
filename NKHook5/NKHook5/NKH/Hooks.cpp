@@ -289,32 +289,18 @@ void __declspec(naked) cmmsd_restoreRegisters() {
 }
 #pragma endregion
 CTextObject* nkhWorking;
-string nkhWorkStr = "NKHook5 successfully injected!";
+string nkhWorkStr = "NKHook5 was successfully injected!";
 void __fastcall CMainMenuScreenCallback() {
 	if (nkhWorking == nullptr) {
 		if (Utils::getFontTexture() != nullptr) {
 			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
 			nkhWorking->SetText(&nkhWorkStr);
-			nkhWorking->SetXY(105, 375);
+			nkhWorking->SetXY(110, 375);
 			nkhWorking->SetTexture(Utils::getFontTexture());
 		}
 	}
 	else {
-		nkhWorking->Draw(false);/*
-		if (GetAsyncKeyState(VK_DOWN)) {
-			nkhWorking->MoveY(1);
-		}
-		if (GetAsyncKeyState(VK_UP)) {
-			nkhWorking->MoveY(-1);
-		}
-		if (GetAsyncKeyState(VK_LEFT)) {
-			nkhWorking->MoveX(-1);
-		}
-		if (GetAsyncKeyState(VK_RIGHT)) {
-			nkhWorking->MoveX(1);
-		}
-		cout << hex << nkhWorking->getPosition().y << endl;
-		cout << hex << nkhWorking->getPosition().x << endl;*/
+		nkhWorking->Draw(false);
 	}
 }
 int CMainMenuScreen_draw_drawChild_jmpBack = 0;
