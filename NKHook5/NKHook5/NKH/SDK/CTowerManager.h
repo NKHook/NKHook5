@@ -22,10 +22,6 @@ public:
 		if (*Towers == nullptr) {
 			return i;
 		}
-		/*while (Towers[i] != *LastTower) {
-			i++;
-		}
-		return i;*/
 		return ((size_t)(LastTower) - (size_t)(Towers)) / sizeof(CBaseTower**);
 	}
 	typedef std::function<void(CBaseTower&)> towerLoopFunc;

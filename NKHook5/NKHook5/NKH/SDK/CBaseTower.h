@@ -15,7 +15,7 @@ public:
 	bool Upgradable; //0x00F3
 	char pad_00F4[16]; //0x00F4
 	class CCompoundSprite* CCompoundSprite; //0x0104
-	Color Color; //0x0108
+	class Color Color; //0x0108
 	char pad_010C[44]; //0x010C
 	int LeftUpgrade; //0x0138
 	int RightUpgrade; //0x013C
@@ -26,7 +26,7 @@ public:
 	char pad_0188[140]; //0x0188
 	bool N000002DB; //0x0214
 	bool Hovered; //0x0215
-	char pad_0216[175]; //0x0216
+	char pad_0216[14]; //0x0216
 
 public:
 	long long& getTypeFlag() {
