@@ -43,8 +43,9 @@ void StartNKH(HMODULE hModule) {
 
     CBasePositionableObject* cbpo = new CBasePositionableObject();
     cout << hex << "CBPO: " << cbpo << endl;
+    CRenderableTextureObject* crto = new CRenderableTextureObject();
+    cout << hex << "CRTO: " << crto << endl;
     CTextObject* cto = new CTextObject("NKHook5");
-    //cto->SetText(new basic_string<char>("Retard"));
     cout << hex << "CTO: " << cto << endl;
 
     //renderCTO(cto);

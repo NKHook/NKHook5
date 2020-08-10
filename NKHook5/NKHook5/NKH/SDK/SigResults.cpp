@@ -5,6 +5,7 @@
 #include "CBaseTower.h"
 #include "CTowerFactory.h"
 #include "CBasePositionableObject.h"
+#include "CRenderableTextureObject.h"
 
 using namespace std;
 
@@ -38,16 +39,30 @@ void CBaseTower::incrementUpgradeLevel(int path) {
 #pragma endregion
 #pragma region CBasePositionableObject_Constructor
 void* CBasePositionableObject_Constructor_Addr = 0;
-CBasePositionableObject* CBasePositionableObject::Constructor(CBasePositionableObject* self) {
+void CBasePositionableObject::Constructor(CBasePositionableObject* self) {
 	if (CBasePositionableObject_Constructor_Addr == 0) {
 		CBasePositionableObject_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 57 8b f9 0f 57 c0 8d");
 		if (CBasePositionableObject_Constructor_Addr == 0) {
 			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CBPO!" << endl;
 		}
 	}
-	CBasePositionableObject* (__thiscall * CBasePositionableObject_Constructor_Func)(void*);
+	void (__thiscall * CBasePositionableObject_Constructor_Func)(void*);
 	memcpy(&CBasePositionableObject_Constructor_Func, &CBasePositionableObject_Constructor_Addr, 4);
-	return CBasePositionableObject_Constructor_Func(self);
+	CBasePositionableObject_Constructor_Func(self);
+}
+#pragma endregion
+#pragma region CRenderableTextureObject_Constructor
+void* CRenderableTextureObject_Constructor_Addr = 0;
+void CRenderableTextureObject::Constructor(CRenderableTextureObject* self) {
+	if (CRenderableTextureObject_Constructor_Addr == 0) {
+		CRenderableTextureObject_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "56 8b f1 e8 ?? ?? ?? ?? a0");
+		if (CRenderableTextureObject_Constructor_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CBPO!" << endl;
+		}
+	}
+	void (__thiscall * CRenderableTextureObject_Constructor_Func)(void*);
+	memcpy(&CRenderableTextureObject_Constructor_Func, &CRenderableTextureObject_Constructor_Addr, 4);
+	CRenderableTextureObject_Constructor_Func(self);
 }
 #pragma endregion
 

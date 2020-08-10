@@ -178,7 +178,7 @@ bool canRender = false;
 //bool called = false;
 void CTextObjectDrawThingIdek() {
 	CTextObject* self = (CTextObject*)the_registers[2];
-	Utils::CacheFontTexture(self->FontTexture);
+	Utils::CacheFontTexture(self->Texture);
 }
 void __declspec(naked) __fastcall CTextObject_draw_Callback() {
 	__asm {

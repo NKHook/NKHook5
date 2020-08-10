@@ -220,6 +220,7 @@
     <ClInclude Include="NKH\SDK\Color.h" />
     <ClInclude Include="NKH\SDK\CPreferredMonkeyManager.h" />
     <ClInclude Include="NKH\SDK\CProjectileSkinDataList.h" />
+    <ClInclude Include="NKH\SDK\CRenderableTextureObject.h" />
     <ClInclude Include="NKH\SDK\CRoundFactory.h" />
     <ClInclude Include="NKH\SDK\CScreenManager.h" />
     <ClInclude Include="NKH\SDK\CSocialLeaderboard.h" />

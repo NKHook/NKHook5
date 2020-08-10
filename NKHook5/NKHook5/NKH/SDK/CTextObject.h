@@ -1,17 +1,13 @@
 #pragma once
 #include <string>
-#include "CBasePositionableObject.h"
+#include "CRenderableTextureObject.h"
 #include "CFont.h"
 #include "CTexture.h"
 
 using namespace std;
-class CTextObject : public CBasePositionableObject
+class CTextObject : public CRenderableTextureObject
 {
 public:
-	int TextObjStart; //0x00A8
-	char pad_00AC[20]; //0x00AC
-	class CTexture* FontTexture; //0x00C0
-	char pad_00C4[4]; //0x00C4
 	string text;
 	//char Text[16]; //0x00C8
 	//int TextLength; //0x00D8
@@ -55,11 +51,11 @@ public:
 
 public:
 	//You have to set the text *after* construction
-	CTextObject(string text) : CBasePositionableObject() {
+	CTextObject(string text) : CRenderableTextureObject() {
 		int vTableAddr = Utils::getModuleBase() + 0x727508; // "BTD5-Win.exe"+727508 
 		memcpy(this, &vTableAddr, 4);
 
-		this->FontTexture = Utils::getFontTexture();
+		this->Texture = Utils::getFontTexture();
 		this->text = text;
 		this->Font = Utils::getGame()->CFont;
 		this->zerozerozeroone = 0x1000000;

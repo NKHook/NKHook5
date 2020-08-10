@@ -73,8 +73,8 @@ public:
 public:
 	CBasePositionableObject() {
 		Constructor(this);
-		int vTableAddr = Utils::getModuleBase() + 0x72F25C; // "BTD5-Win.exe"+72F25C 
-		memcpy(this, &vTableAddr, 4);
+		//int vTableAddr = Utils::getModuleBase() + 0x72F25C; // "BTD5-Win.exe"+72F25C 
+		//memcpy(this, &vTableAddr, 4);
 		/*onei = 1;
 		selfPlus14 = (void*)((size_t)(this) + 0x14);
 		selfPlus14_2 = (void*)((size_t)(this) + 0x14);
@@ -88,5 +88,5 @@ public:
 		this->GetXYZ(thePos);
 		return *thePos;
 	}
-	CBasePositionableObject* Constructor(CBasePositionableObject* self);
+	void Constructor(CBasePositionableObject* self);
 }; //Size: 0x00C0
