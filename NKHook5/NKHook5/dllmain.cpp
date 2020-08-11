@@ -13,6 +13,7 @@
 #include "NKH/SDK/CTextObject.h"
 #include "NKH/SDK/CBasePositionableObject.h"
 #include "NKH/SDK/CBaseTower.h"
+#include "NKH/SDK/CBaseScreen.h"
 
 
 
@@ -41,12 +42,18 @@ void StartNKH(HMODULE hModule) {
 
     while (Utils::getFontTexture() == nullptr) { Sleep(100); }
 
-    CBasePositionableObject* cbpo = new CBasePositionableObject();
+    /*CBasePositionableObject* cbpo = new CBasePositionableObject();
     cout << hex << "CBPO: " << cbpo << endl;
     CRenderableTextureObject* crto = new CRenderableTextureObject();
     cout << hex << "CRTO: " << crto << endl;
     CTextObject* cto = new CTextObject(new Vector2{ 0,256 }, new string("NKHook5"));
-    cout << hex << "CTO: " << cto << endl;
+    cout << hex << "CTO: " << cto << endl;*/
+    /*CBaseScreen* cbs = new CBaseScreen(new string("NKHScreen"));
+    cout << hex << "CBS: " << cbs << endl;
+    cbs->SetupPointers((CBaseScreen*)Utils::getGame()->CScreenManager);
+    cout << "CBS SetupPtrs" << endl;*/
+    /*cbs->Init();
+    cout << "CBS Init" << endl;*/
 
     //renderCTO(cto);
 

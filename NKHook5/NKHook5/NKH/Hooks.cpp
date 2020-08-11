@@ -16,6 +16,7 @@
 
 #include <gl\gl.h>
 #include <gl\glu.h>
+#include "SDK/CBaseScreen.h"
 #pragma lib(opengl32, "opengl32.lib");
 #pragma comment(lib,"GLu32.lib")
 
@@ -288,21 +289,19 @@ void __declspec(naked) cmmsd_restoreRegisters() {
 	}
 }
 #pragma endregion
-CTextObject* nkhWorking;
-string nkhWorkStr = "NKHook5 was successfully injected!";
-void __fastcall CMainMenuScreenCallback() {
-	if (nkhWorking == nullptr) {
-		if (Utils::getFontTexture() != nullptr) {
-			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
-			nkhWorking->SetText(&nkhWorkStr);
-			nkhWorking->SetXY(110, 375);
-			nkhWorking->SetTexture(Utils::getFontTexture());
-		}
-	}
-	else {
-		nkhWorking->Draw(false);
-	}
-}
+//void __fastcall CMainMenuScreenCallback() {
+//	if (nkhWorking == nullptr) {
+//		if (Utils::getFontTexture() != nullptr) {
+//			nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
+//			nkhWorking->SetText(&nkhWorkStr);
+//			nkhWorking->SetXY(110, 375);
+//			nkhWorking->SetTexture(Utils::getFontTexture());
+//		}
+//	}
+//	else {
+//		nkhWorking->Draw(false);
+//	}
+//}
 int CMainMenuScreen_draw_drawChild_jmpBack = 0;
 void __declspec(naked) __fastcall CMainMenuScreen_draw_drawChild_Callback() {
 	__asm {
@@ -313,7 +312,7 @@ void __declspec(naked) __fastcall CMainMenuScreen_draw_drawChild_Callback() {
 		jmp cmmsd_saveRegisters;
 	cmmsd_saveRegistersJmpBack:
 	}
-	CMainMenuScreenCallback();
+	//CMainMenuScreenCallback();
 	__asm {
 		push eax;
 		mov eax, cmmsd_restoreRegistersJmpBack;
@@ -433,23 +432,56 @@ void __declspec(naked) cbsd_restoreRegisters() {
 #pragma endregion
 CTextObject* nkhBrand;
 string nkhString = "NKHook5";
+
+CTextObject* nkhWorking;
+string nkhWorkStr = "NKHook5 was successfully injected!";
+
+CBaseScreen* cbs;
+
 bool Hooks::spinBrand = false;
 void __fastcall CBaseScreenCallback() {
-	if (nkhBrand == nullptr) {
-		if (Utils::getFontTexture() != nullptr) {
-			nkhBrand = new CTextObject(new Vector2(0, 0), &nkhString);
-			nkhBrand->SetText(&nkhString);
-			nkhBrand->SetXY(30, 5);
-			nkhBrand->SetTexture(Utils::getFontTexture());
+	CBaseScreen* drawnScreen = (CBaseScreen*)cbsd_the_registers[2];
+	if (drawnScreen->screenName == "ScreenManager") {
+		if (nkhBrand == nullptr) {
+			if (Utils::getFontTexture() != nullptr) {
+				nkhBrand = new CTextObject(new Vector2(0, 0), &nkhString);
+				nkhBrand->SetText(&nkhString);
+				nkhBrand->SetXY(30, 5);
+				nkhBrand->SetTexture(Utils::getFontTexture());
+			}
+		}
+		else {
+			if (Hooks::spinBrand)
+				nkhBrand->SetAngle(nkhBrand->Angle + .5);
+			else
+				nkhBrand->SetAngle(0);
+			nkhBrand->Draw(false);
+		}
+
+		if (cbs == nullptr) {
+			/*cbs = new CBaseScreen(new string("NKHScreen"));
+			cout << hex << "CBS: " << cbs << endl;
+			cbs->SetupPointers((CBaseScreen*)Utils::getGame()->CScreenManager);
+			cout << "CBS SetupPtrs" << endl;*/
+		}
+		else {
+			cbs->Draw();
 		}
 	}
-	else {
-		if (Hooks::spinBrand)
-			nkhBrand->SetAngle(nkhBrand->Angle + .5);
-		else
-			nkhBrand->SetAngle(0);
-		nkhBrand->Draw(false);
+	if (drawnScreen->screenName == "MainMenuScreen") {
+		if (nkhWorking == nullptr) {
+			if (Utils::getFontTexture() != nullptr) {
+				nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
+				nkhWorking->SetText(&nkhWorkStr);
+				nkhWorking->SetXY(120, 375);
+				nkhWorking->SetTexture(Utils::getFontTexture());
+			}
+		}
+		else {
+			nkhWorking->Draw(false);
+		}
 	}
+	cout << drawnScreen->screenName << endl;
 }
 int CBaseScreen_draw_drawChild_jmpBack = 0;
 void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {

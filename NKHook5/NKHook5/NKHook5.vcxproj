@@ -194,6 +194,7 @@
     <ClInclude Include="NKH\SDK\CAircraftManager.h" />
     <ClInclude Include="NKH\SDK\CAssetBag.h" />
     <ClInclude Include="NKH\SDK\CBasePositionableObject.h" />
+    <ClInclude Include="NKH\SDK\CBaseScreen.h" />
     <ClInclude Include="NKH\SDK\CBaseTower.h" />
     <ClInclude Include="NKH\SDK\CBloon.h" />
     <ClInclude Include="NKH\SDK\CBloonAbilityFactory.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="NKH\SDK\CXmlFontImporter.h" />
     <ClInclude Include="NKH\SDK\DGAnalytics_Redshift.h" />
     <ClInclude Include="NKH\SDK\GameData.h" />
+    <ClInclude Include="NKH\SDK\IBasePointers.h" />
     <ClInclude Include="NKH\SDK\pch.h" />
     <ClInclude Include="NKH\SDK\SteamStoreInterface.h" />
     <ClInclude Include="NKH\SDK\WinFileIO.h" />

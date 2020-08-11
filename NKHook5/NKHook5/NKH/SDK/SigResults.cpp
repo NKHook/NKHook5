@@ -7,6 +7,8 @@
 #include "CBasePositionableObject.h"
 #include "CRenderableTextureObject.h"
 #include "CTextObject.h"
+#include "IBasePointers.h"
+#include "CBaseScreen.h"
 
 using namespace std;
 
@@ -78,6 +80,34 @@ void CTextObject::Constructor(CTextObject* self, Vector2* position, CFont** font
 	void (__thiscall * CTextObject_Constructor_Func)(void*, void*, void*, void*);
 	memcpy(&CTextObject_Constructor_Func, &CTextObject_Constructor_Addr, 4);
 	CTextObject_Constructor_Func(self, position, font, text);
+}
+#pragma endregion
+#pragma region IBasePointers_Constructor
+void* IBasePointers_Constructor_Addr = 0;
+void IBasePointers::Constructor(IBasePointers* self) {
+	if (IBasePointers_Constructor_Addr == 0) {
+		IBasePointers_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "c7 01 00 00 00 00 8b c1 c7 41 04 00 00 00 00 c7 41 08 00 00 00 00 c7 41 0c 00 00 00 00 c7 41 10 00 00 00 00 c7 41 14 00 00 00 00 c7 41 18 00 00 00 00 c7 41 1c 00 00 00 00 c7 41 20 00 00 00 00 c7 41 24 00 00 00 00 c7 41 28 00 00 00 00 c7 41 2c 00 00 00 00 c7 41 30 00 00 00 00 c7 41 34 00 00 00 00 c7 41 38 00 00 00 00 c7 41 3c 00 00 00 00 c7"); //c7 01 00 00 00 00 8b c1 c7 41 04 00 00 00 00 c7 41 08 00 00 00 00 c7 41 0c 00 00 00 00 c7 41 10 00 00 00 00 c7 41 14 00 00 00 00 c7 41 18 00 00 00 00 c7 41 1c 00 00 00 00 c7 41 20 00 00 00 00 c7 41 24 00 00 00 00 c7 41 28 00 00 00 00 c7 41 2c 00 00 00 00 c7 41 30 00 00 00 00 c7 41 34 00 00 00 00 c7 41 38 00 00 00 00 c7 41 3c 00 00 00 00 c7
+		if (IBasePointers_Constructor_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A IBP!" << endl;
+		}
+	}
+	void(__thiscall * IBasePointers_Constructor_Func)(void*);
+	memcpy(&IBasePointers_Constructor_Func, &IBasePointers_Constructor_Addr, 4);
+	IBasePointers_Constructor_Func(self);
+}
+#pragma endregion
+#pragma region CBaseScreen_Constructor
+void* CBaseScreen_Constructor_Addr = 0;
+void CBaseScreen::Constructor(CBaseScreen* self, string* screenName) {
+	if (CBaseScreen_Constructor_Addr == 0) {
+		CBaseScreen_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 83 ec 08 56 57 a1 ?? ?? ?? ?? 33 c5 50 8d 45 f4 64 a3 00 00 00 00 8b f9 89 7d f0 8d 4f"); //55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 83 ec 08 56 57 a1 ?? ?? ?? ?? 33 c5 50 8d 45 f4 64 a3 00 00 00 00 8b f9 89 7d f0 8d 4f
+		if (CBaseScreen_Constructor_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CBS!" << endl;
+		}
+	}
+	void(__thiscall * CBaseScreen_Constructor_Func)(void*, void*);
+	memcpy(&CBaseScreen_Constructor_Func, &CBaseScreen_Constructor_Addr, 4);
+	CBaseScreen_Constructor_Func(self, screenName);
 }
 #pragma endregion
 
