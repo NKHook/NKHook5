@@ -481,7 +481,7 @@ void __fastcall CBaseScreenCallback() {
 			nkhWorking->Draw(false);
 		}
 	}
-	cout << drawnScreen->screenName << endl;
+	//cout << drawnScreen->screenName << endl;
 }
 int CBaseScreen_draw_drawChild_jmpBack = 0;
 void __declspec(naked) __fastcall CBaseScreen_draw_drawChild_Callback() {

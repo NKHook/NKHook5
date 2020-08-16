@@ -110,6 +110,20 @@ void CBaseScreen::Constructor(CBaseScreen* self, string* screenName) {
 	CBaseScreen_Constructor_Func(self, screenName);
 }
 #pragma endregion
+#pragma region GetSpriteInfoPtr
+void* GetSpriteInfoPtr_Addr = 0;
+void* GetSpriteInfoPtr(CTextureLoader* ctl, string* spriteSheet, string* spriteName) {
+	if (GetSpriteInfoPtr_Addr == 0) {
+		GetSpriteInfoPtr_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 81 ec 88 00 00 00 a1 ?? ?? ?? ?? 33 c5 89 45 f0 53 56 57 50 8d 45 f4 64 a3 00 00 00 00 8b c1"); //55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 81 ec 88 00 00 00 a1 ?? ?? ?? ?? 33 c5 89 45 f0 53 56 57 50 8d 45 f4 64 a3 00 00 00 00 8b c1
+		if (GetSpriteInfoPtr_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CALL GetSpriteInfoPtr!" << endl;
+		}
+	}
+	void*(__thiscall* GetSpriteInfoPtr_Func)(void*, void*);
+	memcpy(&GetSpriteInfoPtr_Func, &GetSpriteInfoPtr_Addr, 4);
+	return GetSpriteInfoPtr_Func(spriteSheet, spriteName);
+}
+#pragma endregion
 
 
 

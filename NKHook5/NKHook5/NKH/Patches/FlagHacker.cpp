@@ -6,7 +6,6 @@
 
 
 struct Flag {
-public:
     string* name;
     long flag;
 };

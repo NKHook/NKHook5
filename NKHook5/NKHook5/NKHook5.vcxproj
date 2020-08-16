@@ -244,6 +244,7 @@
     <ClInclude Include="NKH\SDK\GameData.h" />
     <ClInclude Include="NKH\SDK\IBasePointers.h" />
     <ClInclude Include="NKH\SDK\pch.h" />
+    <ClInclude Include="NKH\SDK\SigResults.h" />
     <ClInclude Include="NKH\SDK\SteamStoreInterface.h" />
     <ClInclude Include="NKH\SDK\WinFileIO.h" />
     <ClInclude Include="NKH\SDK\WinInput.h" />

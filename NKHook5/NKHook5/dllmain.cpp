@@ -14,6 +14,7 @@
 #include "NKH/SDK/CBasePositionableObject.h"
 #include "NKH/SDK/CBaseTower.h"
 #include "NKH/SDK/CBaseScreen.h"
+#include "NKH/SDK/SigResults.h"
 
 
 
@@ -79,6 +80,12 @@ void StartNKH(HMODULE hModule) {
         }
         else if (line == "spinny" || line == "teckst") {
             Hooks::spinBrand = !Hooks::spinBrand;
+        }
+        else if (line == "test") {
+            string* InGame = new string("newshared");
+            string* steam_icon = new string("steam_icon");
+            void* result = GetSpriteInfoPtr(Utils::getGame()->CTextureLoader, InGame, steam_icon);
+            cout << "EPIC: " << hex << result << endl;
         }
         else {
             if (!Chai::invokeConsoleInputCallbacks(line)) {
