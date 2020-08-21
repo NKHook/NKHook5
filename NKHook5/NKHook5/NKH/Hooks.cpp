@@ -558,7 +558,8 @@ Hooks::Hooks()
 
 	/*game main hook (ignore)*/
 	int gameMain = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 81 EC D8 05 00 00");
-	int fpsCap = gameMain + 0xEBF;
+	int fpsCap = gameMain + 0xE1F;
+	cout << "FPS Cap addr: " << hex << fpsCap << endl;
 	Utils::Detour32((void*)fpsCap, &fpsCap_Callback, 7);
 	fpsCap_jmpBack = fpsCap + 7;
 	cout << "Game Main hook created" << endl;
