@@ -119,7 +119,7 @@ void* GetSpriteInfoPtr(CTextureLoader* ctl, string* spriteSheet, string* spriteN
 			cout << "CRITICAL ERROR: COULDN'T CALL GetSpriteInfoPtr!" << endl;
 		}
 	}
-	void*(__thiscall* GetSpriteInfoPtr_Func)(void*, void*);
+	void*(__stdcall* GetSpriteInfoPtr_Func)(void*, void*);
 	memcpy(&GetSpriteInfoPtr_Func, &GetSpriteInfoPtr_Addr, 4);
 	return GetSpriteInfoPtr_Func(spriteSheet, spriteName);
 }

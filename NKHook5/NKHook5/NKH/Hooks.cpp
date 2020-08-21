@@ -17,6 +17,7 @@
 #include <gl\gl.h>
 #include <gl\glu.h>
 #include "SDK/CBaseScreen.h"
+#include "SDK/CBloon.h"
 #pragma lib(opengl32, "opengl32.lib");
 #pragma comment(lib,"GLu32.lib")
 
@@ -523,7 +524,7 @@ Hooks::Hooks()
 	}
 
 	/*Game Instance tick hook thing*/
-	int gameInstanceTickHookThingIdfk = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "85 C0 7E 16 83 F8") - 5;
+	int gameInstanceTickHookThingIdfk = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "85 C0 7E 16 83 F8") - 5; //?? ?? ?? ?? ?? 85 C0 7E 16 83 F8
 	Utils::Detour32((void*)gameInstanceTickHookThingIdfk, &gameInstanceTickHookThingIdfkCallback, 5);
 	gameInstanceTickHookThingIdfkJmpBack = gameInstanceTickHookThingIdfk + 5;
 	cout << "Game Instance hook created" << endl;
@@ -541,6 +542,7 @@ Hooks::Hooks()
 	else {
 		cout << "Failed to create keypressed hook!" << endl;
 	}
+	cout << "Keypress hook created" << endl;
 
 	/*Bloon escaped hook*/
 	int bloonEscaped = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "68 64 BF ?? ?? 64 A1") - 5;
