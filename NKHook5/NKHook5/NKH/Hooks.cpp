@@ -545,7 +545,7 @@ Hooks::Hooks()
 	cout << "Keypress hook created" << endl;
 
 	/*Bloon escaped hook*/
-	int bloonEscaped = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "68 64 BF ?? ?? 64 A1") - 5;
+	int bloonEscaped = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 81 EC 40 01 00 00 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B F1");
 	Utils::Detour32((void*)bloonEscaped, &bloonEscapedCallback, 5);
 	bloonEscapedJmpBack = bloonEscaped + 0x5;
 	cout << "Bloon escaped hook created" << endl;
@@ -557,8 +557,8 @@ Hooks::Hooks()
 	cout << "Tower Upgraded hook created" << endl;
 
 	/*game main hook (ignore)*/
-	int gameMain = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 CF 5F");
-	int fpsCap = gameMain + 0xE0F;
+	int gameMain = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 81 EC D8 05 00 00");
+	int fpsCap = gameMain + 0xEBF;
 	Utils::Detour32((void*)fpsCap, &fpsCap_Callback, 7);
 	fpsCap_jmpBack = fpsCap + 7;
 	cout << "Game Main hook created" << endl;
@@ -591,7 +591,7 @@ Hooks::Hooks()
 	}
 
 	/*CTextObject draw hook*/
-	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase() + 0x300000, Utils::getBaseModuleEnd(), "68 e9 fb ?? ??") - 5;//?? ?? ?? ?? ?? 68 e9 fb ?? ??
+	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase() + 0x300000, Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 38 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B D9 89 5D BC") - 5;//55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 38 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B D9 89 5D BC
 	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
 	CTextObject_draw_jmpBack = CTextObject_draw + 5;
 	cout << "CTextObject draw hook created" << endl;
@@ -611,7 +611,7 @@ Hooks::Hooks()
 	cout << "CMainMenuScreen draw hook created" << endl;
 
 	/*GameData initialized hook*/
-	int initializeGameData_u = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 4B ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8"); //55 8B EC 6A FF 68 4B ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8
+	int initializeGameData_u = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8 00 00 00 A1 ?? ?? ?? ?? 33 C5 89 45 EC 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B F9 8B 9F 2C 05 00 00"); //55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 81 EC B8 00 00 00 A1 ?? ?? ?? ?? 33 C5 89 45 EC 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B F9 8B 9F 2C 05 00 00
 	int initializeGameData_u_end = initializeGameData_u + 0x584;
 	Utils::Detour32((void*)initializeGameData_u_end, &initializeGameData_u_end_Callback, 5);
 	initializeGameData_u_end_jmpBack = initializeGameData_u_end + 5;
@@ -678,7 +678,7 @@ Hooks::Hooks()
 	}
 	
 	/*WinRenderLayer EndFrame hook (for drawing shiz)*/
-	int EndFrame = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "e8 ?? ?? 04 00 e8 ?? ?? ea ff ff 35 ?? 21"); //e8 ?b 4? 04 00 e8 ?6 //e8 ?? ?? 04 00 e8 ?? ?? ea ff ff 35 ?? 21
+	int EndFrame = Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "e8 ?? ?? ?? ?? e8 ?? ?? ?? ?? ff 35 ?? ?? ?? ??"); //e8 ?? ?? ?? ?? e8 ?? ?? ?? ?? ff 35 ?? ?? ?? ??
 	cout << "EndFrame" << hex << EndFrame << endl;
 	if (MH_CreateHook((void*)EndFrame, &EndFrame_Callback, reinterpret_cast<LPVOID*>(&endFrame_Original)) == MH_OK) {
 		if (MH_EnableHook((void*)EndFrame) == MH_OK) {
