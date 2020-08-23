@@ -592,7 +592,7 @@ Hooks::Hooks()
 	}
 
 	/*CTextObject draw hook*/
-	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase() + 0x300000, Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 38 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B D9 89 5D BC") - 5;//55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 38 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B D9 89 5D BC
+	int CTextObject_draw = Utils::findPattern(Utils::getModuleBase() + 0x300000, Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 38 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B D9 89 5D BC");//55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 38 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B D9 89 5D BC
 	Utils::Detour32((void*)CTextObject_draw, &CTextObject_draw_Callback, 5);
 	CTextObject_draw_jmpBack = CTextObject_draw + 5;
 	cout << "CTextObject draw hook created" << endl;

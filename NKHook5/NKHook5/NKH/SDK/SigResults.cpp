@@ -16,7 +16,7 @@ using namespace std;
 void* CTowerFactory_UpdateSpriteGraphic_Addr = 0;
 void CTowerFactory::UpdateSpriteGraphic(CBaseTower* tower, class STowerInfo* towerInfo) {
 	if (CTowerFactory_UpdateSpriteGraphic_Addr == 0) {
-		CTowerFactory_UpdateSpriteGraphic_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 D4 ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 6C A1 34 B0 52");
+		CTowerFactory_UpdateSpriteGraphic_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 6C A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B C1 89 45 8C");
 		if (CTowerFactory_UpdateSpriteGraphic_Addr == 0) {
 			cout << "Failed to find CTowerFactory_UpdateSpriteGraphic_Addr" << endl;
 			return;
@@ -124,7 +124,7 @@ void* GetSpriteInfoPtr(CTextureLoader* ctl, string* spriteSheet, string* spriteN
 		GetSpriteInfoPtr_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 81 ec 88 00 00 00 a1 ?? ?? ?? ?? 33 c5 89 45 f0 53 56 57 50 8d 45 f4 64 a3 00 00 00 00 8b c1"); //55 8b ec 6a ff 68 ?? ?? ?? ?? 64 a1 00 00 00 00 50 81 ec 88 00 00 00 a1 ?? ?? ?? ?? 33 c5 89 45 f0 53 56 57 50 8d 45 f4 64 a3 00 00 00 00 8b c1
 		if (GetSpriteInfoPtr_Addr == 0) {
 			cout << "CRITICAL ERROR: COULDN'T CALL GetSpriteInfoPtr!" << endl;
-			return;
+			return nullptr;
 		}
 	}
 	void*(__stdcall* GetSpriteInfoPtr_Func)(void*, void*);
