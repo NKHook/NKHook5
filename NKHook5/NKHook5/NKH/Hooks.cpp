@@ -180,6 +180,10 @@ bool canRender = false;
 //bool called = false;
 void CTextObjectDrawThingIdek() {
 	CTextObject* self = (CTextObject*)the_registers[2];
+	if (self->Text.find("Version 3.26 (21504)") != std::string::npos) {
+		self->SetText(new string("Ninja Kiwi\nV 3.26 Build 21504\nNKHook5 Pre-3"));
+		//self->SetText(new string("Ninja Kiwi\nVersion 3.27 (21876)"));
+	}
 	Utils::CacheFontTexture(self->Texture);
 }
 void __declspec(naked) __fastcall CTextObject_draw_Callback() {
@@ -433,22 +437,14 @@ void __declspec(naked) cbsd_restoreRegisters() {
 #pragma endregion
 CTextObject* nkhBrand;
 string nkhString = "NKHook5";
-
-CTextObject* nkhWorking;
-string nkhWorkStr = "NKHook5 was successfully injected!";
-
-CBaseScreen* cbs;
-
 bool Hooks::spinBrand = false;
 void __fastcall CBaseScreenCallback() {
 	CBaseScreen* drawnScreen = (CBaseScreen*)cbsd_the_registers[2];
 	if (drawnScreen->screenName == "ScreenManager") {
 		if (nkhBrand == nullptr) {
 			if (Utils::getFontTexture() != nullptr) {
-				nkhBrand = new CTextObject(new Vector2(0, 0), &nkhString);
-				nkhBrand->SetText(&nkhString);
-				nkhBrand->SetXY(30, 5);
-				nkhBrand->SetTexture(Utils::getFontTexture());
+				nkhBrand = new CTextObject(new Vector2(30, 5), &nkhString);
+				nkhBrand->SetScale(.75, .75);
 			}
 		}
 		else {
@@ -457,29 +453,6 @@ void __fastcall CBaseScreenCallback() {
 			else
 				nkhBrand->SetAngle(0);
 			nkhBrand->Draw(false);
-		}
-
-		if (cbs == nullptr) {
-			/*cbs = new CBaseScreen(new string("NKHScreen"));
-			cout << hex << "CBS: " << cbs << endl;
-			cbs->SetupPointers((CBaseScreen*)Utils::getGame()->CScreenManager);
-			cout << "CBS SetupPtrs" << endl;*/
-		}
-		else {
-			cbs->Draw();
-		}
-	}
-	if (drawnScreen->screenName == "MainMenuScreen") {
-		if (nkhWorking == nullptr) {
-			if (Utils::getFontTexture() != nullptr) {
-				nkhWorking = new CTextObject(new Vector2(0, 0), &nkhWorkStr);
-				nkhWorking->SetText(&nkhWorkStr);
-				nkhWorking->SetXY(120, 375);
-				nkhWorking->SetTexture(Utils::getFontTexture());
-			}
-		}
-		else {
-			nkhWorking->Draw(false);
 		}
 	}
 	//cout << drawnScreen->screenName << endl;

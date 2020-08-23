@@ -8,7 +8,7 @@ using namespace std;
 class CTextObject : public CRenderableTextureObject
 {
 public:
-	string text;
+	string Text;
 	//char Text[16]; //0x00C8
 	//int TextLength; //0x00D8
 	//int fifteenI; //0x00DC
