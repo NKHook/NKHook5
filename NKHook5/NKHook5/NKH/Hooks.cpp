@@ -176,12 +176,13 @@ BOOL WINAPI PeekMessageW_Callback(LPMSG lpMsg, HWND hWnd, UINT  wMsgFilterMin, U
 #pragma region CTextObject Draw
 int CTextObject_draw_jmpBack = 0;
 bool canRender = false;
+string nkhVerTxt = "NKHook5 Pre-3";
 //int regEcx;
 //bool called = false;
 void CTextObjectDrawThingIdek() {
 	CTextObject* self = (CTextObject*)the_registers[2];
-	if (self->Text.find("Version 3.26 (21504)") != std::string::npos) {
-		self->SetText(new string("Ninja Kiwi\nV 3.26 Build 21504\nNKHook5 Pre-3"));
+	if (self->Text.find(nkhVerTxt) == std::string::npos && self->Text.find("Ninja Kiwi\nVersion") != std::string::npos) {
+		self->SetText(new string(self->Text + string("\n"+nkhVerTxt)));
 		//self->SetText(new string("Ninja Kiwi\nVersion 3.27 (21876)"));
 	}
 	Utils::CacheFontTexture(self->Texture);
