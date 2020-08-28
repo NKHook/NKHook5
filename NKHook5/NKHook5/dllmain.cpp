@@ -84,7 +84,7 @@ void StartNKH(HMODULE hModule) {
         else if (line == "test") {
             string* InGame = new string("newshared");
             string* steam_icon = new string("steam_icon");
-            void* result = GetSpriteInfoPtr(Utils::getGame()->CTextureLoader, InGame, steam_icon);
+            void* result = GetSpriteInfoPtr(Utils::getGame()->CTextureLoader, steam_icon, InGame);
             cout << "EPIC: " << hex << result << endl;
         }
         else {
