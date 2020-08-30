@@ -4,11 +4,12 @@
 class CCompoundSprite : public CSprite
 {
 public:
-	char pad_0000[4]; //0x0000
-
+	int CCompoundSpriteStart; //0x0104
+	class CEventManager* CEventManager; //0x0108
+	char pad_010C[56]; //0x010C
 public:
 	CCompoundSprite() : CSprite() {
 		Constructor(this);
 	}
 	void Constructor(CCompoundSprite* self);
-}; //Size: 0x0004
+}; //Size: 0x0144
