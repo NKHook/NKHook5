@@ -9,6 +9,8 @@
 #include "CTextObject.h"
 #include "IBasePointers.h"
 #include "CBaseScreen.h"
+#include "CSprite.h"
+#include "CCompoundSprite.h"
 
 using namespace std;
 
@@ -132,7 +134,35 @@ void* GetSpriteInfoPtr(CTextureLoader* ctl, string* spriteSheet, string* spriteN
 	return GetSpriteInfoPtr_Func(spriteSheet, spriteName);
 }
 #pragma endregion
-
+#pragma region CSprite_Constructor
+void* CSprite_Constructor_Addr = 0;
+void CSprite::Constructor(CSprite* self) {
+	if (CSprite_Constructor_Addr == 0) {
+		CSprite_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 E8 ?? ?? ?? ?? 8A 45 0C C7 45 FC 00 00 00 00"); //55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 E8 ?? ?? ?? ?? 8A 45 0C C7 45 FC 00 00 00 00
+		if (CSprite_Constructor_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CS!" << endl;
+			return;
+		}
+	}
+	void(__thiscall * CSprite_Constructor_Func)(void*);
+	memcpy(&CSprite_Constructor_Func, &CSprite_Constructor_Addr, 4);
+	CSprite_Constructor_Func(self);
+}
+#pragma region CCompoundSprite_Constructor
+void* CCompoundSprite_Constructor_Addr = 0;
+void CCompoundSprite::Constructor(CCompoundSprite* self) {
+	if (CCompoundSprite_Constructor_Addr == 0) {
+		CCompoundSprite_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 57 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 8B 45 08 FF 70 04 FF 30"); //55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 57 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 8B 45 08 FF 70 04 FF 30
+		if (CCompoundSprite_Constructor_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CONSTRUCT A CCS!" << endl;
+			return;
+		}
+	}
+	void(__thiscall * CCompoundSprite_Constructor_Func)(void*);
+	memcpy(&CCompoundSprite_Constructor_Func, &CCompoundSprite_Constructor_Addr, 4);
+	CCompoundSprite_Constructor_Func(self);
+}
+#pragma endregion
 
 
 
