@@ -10,6 +10,15 @@ public:
 	class CTexture* Texture; //0x00C0
 	char pad_00C4[4]; //0x00C4
 
+	virtual void GetMinX() {};
+	virtual void GetMinY() {};
+	virtual void GetMaxX() {};
+	virtual void GetMaxY() {};
+	virtual void GetMinXY() {};
+	virtual void GetMaxXY() {};
+	virtual void SetShader() {};
+	virtual void SetTexture() {};
+public:
 	CRenderableTextureObject() : CBasePositionableObject() {
 		Constructor(this);
 		//int vTableAddr = Utils::getModuleBase() + 0x72F188; // "BTD5-Win.exe"+72F188

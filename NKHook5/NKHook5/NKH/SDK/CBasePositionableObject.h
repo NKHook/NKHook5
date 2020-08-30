@@ -29,7 +29,7 @@ public:
 	virtual void Draw(bool drawChildren) {};
 	virtual void DrawOverlay() {};
 	virtual void Process_r() {};
-	virtual void Function4() {};
+	virtual void HitTest() {};
 	virtual void DeleteChildren() {};
 	virtual void SetXYZ(float x, float y, float z) {};
 	virtual void SetXY(float x, float y) {};
@@ -61,27 +61,18 @@ public:
 	virtual void GetWH(Vector2* wh) {};
 	virtual void GetW(float* w) {};
 	virtual void GetH(float* h) {};
-	virtual void Function36() {};
-	virtual void Function37() {};
-	virtual void Function38() {};
-	virtual void Function39() {};
+	virtual void UpdateLocalTransform() {};
+	virtual void UpdateTransform() {};
+	virtual void UpdateTransform_r() {};
+	virtual void ForceUpdate() {};
 	virtual void SetScreenTransition() {};
 	virtual void SetDefaultDirtyState() {};
-	virtual void Function42() {};
+	virtual void _DeleteChildrenInternal() {};
 	virtual void BaseDrawChildren() {};
 
 public:
 	CBasePositionableObject() {
 		Constructor(this);
-		//int vTableAddr = Utils::getModuleBase() + 0x72F25C; // "BTD5-Win.exe"+72F25C 
-		//memcpy(this, &vTableAddr, 4);
-		/*onei = 1;
-		selfPlus14 = (void*)((size_t)(this) + 0x14);
-		selfPlus14_2 = (void*)((size_t)(this) + 0x14);
-		this->CMatrix = CMatrix::CMatrix(1);
-		onef = 1;
-		ScaleX = 1.0;
-		ScaleY = 1.0;*/
 	}
 	Vector3& getPosition() {
 		Vector3* thePos = new Vector3();

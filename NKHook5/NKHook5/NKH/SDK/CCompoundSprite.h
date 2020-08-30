@@ -7,6 +7,8 @@ public:
 	int CCompoundSpriteStart; //0x0104
 	class CEventManager* CEventManager; //0x0108
 	char pad_010C[56]; //0x010C
+
+	virtual void GetTextureName() {};
 public:
 	CCompoundSprite() : CSprite() {
 		Constructor(this);
