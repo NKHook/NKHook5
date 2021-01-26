@@ -225,6 +225,12 @@
     <ClInclude Include="NKH\SDK\SigResults.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="NKH\SDK\CSprite.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="NKH\Patches\UnMutexGetCompoundPtr.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -246,6 +252,9 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="NKH\SDK\SigResults.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="NKH\Patches\UnMutexGetCompoundPtr.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

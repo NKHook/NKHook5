@@ -6,12 +6,14 @@ class CCompoundSprite : public CSprite
 public:
 	int CCompoundSpriteStart; //0x0104
 	class CEventManager* CEventManager; //0x0108
-	char pad_010C[56]; //0x010C
+	char pad_010C[60]; //0x010C
 
 	virtual void GetTextureName() {};
 public:
-	CCompoundSprite() : CSprite() {
-		Constructor(this);
+	CCompoundSprite(Vector2* position, void* sCompoundSpriteInfo, void* cEventManager) : CSprite(position, sCompoundSpriteInfo, false) {
+		cout << "pre compound sprite" << endl;
+		Constructor(this, position, sCompoundSpriteInfo, cEventManager);
+		cout << "post compound sprite" << endl;
 	}
-	void Constructor(CCompoundSprite* self);
-}; //Size: 0x0144
+	void Constructor(CCompoundSprite* self, Vector2* position, void* sCompoundSpriteInfo, void* cEventManager);
+}; //Size: 0x0148

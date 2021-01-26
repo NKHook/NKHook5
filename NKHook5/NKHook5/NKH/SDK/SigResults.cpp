@@ -136,7 +136,7 @@ void* GetSpriteInfoPtr(CTextureLoader* ctl, string* spriteSheet, string* spriteN
 #pragma endregion
 #pragma region CSprite_Constructor
 void* CSprite_Constructor_Addr = 0;
-void CSprite::Constructor(CSprite* self) {
+void CSprite::Constructor(CSprite* self, Vector2* position, void* sSpriteInfo, bool param_3) {
 	if (CSprite_Constructor_Addr == 0) {
 		CSprite_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 E8 ?? ?? ?? ?? 8A 45 0C C7 45 FC 00 00 00 00"); //55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 E8 ?? ?? ?? ?? 8A 45 0C C7 45 FC 00 00 00 00
 		if (CSprite_Constructor_Addr == 0) {
@@ -144,13 +144,14 @@ void CSprite::Constructor(CSprite* self) {
 			return;
 		}
 	}
-	void(__thiscall * CSprite_Constructor_Func)(void*);
+	void(__thiscall * CSprite_Constructor_Func)(void*, void*, void*, bool);
 	memcpy(&CSprite_Constructor_Func, &CSprite_Constructor_Addr, 4);
-	CSprite_Constructor_Func(self);
+	CSprite_Constructor_Func(self, position, sSpriteInfo, param_3);
 }
+#pragma endregion
 #pragma region CCompoundSprite_Constructor
 void* CCompoundSprite_Constructor_Addr = 0;
-void CCompoundSprite::Constructor(CCompoundSprite* self) {
+void CCompoundSprite::Constructor(CCompoundSprite* self, Vector2* position, void* sCompoundSpriteInfo, void* cEventManager) {
 	if (CCompoundSprite_Constructor_Addr == 0) {
 		CCompoundSprite_Constructor_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 57 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 8B 45 08 FF 70 04 FF 30"); //55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 51 56 57 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 F0 8B 45 08 FF 70 04 FF 30
 		if (CCompoundSprite_Constructor_Addr == 0) {
@@ -158,9 +159,24 @@ void CCompoundSprite::Constructor(CCompoundSprite* self) {
 			return;
 		}
 	}
-	void(__thiscall * CCompoundSprite_Constructor_Func)(void*);
+	void(__thiscall* CCompoundSprite_Constructor_Func)(void*, void*, void*, void*);
 	memcpy(&CCompoundSprite_Constructor_Func, &CCompoundSprite_Constructor_Addr, 4);
-	CCompoundSprite_Constructor_Func(self);
+	CCompoundSprite_Constructor_Func(self, position, sCompoundSpriteInfo, cEventManager);
+}
+#pragma endregion
+#pragma region pCTextureLoader_LoadCompound
+void* pCTextureLoader_LoadCompound_Addr = 0;
+void* __fastcall LoadCompound(CTextureLoader* ctl, string* path, string* fileName) {
+	if (pCTextureLoader_LoadCompound_Addr == 0) {
+		pCTextureLoader_LoadCompound_Addr = (void*)Utils::findPattern(Utils::getModuleBase(), Utils::getBaseModuleEnd(), "55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 24 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 D4 8B 7D 0C"); //55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 83 EC 24 A1 ?? ?? ?? ?? 33 C5 89 45 F0 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B F1 89 75 D4 8B 7D 0C
+		if (pCTextureLoader_LoadCompound_Addr == 0) {
+			cout << "CRITICAL ERROR: COULDN'T CALL pCTL::LC!" << endl;
+			return nullptr;
+		}
+	}
+	void*(__fastcall* pCTextureLoader_LoadCompound_Func)(void*, void*, void*);
+	memcpy(&pCTextureLoader_LoadCompound_Func, &pCTextureLoader_LoadCompound_Addr, 4);
+	return pCTextureLoader_LoadCompound_Func(&ctl, path, fileName);
 }
 #pragma endregion
 

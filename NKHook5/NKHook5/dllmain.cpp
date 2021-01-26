@@ -15,6 +15,8 @@
 #include "NKH/SDK/CBaseTower.h"
 #include "NKH/SDK/CBaseScreen.h"
 #include "NKH/SDK/SigResults.h"
+#include "NKH/Patches/UnMutexGetCompoundPtr.h"
+#include "NKH/SDK/CCompoundSprite.h"
 
 
 
@@ -32,6 +34,7 @@ void StartNKH(HMODULE hModule) {
 
     Hooks();
     FlagHacker();
+    UnMutexGetCompoundPtr();
     //FlagHacker::addHackedFlag(new string("HackMonkey"), 0x4001);
     //FlagHacker::addHackedFlag(new string("Gaming"), 0x4002);
 
@@ -82,10 +85,9 @@ void StartNKH(HMODULE hModule) {
             Hooks::spinBrand = !Hooks::spinBrand;
         }
         else if (line == "test") {
-            string* InGame = new string("newshared");
-            string* steam_icon = new string("steam_icon");
-            void* result = GetSpriteInfoPtr(Utils::getGame()->CTextureLoader, steam_icon, InGame);
-            cout << "EPIC: " << hex << result << endl;
+            CSprite* sprite = new CSprite(new Vector2(0,0), nullptr, false);
+            //CCompoundSprite* sprite = new CCompoundSprite(new Vector2(0,0), nullptr, nullptr);
+            cout << hex << "Result: " << sprite << endl;
         }
         else {
             if (!Chai::invokeConsoleInputCallbacks(line)) {

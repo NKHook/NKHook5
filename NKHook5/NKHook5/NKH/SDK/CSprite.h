@@ -23,8 +23,10 @@ public:
 	virtual void SetSecondaryColourMultiply() {};
 	virtual void SetSecondaryColourMultiply_r() {};
 public:
-	CSprite() : CRenderableTextureObject() {
-		Constructor(this);
+	CSprite(Vector2* position, void* sSpriteInfo, bool param_3) : CRenderableTextureObject() {
+		cout << "pre sprite" << endl;
+		Constructor(this, position, sSpriteInfo, param_3);
+		cout << "post sprite" << endl;
 	}
-	void Constructor(CSprite* self);
+	void Constructor(CSprite* self, Vector2* position, void* sSpriteInfo, bool param_3);
 }; //Size: 0x0104

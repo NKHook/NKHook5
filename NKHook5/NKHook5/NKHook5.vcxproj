@@ -189,6 +189,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="NKH\Hooks.h" />
     <ClInclude Include="NKH\Patches\pch.h" />
+    <ClInclude Include="NKH\Patches\UnMutexGetCompoundPtr.h" />
     <ClInclude Include="NKH\pch.h" />
     <ClInclude Include="NKH\SDK\BloonData.h" />
     <ClInclude Include="NKH\SDK\CAircraftManager.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="NKH\SDK\CScreenManager.h" />
     <ClInclude Include="NKH\SDK\CSocialLeaderboard.h" />
     <ClInclude Include="NKH\SDK\CSpecialtyFactory.h" />
+    <ClInclude Include="NKH\SDK\CSprite.h" />
     <ClInclude Include="NKH\SDK\CSteamCloud.h" />
     <ClInclude Include="NKH\SDK\CSteamInterface.h" />
     <ClInclude Include="NKH\SDK\CTextObject.h" />
@@ -258,6 +260,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="NKH\Patches\FlagHacker.cpp" />
     <ClCompile Include="NKH\Hooks.cpp" />
+    <ClCompile Include="NKH\Patches\UnMutexGetCompoundPtr.cpp" />
     <ClCompile Include="NKH\SDK\SigResults.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

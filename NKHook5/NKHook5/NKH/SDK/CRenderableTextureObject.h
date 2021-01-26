@@ -1,5 +1,7 @@
 #pragma once
 #include "CBasePositionableObject.h"
+#include <iostream>
+using namespace std;
 // Created with ReClass.NET 1.2 by KN4CK3R
 
 class CRenderableTextureObject : public CBasePositionableObject
@@ -20,9 +22,9 @@ public:
 	virtual void SetTexture() {};
 public:
 	CRenderableTextureObject() : CBasePositionableObject() {
+		cout << "Pre render obj" << endl;
 		Constructor(this);
-		//int vTableAddr = Utils::getModuleBase() + 0x72F188; // "BTD5-Win.exe"+72F188
-		//memcpy(this, &vTableAddr, 4);
+		cout << "post render obj" << endl;
 	}
 	void Constructor(CRenderableTextureObject* self);
 }; //Size: 0x00C8
