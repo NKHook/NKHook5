@@ -39,3 +39,4 @@ packages/
 CMakeFiles/
 *.dir/
 *.cmake
+.vscode/
