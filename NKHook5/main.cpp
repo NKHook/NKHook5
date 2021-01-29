@@ -1,9 +1,17 @@
 #include <Windows.h>
 #include <string>
 #include <iostream>
+#include <shlobj_core.h>
 
-extern "C" __declspec(dllexport) bool InternetGetConnectedState(LPDWORD lpdwFlags, DWORD   dwReserved) {
-    return true;
+#define EXPORT comment(linker, "/EXPORT:" __FUNCTION__ "=" __FUNCDNAME__)
+
+HMODULE winINet;
+int(__stdcall* InternetGetConnectedState_orig)(int,int);
+
+extern "C" __declspec(dllexport) int __stdcall InternetGetConnectedState(int lpdwFlags, int dwReserved) {
+    #pragma EXPORT
+    int result = InternetGetConnectedState_orig(lpdwFlags, dwReserved);
+    return result;
 }
 
 auto initialize() -> int {
@@ -12,8 +20,15 @@ auto initialize() -> int {
     freopen_s(&fDummy, "CONIN$", "r", stdin);
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
-    std::cout << "Haha doing shit before game go brrrr" << std::endl;
-    Sleep(1000);
+    std::cout << "Loading original WinINet.dll..." << std::endl;
+    char syswowPath[MAX_PATH];
+    SHGetFolderPathA(nullptr, CSIDL_SYSTEMX86, nullptr, SHGFP_TYPE_CURRENT, syswowPath);
+    std::string syswowStr(syswowPath);
+    std::string wininetPath = syswowStr + "\\wininet.dll";
+    std::cout << "WinINet: " + wininetPath << std::endl;
+    winINet = LoadLibraryA(wininetPath.c_str());
+    InternetGetConnectedState_orig = (int(__stdcall*)(int,int))GetProcAddress(winINet, "InternetGetConnectedState");
+    std::cout << "WinINet loaded" << std::endl;
     return 0;
 }
 
