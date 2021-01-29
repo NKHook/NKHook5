@@ -32,3 +32,10 @@ packages/
 *.exp
 *.enc
 *.recipe
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.CMakeFiles
+CMakeFiles/
+*.dir/
+*.cmake
