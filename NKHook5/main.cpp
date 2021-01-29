@@ -13,7 +13,7 @@ auto initialize() -> int {
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
     std::cout << "Haha doing shit before game go brrrr" << std::endl;
-    Sleep(5000);
+    Sleep(1000);
     return 0;
 }
 
@@ -27,7 +27,7 @@ extern "C" __declspec(dllexport) bool __stdcall DllMain(
     switch( fdwReason ) 
     { 
         case DLL_PROCESS_ATTACH:
-            CreateThread(nullptr, (size_t)nullptr, (LPTHREAD_START_ROUTINE)initialize, nullptr, 0, nullptr);
+            initialize();
             break;
     }
     return TRUE;  // Successful DLL_PROCESS_ATTACH.
