@@ -16,7 +16,6 @@ extern "C" __declspec(dllexport) int __stdcall InternetGetConnectedState(int lpd
 
 auto initialize() -> int {
     AllocConsole();
-    Sleep(10000);
     FILE *fDummy;
     freopen_s(&fDummy, "CONIN$", "r", stdin);
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
