@@ -40,3 +40,4 @@ CMakeFiles/
 *.dir/
 *.cmake
 .vscode/
+*.pc
