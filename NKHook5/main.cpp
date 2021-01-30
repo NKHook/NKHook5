@@ -1,10 +1,15 @@
 #include <Windows.h>
 #include <string>
 #include <iostream>
+#include <polyhook2/Detour/x86Detour.hpp>
+#include "Utils.h"
 
 
 auto initialize() -> int {
     std::cout << "Loading NKHook5..." << std::endl;
+
+    std::cout << "Hooking game initialization..." << std::endl;
+
     std::cout << "Loaded NKHook5!" << std::endl;
     return 0;
 }

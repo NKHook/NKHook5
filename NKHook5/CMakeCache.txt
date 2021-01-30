@@ -106,7 +106,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Loader
+CMAKE_PROJECT_NAME:STATIC=NKHook5
 
 //RC compiler
 CMAKE_RC_COMPILER:FILEPATH=rc
@@ -184,6 +184,15 @@ Loader_BINARY_DIR:STATIC=A:/GitHub/NKHook5/NKHook5
 
 //Value Computed by CMake
 Loader_SOURCE_DIR:STATIC=A:/GitHub/NKHook5/NKHook5
+
+//Value Computed by CMake
+NKHook5_BINARY_DIR:STATIC=A:/GitHub/NKHook5/NKHook5
+
+//Dependencies for the target
+NKHook5_LIB_DEPENDS:STATIC=general;SHARED;general;PolyHook_2;general;capstone;
+
+//Value Computed by CMake
+NKHook5_SOURCE_DIR:STATIC=A:/GitHub/NKHook5/NKHook5
 
 
 ########################
