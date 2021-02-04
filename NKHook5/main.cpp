@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <polyhook2/Detour/x86Detour.hpp>
-#include "Utils.h"
+#include "Utils.hpp"
 
 
 auto initialize() -> int {
