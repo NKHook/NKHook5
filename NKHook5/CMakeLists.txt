@@ -14,4 +14,4 @@ target_include_directories(NKHook5 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/Lib/PolyHo
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 
-target_link_libraries(NKHook5 PRIVATE PolyHook_2 capstone)
+target_link_libraries(NKHook5 PUBLIC PolyHook_2 capstone)

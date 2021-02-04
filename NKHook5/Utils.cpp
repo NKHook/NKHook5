@@ -30,14 +30,14 @@ auto Utils::findPattern(const char* pattern) -> int {
 auto Utils::findPattern(int rangeStart, int rangeEnd, const char* pattern) -> int
 {
 	const char* pat = pattern;
-	int firstMatch = 0;
+	DWORD firstMatch = 0;
 	for (int pCur = rangeStart; pCur < rangeEnd; pCur++)
 	{
 		if (!*pat) return firstMatch;
-		if (*(char*)pat == '\?' || *(char*)pCur == getByte(pat)) {
+		if (*(PBYTE)pat == '\?' || *(BYTE*)pCur == getByte(pat)) {
 			if (!firstMatch) firstMatch = pCur;
 			if (!pat[2]) return firstMatch;
-			if (*(short*)pat == '\?\?' || *(short*)pat != '\?') pat += 3;
+			if (*(PWORD)pat == '\?\?' || *(PBYTE)pat != '\?') pat += 3;
 			else pat += 2;	//one ?
 		}
 		else {
@@ -45,6 +45,6 @@ auto Utils::findPattern(int rangeStart, int rangeEnd, const char* pattern) -> in
 			firstMatch = 0;
 		}
 	}
-	return 0;
+	return NULL;
 }
 
