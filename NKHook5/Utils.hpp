@@ -7,11 +7,12 @@
 
 class Utils {
 public:
-    static int getModuleBase();
-	static HMODULE getModuleBaseHandle();
-	static int getBaseModuleSize();
-	static int getBaseModuleEnd();
-	static HMODULE getThisModule();
-    static int findPattern(int rangeStart, int rangeEnd, const char* pattern);
+    static auto getModuleBase() -> int;
+	static auto getModuleBaseHandle() -> HMODULE;
+	static auto getBaseModuleSize() -> int;
+	static auto getBaseModuleEnd() -> int;
+	static auto getThisModule() -> HMODULE;
+    static auto findPattern(const char* pattern) -> int;
+    static auto findPattern(int rangeStart, int rangeEnd, const char* pattern) -> int;
 };
 #endif /* CCA04C04_B581_4D3C_A60B_B29CB543C323 */
