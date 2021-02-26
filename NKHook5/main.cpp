@@ -21,6 +21,10 @@ int __stdcall cb_winmain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCm
 auto initialize() -> int {
     std::cout << "Loading NKHook5..." << std::endl;
 
+    std::shared_ptr<PLH::ErrorLog> errLog = std::shared_ptr<PLH::ErrorLog>(&PLH::ErrorLog::singleton());
+    PLH::Log::registerLogger(errLog);
+    PLH::ErrorLog::singleton().setLogLevel(PLH::ErrorLevel::INFO);
+    
     std::cout << "Hooking game initialization..." << std::endl;
     const uintptr_t p_winmain = Utils::findPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 81 EC ?? ?? ?? ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 53 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? ?? 65 ?? 8B ?? ?? 8D ?? ?? ?? ?? ?? 8B");
     std::cout << "Found patch address " << std::hex << p_winmain << std::endl;
@@ -39,9 +43,6 @@ auto initialize() -> int {
     else {
         std::cout << "FATAL FAILURE: Could not find winmain!" << std::endl;
     }
-
-
-    const uintptr_t p_cbpoc = Utils::findPattern("56 57 8B F9 0F 57 ?? 8D");
 
 
     std::cout << "Loaded NKHook5!" << std::endl;
