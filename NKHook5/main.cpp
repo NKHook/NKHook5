@@ -5,10 +5,17 @@
 #include <polyhook2/CapstoneDisassembler.hpp>
 #include "Utils.hpp"
 
+#pragma comment(lib,"asmjit.lib")
+#pragma comment(lib,"capstone.lib")
+#pragma comment(lib,"PolyHook_2.lib")
+#pragma comment(lib,"Zydis.lib")
+#pragma comment(lib,"Zycore.lib")
+
 uint64_t o_winmain = 0;
-void __stdcall cb_winmain(HINSTANCE param_1, int param_2, int** param_3) {
+int __stdcall cb_winmain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
     std::cout << "Hello from main!" << std::endl;
-    return PLH::FnCast(o_winmain, &cb_winmain)(param_1, param_2, param_3);
+    MessageBoxA(nullptr, "The hook was successful!", "Hook success!", MB_OK);
+    return PLH::FnCast(o_winmain, &cb_winmain)(hInstance, hPrevInstance, pCmdLine, nCmdShow);
 }
 
 auto initialize() -> int {
@@ -32,6 +39,9 @@ auto initialize() -> int {
     else {
         std::cout << "FATAL FAILURE: Could not find winmain!" << std::endl;
     }
+
+
+    const uintptr_t p_cbpoc = Utils::findPattern("56 57 8B F9 0F 57 ?? 8D");
 
 
     std::cout << "Loaded NKHook5!" << std::endl;
