@@ -11,37 +11,32 @@
 #pragma comment(lib,"Zydis.lib")
 #pragma comment(lib,"Zycore.lib")
 
-uint64_t o_winmain = 0;
-int __stdcall cb_winmain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
-    std::cout << "Hello from main!" << std::endl;
-    MessageBoxA(nullptr, "The hook was successful!", "Hook success!", MB_OK);
-    return PLH::FnCast(o_winmain, &cb_winmain)(hInstance, hPrevInstance, pCmdLine, nCmdShow);
+uint64_t o_gamealloc = 0;
+void* __fastcall cb_gamealloc(void* gameInstance) {
+    std::cout << "Gameinstance created: " << gameInstance << std::endl;
+    return PLH::FnCast(o_gamealloc, &cb_gamealloc)(gameInstance);
 }
 
 auto initialize() -> int {
     std::cout << "Loading NKHook5..." << std::endl;
 
-    std::shared_ptr<PLH::ErrorLog> errLog = std::shared_ptr<PLH::ErrorLog>(&PLH::ErrorLog::singleton());
-    PLH::Log::registerLogger(errLog);
-    PLH::ErrorLog::singleton().setLogLevel(PLH::ErrorLevel::INFO);
-    
-    std::cout << "Hooking game initialization..." << std::endl;
-    const uintptr_t p_winmain = Utils::findPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 81 EC ?? ?? ?? ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 53 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? ?? 65 ?? 8B ?? ?? 8D ?? ?? ?? ?? ?? 8B");
-    std::cout << "Found patch address " << std::hex << p_winmain << std::endl;
-    if(p_winmain) {
+    std::cout << "Hooking game constructor..." << std::endl;
+    const uintptr_t p_gamealloc = Utils::findPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 51 56 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B F1 ?? 75 ?? E8 ?? ?? ?? ?? ?? 45 ?? ?? ?? ?? ?? ?? 86 ?? ?? ?? ?? ?? ?? ?? ?? ?? 86 ?? ?? ?? ?? ?? ?? ?? ?? ?? 86 ?? ?? ?? ?? ?? ?? ?? ?? ?? 86 ?? ?? ?? ?? ?? ?? ?? ?? ?? 86");
+    std::cout << "Found patch address " << std::hex << p_gamealloc << std::endl;
+    if(p_gamealloc) {
         PLH::CapstoneDisassembler dis(PLH::Mode::x86);
-        std::cout << "Found patch address " << std::hex << p_winmain << std::endl;
-        PLH::x86Detour detour(p_winmain, (const uintptr_t)&cb_winmain, &o_winmain, dis);
-        std::cout << "Found patch address " << std::hex << p_winmain << std::endl;
+        std::cout << "Found patch address " << std::hex << p_gamealloc << std::endl;
+        PLH::x86Detour detour(p_gamealloc, (const uintptr_t)&cb_gamealloc, &o_gamealloc, dis);
+        std::cout << "Found patch address " << std::hex << p_gamealloc << std::endl;
         if(detour.hook()) {
-            std::cout << "PASS: Winmain hook success, patched at: " << std::hex << p_winmain << std::endl;
+            std::cout << "PASS: gamealloc hook success, patched at: " << std::hex << p_gamealloc << std::endl;
         }
         else {
-            std::cout << "FAIL: Count not hook winmain" << std::endl;
+            std::cout << "FAIL: Could not hook gamealloc" << std::endl;
         }
     }
     else {
-        std::cout << "FATAL FAILURE: Could not find winmain!" << std::endl;
+        std::cout << "FATAL FAILURE: Could not find gamealloc!" << std::endl;
     }
 
 
