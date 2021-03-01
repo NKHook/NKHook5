@@ -10,9 +10,8 @@ namespace NKHook5
             uint64_t totalCreations = 0;
             void* __fastcall cb_hook(void* object) {
                 totalCreations++;
-                std::string typeName = NKHook5::Utils::GetTypeName(object);
-                std::cout << "Object created at: " << object << " of type: " << typeName << " Total creations: " << totalCreations << std::endl;
-                return PLH::FnCast(o_func, &cb_hook)(object);
+                void* result = PLH::FnCast(o_func, &cb_hook)(object);
+                return result;
             }
 
             auto Constructor::Apply() -> bool

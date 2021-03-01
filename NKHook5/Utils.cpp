@@ -53,21 +53,11 @@ auto NKHook5::Utils::FindPattern(int rangeStart, int rangeEnd, const char* patte
 	return NULL;
 }
 
-#include <iostream>
 auto NKHook5::Utils::GetTypeName(void* object) -> std::string
 {
-	int buf = 0;
-	void* vtable = **(void***)object;
-	std::cout << "VT: " << vtable << std::endl;
-	std::cin >> buf;
-	void* metaPtr = (void*)((size_t)vtable-(size_t)sizeof(void*));
-	std::cout << "MP: " << metaPtr << std::endl;
-	std::cin >> buf;
-	void* typeDesc = (void*)((size_t)metaPtr+(sizeof(void*)*4));
-	std::cout << "TD: " << typeDesc << std::endl;
-	std::cin >> buf;
-	char* name = (char*)((size_t)typeDesc+(sizeof(void*)*2));
-	std::cout << "NM: " << name << std::endl;
-	std::cin >> buf;
+	void* vtable = *(void**)object;
+	void** metaPtr = (void**)((size_t)vtable-(size_t)sizeof(void*));
+	void** typeDesc = (void**)((size_t)*metaPtr+(sizeof(void*)*3));
+	char* name = (char*)((size_t)*typeDesc+(sizeof(void*)*3));
 	return std::string(name);
 }
