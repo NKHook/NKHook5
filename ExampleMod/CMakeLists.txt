@@ -18,6 +18,9 @@ target_sources(ExampleMod PRIVATE
     "Entry.cs"
 )
 
+# Add Managed as a dependency to build *after* it builds
+add_dependencies(ExampleMod Managed)
+
 # Add references
 set_property(TARGET ExampleMod PROPERTY VS_DOTNET_REFERENCES
     ${PROJECT_SOURCE_DIR}/Managed/Release/Managed.dll;

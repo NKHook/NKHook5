@@ -1,5 +1,3 @@
-set(CMAKE_CXX_STANDARD 20)
-
 if(MSVC)
     add_compile_options(
             $<$<CONFIG:>:/MT> #---------|

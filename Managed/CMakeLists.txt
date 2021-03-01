@@ -1,3 +1,4 @@
+set(CMAKE_CXX_STANDARD 17) # C++ CLI supports C++17 latest
 
 add_library(Managed SHARED 
     Main.cpp
