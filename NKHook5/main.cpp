@@ -3,7 +3,7 @@
 #include <iostream>
 #include <polyhook2/Detour/x86Detour.hpp>
 #include <polyhook2/CapstoneDisassembler.hpp>
-#include "Utils.hpp"
+#include "Utils.h"
 
 #pragma comment(lib,"asmjit.lib")
 #pragma comment(lib,"capstone.lib")

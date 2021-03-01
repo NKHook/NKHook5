@@ -15,6 +15,8 @@ add_library(NKHook5 SHARED
     Utils.cpp
 )
 
+add_subdirectory(Patches)
+
 target_include_directories(NKHook5 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/Lib/PolyHook_2_0/_install/include")
 
 message("${CMAKE_CURRENT_LIST_DIR}")
