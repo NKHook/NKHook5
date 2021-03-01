@@ -1,6 +1,5 @@
 #ifndef PATCHMANAGER
 #define PATCHMANAGER
-#include "IPatch.h"
 #include <vector>
 
 namespace NKHook5
@@ -9,10 +8,10 @@ namespace NKHook5
     {
         class PatchManager
         {
-            static inline std::vector<IPatch*>* patches = new std::vector<IPatch*>();
+            static inline std::vector<class IPatch*>* patches = new std::vector<class IPatch*>();
         public:
             static void ApplyAll();
-            static void ApplyPatch(IPatch* toAdd);
+            static void ApplyPatch(class IPatch* toAdd);
         };
     }
 }

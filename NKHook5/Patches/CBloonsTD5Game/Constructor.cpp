@@ -2,7 +2,7 @@
 
 using namespace NKHook5::Patches::CBloonsTD5Game;
 
-uintptr_t o_func;
+uint64_t o_func;
 void* __fastcall cb_hook(void* gameInstance) {
     std::cout << "Gameinstance created: " << gameInstance << std::endl;
     return PLH::FnCast(o_func, &cb_hook)(gameInstance);

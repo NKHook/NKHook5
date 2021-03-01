@@ -15,6 +15,7 @@ void PatchManager::ApplyPatch(IPatch* toAdd)
     if(toAdd->Apply())
     {
         PatchManager::patches->push_back(toAdd);
+        std::cout << "Successfully applied \'" << toAdd->GetName() << "\' patch!" << std::endl;
     }
     else
     {

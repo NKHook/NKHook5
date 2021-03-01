@@ -16,21 +16,12 @@ namespace NKHook5
     {
         class IPatch
         {
+            static inline PLH::CapstoneDisassembler* dis = new PLH::CapstoneDisassembler(PLH::Mode::x86);
             std::string name;
         public:
-            IPatch(std::string name)
-            {
-                this->name = name;
-            }
-            auto GetName() -> std::string
-            {
-                return this->name;
-            }
-            auto GetDis() -> PLH::CapstoneDisassembler
-            {
-                PLH::CapstoneDisassembler dis(PLH::Mode::x86);
-                return dis;
-            }
+            IPatch(std::string name);
+            auto GetName() -> std::string;
+            auto GetDis() -> PLH::CapstoneDisassembler&;
             virtual auto Apply() -> bool;
         };
     } // namespace Patches

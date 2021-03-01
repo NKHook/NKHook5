@@ -8,9 +8,11 @@ endif()
 
 link_directories("${CMAKE_CURRENT_LIST_DIR}/Lib/PolyHook_2_0/_install/lib/")
 
-add_library(NKHook5 SHARED 
-    main.cpp
-    Utils.cpp
+add_library(NKHook5 SHARED)
+
+target_sources(NKHook5 PRIVATE 
+    "main.cpp"
+    "Utils.cpp"
 )
 
 add_subdirectory(Patches)
