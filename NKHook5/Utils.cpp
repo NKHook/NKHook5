@@ -4,30 +4,35 @@
 #define getBits( x )	(INRANGE((x&(~0x20)),'A','F') ? ((x&(~0x20)) - 'A' + 0xa) : (INRANGE(x,'0','9') ? x - '0' : 0))
 #define getByte( x )	(getBits(x[0]) << 4 | getBits(x[1]))
 
-auto NKHook5::Utils::getModuleBase() -> int {
+auto NKHook5::Utils::GetModuleBase() -> int
+{
 	return (int)GetModuleHandle(NULL);
 }
-auto NKHook5::Utils::getModuleBaseHandle() -> HMODULE {
+auto NKHook5::Utils::GetModuleBaseHandle() -> HMODULE
+{
 	return GetModuleHandle(NULL);
 }
-auto NKHook5::Utils::getBaseModuleSize() -> int
+auto NKHook5::Utils::GetBaseModuleSize() -> int
 {
 	MODULEINFO info;
-	GetModuleInformation(GetCurrentProcess(), getModuleBaseHandle(), &info, sizeof(info));
+	GetModuleInformation(GetCurrentProcess(), GetModuleBaseHandle(), &info, sizeof(info));
 	return info.SizeOfImage;
 }
-auto NKHook5::Utils::getBaseModuleEnd() -> int {
-	return getModuleBase() + getBaseModuleSize();
+auto NKHook5::Utils::GetBaseModuleEnd() -> int
+{
+	return GetModuleBase() + GetBaseModuleSize();
 }
-auto NKHook5::Utils::getThisModule() -> HMODULE {
+auto NKHook5::Utils::GetThisModule() -> HMODULE
+{
 	return GetModuleHandleA("NKHook5.dll");
 }
 
-auto NKHook5::Utils::findPattern(const char* pattern) -> int {
-	return findPattern(getModuleBase(), getBaseModuleEnd(), pattern);
+auto NKHook5::Utils::FindPattern(const char* pattern) -> int
+{
+	return FindPattern(GetModuleBase(), GetBaseModuleEnd(), pattern);
 }
 
-auto NKHook5::Utils::findPattern(int rangeStart, int rangeEnd, const char* pattern) -> int
+auto NKHook5::Utils::FindPattern(int rangeStart, int rangeEnd, const char* pattern) -> int
 {
 	const char* pat = pattern;
 	DWORD firstMatch = 0;
@@ -48,3 +53,21 @@ auto NKHook5::Utils::findPattern(int rangeStart, int rangeEnd, const char* patte
 	return NULL;
 }
 
+#include <iostream>
+auto NKHook5::Utils::GetTypeName(void* object) -> std::string
+{
+	int buf = 0;
+	void* vtable = **(void***)object;
+	std::cout << "VT: " << vtable << std::endl;
+	std::cin >> buf;
+	void* metaPtr = (void*)((size_t)vtable-(size_t)sizeof(void*));
+	std::cout << "MP: " << metaPtr << std::endl;
+	std::cin >> buf;
+	void* typeDesc = (void*)((size_t)metaPtr+(sizeof(void*)*4));
+	std::cout << "TD: " << typeDesc << std::endl;
+	std::cin >> buf;
+	char* name = (char*)((size_t)typeDesc+(sizeof(void*)*2));
+	std::cout << "NM: " << name << std::endl;
+	std::cin >> buf;
+	return std::string(name);
+}

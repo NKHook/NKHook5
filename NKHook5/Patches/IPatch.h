@@ -1,9 +1,10 @@
-#ifndef IPATCH
-#define IPATCH
+#ifndef NKHOOK5_PATCHES_IPATCH
+#define NKHOOK5_PATCHES_IPATCH
 
 #include <string>
 #include <polyhook2/Detour/x86Detour.hpp>
 #include <polyhook2/CapstoneDisassembler.hpp>
+
 #pragma comment(lib,"asmjit.lib")
 #pragma comment(lib,"capstone.lib")
 #pragma comment(lib,"PolyHook_2.lib")
@@ -27,4 +28,5 @@ namespace NKHook5
     } // namespace Patches
     
 } // namespace NKHook5
-#endif /* IPATCH */
+
+#endif /* NKHOOK5_PATCHES_IPATCH */

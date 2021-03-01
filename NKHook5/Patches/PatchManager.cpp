@@ -2,12 +2,14 @@
 #include <iostream>
 
 #include "CBloonsTD5Game/Constructor.h"
+#include "CBasePositionableObject/Constructor.h"
 
 using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
+    PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
 }
 
 void PatchManager::ApplyPatch(IPatch* toAdd)

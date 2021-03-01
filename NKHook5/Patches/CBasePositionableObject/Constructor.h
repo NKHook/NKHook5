@@ -1,5 +1,5 @@
-#ifndef NKHOOK5_PATCHES_CBLOONSTD5GAME_CONSTRUCTOR
-#define NKHOOK5_PATCHES_CBLOONSTD5GAME_CONSTRUCTOR
+#ifndef NKHOOK5_PATCHES_CBASEPOSITIONABLEOBJECT_CONSTRUCTOR
+#define NKHOOK5_PATCHES_CBASEPOSITIONABLEOBJECT_CONSTRUCTOR
 
 #include "../IPatch.h"
 #include "../../Utils.h"
@@ -8,12 +8,12 @@ namespace NKHook5
 {
     namespace Patches
     {
-        namespace CBloonsTD5Game
+        namespace CBasePositionableObject
         {
             class Constructor : public IPatch
             {
             public:
-                Constructor() : IPatch("CBloonsTD5Game::Constructor")
+                Constructor() : IPatch("CBasePositionableObject::Constructor")
                 {
 
                 }
@@ -24,4 +24,4 @@ namespace NKHook5
     } // namespace Patches
     
 } // namespace NKHook5
-#endif /* NKHOOK5_PATCHES_CBLOONSTD5GAME_CONSTRUCTOR */
+#endif /* NKHOOK5_PATCHES_CBASEPOSITIONABLEOBJECT_CONSTRUCTOR */

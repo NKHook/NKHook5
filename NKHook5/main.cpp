@@ -12,8 +12,6 @@ auto initialize() -> int {
 
     std::cout << "Loaded NKHook5!" << std::endl;
 
-    LoadLibraryA("Managed.dll");
-
     return 0;
 }
 

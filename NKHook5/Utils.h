@@ -1,21 +1,23 @@
-#ifndef CCA04C04_B581_4D3C_A60B_B29CB543C323
-#define CCA04C04_B581_4D3C_A60B_B29CB543C323
+#ifndef NKHOOK5_UTILS
+#define NKHOOK5_UTILS
 
 #include <Windows.h>
 #include <Psapi.h>
 #include <tlhelp32.h>
+#include <string>
 
 namespace NKHook5
 {
 	class Utils {
 	public:
-		static auto getModuleBase() -> int;
-		static auto getModuleBaseHandle() -> HMODULE;
-		static auto getBaseModuleSize() -> int;
-		static auto getBaseModuleEnd() -> int;
-		static auto getThisModule() -> HMODULE;
-		static auto findPattern(const char* pattern) -> int;
-		static auto findPattern(int rangeStart, int rangeEnd, const char* pattern) -> int;
+		static auto GetModuleBase() -> int;
+		static auto GetModuleBaseHandle() -> HMODULE;
+		static auto GetBaseModuleSize() -> int;
+		static auto GetBaseModuleEnd() -> int;
+		static auto GetThisModule() -> HMODULE;
+		static auto FindPattern(const char* pattern) -> int;
+		static auto FindPattern(int rangeStart, int rangeEnd, const char* pattern) -> int;
+		static auto GetTypeName(void* object) -> std::string;
 	};
 }
-#endif /* CCA04C04_B581_4D3C_A60B_B29CB543C323 */
+#endif /* NKHOOK5_UTILS */

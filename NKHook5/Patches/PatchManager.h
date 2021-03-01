@@ -1,5 +1,5 @@
-#ifndef PATCHMANAGER
-#define PATCHMANAGER
+#ifndef NKHOOK5_PATCHES_PATCHMANAGER
+#define NKHOOK5_PATCHES_PATCHMANAGER
 #include <vector>
 
 namespace NKHook5
@@ -15,4 +15,4 @@ namespace NKHook5
         };
     }
 }
-#endif /* PATCHMANAGER */
+#endif /* NKHOOK5_PATCHES_PATCHMANAGER */
