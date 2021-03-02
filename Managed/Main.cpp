@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include "Entry.h"
 
-void initialize()
+void Initialize()
 {
     NKHook5::Entry::Main();
 }
@@ -16,7 +16,7 @@ extern "C" __declspec(dllexport) bool __stdcall DllMain(
     switch( fdwReason ) 
     { 
         case DLL_PROCESS_ATTACH:
-            initialize();
+            Initialize();
             break;
     }
     return TRUE;  // Successful DLL_PROCESS_ATTACH.

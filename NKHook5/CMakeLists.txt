@@ -16,6 +16,7 @@ target_sources(NKHook5 PRIVATE
 )
 
 add_subdirectory(Patches)
+add_subdirectory(Classes)
 
 target_include_directories(NKHook5 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/Lib/PolyHook_2_0/_install/include")
 
