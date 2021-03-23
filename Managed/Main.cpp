@@ -3,7 +3,7 @@
 
 void Initialize()
 {
-    NKHook5::Entry::Main();
+    NKHook5::Managed::Entry::Main();
 }
 
 #pragma unmanaged
