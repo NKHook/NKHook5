@@ -10,7 +10,7 @@ namespace NKHook5
 {
     namespace Classes
     {
-        class CBasePositionableObject
+        __declspec(dllexport) class CBasePositionableObject
         {
             char pad_0000[56]; //0x0000
             Matrix16F SpriteMatrix; //0x0038
