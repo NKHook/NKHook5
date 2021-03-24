@@ -9,13 +9,17 @@ namespace NKHook5
 			public ref class ClassWrapper
 			{
 			private:
-				System::IntPtr^ nativePtr;
+				System::IntPtr nativePtr;
 			public:
-				property System::IntPtr^ native {
-					System::IntPtr^ get()
+				property System::IntPtr native {
+					System::IntPtr get()
 					{
 						return nativePtr;
 					}
+				};
+				ClassWrapper::ClassWrapper(System::IntPtr nativePtr)
+				{
+					this->nativePtr = nativePtr;
 				};
 			};
 		} // namespace Classes

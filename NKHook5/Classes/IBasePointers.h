@@ -1,15 +1,18 @@
 #ifndef NKHOOK5_CLASSES_IBASEPOINTERS
 #define NKHOOK5_CLASSES_IBASEPOINTERS
+
+#include "CBloonsTD5Game.h"
+
 namespace NKHook5
 {
     namespace Classes
     {
-        __declspec(dllexport) class IBasePointers
+        class IBasePointers
         {
 		public:
 			struct CTextureLoader * CTextureLoader;
 			struct WinInput * WinInput;
-			struct CBloonsTD5Game * CBloonsTD5Game;
+			CBloonsTD5Game* CBloonsTD5Game;
 			struct CXmlFontImporter * CXmlFontImporter;
 			struct WinFileIO* WinFileIO;
 			struct CScreenManager* CScreenManager;

@@ -1,4 +1,4 @@
-#include "Classes/ClassWrapper.h"
+#include "Classes/IBasePointers.h"
 namespace NKHook5
 {
     public interface class BTDModStart
