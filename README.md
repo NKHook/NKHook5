@@ -1,6 +1,28 @@
 # NKHook5
 Latest NKHook5 repository
 
+# Progress
+A checklist of progress (Will change as the project grows)
+```
+✅ Loader/Injector
+✅ Code hooking
+❌ Class re-creations
+	✅ Color.h
+	✅ Matrix16F.h (SpriteMatrix)
+	✅ Vec2F.h
+	✅ Vec3F.h
+	❌ CBasePositionableObject.h
+	❌ CBaseTower.h
+	❌ CBloon.h
+	❌ CBloonsTD5Game.h
+	❌ IBasePointers.h
+	...
+✅ C++ <-> C# bridge (/Managed)
+✅ C# code loading
+✅ C# execution
+❌ C# API
+```
+
 # Contributing
 Code quality will never be perfect, but we can strive to follow a standard. Here is the current standard and how you should organize your code.
 
