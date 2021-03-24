@@ -6,6 +6,8 @@ A checklist of progress (Will change as the project grows)
 ```
 ✅ Loader/Injector
 ✅ Code hooking
+	✅ PolyHook2 setup
+	✅ Patch system
 ❌ Class re-creations
 	✅ Color.h
 	✅ Matrix16F.h (SpriteMatrix)
@@ -17,10 +19,19 @@ A checklist of progress (Will change as the project grows)
 	❌ CBloonsTD5Game.h
 	❌ IBasePointers.h
 	...
+❌ Game hooks
+	✅ CBloonsTD5Game::CBloonsTD5Game()
+	✅ CBasePositionableObject::CBasePositionableObject()
+	❌ CBaseTower::Upgrade(...)
+	❌ CFlagToStringConvertor::FlagToString(...)
+	❌ CFlagToStringConvertor::StringToFlag(...)
 ✅ C++ <-> C# bridge (/Managed)
 ✅ C# code loading
 ✅ C# execution
 ❌ C# API
+	❌ Game class implementations
+	❌ Events
+	❌ Native patching
 ```
 
 # Contributing
