@@ -5,6 +5,8 @@ Latest NKHook5 repository
 A checklist of progress (Will change as the project grows)
 ```
 ✅ Loader/Injector
+	✅ Proxy DLL
+	✅ NKHook5.dll injector
 ✅ Code hooking
 	✅ PolyHook2 setup
 	✅ Patch system
@@ -34,6 +36,30 @@ A checklist of progress (Will change as the project grows)
 	❌ Events
 	❌ Native patching
 	...
+```
+
+# Startup list
+NKHook5 changes how Bloons TD 5 loads in a few ways, heres a list comparing vanilla to NKH5.
+
+### Vanilla loading
+```
+	1. Exe is executed
+	2. Windows loads necessary libraries
+	3. Game execution begins
+	4. Exe initializes CBloonsTD5Game
+```
+### NKHook5 loading
+```
+	1. Exe is executed
+	2. Windows loads necessary libraries
+	3. NKHook5 fakes being a needed library
+	4. NKHook5 loads
+	5. Patches are applied
+	6. Game execution begins
+	7. Exe starts initializing CBloonsTD5Game
+	8. NKHook5 initialization begins
+	9. Mods are loaded & executed
+	10. CBloonsTD5Game continues being initialized
 ```
 
 # Contributing
