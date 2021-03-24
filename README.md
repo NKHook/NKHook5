@@ -98,6 +98,17 @@ auto Add(int a, int b) -> int
 ### Brackets
 "Curley brackets" ('{', '}') are always on the next line and never on the same line (as seen above).
 
+### Header guarding
+All header files should be header guarded like so:
+```
+#ifndef FILE_PATH_SEPERATED_BY_UNDERSCORES //(file/path/seperated/by/underscores.h)
+#define FILE_PATH_SEPERATED_BY_UNDERSCORES //(file/path/seperated/by/underscores.h)
+
+//Content
+
+#endif /* FILE_PATH_SEPERATED_BY_UNDERSCORES //(file/path/seperated/by/underscores.h) */
+```
+
 ### Exceptions
 Hook callbacks, game functions, etc will be given exceptions to these rules due to the fact they usually need to be very close to the game's code if not the exact same. However, if its possible to stick to these conventions, please do.
 
