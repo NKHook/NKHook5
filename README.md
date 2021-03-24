@@ -25,6 +25,7 @@ A checklist of progress (Will change as the project grows)
 	❌ CBaseTower::Upgrade(...)
 	❌ CFlagToStringConvertor::FlagToString(...)
 	❌ CFlagToStringConvertor::StringToFlag(...)
+	...
 ✅ C++ <-> C# bridge (/Managed)
 ✅ C# code loading
 ✅ C# execution
@@ -32,6 +33,7 @@ A checklist of progress (Will change as the project grows)
 	❌ Game class implementations
 	❌ Events
 	❌ Native patching
+	...
 ```
 
 # Contributing
