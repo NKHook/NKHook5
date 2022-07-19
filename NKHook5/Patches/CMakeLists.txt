@@ -3,5 +3,6 @@ target_sources(NKHook5 PRIVATE
     "IPatch.cpp"
 )
 
-add_subdirectory(CBloonsTD5Game)
 add_subdirectory(CBasePositionableObject)
+add_subdirectory(CBloonsTD5Game)
+add_subdirectory(Unknown)

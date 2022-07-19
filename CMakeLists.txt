@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-set(CMAKE_GENERATOR_PLATFORM Win32)
-project(NKHook5 VERSION 1.0 LANGUAGES CSharp CXX)
+project(NKHook5 VERSION 1.0 LANGUAGES CXX)
 
 include(FetchContent)
 set(CMAKE_CXX_STANDARD 20)
@@ -20,11 +19,3 @@ endif()
 
 add_subdirectory(NKHook5)
 add_subdirectory(Loader)
-
-make_directory(Binaries)
-if(EXISTS ${PROJECT_SOURCE_DIR}/NKHook5/Release/NKHook5.dll)
-	configure_file(${PROJECT_SOURCE_DIR}/NKHook5/Release/NKHook5.dll ${PROJECT_SOURCE_DIR}/Binaries/NKHook5.dll COPYONLY)
-endif()
-if(EXISTS ${PROJECT_SOURCE_DIR}/Loader/Release/wininet.dll)
-	configure_file(${PROJECT_SOURCE_DIR}/Loader/Release/wininet.dll ${PROJECT_SOURCE_DIR}/Binaries/wininet.dll COPYONLY)
-endif()

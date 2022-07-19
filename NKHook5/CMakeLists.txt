@@ -11,7 +11,7 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
-)
+ "Patches/Unknown/GetDeltaLock60FPS.cpp")
 
 add_subdirectory(Patches)
 add_subdirectory(Classes)

@@ -17,6 +17,7 @@ namespace NKHook5
             IPatch(std::string name);
             auto GetName() -> std::string;
             auto GetDis() -> PLH::ZydisDisassembler&;
+            void WriteBytes(uintptr_t address, const char* bytes, size_t len);
             virtual auto Apply() -> bool;
         };
     } // namespace Patches

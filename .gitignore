@@ -17,3 +17,5 @@ Debug/
 *.dir/
 Win32/
 _deps/
+out/
+build/

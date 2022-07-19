@@ -1,15 +1,17 @@
 #include "PatchManager.h"
 #include <iostream>
 
-#include "CBloonsTD5Game/Constructor.h"
 #include "CBasePositionableObject/Constructor.h"
+#include "CBloonsTD5Game/Constructor.h"
+#include "Unknown/GetDeltaLock60FPS.h"
 
 using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
-    PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
+    PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
+    PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());
 }
 
 void PatchManager::ApplyPatch(IPatch* toAdd)
