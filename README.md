@@ -1,5 +1,5 @@
 # NKHook5
-Latest NKHook5 repository
+A modification for Bloons TD 5 that focuses on bugfixes & performance improvements to encourage the future of BTD5 modding. NKHook5 (NKH5) provides an API modders can use, however right now it is rather incomplete and the main focus of the project is performance improvements for BTD5 as well as removing limitations on .jet modding. Examples of limitations that NKH5 can overcome include the limitation of 1 mod at a time, as well as the inability to inject brand new tower types into the game.
 
 # Progress
 A checklist of progress (Will change as the project grows)
@@ -11,30 +11,13 @@ A checklist of progress (Will change as the project grows)
 	✅ PolyHook2 setup
 	✅ Patch system
 ❌ Class re-creations
-	✅ Color.h
-	✅ Matrix16F.h (SpriteMatrix)
-	✅ Vec2F.h
-	✅ Vec3F.h
-	❌ CBasePositionableObject.h
-	❌ CBaseTower.h
-	❌ CBloon.h
-	❌ CBloonsTD5Game.h
-	❌ IBasePointers.h
-	...
+	Now managed by BTD5-Decomp
 ❌ Game hooks
 	✅ CBloonsTD5Game::CBloonsTD5Game()
 	✅ CBasePositionableObject::CBasePositionableObject()
 	❌ CBaseTower::Upgrade(...)
 	❌ CFlagToStringConvertor::FlagToString(...)
 	❌ CFlagToStringConvertor::StringToFlag(...)
-	...
-✅ C++ <-> C# bridge (/Managed)
-✅ C# code loading
-✅ C# execution
-❌ C# API
-	❌ Game class implementations
-	❌ Events
-	❌ Native patching
 	...
 ```
 

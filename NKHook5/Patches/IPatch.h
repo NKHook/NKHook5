@@ -3,13 +3,7 @@
 
 #include <string>
 #include <polyhook2/Detour/x86Detour.hpp>
-#include <polyhook2/CapstoneDisassembler.hpp>
-
-#pragma comment(lib,"asmjit.lib")
-#pragma comment(lib,"capstone.lib")
-#pragma comment(lib,"PolyHook_2.lib")
-#pragma comment(lib,"Zydis.lib")
-#pragma comment(lib,"Zycore.lib")
+#include <polyhook2/ZydisDisassembler.hpp>
 
 namespace NKHook5
 {
@@ -17,12 +11,12 @@ namespace NKHook5
     {
         class IPatch
         {
-            static inline PLH::CapstoneDisassembler* dis = new PLH::CapstoneDisassembler(PLH::Mode::x86);
+            static inline PLH::ZydisDisassembler* dis = new PLH::ZydisDisassembler(PLH::Mode::x86);
             std::string name;
         public:
             IPatch(std::string name);
             auto GetName() -> std::string;
-            auto GetDis() -> PLH::CapstoneDisassembler&;
+            auto GetDis() -> PLH::ZydisDisassembler&;
             virtual auto Apply() -> bool;
         };
     } // namespace Patches

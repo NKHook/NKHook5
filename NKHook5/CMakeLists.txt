@@ -6,8 +6,6 @@ if(MSVC)
     )
 endif()
 
-link_directories("${CMAKE_CURRENT_LIST_DIR}/Lib/PolyHook_2_0/_install/lib/")
-
 add_library(NKHook5 SHARED)
 
 target_sources(NKHook5 PRIVATE 
@@ -18,8 +16,6 @@ target_sources(NKHook5 PRIVATE
 add_subdirectory(Patches)
 add_subdirectory(Classes)
 
-target_include_directories(NKHook5 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/Lib/PolyHook_2_0/_install/include")
-
 message("${CMAKE_CURRENT_LIST_DIR}")
 
-target_link_libraries(NKHook5 PRIVATE PolyHook_2 capstone)
+target_link_libraries(NKHook5 PRIVATE PolyHook_2)

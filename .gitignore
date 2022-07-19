@@ -16,3 +16,4 @@ Debug/
 *.pdb
 *.dir/
 Win32/
+_deps/

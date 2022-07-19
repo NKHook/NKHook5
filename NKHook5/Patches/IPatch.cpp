@@ -10,7 +10,7 @@ auto IPatch::GetName() -> std::string
 {
     return this->name;
 }
-auto IPatch::GetDis() -> PLH::CapstoneDisassembler&
+auto IPatch::GetDis() -> PLH::ZydisDisassembler&
 {
     return *dis;
 }
