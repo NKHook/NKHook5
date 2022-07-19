@@ -11,11 +11,11 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "Patches/Unknown/GetDeltaLock60FPS.cpp")
+ "Classes/CLoc.h")
 
 add_subdirectory(Patches)
 add_subdirectory(Classes)
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 
-target_link_libraries(NKHook5 PRIVATE PolyHook_2)
+target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl)
