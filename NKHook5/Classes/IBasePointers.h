@@ -30,7 +30,7 @@ namespace NKHook5
 			char pad_0068[8]; //0x0068
 
 		public:
-			virtual void Destructor() {};
+			virtual ~IBasePointers() {};
         };
     } // namespace Classes
     
