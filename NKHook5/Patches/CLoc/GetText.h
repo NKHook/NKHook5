@@ -10,10 +10,10 @@ namespace NKHook5
     {
         namespace CLoc
         {
-            class GetLoc : public IPatch
+            class GetText : public IPatch
             {
             public:
-                GetLoc() : IPatch("CLoc::GetLoc")
+                GetText() : IPatch("CLoc::GetText")
                 {
 
                 }
