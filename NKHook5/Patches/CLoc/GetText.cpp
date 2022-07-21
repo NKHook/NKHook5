@@ -3,6 +3,7 @@
 #include <ghstl/string>
 #include <string>
 #include "../../Classes/CLoc.h"
+#include "../../Classes/Texts.h"
 
 namespace NKHook5
 {
@@ -11,7 +12,7 @@ namespace NKHook5
         namespace CLoc
         {
             uint64_t o_func;
-            void* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* result, Classes::Texts textId, Classes::SLangDef* language) {
+            void* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* result, Classes::eTexts textId, Classes::SLangDef* language) {
                 void* res = PLH::FnCast(o_func, &cb_hook)(pCLoc, pad, result, textId, language);
                 printf("ID: %x Result: %s\n", textId, result->c_str());
                 return res;

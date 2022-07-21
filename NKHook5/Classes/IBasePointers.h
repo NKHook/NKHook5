@@ -17,13 +17,13 @@ namespace NKHook5
         {
 		public:
 			class CTextureLoader* pCTextureLoader;
-			class WinInput* pWinInput;
-			class CBloonsTD5Game* pCBloonsTD5Game;
-			struct CXmlFontImporter* pCXmlFontImporter;
-			struct WinFileIO* pWinFileIO;
+			class CInput* pCInput;
+			class CApp* pCBloonsTD5Game;
+			struct IFontImporter* pIFontImporter;
+			struct CBaseFileIO* pCBaseFileIO;
 			struct CScreenManager* pCScreenManager;
-			struct WinSoundManager* pWinSoundManager;
-			struct WinMusicManager* pWinMusicManager;
+			struct CSoundManager* pCSoundManager;
+			struct CMusicManager* pCMusicManager;
 			char pad_0024[12]; //0x0024
 			struct SteamStoreInterface* pSteamStoreInterface;
 			struct CSteamInterface* pCSteamInterface;

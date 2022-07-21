@@ -10,7 +10,7 @@ namespace NKHook5
 {
     namespace Classes
     {
-        __declspec(dllexport) class CBasePositionableObject
+        class CBasePositionableObject
         {
             char pad_0000[56]; //0x0000
             Matrix16F SpriteMatrix; //0x0038
@@ -22,12 +22,12 @@ namespace NKHook5
             Color Color; //0x0108
             char pad_0114[760]; //0x0114
         public:
-            virtual void* FUN_006607b0() {} //0
-            virtual void* FUN_0056e460() {} //1
-            virtual void* FUN_00618e30() {} //2
-            virtual void* FUN_005f9ad0(float param_2, float param_3) {} //3
-            virtual void* FUN_005f9b30(float param_2) {} //4
-            virtual void* FUN_005f9c10() {} //5
+            virtual void FUN_006607b0() {} //0
+            virtual void FUN_0056e460() {} //1
+            virtual void FUN_00618e30() {} //2
+            virtual void FUN_005f9ad0(float param_2, float param_3) {} //3
+            virtual void FUN_005f9b30(float param_2) {} //4
+            virtual void FUN_005f9c10() {} //5
             virtual void AddXYZ(float x, float y, float z) {} //6
             virtual void AddX(float x) {} //7
             virtual void AddZ(float z) {} //8
@@ -37,13 +37,13 @@ namespace NKHook5
             virtual void FUN_005fa030(float param_2) {} //12
             virtual void FUN_005fa080(float param_2) {} //13
             virtual void GetXYZ(class Vec3F* vector) {} //14
-            virtual float* GetX() {} //15
-            virtual float* GetZ() {} //16
-            virtual float FUN_005fa140() {} //17
+            virtual float* GetX() { return &this->Position.x; } //15
+            virtual float* GetZ() { return &this->Position.y; } //16
+            virtual float FUN_005fa140() { return 0; } //17
             virtual void ScaleMatrix() {} //18
-            virtual void* FUN_00940990() {} //19
+            virtual void FUN_00940990() {} //19
             virtual void FUN_00940960(float param_2, char param_3) {} //20
-            virtual void* _guard_check_icall() {} //21
+            virtual void _guard_check_icall() {} //21
         }; // Size 1024 (0x400)
     } // namespace Classes
     

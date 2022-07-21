@@ -4,6 +4,7 @@
 #include "../../Classes/CGameSystemPointers.h"
 #include "../../Classes/CBloonsBaseScreen.h"
 #include "../../Classes/CPopupScreenBase.h"
+#include "../../Classes/DeviceType.h"
 
 namespace NKHook5
 {
@@ -13,7 +14,7 @@ namespace NKHook5
         {
             uint64_t o_func;
             namespace Exports {
-                Classes::CBloonsBaseScreen* __fastcall fGetScreenForParadigm(ghstl::string* screenName, int deviceType, Classes::CGameSystemPointers* pCGameSystemPointers) {
+                Classes::CBloonsBaseScreen* __fastcall fGetScreenForParadigm(ghstl::string* screenName, Classes::eDeviceType deviceType, Classes::CGameSystemPointers* pCGameSystemPointers) {
                     /*std::string cppScreenName = screenName->cpp_str();
                     static Classes::CPopupScreenBase* nkhookInfoScreen;
                     static ghstl::string nkhookInfoScreenName = "NKHookInfoScreen";

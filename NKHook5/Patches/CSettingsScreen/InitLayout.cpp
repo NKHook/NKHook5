@@ -2,6 +2,7 @@
 
 #include "../../Classes/CSettingsScreen.h"
 #include "../../Classes/CTextObject.h"
+#include "../../Classes/CBloonsTD5Game.h"
 
 namespace NKHook5
 {
@@ -12,7 +13,14 @@ namespace NKHook5
             uint64_t o_func;
             void* __fastcall cb_hook(Classes::CSettingsScreen* self, int pad, int param_1) {
                 void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
-
+                printf("SettingScreen inited");
+                ghstl::string nkhookText("NKHook5 made with <3 by DisabledMallis");
+                printf("Made watermark");
+                
+                Classes::CTextObject testObj;
+                printf("Made text object for watermark");
+                self->AddObject(&testObj, 0, 0, 1);
+                printf("Added object to screen");
                 return result;
             }
 

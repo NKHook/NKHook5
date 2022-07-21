@@ -1,0 +1,23 @@
+//Reimplementation of the shared_ptr class from boost that the game uses
+#pragma once
+
+namespace boost {
+
+	template<typename T>
+	struct refCtBase {
+		size_t refCt;
+		size_t idkA;
+		size_t idkB;
+		size_t idkC;
+		T instance;
+	public:
+		virtual ~refCtBase();
+	};
+
+	template<typename T>
+	class shared_ptr {
+	public:
+		T* obj;
+		refCtBase<T>* refCtObj;
+	};
+}

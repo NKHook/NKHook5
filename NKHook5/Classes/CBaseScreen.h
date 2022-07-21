@@ -18,12 +18,6 @@ namespace NKHook5
 
 	namespace Classes
 	{
-		enum class Device {
-			PHONE = 0,
-			TABLET = 1,
-			UNKNOWN = 2
-		};
-
 		class CBaseScreen : public IBasePointers
 		{
 		public:
