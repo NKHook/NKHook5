@@ -15,6 +15,15 @@ namespace NKHook5
                 };
                 float arr[2];
             };
+        public:
+            Vec2F() {
+                this->x = 0;
+                this->y = 0;
+            }
+            Vec2F(float x, float y) {
+                this->x = x;
+                this->y = y;
+            }
         };
     } // namespace Classes
     

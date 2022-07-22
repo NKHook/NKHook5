@@ -20,6 +20,14 @@ namespace NKHook5
 	{
 		class CBaseScreen : public IBasePointers
 		{
+			//char pad_0000[4]; //0x0000
+			IBasePointers basePointers; //0x0004
+			char pad_0070[24]; //0x0070
+			ghstl::string screenName; //0x0088
+			char pad_00A0[4]; //0x00A0
+			class CScreenManager* pCScreenManager; //0x00A4
+			char pad_00A8[8]; //0x00A8
+
 		public:
 			CBaseScreen(ghstl::string* screenName) {
 				ThisCall<void, CBaseScreen*, ghstl::string*>(Signatures::CBaseScreen::SIG_CCTOR, this, screenName);

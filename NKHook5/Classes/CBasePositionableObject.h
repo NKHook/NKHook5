@@ -22,6 +22,8 @@ namespace NKHook5
             Color Color; //0x0108
             char pad_0114[760]; //0x0114
         public:
+            CBasePositionableObject() {}
+
             virtual void FUN_006607b0() {} //0
             virtual void FUN_0056e460() {} //1
             virtual void FUN_00618e30() {} //2

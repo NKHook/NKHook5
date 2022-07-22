@@ -9,6 +9,8 @@ namespace NKHook5
         class CRenderableTextureObject : public CBasePositionableObject
         {
             char pad_00A8[32]; //0x00A8
+        public:
+            CRenderableTextureObject() {};
         };
     } // namespace Classes
     

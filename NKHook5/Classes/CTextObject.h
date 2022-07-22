@@ -4,6 +4,7 @@
 #include "CRenderableTextureObject.h"
 #include "CFont.h"
 #include "boost/shared_ptr"
+#include "Vec2F.h"
 
 namespace NKHook5
 {
@@ -25,8 +26,8 @@ namespace NKHook5
             CTextObject() {
                 ThisCall<CTextObject*, CTextObject*>(Signatures::CTextObject::SIG_CCTOR_A, this);
             }
-            CTextObject(float* position, boost::shared_ptr<CFont>* font, ghstl::string* text) {
-                ThisCall<CTextObject*, CTextObject*, float*, boost::shared_ptr<CFont>*, ghstl::string*>(Signatures::CTextObject::SIG_CCTOR_B, this, position, font, text);
+            CTextObject(Vec2F* position, boost::shared_ptr<CFont>* font, ghstl::string* text) {
+                ThisCall<CTextObject*, CTextObject*, Vec2F*, boost::shared_ptr<CFont>*, ghstl::string*>(Signatures::CTextObject::SIG_CCTOR_B, this, position, font, text);
             }
             CTextObject(boost::shared_ptr<CFont>* font, ghstl::string* text) {
                 ThisCall<CTextObject*, CTextObject*, boost::shared_ptr<CFont>*, ghstl::string*>(Signatures::CTextObject::SIG_CCTOR_C, this, font, text);
