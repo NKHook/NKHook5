@@ -16,6 +16,8 @@ namespace NKHook5
             uint64_t o_func;
             void* __fastcall cb_hook(Classes::CSettingsScreen* self, int pad, int param_1) {
                 void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
+                printf("CSettingsScreen*: %p", self);
+                std::cin.get();
                 printf("SettingScreen inited\n");
                 ghstl::string nkhookText("NKHook5 made with <3 by DisabledMallis");
                 printf("Made watermark\n");
@@ -25,8 +27,8 @@ namespace NKHook5
                 printf("Created location\n");
                 Classes::CTextObject testObj(&location, &pCFont, &nkhookText);
                 printf("Made text object for watermark\n");
-                //self->AddObject(&testObj, 1);
-                //printf("Added object to screen\n");
+                testObj.AssignParent(self->parentObj);
+                printf("Added object to screen\n");
                 return result;
             }
 

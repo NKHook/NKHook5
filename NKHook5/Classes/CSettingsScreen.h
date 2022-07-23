@@ -2,6 +2,7 @@
 #define NKHOOK5_CLASSES_CSETTINGSSCREEN
 
 #include "Macro.h"
+#include "CBasePositionableObject.h"
 #include "CPopupScreenBase.h"
 
 namespace NKHook5
@@ -17,11 +18,14 @@ namespace NKHook5
 		ghstl::string* settingScreen = new ghstl::string("SettingsScreen");
 		class CSettingsScreen : public CPopupScreenBase
 		{
-		private:
 		public:
+			char pad_0254[68]; //0x0254
+			class CBasePositionableObject* parentObj; //0x0298
+
 			CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) : CPopupScreenBase(pCGameSystemPointers, settingScreen) {
 				ThisCall<CSettingsScreen*, CSettingsScreen*, CGameSystemPointers*>(Signatures::CSettingsScreen::SIG_CCTOR, this, pCGameSystemPointers);
 			}
+
 			virtual ~CSettingsScreen() {};
 		};
 	} // namespace Classes
