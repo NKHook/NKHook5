@@ -5,8 +5,10 @@ target_sources(NKHook5 PRIVATE
 
 add_subdirectory(CBasePositionableObject)
 add_subdirectory(CBloonsTD5Game)
+add_subdirectory(CFlagStringConvertor)
 add_subdirectory(CLoc)
 add_subdirectory(CSettingsScreen)
+add_subdirectory(CZipFile)
 add_subdirectory(OpenGL)
 add_subdirectory(Screens)
 add_subdirectory(Unknown)

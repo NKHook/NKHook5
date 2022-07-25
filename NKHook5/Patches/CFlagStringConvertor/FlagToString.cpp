@@ -11,7 +11,7 @@ namespace NKHook5
             uint64_t o_func;
             ghstl::string* __fastcall cb_hook(class CFlagToStringConvertor* self, uint32_t pad, ghstl::string* result, uint32_t categoryId, uint64_t numericId) {
                 ghstl::string* eaxResult =  PLH::FnCast(o_func, &cb_hook)(self, pad, result, categoryId, numericId);
-                printf("Numeric ID '%llx' was converted to '%s'\n", numericId, eaxResult->c_str());
+                //printf("Numeric ID '%llx' was converted to '%s'\n", numericId, eaxResult->c_str());
                 return eaxResult;
             }
 

@@ -6,6 +6,7 @@
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CLoc/GetText.h"
 #include "CSettingsScreen/InitLayout.h"
+#include "CZipFile/LoadFrom.h"
 #include "OpenGL/Swapbuffers.h"
 #include "Screens/GetScreenForParadigm.h"
 #include "Unknown/GetDeltaLock60FPS.h"
@@ -19,6 +20,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
+    PatchManager::ApplyPatch(new CZipFile::LoadFrom());
     PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());

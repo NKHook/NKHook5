@@ -1,14 +1,21 @@
 #include "Constructor.h"
 
+#include "../../AssetInjector/InjectionManager.h"
+
 namespace NKHook5
 {
     namespace Patches
     {
         namespace CBloonsTD5Game
         {
+            using namespace AssetInjector;
+
             uint64_t o_func;
             void* __fastcall cb_hook(void* gameInstance) {
-                std::cout << "Gameinstance created: " << gameInstance << std::endl;
+                printf("Game load started\n");
+                printf("Initializing asset injector...\n");
+                InjectionManager::Initialize();
+                printf("Asset injector ready!\n");
                 return PLH::FnCast(o_func, &cb_hook)(gameInstance);
             }
 
