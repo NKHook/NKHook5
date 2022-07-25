@@ -37,60 +37,7 @@ namespace NKHook5
             }
 
             virtual ~CTextObject() {}
-            virtual void Draw(bool param_1) {}
-            virtual void Update(class SGameTime* pSGameTime) {}
-            virtual void UpdateRecursive(class SGameTime* param_1) {}
-            virtual void* FUN_00646120(uint32_t param_2, uint32_t param_3) { return nullptr; }
-            virtual void AddChild(class CBasePositionableObject* param_1) {}
-            virtual void AddChildAndUpdate(class CBasePositionableObject* param_1, int* param_2) {}
-            virtual void FUN_009e6dc0(int* param_1, int** param_2) {}
-            virtual void FUN_009e6d60() {}
-            virtual void SetXYZ(class Vec3F* location) {}
-            virtual void SetXY(class Vec2F* location) {}
-            virtual void SetXY_1(class Vec2F* location) {}
-            virtual void SetX(float x) {}
-            virtual void SetY(float y) {}
-            virtual void SetZ(float z) {}
-            virtual void MoveXYZ(class Vec3F* location) {}
-            virtual void MoveXY(class Vec2F* location) {}
-            virtual void MoveX(float x) {}
-            virtual void MoveY(float y) {}
-            virtual void MoveZ(float z) {}
-            virtual void Scale(class Vec2F* scale) {}
-            virtual void ScaleXY(class Vec2F* scale) {}
-            virtual void ScaleX(float x) {}
-            virtual void ScaleY(float y) {}
-            virtual void SetRotation(float angle) {}
-            virtual void SetSize(class Vec2F* size) {}
-            virtual void SetSizeX(float x) {}
-            virtual void SetSizeY(float y) {}
-            virtual void SetAlignX(float x) {}
-            virtual void SetAlignY(float x) {}
-            virtual void SetAlignXY(class Vec2F* alignment) {}
-            virtual class Vec3F* GetLocation(class Vec3F* location) { return nullptr; }
-            virtual float* GetLocationX() { return nullptr; }
-            virtual float* GetLocationX_1() { return nullptr; }
-            virtual float* GetLocationY() { return nullptr; }
-            virtual float* GetLocationZ() { return nullptr; }
-            virtual class Vec2F* GetScale(class Vec2F* scale) { return nullptr; }
-            virtual float GetScaleX() { return 0.0f; }
-            virtual float GetScaleY() { return 0.0f; }
-            virtual void ResetMatrix() {}
-            virtual void UpdateMatrix(bool param_1) {}
-            virtual void UpdateMatrixRecursive() {}
-            virtual void ForceUpdate() {}
-            virtual void SetTransitionAnim(float time, bool unused) {}
-            virtual void FUN_009e69d0() {}
-            virtual void ForceUpdate_1() {}
-            virtual void DrawChildren() {}
-            virtual void* FUN_006a8100() { return nullptr; }
-            virtual void* FUN_006a8160() { return nullptr; }
-            virtual void* FUN_006a81c0() { return nullptr; }
-            virtual void* FUN_006a8220() { return nullptr; }
-            virtual void* FUN_006a8280() { return nullptr; }
-            virtual void* FUN_006a82c0() { return nullptr; }
-            virtual void SetShader(uint32_t shaderId) {}
-            virtual void SetTexture(class CTexture* pCTexture) {}
+            
             virtual void SetAlpha(float alpha) {}
             virtual void SetColor(class Vec4F* color, int param_2) {}
             virtual void MixWithColor(class Vec4F* color) {}

@@ -19,13 +19,17 @@ namespace NKHook5
                 printf("CSettingsScreen*: %p", self);
                 //std::cin.get();
                 printf("SettingScreen inited\n");
-                ghstl::string nkhookText("NKHook5 made with <3 by DisabledMallis");
+                ghstl::string nkhookText("NKHook5 v1.0");
                 printf("Made watermark\n");
                 boost::shared_ptr<Classes::CFont> pCFont = self->pMenuFont;
                 printf("Retrieved font\n");
                 Classes::Vec2F location(0, 0);
                 printf("Created location\n");
                 Classes::CTextObject* testObj = new Classes::CTextObject(&location, &pCFont, &nkhookText);
+                Classes::Vec2F textScale(0.5, 0.5);
+                testObj->Scale(textScale);
+                testObj->SetRotation(40);
+                testObj->SetXY(Classes::Vec2F(160, -110));
                 printf("Made text object for watermark (%p)\n", testObj);
                 testObj->AssignParent(self->pRootObj);
                 printf("Added object to screen\n");
