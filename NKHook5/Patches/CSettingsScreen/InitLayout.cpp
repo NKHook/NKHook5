@@ -27,12 +27,7 @@ namespace NKHook5
                 printf("Created location\n");
                 Classes::CTextObject* testObj = new Classes::CTextObject(&location, &pCFont, &nkhookText);
                 printf("Made text object for watermark (%p)\n", testObj);
-                testObj->unknownRenderRuleSetZero = 0;
-                printf("Set the unknown render rule to 0\n");
-                //testObj.SetComplete();
-                //printf("Set the testObj complete\n");
-                //std::cin.get();
-                testObj->AssignParent(self->parentObj);
+                testObj->AssignParent(self->pRootObj);
                 printf("Added object to screen\n");
                 return result;
             }
