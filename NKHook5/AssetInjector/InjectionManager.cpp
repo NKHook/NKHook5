@@ -29,10 +29,10 @@ Asset* InjectionManager::FindInjectedAsset(std::string path)
 {
 	fs::path cd = fs::current_path();
 
-	printf("Finding asset '%s'...\n", path.c_str());
+	//printf("Finding asset '%s'...\n", path.c_str());
 	//First check HotSeat, these are development assets for mod devs
 	for (const auto& asset : hotAssets) {
-		printf("Checking asset '%s'\n", asset->GetPath().c_str());
+		//printf("Checking asset '%s'\n", asset->GetPath().c_str());
 		if (asset->GetPath() == path) {
 			printf("Found a match for '%s' on the hotseat!\n", path.c_str());
 			return asset;
@@ -42,6 +42,6 @@ Asset* InjectionManager::FindInjectedAsset(std::string path)
 	//Then, check mods in the user-defined order
 	fs::path modsDir = cd / "Mods";
 	//Finally, if the asset still isnt found, let the game handle it
-	printf("Failed to find asset '%s', passing search back to the game.\n", path.c_str());
+	//printf("Failed to find asset '%s', passing search back to the game.\n", path.c_str());
 	return nullptr;
 }
