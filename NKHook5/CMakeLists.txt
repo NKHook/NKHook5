@@ -11,7 +11,7 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "MenuEditor/Editor.cpp" "MenuEditor/Editor.h" "Patches/OpenGL/Swapbuffers.cpp")
+ "MenuEditor/Editor.cpp" "MenuEditor/Editor.h" "Patches/OpenGL/Swapbuffers.cpp" "Patches/CFlagStringConvertor/FlagToString.cpp" "Patches/CFlagStringConvertor/Constructor.h")
 
 add_subdirectory(Classes)
 add_subdirectory(MenuEditor)

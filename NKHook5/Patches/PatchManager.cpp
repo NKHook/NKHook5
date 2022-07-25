@@ -3,6 +3,7 @@
 
 #include "CBasePositionableObject/Constructor.h"
 #include "CBloonsTD5Game/Constructor.h"
+#include "CFlagStringConvertor/FlagToString.h"
 #include "CLoc/GetText.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "OpenGL/Swapbuffers.h"
@@ -15,6 +16,7 @@ void PatchManager::ApplyAll()
 {
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
+    PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new OpenGL::Swapbuffers());

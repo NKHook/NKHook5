@@ -11,8 +11,8 @@ auto initialize() -> int {
     std::cout << "All patches loaded!" << std::endl;
 
     std::cout << "Loaded NKHook5!" << std::endl;
-    printf("Press enter to boot game...");
-    std::cin.get();
+    //printf("Press enter to boot game...");
+    //std::cin.get();
 
     return 0;
 }
