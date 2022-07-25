@@ -17,7 +17,6 @@ namespace NKHook5
             void* __fastcall cb_hook(Classes::CSettingsScreen* self, int pad, int param_1) {
                 void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
                 printf("CSettingsScreen*: %p", self);
-                //std::cin.get();
                 printf("SettingScreen inited\n");
                 ghstl::string nkhookText("NKHook5 v1.0");
                 printf("Made watermark\n");

@@ -11,10 +11,12 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "Classes/CAssetBag.h" "Classes/ITextureLoaderListener.h")
+ "MenuEditor/Editor.cpp" "MenuEditor/Editor.h" "Patches/OpenGL/Swapbuffers.cpp")
 
-add_subdirectory(Patches)
 add_subdirectory(Classes)
+add_subdirectory(MenuEditor)
+add_subdirectory(Patches)
+add_subdirectory(thirdparty)
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 

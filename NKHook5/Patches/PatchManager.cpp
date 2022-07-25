@@ -5,6 +5,7 @@
 #include "CBloonsTD5Game/Constructor.h"
 #include "CLoc/GetText.h"
 #include "CSettingsScreen/InitLayout.h"
+#include "OpenGL/Swapbuffers.h"
 #include "Screens/GetScreenForParadigm.h"
 #include "Unknown/GetDeltaLock60FPS.h"
 
@@ -16,6 +17,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
+    PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());
 }
