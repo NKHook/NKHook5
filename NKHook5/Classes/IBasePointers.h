@@ -43,6 +43,8 @@ namespace NKHook5
 				ThisCall<void, IBasePointers*>(Signatures::IBasePointers::SIG_CCTOR, this);
 			};
         };
+
+		static_assert(sizeof(IBasePointers) == 0x006C);
     } // namespace Classes
     
 } // namespace NKHook5

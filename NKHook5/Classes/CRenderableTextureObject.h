@@ -8,7 +8,7 @@ namespace NKHook5
     {
         class CRenderableTextureObject : public CBasePositionableObject
         {
-            char pad_00A8[32]; //0x00A8
+            char pad_00AC[28]; //0x00AC
         public:
             CRenderableTextureObject() {};
 

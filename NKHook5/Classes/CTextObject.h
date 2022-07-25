@@ -20,8 +20,11 @@ namespace NKHook5
     {
         class CTextObject : public CRenderableTextureObject
         {
+        public:
             ghstl::string text; //0x00C8
-            char pad_00E0[136]; //0x00E0
+            char pad_00E0[80]; //0x00E0
+            int32_t unknownRenderRuleSetZero; //0x0130
+            char pad_0134[52]; //0x0134
         public:
             CTextObject() {
                 ThisCall<CTextObject*, CTextObject*>(Signatures::CTextObject::SIG_CCTOR_A, this);

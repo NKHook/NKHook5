@@ -18,9 +18,10 @@ namespace NKHook5
 
 	namespace Classes
 	{
-		class CBaseScreen : public IBasePointers
+		class CBaseScreen
 		{
-			//char pad_0000[4]; //0x0000
+		public:
+			//char vtable[4]; //0x0000
 			IBasePointers basePointers; //0x0004
 			char pad_0070[24]; //0x0070
 			ghstl::string screenName; //0x0088
@@ -35,6 +36,8 @@ namespace NKHook5
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, uint32_t* param_3);
 			virtual ~CBaseScreen() {};
 		};
+
+		static_assert(sizeof(CBaseScreen) == 0x00B0);
 	} // namespace Classes
 
 } // namespace NKHook5

@@ -32,6 +32,9 @@ namespace NKHook5
 			}
 			virtual ~CBloonsBaseScreen() {};
 		};
+
+		static_assert(sizeof(CBloonsBaseScreen) == 0x00D4);
+		static_assert(offsetof(CBloonsBaseScreen, pMenuFont) == 0x00CC);
 	} // namespace Classes
 
 } // namespace NKHook5

@@ -28,6 +28,8 @@ namespace NKHook5
 
 			virtual ~CSettingsScreen() {};
 		};
+
+		static_assert(offsetof(CSettingsScreen, parentObj) == 0x298);
 	} // namespace Classes
 
 } // namespace NKHook5
