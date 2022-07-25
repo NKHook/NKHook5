@@ -45,22 +45,6 @@ Due to lengthy namespaces, code such as ``using namespace NKHook5::Patches`` *is
 ### Naming
 A C#-like naming convention is used in both C# and C++ code throughout the project. All classes, namespaces and functions are always "UpperCamelCase" (CamelCase starting with a capital) while fields and properties are always "camelCase" (or lowerCamelCase, camelCase starting with a lower case letter).
 
-In C++, all functions have trailing return types.
-Example:
-```
-int Add(int a, int b)
-{
-    return a+b;
-}
-```
-would be
-```
-auto Add(int a, int b) -> int
-{
-    return a+b;
-}
-```
-
 ### Brackets
 "Curley brackets" ('{', '}') are always on the next line and never on the same line (as seen above).
 
