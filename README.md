@@ -2,24 +2,7 @@
 A modification for Bloons TD 5 that focuses on bugfixes & performance improvements to encourage the future of BTD5 modding. NKHook5 (NKH5) provides an API modders can use, however right now it is rather incomplete and the main focus of the project is performance improvements for BTD5 as well as removing limitations on .jet modding. Examples of limitations that NKH5 can overcome include the limitation of 1 mod at a time, as well as the inability to inject brand new tower types into the game.
 
 # Progress
-A checklist of progress (Will change as the project grows)
-```
-✅ Loader/Injector
-	✅ Proxy DLL
-	✅ NKHook5.dll injector
-✅ Code hooking
-	✅ PolyHook2 setup
-	✅ Patch system
-❌ Class re-creations
-	Now managed by BTD5-Decomp
-❌ Game hooks
-	✅ CBloonsTD5Game::CBloonsTD5Game()
-	✅ CBasePositionableObject::CBasePositionableObject()
-	❌ CBaseTower::Upgrade(...)
-	❌ CFlagToStringConvertor::FlagToString(...)
-	❌ CFlagToStringConvertor::StringToFlag(...)
-	...
-```
+A checklist of progress (Will change as the project grows). Details the things NKHook5 aims to fix or add to the game. This list includes bugs that remain unpatched. [All to-do items from BTD5Patcher](https://github.com/DisabledMallis/BTD5Patcher/projects/1) are now going to be part of the base NKHook5 project. Issues may be opened for feature requests, and will be given the "Planned" tag if accepted.
 
 # Startup list
 NKHook5 changes how Bloons TD 5 loads in a few ways, heres a list comparing vanilla to NKH5.
@@ -82,15 +65,7 @@ auto Add(int a, int b) -> int
 "Curley brackets" ('{', '}') are always on the next line and never on the same line (as seen above).
 
 ### Header guarding
-All header files should be header guarded like so:
-```
-#ifndef FILE_PATH_SEPERATED_BY_UNDERSCORES //(file/path/seperated/by/underscores.h)
-#define FILE_PATH_SEPERATED_BY_UNDERSCORES //(file/path/seperated/by/underscores.h)
-
-//Content
-
-#endif /* FILE_PATH_SEPERATED_BY_UNDERSCORES //(file/path/seperated/by/underscores.h) */
-```
+All header files should be header guarded. I used to prefer one way to header guard, but now I prefer another. Use whatever you want, I don't care, as long as all headers are guarded is what's important.
 
 ### Exceptions
 Hook callbacks, game functions, etc will be given exceptions to these rules due to the fact they usually need to be very close to the game's code if not the exact same. However, if its possible to stick to these conventions, please do.
