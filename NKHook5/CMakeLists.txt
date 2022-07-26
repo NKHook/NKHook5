@@ -23,4 +23,4 @@ add_subdirectory(thirdparty)
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 
-target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl)
+target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl opengl32)

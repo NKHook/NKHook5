@@ -35,7 +35,7 @@ namespace NKHook5
                 gameWndProc = (WNDPROC)SetWindowLongPtrA(gameWindow, GWLP_WNDPROC, (LONG_PTR)hkWndProc);
             }
 
-            void RenderOpenGL() {
+            void RenderOpenGL(HDC hdc, HWND hWnd) {
                 ImGui_ImplWin32_NewFrame();
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui::NewFrame();
@@ -47,15 +47,19 @@ namespace NKHook5
                 ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             }
 
-            bool inited = false;
-            uint64_t o_func;
-            bool __fastcall hkSwapbuffers(HDC hdc, int b) {
-                if (!inited) {
-                    HWND hWnd = WindowFromDC(hdc);
+            static bool inited = false;
+            static uint64_t o_func;
+            bool __stdcall hkSwapbuffers(HDC hdc, int b) {
+                HWND hWnd = WindowFromDC(hdc);
+
+                if (!inited && hWnd) {
                     SetupOpenGL(hWnd);
                     inited = true;
                 }
-                RenderOpenGL();
+                if (inited) {
+                    RenderOpenGL(hdc, hWnd);
+                }
+
                 return PLH::FnCast(o_func, &hkSwapbuffers)(hdc, b);
             }
 
