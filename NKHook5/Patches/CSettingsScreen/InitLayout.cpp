@@ -6,6 +6,7 @@
 #include "../../Classes/CTextObject.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/Vec2F.h"
+#include "../../Utils.h"
 
 namespace NKHook5
 {
@@ -18,7 +19,7 @@ namespace NKHook5
                 void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
                 printf("CSettingsScreen*: %p", self);
                 printf("SettingScreen inited\n");
-                ghstl::string nkhookText("NKHook5 v1.0");
+                ghstl::string nkhookText("NKHook5 v1.0 (" STRING(NKHOOK_BUILD_VERSION) ")");
                 printf("Made watermark\n");
                 boost::shared_ptr<Classes::CFont> pCFont = self->pMenuFont;
                 printf("Retrieved font\n");

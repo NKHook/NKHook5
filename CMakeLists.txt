@@ -40,5 +40,15 @@ if(NOT json_POPULATED)
     include_directories(${json_SOURCE_DIR}/include)
 endif()
 
+#Get the git diff ID thing and make a compile def for it
+EXECUTE_PROCESS(
+      COMMAND git rev-parse --short HEAD
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+      OUTPUT_VARIABLE "NKHOOK_BUILD_VERSION"
+      ERROR_QUIET
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+add_compile_definitions(NKHOOK_BUILD_VERSION=${NKHOOK_BUILD_VERSION})
+
 add_subdirectory(NKHook5)
 add_subdirectory(Loader)
