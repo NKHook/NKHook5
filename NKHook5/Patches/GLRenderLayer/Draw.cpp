@@ -15,23 +15,9 @@ namespace NKHook5
         namespace GLRenderLayer
         {
 
-            void RenderOpenGL() {
-                ImGui_ImplWin32_NewFrame();
-                ImGui_ImplOpenGL3_NewFrame();
-                ImGui::NewFrame();
-
-                MenuEditor::Editor::Render();
-
-                ImGui::Render();
-                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            }
-
             static uint64_t o_func;
             void __fastcall cb_hook(Classes::GLRenderLayer* pRenderer, uint32_t pad, uint32_t param_2) {
                 return PLH::FnCast(o_func, &cb_hook)(pRenderer, pad, param_2);
-                if (g_initedImgui) {
-                    //RenderOpenGL();
-                }
             }
 
             auto Draw::Apply() -> bool

@@ -30,13 +30,18 @@ void ElementEditor(Classes::CBasePositionableObject* object) {
 
 void ScreenTree(Classes::CBaseScreen* screen) {
 	if (ImGui::TreeNode(screen->screenName.c_str())) {
+		int maxIter = 15;
 		for (Classes::CBaseScreen* childScreen : screen->children) {
 			ScreenTree(childScreen);
+			maxIter--;
+			if (maxIter <= 0) {
+				break;
+			}
 		}
 		Classes::CBloonsBaseScreen* bScreen = (Classes::CBloonsBaseScreen*)screen;
-		for (Classes::CBasePositionableObject* object : bScreen->elements) {
+		/*for (Classes::CBasePositionableObject* object : bScreen->elements) {
 			ElementEditor(object);
-		}
+		}*/
 		ImGui::TreePop();
 	}
 }

@@ -37,11 +37,20 @@ namespace NKHook5
                 ImGui_ImplWin32_Init(gameWindow);
                 gameWndProc = (WNDPROC)SetWindowLongPtrA(gameWindow, GWLP_WNDPROC, (LONG_PTR)hkWndProc);
             }
+            
+            void RenderOpenGL() {
+                ImGui_ImplWin32_NewFrame();
+                ImGui_ImplOpenGL3_NewFrame();
+                ImGui::NewFrame();
+
+                MenuEditor::Editor::Render();
+
+                ImGui::Render();
+                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            }
 
             static uint64_t o_func;
-            static std::mutex renderMtx;
             bool __stdcall hkSwapbuffers(HDC hdc, int b) {
-                renderMtx.lock();
                 HWND hWnd = WindowFromDC(hdc);
 
                 if (!g_initedImgui && hWnd) {
@@ -49,7 +58,9 @@ namespace NKHook5
                     //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
                     g_initedImgui = true;
                 }
-                renderMtx.unlock();
+                if (g_initedImgui) {
+                    RenderOpenGL();
+                }
                 return PLH::FnCast(o_func, &hkSwapbuffers)(hdc, b);
             }
 
