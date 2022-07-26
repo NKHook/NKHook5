@@ -12,6 +12,7 @@ namespace NKHook5
 
             uint64_t o_func;
             void* __fastcall cb_hook(void* gameInstance) {
+                printf("Game Instance: %p", gameInstance);
                 printf("Game load started\n");
                 printf("Initializing asset injector...\n");
                 InjectionManager::Initialize();

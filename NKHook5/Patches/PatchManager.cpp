@@ -4,6 +4,7 @@
 #include "CBasePositionableObject/Constructor.h"
 #include "CBloonsTD5Game/Constructor.h"
 #include "CFlagStringConvertor/FlagToString.h"
+#include "CFlagStringConvertor/StringToFlag.h"
 #include "CLoc/GetText.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "CZipFile/LoadFrom.h"
@@ -18,6 +19,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
+    PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());

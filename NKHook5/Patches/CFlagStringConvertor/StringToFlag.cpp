@@ -1,4 +1,4 @@
-#include "FlagToString.h"
+#include "StringToFlag.h"
 
 #include <ghstl/string>
 
@@ -9,15 +9,15 @@ namespace NKHook5
         namespace CFlagStringConvertor
         {
             static uint64_t o_func;
-            ghstl::string* __fastcall cb_hook(class CFlagToStringConvertor* self, uint32_t pad, ghstl::string* result, uint32_t categoryId, uint64_t numericId) {
-                ghstl::string* eaxResult =  PLH::FnCast(o_func, &cb_hook)(self, pad, result, categoryId, numericId);
+            uint64_t __fastcall cb_hook(class CFlagStringConvertor* self, int pad, int categoryId, ghstl::string* textId) {
+                uint64_t eaxResult =  PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
                 //printf("Numeric ID '%llx' was converted to '%s'\n", numericId, eaxResult->c_str());
                 return eaxResult;
             }
 
-            auto FlagToString::Apply() -> bool
+            auto StringToFlag::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? 56 57 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? ?? ?? ?? ?? 45 ?? ?? ?? ?? ?? E8 ?? ?? ?? ?? 85");
+                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 83 EC ?? 53 56 57 ?? ?? ?? E8");
                 if(address)
                 {
                     PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);

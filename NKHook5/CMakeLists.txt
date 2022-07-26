@@ -15,7 +15,9 @@ target_sources(NKHook5 PRIVATE
 
 add_subdirectory(AssetInjector)
 add_subdirectory(Classes)
+add_subdirectory(Extensions)
 add_subdirectory(MenuEditor)
+add_subdirectory(Mod)
 add_subdirectory(Patches)
 add_subdirectory(thirdparty)
 

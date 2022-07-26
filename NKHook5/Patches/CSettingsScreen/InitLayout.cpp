@@ -24,6 +24,7 @@ namespace NKHook5
                 printf("Retrieved font\n");
                 Classes::Vec2F location(0, 0);
                 printf("Created location\n");
+                //Looks like a memory leak, but the game deletes it when its no longer used.
                 Classes::CTextObject* testObj = new Classes::CTextObject(&location, &pCFont, &nkhookText);
                 Classes::Vec2F textScale(0.5, 0.5);
                 testObj->Scale(textScale);
