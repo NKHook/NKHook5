@@ -9,6 +9,7 @@
 #include "CLoc/GetText.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "CZipFile/LoadFrom.h"
+#include "GLRenderLayer/Draw.h"
 #include "OpenGL/Swapbuffers.h"
 #include "Screens/GetScreenForParadigm.h"
 #include "Unknown/GetDeltaLock60FPS.h"
@@ -25,6 +26,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
+    PatchManager::ApplyPatch(new GLRenderLayer::Draw());
     PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());

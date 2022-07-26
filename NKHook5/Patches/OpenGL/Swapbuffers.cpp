@@ -9,6 +9,7 @@
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+bool g_initedImgui = false;
 namespace NKHook5
 {
     namespace Patches
@@ -37,31 +38,18 @@ namespace NKHook5
                 gameWndProc = (WNDPROC)SetWindowLongPtrA(gameWindow, GWLP_WNDPROC, (LONG_PTR)hkWndProc);
             }
 
-            void RenderOpenGL(HDC hdc, HWND hWnd) {
-                ImGui_ImplWin32_NewFrame();
-                ImGui_ImplOpenGL3_NewFrame();
-                ImGui::NewFrame();
-
-                MenuEditor::Editor::Render();
-
-                ImGui::Render();
-                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            }
-
-            static bool inited = false;
             static uint64_t o_func;
+            static std::mutex renderMtx;
             bool __stdcall hkSwapbuffers(HDC hdc, int b) {
+                renderMtx.lock();
                 HWND hWnd = WindowFromDC(hdc);
 
-                if (!inited && hWnd) {
+                if (!g_initedImgui && hWnd) {
                     SetupOpenGL(hWnd);
                     //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
-                    inited = true;
+                    g_initedImgui = true;
                 }
-                if (inited) {
-                    RenderOpenGL(hdc, hWnd);
-                }
-
+                renderMtx.unlock();
                 return PLH::FnCast(o_func, &hkSwapbuffers)(hdc, b);
             }
 

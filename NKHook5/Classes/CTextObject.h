@@ -48,6 +48,8 @@ namespace NKHook5
             virtual int CountLines() { return 0; }
             virtual float GetLineWidth(uint32_t param_1) { return 0.0f; }
         };
+
+        static_assert(offsetof(CTextObject, text) == 0xC8);
     } // namespace Classes
 
 } // namespace NKHook5

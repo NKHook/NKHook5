@@ -33,6 +33,7 @@ namespace NKHook5
 		};
 
 		static_assert(sizeof(CPopupScreenBase) == 0x0254);
+		static_assert(offsetof(CPopupScreenBase, pRootObj) == 0x138);
 	} // namespace Classes
 
 } // namespace NKHook5

@@ -8,7 +8,7 @@ namespace NKHook5
     {
         class CRenderableTextureObject : public CBasePositionableObject
         {
-            char pad_00AC[28]; //0x00AC
+            char pad_00A8[32]; //0x00A8
         public:
             CRenderableTextureObject() {};
 
@@ -23,6 +23,8 @@ namespace NKHook5
             virtual void SetShader(int shaderId) {}
             virtual void SetTexture(class CTexture* pCTexture) {}
         };
+
+        static_assert(sizeof(CRenderableTextureObject) == 0xC8);
     } // namespace Classes
     
 } // namespace NKHook5

@@ -16,12 +16,12 @@ void ElementEditor(Classes::CBasePositionableObject* object) {
 	if (ImGui::TreeNode("Object")) {
 		char addrBuf[64];
 		sprintf_s(addrBuf, 64, "%p", object);
-		bool needsUpdate = ImGui::InputText("Address", addrBuf, 64);
+		bool needsUpdate = ImGui::InputText("Address", addrBuf, 64, ImGuiInputTextFlags_ReadOnly);
 		needsUpdate |= ImGui::SliderFloat("X", &object->location.x, -1000, 1000);
 		needsUpdate |= ImGui::SliderFloat("Y", &object->location.y, -1000, 1000);
 		needsUpdate |= ImGui::SliderFloat("Z", &object->location.z, -1000, 1000);
 		if (needsUpdate) {
-			object->SetXYZ(object->location);
+			object->complete = false;
 		}
 		ImGui::TreePop();
 	}
