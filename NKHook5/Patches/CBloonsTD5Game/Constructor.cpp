@@ -3,6 +3,8 @@
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../AssetInjector/InjectionManager.h"
 
+NKHook5::Classes::CBloonsTD5Game* g_appPtr;
+
 namespace NKHook5
 {
     namespace Patches
@@ -14,6 +16,7 @@ namespace NKHook5
             static uint64_t o_func;
             static void* __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
                 printf("Game Instance: %p\n", gameInstance);
+                g_appPtr = gameInstance;
                 printf("Game load started\n");
                 printf("Initializing asset injector...\n");
                 InjectionManager::Initialize();

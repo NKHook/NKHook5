@@ -1,5 +1,7 @@
 #include "Swapbuffers.h"
 
+#include "../../MenuEditor/Editor.h"
+
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_win32.h>
@@ -40,8 +42,7 @@ namespace NKHook5
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui::NewFrame();
 
-                ImGui::Begin("Test");
-                ImGui::End();
+                MenuEditor::Editor::Render();
 
                 ImGui::Render();
                 ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -54,6 +55,7 @@ namespace NKHook5
 
                 if (!inited && hWnd) {
                     SetupOpenGL(hWnd);
+                    //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
                     inited = true;
                 }
                 if (inited) {
