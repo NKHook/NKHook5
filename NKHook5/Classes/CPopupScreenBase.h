@@ -19,9 +19,9 @@ namespace NKHook5
 		class CPopupScreenBase : public CBloonsBaseScreen
 		{
 		public:
-			char pad_00D4[76]; //0x00D4
-			class CBasePositionableObject* pRootObj; //0x0120
-			char pad_0124[304]; //0x0124
+			char pad_00EC[76]; //0x00EC
+			CBasePositionableObject* pRootObj; //0x0138
+			char pad_013C[280]; //0x013C
 		public:
 			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, ghstl::string* screenName) : CBloonsBaseScreen(screenName, pCGameSystemPointers) {
 				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, ghstl::string*>(Signatures::CPopupScreenBase::SIG_CCTOR, this, pCGameSystemPointers, screenName);

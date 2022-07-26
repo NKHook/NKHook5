@@ -4,7 +4,7 @@ namespace NKHook5
 {
     namespace Classes
     {
-        class Vec2F
+        struct Vec2F
         {
             union
             {
