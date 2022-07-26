@@ -16,7 +16,7 @@ namespace NKHook5
 		static auto GetBaseModuleEnd() -> int;
 		static auto GetThisModule() -> HMODULE;
 		static auto FindPattern(const char* pattern) -> int;
-		static auto FindPattern(int rangeStart, int rangeEnd, const char* pattern) -> int;
+		static auto FindPattern(size_t rangeStart, size_t rangeEnd, const char* pattern) -> size_t;
 		static auto GetTypeName(void* object) -> std::string;
 	};
 }

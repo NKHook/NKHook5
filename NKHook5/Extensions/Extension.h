@@ -15,6 +15,7 @@ namespace NKHook5 {
 		public:
 			Extension(std::string target);
 			virtual const std::string& GetTarget();
+			virtual bool IsCustomDocument();
 			virtual void UseData(void* content, size_t contentLen);
 		};
 	}

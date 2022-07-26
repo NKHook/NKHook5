@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <vector>
 
 #define INRANGE(x,a,b)	(x >= a && x <= b) 
 #define getBits( x )	(INRANGE((x&(~0x20)),'A','F') ? ((x&(~0x20)) - 'A' + 0xa) : (INRANGE(x,'0','9') ? x - '0' : 0))
@@ -32,25 +33,56 @@ auto NKHook5::Utils::FindPattern(const char* pattern) -> int
 	return FindPattern(GetModuleBase(), GetBaseModuleEnd(), pattern);
 }
 
-auto NKHook5::Utils::FindPattern(int rangeStart, int rangeEnd, const char* pattern) -> int
-{
-	const char* pat = pattern;
-	DWORD firstMatch = 0;
-	for (int pCur = rangeStart; pCur < rangeEnd; pCur++)
-	{
+struct SearchedSig {
+	size_t rangeStart;
+	size_t rangeEnd;
+	std::string pattern;
+	uintptr_t result;
+	SearchedSig(size_t rangeStart, size_t rangeEnd, std::string pattern, uintptr_t result) {
+		this->rangeStart = rangeStart;
+		this->rangeEnd = rangeEnd;
+		this->pattern = pattern;
+		this->result = result;
+	}
+};
+
+static std::vector<SearchedSig> alreadySearched = std::vector<SearchedSig>();
+auto NKHook5::Utils::FindPattern(size_t rangeStart, size_t rangeEnd, const char* pattern) -> size_t {
+	for (int i = 0; i < alreadySearched.size(); i++) {
+		SearchedSig searched = alreadySearched[i];
+		if (searched.pattern == std::string(pattern) && searched.rangeStart == rangeStart && searched.rangeEnd == rangeEnd) {
+			return searched.result;
+		}
+	}
+	std::string sanitizedPat = pattern;
+	int skips = 0;
+	while (sanitizedPat[0] == '?' && sanitizedPat[1] == '?') {
+		sanitizedPat = sanitizedPat.substr(3);
+		skips++;
+		printf("Sig skips: %d", skips);
+		printf("Current sig: %s", sanitizedPat.c_str());
+	}
+	const char* pat = sanitizedPat.c_str();
+	long long firstMatch = 0;
+	for (long long pCur = rangeStart; pCur < rangeEnd; pCur++) {
 		if (!*pat) return firstMatch;
 		if (*(PBYTE)pat == '\?' || *(BYTE*)pCur == getByte(pat)) {
 			if (!firstMatch) firstMatch = pCur;
-			if (!pat[2]) return firstMatch;
+			if (!pat[2]) {
+				firstMatch += -skips;
+				alreadySearched.push_back(SearchedSig(rangeStart, rangeEnd, std::string(pattern), firstMatch));
+				return firstMatch;
+			};
 			if (*(PWORD)pat == '\?\?' || *(PBYTE)pat != '\?') pat += 3;
-			else pat += 2;	//one ?
+			else pat += 2;
 		}
 		else {
-			pat = pattern;
+			pat = sanitizedPat.c_str();
 			firstMatch = 0;
 		}
 	}
-	return NULL;
+	MessageBoxA(nullptr, pattern, "SCAN FAILURE", MB_OK);
+	return 0;
 }
 
 auto NKHook5::Utils::GetTypeName(void* object) -> std::string

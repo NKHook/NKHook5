@@ -11,6 +11,11 @@ const std::string& Extension::GetTarget()
 	return this->target;
 }
 
+bool NKHook5::Extensions::Extension::IsCustomDocument()
+{
+	return false;
+}
+
 void Extension::UseData(void* content, size_t contentLen)
 {
 

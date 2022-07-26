@@ -4,4 +4,5 @@ target_sources(NKHook5 PRIVATE
 	"JsonExtension.cpp"
 )
 
-add_subdirectory(TowerDefinitions)
+add_subdirectory(Generic)
+add_subdirectory(Tower)

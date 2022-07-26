@@ -1,5 +1,6 @@
 #include "Constructor.h"
 
+#include "../../Classes/CBloonsTD5Game.h"
 #include "../../AssetInjector/InjectionManager.h"
 
 namespace NKHook5
@@ -10,9 +11,9 @@ namespace NKHook5
         {
             using namespace AssetInjector;
 
-            uint64_t o_func;
-            void* __fastcall cb_hook(void* gameInstance) {
-                printf("Game Instance: %p", gameInstance);
+            static uint64_t o_func;
+            static void* __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
+                printf("Game Instance: %p\n", gameInstance);
                 printf("Game load started\n");
                 printf("Initializing asset injector...\n");
                 InjectionManager::Initialize();
@@ -22,7 +23,7 @@ namespace NKHook5
 
             auto Constructor::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? 53 56 57 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B F1 ?? 75 ?? E8 ?? ?? ?? ?? ?? 45 ?? ?? ?? ?? ?? ?? 86");
+                const uintptr_t address = NKHook5::Utils::FindPattern(NKHook5::Signatures::CBloonsTD5Game::SIG_CCTOR);
                 if(address)
                 {
                     PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
