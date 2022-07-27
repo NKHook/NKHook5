@@ -17,7 +17,6 @@ namespace NKHook5
             void* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, int category, ghstl::string* stringList, int stringCount, int indexMode) {
                 if ((void*)self == (void*)&g_towerFactory->flagStringConvertor) {
                     if (category == 0 || category == 5) {
-                        printf("DATA %p", stringList);
                         printf("Hijacking tower registration to inject new types...\n");
                         auto* towerFlagExt = (Extensions::Tower::TowerFlagExt*)Extensions::ExtensionManager::GetByName("TowerFlags");
                         std::vector<ghstl::string> towerTypes(stringCount + towerFlagExt->GetFlags().size());
@@ -35,8 +34,6 @@ namespace NKHook5
                             printf("Injected '%s'...\n", flagDef.textId.c_str());
                         }
                         printf("New types injected!\n");
-                        printf("DATA %p", towerTypes.data());
-                        std::cin.get();
                         return PLH::FnCast(o_func, &cb_hook)(self, pad, category, towerTypes.data(), towerTypes.size(), indexMode);
                     }
                 }
