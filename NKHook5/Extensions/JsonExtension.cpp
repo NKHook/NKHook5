@@ -2,7 +2,7 @@
 
 using namespace NKHook5::Extensions;
 
-JsonExtension::JsonExtension(std::string target) : Extension(target)
+JsonExtension::JsonExtension(std::string name, std::string target) : Extension(name, target)
 {
 }
 

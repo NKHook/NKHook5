@@ -14,10 +14,6 @@ namespace NKHook5
 
             static uint64_t o_func;
             static void* __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
-                printf("BTD5 began loading assets...\n");
-                PLH::FnCast(o_func, &cb_hook)(gameInstance);
-                printf("BTD5 assets loaded!\n");
-
                 printf("Loading custom assets...\n");
                 ghstl::string archivePath = "./Assets/BTD5.jet";
                 ghstl::string empty = "";
@@ -28,11 +24,15 @@ namespace NKHook5
                 for (Extension* doc : customDocuments) {
                     const std::string& assetPath = doc->GetTarget();
                     ghstl::string ghstlAssetPath = assetPath;
-                    
+
                     Classes::CUnzippedFile* unzipped = assetsArchive.LoadFrom(&ghstlAssetPath, &empty);
                     doc->UseData(unzipped->fileContent, unzipped->fileSize);
                 }
                 printf("Custom assets loaded!\n");
+
+                printf("BTD5 began loading assets...\n");
+                PLH::FnCast(o_func, &cb_hook)(gameInstance);
+                printf("BTD5 assets loaded!\n");
             }
 
             auto LoadAssets::Apply() -> bool

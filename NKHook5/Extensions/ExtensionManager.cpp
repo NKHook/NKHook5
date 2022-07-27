@@ -14,9 +14,21 @@ void ExtensionManager::AddAll()
 
 void ExtensionManager::AddExtension(Extension* toAdd)
 {
-	printf("Adding extension for target '%s'\n", toAdd->GetTarget().c_str());
+	printf("Adding extension '%s' for target '%s'\n", toAdd->GetName().c_str(), toAdd->GetTarget().c_str());
+	if (GetByName(toAdd->GetName())) {
+		printf("Cannot add extension '%s', the name is not unique!\n", toAdd->GetName().c_str());
+	}
 	extensions.push_back(toAdd);
 	printf("Added!\n");
+}
+
+Extension* ExtensionManager::GetByName(std::string name) {
+	for (Extension* extension : extensions) {
+		if (extension->GetName() == name) {
+			return extension;
+		}
+	}
+	return nullptr;
 }
 
 std::vector<Extension*> ExtensionManager::GetByTarget(std::string target)

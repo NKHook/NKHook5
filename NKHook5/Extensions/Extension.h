@@ -11,9 +11,11 @@
 namespace NKHook5 {
 	namespace Extensions {
 		class Extension {
+			std::string name;
 			std::string target;
 		public:
-			Extension(std::string target);
+			Extension(std::string name, std::string target);
+			virtual const std::string& GetName();
 			virtual const std::string& GetTarget();
 			virtual bool IsCustomDocument();
 			virtual void UseData(void* content, size_t contentLen);

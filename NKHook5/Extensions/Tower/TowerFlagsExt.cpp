@@ -3,6 +3,6 @@
 using namespace NKHook5::Extensions::Generic;
 using namespace NKHook5::Extensions::Tower;
 
-TowerFlagExt::TowerFlagExt() : FlagsExtension("Assets/JSON/TowerDefinitions/Flags.json")
+TowerFlagExt::TowerFlagExt() : FlagsExtension("TowerFlags", "Assets/JSON/TowerDefinitions/Flags.json")
 {
 }

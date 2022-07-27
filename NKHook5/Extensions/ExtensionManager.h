@@ -8,6 +8,7 @@ namespace NKHook5 {
 		namespace ExtensionManager {
 			void AddAll();
 			void AddExtension(Extension* toAdd);
+			Extension* GetByName(std::string name);
 			std::vector<Extension*> GetByTarget(std::string target);
 			std::vector<Extension*> GetCustomDocuments();
 		}
