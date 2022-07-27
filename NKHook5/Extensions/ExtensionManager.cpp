@@ -1,6 +1,7 @@
 #include "ExtensionManager.h"
 
 #include "Generic/FlagsExtension.h"
+#include "Generic/LocExtension.h"
 #include "Tower/TowerFlagsExt.h"
 
 using namespace NKHook5::Extensions;
@@ -9,6 +10,7 @@ static std::vector<Extension*> extensions;
 
 void ExtensionManager::AddAll()
 {
+	ExtensionManager::AddExtension(new Generic::LocExtension("EnglishLocs", "Assets/Loc/English.json"));
 	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
 }
 

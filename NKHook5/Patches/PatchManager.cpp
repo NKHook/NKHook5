@@ -7,6 +7,7 @@
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CFlagStringConvertor/LoadCategory.h"
 #include "CFlagStringConvertor/StringToFlag.h"
+#include "CLoc/FindText.h"
 #include "CLoc/GetText.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "CTowerFactory/Constructor.h"
@@ -26,6 +27,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
+    PatchManager::ApplyPatch(new CLoc::FindText());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());

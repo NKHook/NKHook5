@@ -29,9 +29,9 @@ namespace NKHook5
                         printf("Injecting new types...\n");
                         int idx = 0;
                         for (auto flagDef : towerFlagExt->GetFlags()) {
-                            towerTypes[stringCount + idx] = flagDef.textId;
+                            towerTypes[stringCount + idx] = flagDef;
                             idx++;
-                            printf("Injected '%s'...\n", flagDef.textId.c_str());
+                            printf("Injected '%s'...\n", flagDef.c_str());
                         }
                         printf("New types injected!\n");
                         return PLH::FnCast(o_func, &cb_hook)(self, pad, category, towerTypes.data(), towerTypes.size(), indexMode);

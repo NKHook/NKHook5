@@ -13,12 +13,18 @@ bool FlagsExtension::IsCustomDocument()
 
 void FlagsExtension::UseJsonData(nlohmann::json data) {
 	try {
+		if (!data.is_array()) {
+			printf("A Flags.json file is not an array type! All flag lists MUST be arrays!");
+			return;
+		}
 		for (nlohmann::json& customFlag : data) {
-			std::string flagText = customFlag["string"];
-			uint64_t flagId = customFlag["flag"];
-
-			this->registeredFlags.emplace_back(flagText, flagId);
-			printf("Registered a custom flag!\n");
+			if (!customFlag.is_string()) {
+				printf("Failed to register a flag because it was not a string!");
+				continue;
+			}
+			std::string flagStr = customFlag;
+			this->registeredFlags.push_back(flagStr);
+			printf("Registered a custom flag '%s'!\n", flagStr.c_str());
 		}
 	}
 	catch (std::exception& ex) {
@@ -27,7 +33,7 @@ void FlagsExtension::UseJsonData(nlohmann::json data) {
 	}
 }
 
-const std::vector<FlagDef>& FlagsExtension::GetFlags()
+const std::vector<std::string>& FlagsExtension::GetFlags()
 {
 	return this->registeredFlags;
 }
