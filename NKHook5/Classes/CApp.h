@@ -15,7 +15,9 @@ namespace NKHook5 {
 			IBasePointers basePointers; //0x0008
 			char pad_0074[60]; //0x0074
 			ghstl::string versionNumber; //0x00B0
-			char pad_00C8[144]; //0x00C8
+			char pad_00C8[52]; //0x00C8
+			int32_t hasBundles; //0x00FC
+			char pad_0100[88]; //0x0100
 			boost::shared_ptr<CAssetBag> pAssetBag; //0x0158
 			CGameSystemPointers* pCGameSystemPointers; //0x0160
 			char pad_0164[4]; //0x0164

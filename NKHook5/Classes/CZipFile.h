@@ -15,20 +15,18 @@ namespace NKHook5 {
 			char pad_0054[40]; //0x0054
 			ghstl::string* pStringIDK; //0x007C
 		public:
-			virtual ~CZipFile() {};
-
 			CZipFile() {
 				ThisCall<CZipFile*, CZipFile*>(Signatures::Sigs::CZipFile_CCTOR, this);
 			}
-			bool Open(ghstl::string* archivePath) {
-				return ThisCall<bool, CZipFile*, ghstl::string*, int, int>(Signatures::Sigs::CZipFile_Open, this, archivePath, 0, 0);
+			bool Open(ghstl::string& archivePath) {
+				return ThisCall<bool, CZipFile*, ghstl::string&, int, int>(Signatures::Sigs::CZipFile_Open, this, archivePath, 0, 0);
 			}
-			CUnzippedFile* LoadFrom(ghstl::string* assetPath, ghstl::string* param_2, ghstl::string* archivePassword) {
-				return ThisCall<CUnzippedFile*, CZipFile*, ghstl::string*, ghstl::string*, ghstl::string*>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, archivePassword);
+			CUnzippedFile* LoadFrom(ghstl::string& assetPath, ghstl::string& param_2, ghstl::string& archivePassword) {
+				return ThisCall<CUnzippedFile*, CZipFile*, ghstl::string&, ghstl::string&, ghstl::string&>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, archivePassword);
 			}
-			CUnzippedFile* LoadFrom(ghstl::string* assetPath, ghstl::string* param_2) {
+			CUnzippedFile* LoadFrom(ghstl::string& assetPath, ghstl::string& param_2) {
 				ghstl::string password("Q%_{6#Px]]");
-				return ThisCall<CUnzippedFile*, CZipFile*, ghstl::string*, ghstl::string*, ghstl::string*>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, &password);
+				return ThisCall<CUnzippedFile*, CZipFile*, ghstl::string&, ghstl::string&, ghstl::string&>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, password);
 			}
 		};
 	}

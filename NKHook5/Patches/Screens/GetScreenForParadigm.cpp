@@ -27,6 +27,7 @@ namespace NKHook5
                         }
                         return nkhookInfoScreen;
                     }*/
+                    //return ((Classes::CBloonsBaseScreen*(__cdecl*)(void*, Classes::eDeviceType, void*))o_func)(screenName, deviceType, pCGameSystemPointers);
                     return PLH::FnCast(o_func, &fGetScreenForParadigm)(screenName, deviceType, pCGameSystemPointers);
                 }
             }

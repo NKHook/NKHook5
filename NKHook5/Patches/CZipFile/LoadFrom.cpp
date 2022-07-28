@@ -44,6 +44,8 @@ namespace NKHook5
                         ext->UseData(pAsset->fileContent, pAsset->fileSize);
                     }
                 }
+
+                return pAsset;
             }
 
             auto LoadFrom::Apply() -> bool

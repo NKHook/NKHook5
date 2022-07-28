@@ -14,37 +14,32 @@ namespace NKHook5
             using namespace Extensions;
             using namespace Signatures;
 
+            //Cannot be destructed, its contentPtr will point to a string in the exe's file
+            static ghstl::string error;
             static uint64_t o_func;
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
                 printf("Loading custom assets...\n");
                 ghstl::string archivePath = "./Assets/BTD5.jet";
-                Classes::CZipFile* assetsArchive = new Classes::CZipFile;
-                assetsArchive->Open(&archivePath);
+                Classes::CZipFile* assetsArchive = new Classes::CZipFile();
+                assetsArchive->Open(archivePath);
 
                 std::vector<Extension*> customDocuments = ExtensionManager::GetCustomDocuments();
                 for (Extension* doc : customDocuments) {
                     const std::string& assetPath = doc->GetTarget();
                     ghstl::string ghstlAssetPath = assetPath;
 
-                    ghstl::string* error = new ghstl::string;
-                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(&ghstlAssetPath, error);
-                    if (error->length() > 0) {
-                        printf("%s\n", error->c_str());
+                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(ghstlAssetPath, error);
+                    if (error.length() > 0) {
+                        printf("%s\n", error.c_str());
                     }
                     if (unzipped) {
                         doc->UseData(unzipped->fileContent, unzipped->fileSize);
                     }
                 }
-                //delete assetsArchive;
                 printf("Custom assets loaded!\n");
 
                 printf("BTD5 began loading assets...\n");
-                try {
-                    PLH::FnCast(o_func, &cb_hook)(gameInstance);
-                }
-                catch (std::exception& ex) {
-                    printf("GAME EXCEPTION: %s\n", ex.what());
-                }
+                ((void(__thiscall*)(void*))o_func)(gameInstance);
                 printf("BTD5 assets loaded!\n");
             }
 
