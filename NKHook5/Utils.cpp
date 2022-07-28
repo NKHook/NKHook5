@@ -59,8 +59,8 @@ auto NKHook5::Utils::FindPattern(size_t rangeStart, size_t rangeEnd, const char*
 	while (sanitizedPat[0] == '?' && sanitizedPat[1] == '?') {
 		sanitizedPat = sanitizedPat.substr(3);
 		skips++;
-		printf("Sig skips: %d", skips);
-		printf("Current sig: %s", sanitizedPat.c_str());
+		///printf("Sig skips: %d\n", skips);
+		//printf("Current sig: %s\n", sanitizedPat.c_str());
 	}
 	const char* pat = sanitizedPat.c_str();
 	long long firstMatch = 0;
@@ -81,7 +81,7 @@ auto NKHook5::Utils::FindPattern(size_t rangeStart, size_t rangeEnd, const char*
 			firstMatch = 0;
 		}
 	}
-	MessageBoxA(nullptr, pattern, "SCAN FAILURE", MB_OK);
+	//printf("Signature failure: %s\n", pattern);
 	return 0;
 }
 

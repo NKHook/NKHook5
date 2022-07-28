@@ -6,6 +6,7 @@
 #include "../../Classes/Texts.h"
 #include "../../Extensions/Generic/LocExtension.h"
 #include "../../Extensions/ExtensionManager.h"
+#include "../../Signatures/Signature.h"
 
 namespace NKHook5
 {
@@ -13,6 +14,8 @@ namespace NKHook5
     {
         namespace CLoc
         {
+            using namespace Signatures;
+
             static uint64_t o_func;
             static std::map<std::string, Classes::SLang*> generatedTexts;
             Classes::SLang* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* textKey, Classes::SLangDef* desiredLang) {
@@ -38,10 +41,10 @@ namespace NKHook5
 
             auto FindText::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 53 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B F1 8B ?? ?? 8B ?? ?? 85 FF");
+                const void* address = Signatures::GetAddressOf(Sigs::CLoc_FindText);
                 if (address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
+                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if (detour->hook())
                     {
                         return true;

@@ -19,8 +19,9 @@ add_subdirectory(Extensions)
 add_subdirectory(MenuEditor)
 add_subdirectory(Mod)
 add_subdirectory(Patches)
+add_subdirectory(Signatures)
 add_subdirectory(thirdparty)
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 
-target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl opengl32)
+target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl opengl32 magic_enum)

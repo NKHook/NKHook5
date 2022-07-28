@@ -10,17 +10,19 @@ namespace fs = std::filesystem;
 static std::vector<Asset*> hotAssets;
 
 void InjectionManager::Initialize() {
-	std::string hotSeat = "HotSeat";
-	for (const fs::directory_entry& entry : fs::recursive_directory_iterator(hotSeat)) {
-		if (!entry.is_directory()) {
-			std::string entryStr = entry.path().string();
-			entryStr.replace(entryStr.find(hotSeat), hotSeat.length()+1, "");
-			while (entryStr.find("\\") != std::string::npos) {
-				entryStr.replace(entryStr.find("\\"), sizeof("\\")-1, "/");
+	fs::path hotSeat = fs::current_path() / "HotSeat";
+	if (fs::exists(hotSeat)) {
+		for (const fs::directory_entry& entry : fs::recursive_directory_iterator(hotSeat)) {
+			if (!entry.is_directory()) {
+				std::string entryStr = entry.path().string();
+				entryStr.replace(entryStr.find(hotSeat.string()), hotSeat.string().length() + 1, "");
+				while (entryStr.find("\\") != std::string::npos) {
+					entryStr.replace(entryStr.find("\\"), sizeof("\\") - 1, "/");
+				}
+				HotAsset* hotAsset = new HotAsset(entryStr);
+				hotAssets.push_back(hotAsset);
+				printf("Added new asset %s to hotAsset map\n", entryStr.c_str());
 			}
-			HotAsset* hotAsset = new HotAsset(entryStr);
-			hotAssets.push_back(hotAsset);
-			printf("Added new asset %s to hotAsset map\n", entryStr.c_str());
 		}
 	}
 }

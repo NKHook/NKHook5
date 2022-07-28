@@ -7,12 +7,7 @@
 
 namespace NKHook5
 {
-	namespace Signatures {
-		namespace CPopupScreenBase {
-			static const char* SIG_CCTOR = "55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? 56 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B F1 ?? 75 ?? ?? 75 ?? ?? 45 ?? ?? ?? ?? ?? 8D ?? ?? ?? ?? ?? 50";
-			static const char* SIG_ADDOBJECT = "55 8B EC 53 8B D9 B8 67 ?? ?? ?? 8B";
-		}
-	};
+	using namespace Signatures;
 
 	namespace Classes
 	{
@@ -24,10 +19,10 @@ namespace NKHook5
 			char pad_013C[280]; //0x013C
 		public:
 			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, ghstl::string* screenName) : CBloonsBaseScreen(screenName, pCGameSystemPointers) {
-				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, ghstl::string*>(Signatures::CPopupScreenBase::SIG_CCTOR, this, pCGameSystemPointers, screenName);
+				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, ghstl::string*>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
 			}
 			void AddObject(CBasePositionableObject* object, int param_1) {
-				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CBasePositionableObject*, int>(Signatures::CPopupScreenBase::SIG_ADDOBJECT, this, object, param_1);
+				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CBasePositionableObject*, int>(Sigs::CPopupScreenBase_AddObject, this, object, param_1);
 			}
 			virtual ~CPopupScreenBase() {};
 		};

@@ -2,6 +2,7 @@
 
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../AssetInjector/InjectionManager.h"
+#include "../../Signatures/Signature.h"
 
 NKHook5::Classes::CBloonsTD5Game* g_appPtr;
 
@@ -12,6 +13,7 @@ namespace NKHook5
         namespace CBloonsTD5Game
         {
             using namespace AssetInjector;
+            using namespace Signatures;
 
             static uint64_t o_func;
             static void* __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
@@ -26,10 +28,10 @@ namespace NKHook5
 
             auto Constructor::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern(NKHook5::Signatures::CBloonsTD5Game::SIG_CCTOR);
+                const void* address = GetAddressOf(Sigs::CBloonsTD5Game_CCTOR);
                 if(address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
+                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if(detour->hook())
                     {
                         return true;

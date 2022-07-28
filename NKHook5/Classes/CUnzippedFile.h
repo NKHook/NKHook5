@@ -2,12 +2,12 @@
 
 #include "Macro.h"
 #include <ghstl/string>
+#include "../../Signatures/Signature.h"
 
 namespace NKHook5 {
-	namespace Signatures {
-		static const char* SIG_CCTOR = "56 8B F1 8D ?? ?? ?? 06 ?? ?? ?? ?? E8 ?? ?? ?? ?? ?? 46 ?? ?? ?? ?? ?? 8B";
-	}
 	namespace Classes {
+		using namespace Signatures;
+
 		class CUnzippedFile {
 		public:
 			void* fileContent; //0x0004
@@ -17,7 +17,7 @@ namespace NKHook5 {
 			char pad_0034[4]; //0x0034
 		public:
 			CUnzippedFile() {
-				ThisCall<CUnzippedFile*, CUnzippedFile*>(Signatures::SIG_CCTOR, this);
+				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
 			}
 			virtual ~CUnzippedFile() {};
 		};

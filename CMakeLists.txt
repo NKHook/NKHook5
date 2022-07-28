@@ -40,6 +40,17 @@ if(NOT json_POPULATED)
     include_directories(${json_SOURCE_DIR}/include)
 endif()
 
+FetchContent_Declare(
+    menum
+    GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+    GIT_TAG master
+)
+FetchContent_GetProperties(menum)
+if(NOT menum_POPULATED)
+    FetchContent_Populate(menum)
+    add_subdirectory(${menum_SOURCE_DIR} ${menum_BINARY_DIR})
+endif()
+
 #Get the git diff ID thing and make a compile def for it
 EXECUTE_PROCESS(
       COMMAND git rev-parse --short HEAD

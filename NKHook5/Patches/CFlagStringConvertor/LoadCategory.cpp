@@ -4,6 +4,7 @@
 #include "../../Classes/CTowerFactory.h"
 #include "../../Extensions/Tower/TowerFlagsExt.h"
 #include "../../Extensions/ExtensionManager.h"
+#include "../../Signatures/Signature.h"
 
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
 
@@ -13,6 +14,8 @@ namespace NKHook5
     {
         namespace CFlagStringConvertor
         {
+            using namespace Signatures;
+
             static uint64_t o_func;
             void* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, int category, ghstl::string* stringList, int stringCount, int indexMode) {
                 if ((void*)self == (void*)&g_towerFactory->flagStringConvertor) {
@@ -43,10 +46,10 @@ namespace NKHook5
 
             auto LoadCategory::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? 53 56 57 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? ?? 4D ?? 33");
+                const void* address = Signatures::GetAddressOf(Sigs::CFlagStringConvertor_LoadCategory);
                 if(address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
+                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if(detour->hook())
                     {
                         return true;

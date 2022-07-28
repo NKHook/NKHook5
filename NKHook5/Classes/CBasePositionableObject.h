@@ -10,15 +10,10 @@
 
 namespace NKHook5
 {
-    namespace Signatures {
-        namespace CBasePositionableObject {
-            static const char* SIG_ASSIGNPARENT = "55 8b ec 56 8b f1 57 8b 7d ?? 8b 46 ?? 3b c7 74 ?? 85 c0 74 ?? e8 ?? ?? ?? ?? 85 ff 74 ?? 56 8b cf e8 ?? ?? ?? ?? 80 7f ?? ?? 75 ?? 8b 06 8b ce 6a ?? ff 90 ?? ?? ?? ?? 8b ce e8 ?? ?? ?? ?? 5f 5e 5d c2 ?? ?? cc cc cc cc cc cc cc cc cc cc cc 80 79";
-            static const char* SIG_SETCOMPLETE = "?? 79 ?? ?? 75 ?? 56 57 8D";
-        }
-    }
-
     namespace Classes
     {
+        using namespace Signatures;
+
         class CBasePositionableObject
         {
         public:
@@ -41,10 +36,10 @@ namespace NKHook5
             CBasePositionableObject() {}
 
             void AssignParent(CBasePositionableObject* parent) {
-                return ThisCall<void, CBasePositionableObject*, CBasePositionableObject*>(Signatures::CBasePositionableObject::SIG_ASSIGNPARENT, this, parent);
+                return ThisCall<void, CBasePositionableObject*, CBasePositionableObject*>(Sigs::CBasePositionableObject_AssignParent, this, parent);
             }
             void SetComplete() {
-                return ThisCall<void, CBasePositionableObject*>(Signatures::CBasePositionableObject::SIG_SETCOMPLETE, this);
+                return ThisCall<void, CBasePositionableObject*>(Signatures::Sigs::CBasePositionableObject_SetComplete, this);
             }
 
             virtual ~CBasePositionableObject() {}

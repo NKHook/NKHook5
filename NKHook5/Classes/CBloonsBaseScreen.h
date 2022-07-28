@@ -12,11 +12,7 @@
 
 namespace NKHook5
 {
-	namespace Signatures {
-		namespace CBloonsBaseScreen {
-			static const char* SIG_CCTOR = "55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? 56 57 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B F9 ?? 7D ?? 8D ?? ?? E8 ?? ?? ?? ?? ?? 45";
-		};
-	};
+	using namespace Signatures;
 
 	namespace Classes
 	{
@@ -33,7 +29,7 @@ namespace NKHook5
 			char pad_00E4[8]; //0x00E4
 		public:
 			CBloonsBaseScreen(ghstl::string* screenName, CGameSystemPointers* pCGameSystemPointers) : CBaseScreen(screenName)  {
-				ThisCall<void, CBloonsBaseScreen*, ghstl::string*, CGameSystemPointers*>(Signatures::CBloonsBaseScreen::SIG_CCTOR, this, screenName, pCGameSystemPointers);
+				ThisCall<void, CBloonsBaseScreen*, ghstl::string*, CGameSystemPointers*>(Sigs::CBloonsBaseScreen_CCTOR, this, screenName, pCGameSystemPointers);
 			}
 			virtual ~CBloonsBaseScreen() {};
 		};

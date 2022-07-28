@@ -5,6 +5,7 @@
 
 #include "../../AssetInjector/InjectionManager.h"
 #include "../../Extensions/ExtensionManager.h"
+#include "../../Signatures/Signature.h"
 
 #include <stdint.h>
 #include <ghstl/string>
@@ -17,6 +18,7 @@ namespace NKHook5
         {
             using namespace NKHook5::AssetInjector;
             using namespace NKHook5::Extensions;
+            using namespace Signatures;
 
             uint64_t o_func;
             Classes::CUnzippedFile* __fastcall cb_hook(Classes::CZipFile* pBundle, uint32_t pad, ghstl::string* assetPath, void* param_2, ghstl::string* archivePassword) {
@@ -35,19 +37,21 @@ namespace NKHook5
                     }
                 }
                 if(!pAsset)
-                    pAsset = PLH::FnCast(o_func, &cb_hook)(pBundle, pad, assetPath, param_2, archivePassword);
+                    pAsset = ((Classes::CUnzippedFile*(__thiscall*)(void*, void*, void*, void*))o_func)(pBundle, assetPath, param_2, archivePassword);
 
-                for (Extension* ext : extsForFile) {
-                    ext->UseData(pAsset->fileContent, pAsset->fileSize);
+                if (pAsset) {
+                    for (Extension* ext : extsForFile) {
+                        ext->UseData(pAsset->fileContent, pAsset->fileSize);
+                    }
                 }
             }
 
             auto LoadFrom::Apply() -> bool
             {
-                const uintptr_t address = Utils::FindPattern(Signatures::CZipFile::SIG_LOADFROM);
+                const void* address = Signatures::GetAddressOf(Sigs::CZipFile_LoadFrom);
                 if (address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
+                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if (detour->hook())
                     {
                         return true;

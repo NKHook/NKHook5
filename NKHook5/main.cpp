@@ -3,9 +3,14 @@
 #include <iostream>
 #include "Extensions/ExtensionManager.h"
 #include "Patches/PatchManager.h"
+#include "Signatures/Signature.h"
 
 auto initialize() -> int {
     std::cout << "Loading NKHook5..." << std::endl;
+
+    printf("Searching signatures...\n");
+    NKHook5::Signatures::FindAll();
+    printf("Search complete! (Please report any search issues!!!)\n");
 
     printf("Loading Extensions...\n");
     NKHook5::Extensions::ExtensionManager::AddAll();

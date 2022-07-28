@@ -1,5 +1,6 @@
 #include "StringToFlag.h"
 
+#include "../../Signatures/Signature.h"
 #include <ghstl/string>
 
 namespace NKHook5
@@ -8,6 +9,8 @@ namespace NKHook5
     {
         namespace CFlagStringConvertor
         {
+            using namespace Signatures;
+
             static uint64_t o_func;
             uint64_t __fastcall cb_hook(class CFlagStringConvertor* self, int pad, int categoryId, ghstl::string* textId) {
                 uint64_t eaxResult =  PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
@@ -17,10 +20,10 @@ namespace NKHook5
 
             auto StringToFlag::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 83 EC ?? 53 56 57 ?? ?? ?? E8");
+                const void* address = Signatures::GetAddressOf(Sigs::CFlagStringConvertor_StringToFlag);
                 if(address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
+                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if(detour->hook())
                     {
                         return true;

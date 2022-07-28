@@ -4,6 +4,7 @@
 #include <string>
 #include "../../Classes/CLoc.h"
 #include "../../Classes/Texts.h"
+#include "../../Signatures/Signature.h"
 
 namespace NKHook5
 {
@@ -11,6 +12,8 @@ namespace NKHook5
     {
         namespace CLoc
         {
+            using namespace Signatures;
+
             static uint64_t o_func;
             void* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* result, Classes::eTexts textId, Classes::SLangDef* language) {
                 void* res = PLH::FnCast(o_func, &cb_hook)(pCLoc, pad, result, textId, language);
@@ -20,10 +23,10 @@ namespace NKHook5
 
             auto GetText::Apply() -> bool
             {
-                const uintptr_t address = NKHook5::Utils::FindPattern("55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 53 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B F9 8B ?? ?? 8B ?? ?? 8B ?? ?? ?? 75 ?? ?? 45");
+                const void* address = Signatures::GetAddressOf(Sigs::CLoc_GetText);
                 if(address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour(address, (const uintptr_t)&cb_hook, &o_func);
+                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if(detour->hook())
                     {
                         return true;
