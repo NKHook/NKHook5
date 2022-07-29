@@ -28,6 +28,7 @@ jobs:
       - name: Setup MSVC Developer Command Prompt
         uses: TheMrMilchmann/setup-msvc-dev@v2.0.0
         with:
+          arch: x86
           # Use Visual Studio libraries with Spectre mitigations
           spectre: true
 
@@ -38,7 +39,7 @@ jobs:
 
       # Run the build script
       - name: Run a one-line script
-        run: BuildAll.bat
+        run: .\BuildAll.bat
         
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
