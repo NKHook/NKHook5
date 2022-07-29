@@ -1,3 +1,5 @@
+del Build /s /q
+rmdir Build
 mkdir Build
 cd Build
 cmake .. -A Win32
