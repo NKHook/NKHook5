@@ -37,9 +37,6 @@ jobs:
         # uses: snickerbockers/cmake-configure@34c25d17135428976b13963a8e5e3b1b0b277fd1
         uses: snickerbockers/cmake-configure@prerel1
 
-      - name: Clean build folder
-        run: rm -r Build
-
       # Run the build script
       - name: Run build
         run: .\BuildAll.bat
