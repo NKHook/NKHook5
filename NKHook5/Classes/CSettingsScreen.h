@@ -17,6 +17,7 @@ namespace NKHook5
 		public:
 			char pad_0254[68]; //0x0254
 			class CBasePositionableObject* parentObj; //0x0298
+			char pad_029C[4]; //0x029C
 
 			CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) : CPopupScreenBase(pCGameSystemPointers, settingScreen) {
 				ThisCall<CSettingsScreen*, CSettingsScreen*, CGameSystemPointers*>(Sigs::CSettingsScreen_CCTOR, this, pCGameSystemPointers);
@@ -25,6 +26,7 @@ namespace NKHook5
 			virtual ~CSettingsScreen() {};
 		};
 
+		static_assert(sizeof(CSettingsScreen) == 0x2A0);
 		static_assert(offsetof(CSettingsScreen, parentObj) == 0x298);
 	} // namespace Classes
 

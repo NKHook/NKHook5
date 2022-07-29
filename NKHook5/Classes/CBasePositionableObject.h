@@ -91,6 +91,8 @@ namespace NKHook5
             virtual void ForceUpdate_1() {}
             virtual void DrawChildren() {}
         }; // Size 1024 (0x400)
+
+        static_assert(sizeof(CBasePositionableObject) == 0xA8);
     } // namespace Classes
     
 } // namespace NKHook5

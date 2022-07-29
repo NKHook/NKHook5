@@ -16,13 +16,14 @@ namespace NKHook5
         {
             using namespace Signatures;
 
+            static std::vector<ghstl::string> towerTypes;
             static uint64_t o_func;
             void* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, int category, ghstl::string* stringList, int stringCount, int indexMode) {
                 if ((void*)self == (void*)&g_towerFactory->flagStringConvertor) {
                     if (category == 0 || category == 5) {
                         printf("Hijacking tower registration to inject new types...\n");
                         auto* towerFlagExt = (Extensions::Tower::TowerFlagExt*)Extensions::ExtensionManager::GetByName("TowerFlags");
-                        std::vector<ghstl::string> towerTypes(stringCount + towerFlagExt->GetFlags().size());
+                        towerTypes = std::vector<ghstl::string>(stringCount + towerFlagExt->GetFlags().size() + 1);
                         printf("Copying old types...\n");
                         for (int i = 0; i < stringCount; i++) {
                             towerTypes[i] = stringList[i];
@@ -37,11 +38,13 @@ namespace NKHook5
                             printf("Injected '%s'...\n", flagDef.c_str());
                         }
                         printf("New types injected!\n");
-                        return PLH::FnCast(o_func, &cb_hook)(self, pad, category, towerTypes.data(), towerTypes.size(), indexMode);
+                        return ((void*(__thiscall*)(void*, int, void*, int, int))o_func)(self, category, towerTypes.data(), towerTypes.size(), indexMode);
+                        //return PLH::FnCast(o_func, &cb_hook)(self, pad, category, towerTypes.data(), towerTypes.size(), indexMode);
                     }
                 }
 
-                return PLH::FnCast(o_func, &cb_hook)(self, pad, category, stringList, stringCount, indexMode);
+                return ((void* (__thiscall*)(void*, int, void*, int, int))o_func)(self, category, stringList, stringCount, indexMode);
+                //return PLH::FnCast(o_func, &cb_hook)(self, pad, category, stringList, stringCount, indexMode);
             }
 
             auto LoadCategory::Apply() -> bool

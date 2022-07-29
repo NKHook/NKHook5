@@ -14,6 +14,7 @@ namespace NKHook5 {
 			ghstl::string assetPath; //0x003C
 			char pad_0054[40]; //0x0054
 			ghstl::string* pStringIDK; //0x007C
+			char pad_0080[20]; //0x0080
 		public:
 			CZipFile() {
 				ThisCall<CZipFile*, CZipFile*>(Signatures::Sigs::CZipFile_CCTOR, this);

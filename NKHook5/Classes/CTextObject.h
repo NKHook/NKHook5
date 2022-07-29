@@ -18,7 +18,7 @@ namespace NKHook5
             ghstl::string text; //0x00C8
             char pad_00E0[80]; //0x00E0
             int32_t unknownRenderRuleSetZero; //0x0130
-            char pad_0134[52]; //0x0134
+            char pad_0134[32]; //0x0134
         public:
             CTextObject() {
                 ThisCall<CTextObject*, CTextObject*>(Sigs::CTextObject_CCTOR_A, this);
@@ -43,6 +43,7 @@ namespace NKHook5
             virtual float GetLineWidth(uint32_t param_1) { return 0.0f; }
         };
 
+        static_assert(sizeof(CTextObject) == 0x154);
         static_assert(offsetof(CTextObject, text) == 0xC8);
     } // namespace Classes
 

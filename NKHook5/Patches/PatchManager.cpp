@@ -24,9 +24,9 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
     PatchManager::ApplyPatch(new CBloonsTD5Game::LoadAssets());
-    PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
+    //PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
-    PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
+    //PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
     PatchManager::ApplyPatch(new CLoc::FindText());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
