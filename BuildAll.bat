@@ -2,6 +2,7 @@ del Build /s /q
 rmdir Build
 mkdir Build
 cd Build
+del CMakeCache.txt
 cmake .. -A Win32
 cmake --build . --config Debug
 cmake --build . --config Release
