@@ -7,6 +7,9 @@
 #include "../../Signatures/Signature.h"
 
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
+std::vector<ghstl::string> g_vanillaTowerTypes;
+std::vector<ghstl::string> g_allTowerTypes;
+std::vector<ghstl::string> g_moddedTowerTypes;
 
 namespace NKHook5
 {
@@ -16,29 +19,32 @@ namespace NKHook5
         {
             using namespace Signatures;
 
-            static std::vector<ghstl::string> towerTypes;
             static uint64_t o_func;
             void* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, int category, ghstl::string* stringList, int stringCount, int indexMode) {
                 if ((void*)self == (void*)&g_towerFactory->flagStringConvertor) {
                     if (category == 0 || category == 5) {
                         printf("Hijacking tower registration to inject new types...\n");
                         auto* towerFlagExt = (Extensions::Tower::TowerFlagExt*)Extensions::ExtensionManager::GetByName("TowerFlags");
-                        towerTypes = std::vector<ghstl::string>(stringCount + towerFlagExt->GetFlags().size() + 1);
+                        g_vanillaTowerTypes = std::vector<ghstl::string>(stringCount + 1);
+                        g_allTowerTypes = std::vector<ghstl::string>(stringCount + towerFlagExt->GetFlags().size() + 1);
+                        g_moddedTowerTypes = std::vector<ghstl::string>(towerFlagExt->GetFlags().size() + 1);
                         printf("Copying old types...\n");
                         for (int i = 0; i < stringCount; i++) {
-                            towerTypes[i] = stringList[i];
+                            g_vanillaTowerTypes[i] = stringList[i];
+                            g_allTowerTypes[i] = stringList[i];
                             printf("Copied '%s'...\n", stringList[i].c_str());
                         }
                         printf("Old types copied!\n");
                         printf("Injecting new types...\n");
                         int idx = 0;
                         for (auto flagDef : towerFlagExt->GetFlags()) {
-                            towerTypes[stringCount + idx] = flagDef;
+                            g_moddedTowerTypes[idx] = flagDef;
+                            g_allTowerTypes[stringCount + idx] = flagDef;
                             idx++;
                             printf("Injected '%s'...\n", flagDef.c_str());
                         }
                         printf("New types injected!\n");
-                        return ((void*(__thiscall*)(void*, int, void*, int, int))o_func)(self, category, towerTypes.data(), towerTypes.size(), indexMode);
+                        return ((void*(__thiscall*)(void*, int, void*, int, int))o_func)(self, category, g_allTowerTypes.data(), g_allTowerTypes.size(), indexMode);
                         //return PLH::FnCast(o_func, &cb_hook)(self, pad, category, towerTypes.data(), towerTypes.size(), indexMode);
                     }
                 }

@@ -1,7 +1,12 @@
 #include "StringToFlag.h"
 
+#include "../../Classes/CTowerFactory.h"
+#include "../../Classes/CFlagStringConvertor.h"
 #include "../../Signatures/Signature.h"
 #include <ghstl/string>
+
+extern NKHook5::Classes::CTowerFactory* g_towerFactory;
+extern std::vector<ghstl::string> g_moddedTowerTypes;
 
 namespace NKHook5
 {
@@ -12,10 +17,17 @@ namespace NKHook5
             using namespace Signatures;
 
             static uint64_t o_func;
-            uint64_t __fastcall cb_hook(class CFlagStringConvertor* self, int pad, int categoryId, ghstl::string* textId) {
-                uint64_t eaxResult =  PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
-                //printf("Numeric ID '%llx' was converted to '%s'\n", numericId, eaxResult->c_str());
-                return eaxResult;
+            uint64_t __fastcall cb_hook(Classes::CFlagStringConvertor* self, int pad, int categoryId, ghstl::string* textId) {
+                if (self == &g_towerFactory->flagStringConvertor) {
+                    if (categoryId == 0 || categoryId == 5) {
+                        for (uint64_t i = 0; i < g_moddedTowerTypes.size(); i++) {
+                            if (g_moddedTowerTypes[i].cpp_str() == textId->cpp_str()) {
+                                return MAX_TOWER_ID + i + 1;
+                            }
+                        }
+                    }
+                }
+                return PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
             }
 
             auto StringToFlag::Apply() -> bool

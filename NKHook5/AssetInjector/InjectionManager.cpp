@@ -31,7 +31,7 @@ Asset* InjectionManager::FindInjectedAsset(std::string path)
 {
 	fs::path cd = fs::current_path();
 
-	//printf("Finding asset '%s'...\n", path.c_str());
+	printf("Finding asset '%s'...\n", path.c_str());
 	//First check HotSeat, these are development assets for mod devs
 	for (const auto& asset : hotAssets) {
 		//printf("Checking asset '%s'\n", asset->GetPath().c_str());

@@ -19,6 +19,10 @@ namespace NKHook5 {
 			CUnzippedFile() {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
 			}
+			/* Somehow prevented some heap corruption bug... */
+			void* operator new(size_t size) {
+				return CdeclCall<void*, size_t>(Sigs::CRT_operator_new, size);
+			}
 			virtual ~CUnzippedFile() {};
 		};
 	}
