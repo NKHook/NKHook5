@@ -33,8 +33,8 @@ namespace NKHook5
             virtual ~CTextObject() {}
             
             virtual void SetAlpha(float alpha) {}
-            virtual void SetColor(class Vec4F* color, int param_2) {}
-            virtual void MixWithColor(class Vec4F* color) {}
+            virtual void SetColor(Color* color, int param_2) {}
+            virtual void MixWithColor(Color* color) {}
             virtual void* FUN_009ad610(uint32_t param_2) { return nullptr; }
             virtual void SetGradient(class Vec4F* firstColor, class Vec4F* secondColor, int param_3) {}
             virtual void SetString(ghstl::string* text) {}

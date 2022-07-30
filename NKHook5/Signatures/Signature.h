@@ -47,6 +47,7 @@ namespace NKHook5 {
 			CTextObject_CCTOR_B,
 			CTextObject_CCTOR_C,
 			/* CTowerFactory */
+			CTowerFactory_CCTOR,
 			/* CUnzippedFile */
 			CUnzippedFile_CCTOR,
 			/* CXmlFontImporter */

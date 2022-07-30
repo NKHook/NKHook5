@@ -18,25 +18,27 @@ namespace NKHook5
             using namespace Signatures;
 
             uint64_t o_func;
-            void* __fastcall cb_hook(Classes::CSettingsScreen* self, int pad, int param_1) {
-                void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
+            void __fastcall cb_hook(Classes::CSettingsScreen* self, int pad, int param_1) {
+                //((void(__thiscall*)(void*, int))o_func)(self, param_1);
+                PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
                 printf("CSettingsScreen*: %p", self);
                 printf("SettingScreen inited\n");
                 ghstl::string nkhookText("NKHook5 v1.0 (" STRING(NKHOOK_BUILD_VERSION) ")");
                 printf("Made watermark\n");
-                boost::shared_ptr<Classes::CFont> pCFont = self->pMenuFont;
+                boost::shared_ptr<Classes::CFont>* pCFont = &self->pMenuFont;
                 printf("Retrieved font\n");
                 Classes::Vec2F location(160, -150);
                 printf("Created location\n");
                 //Looks like a memory leak, but the game deletes it when its no longer used.
-                Classes::CTextObject* testObj = new Classes::CTextObject(&location, &pCFont, &nkhookText);
+                Classes::CTextObject* testObj = new Classes::CTextObject(&location, pCFont, &nkhookText);
                 Classes::Vec2F textScale(0.5, 0.5);
                 testObj->Scale(textScale);
                 testObj->SetRotation(40);
+                Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
+                testObj->SetColor(&c, 0);
                 printf("Made text object for watermark (%p)\n", testObj);
-                testObj->AssignParent(self->parentObj);
+                self->parentObj->AddChild(testObj);
                 printf("Added object to screen\n");
-                return result;
             }
 
             auto InitLayout::Apply() -> bool

@@ -51,7 +51,7 @@ namespace NKHook5
             virtual void AddChild(class CBasePositionableObject* param_1) {}
             virtual void AddChildAndUpdate(class CBasePositionableObject* param_1, int* param_2) {}
             virtual void FUN_009e6dc0(int* param_1, int** param_2) {}
-            virtual void FUN_009e6d60() {}
+            virtual void DeleteChildren() {}
             virtual void SetXYZ(Vec3F location) {}
             virtual void SetXY(Vec2F location) {}
             virtual void SetXY_1(Vec2F location) {}
