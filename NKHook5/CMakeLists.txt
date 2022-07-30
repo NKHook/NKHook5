@@ -21,6 +21,7 @@ add_subdirectory(Mod)
 add_subdirectory(Patches)
 add_subdirectory(Signatures)
 add_subdirectory(thirdparty)
+add_subdirectory(Util)
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 

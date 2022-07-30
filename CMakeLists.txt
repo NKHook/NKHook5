@@ -4,6 +4,17 @@ project(NKHook5 VERSION 1.0 LANGUAGES CXX)
 include(FetchContent)
 set(CMAKE_CXX_STANDARD 20)
 
+#Get the git diff ID thing and make a compile def for it
+EXECUTE_PROCESS(
+      COMMAND git rev-parse --short HEAD
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+      OUTPUT_VARIABLE "NKHOOK_BUILD_VERSION"
+      ERROR_QUIET
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+add_compile_definitions(NKHOOK_BUILD_VERSION=${NKHOOK_BUILD_VERSION})
+add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
+
 #Fetch & Install PolyHook2
 FetchContent_Declare(
     plh
@@ -50,16 +61,6 @@ if(NOT menum_POPULATED)
     FetchContent_Populate(menum)
     add_subdirectory(${menum_SOURCE_DIR} ${menum_BINARY_DIR})
 endif()
-
-#Get the git diff ID thing and make a compile def for it
-EXECUTE_PROCESS(
-      COMMAND git rev-parse --short HEAD
-      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-      OUTPUT_VARIABLE "NKHOOK_BUILD_VERSION"
-      ERROR_QUIET
-      OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-add_compile_definitions(NKHOOK_BUILD_VERSION=${NKHOOK_BUILD_VERSION})
 
 add_subdirectory(NKHook5)
 add_subdirectory(Loader)

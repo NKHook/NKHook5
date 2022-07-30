@@ -17,17 +17,17 @@ namespace NKHook5 {
 			ghstl::string versionNumber; //0x00B0
 			char pad_00C8[52]; //0x00C8
 			int32_t hasBundles; //0x00FC
-			char pad_0100[88]; //0x0100
-			boost::shared_ptr<CAssetBag> pAssetBag; //0x0158
-			CGameSystemPointers* pCGameSystemPointers; //0x0160
-			char pad_0164[4]; //0x0164
-			boost::shared_ptr<CFont> pFont; //0x0168
-			char pad_0170[24]; //0x0170
-			float secondTimer; //0x0188
-			int32_t millis; //0x018C
-			char pad_0190[8]; //0x0190
-			ghstl::string locale; //0x0198
-			char pad_01B0[20]; //0x01B0
+			char pad_0100[68]; //0x0100
+			boost::shared_ptr<CAssetBag> pAssetBag; //0x0144
+			CGameSystemPointers* pCGameSystemPointers; //0x014C
+			char pad_0150[4]; //0x0150
+			boost::shared_ptr<CFont> pFont; //0x0154
+			char pad_015C[24]; //0x015C
+			float secondTimer; //0x0174
+			int32_t millis; //0x0178
+			char pad_017C[8]; //0x017C
+			ghstl::string locale; //0x0184
+			char pad_019C[20]; //0x019C
 
 		public:
 			virtual ~CApp() {};
