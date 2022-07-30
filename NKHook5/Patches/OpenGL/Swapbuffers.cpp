@@ -50,7 +50,7 @@ namespace NKHook5
             }
 
             static uint64_t o_func;
-            bool __stdcall hkSwapbuffers(HDC hdc, int b) {
+            bool __stdcall hkSwapbuffers(HDC hdc) {
                 HWND hWnd = WindowFromDC(hdc);
 
                 if (!g_initedImgui && hWnd) {
@@ -61,7 +61,7 @@ namespace NKHook5
                 if (g_initedImgui) {
                     RenderOpenGL();
                 }
-                return PLH::FnCast(o_func, &hkSwapbuffers)(hdc, b);
+                return PLH::FnCast(o_func, &hkSwapbuffers)(hdc);
             }
 
             auto Swapbuffers::Apply() -> bool

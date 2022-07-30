@@ -67,6 +67,10 @@ namespace NKHook5 {
 			/* Vec2F */
 			/* Vec3F */
 			/* ZipCpp */
+
+			/* C/C++ Runtime stuff */
+			CRT_operator_new,
+
 			SIGNATURE_COUNT
 		};
 

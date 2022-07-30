@@ -30,6 +30,11 @@ namespace NKHook5
                 ThisCall<CTextObject*, CTextObject*, boost::shared_ptr<CFont>*, ghstl::string*>(Sigs::CTextObject_CCTOR_C, this, font, text);
             }
 
+            /* Somehow prevented some heap corruption bug... */
+            void* operator new(size_t size) {
+                return CdeclCall<void*, size_t>(Sigs::CRT_operator_new, size);
+            }
+
             virtual ~CTextObject() {}
             
             virtual void SetAlpha(float alpha) {}

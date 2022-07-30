@@ -14,8 +14,6 @@ namespace NKHook5
             using namespace Extensions;
             using namespace Signatures;
 
-            //Cannot be destructed, its contentPtr will point to a string in the exe's file
-            static ghstl::string error;
             static uint64_t o_func;
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
                 printf("Loading custom assets...\n");
@@ -28,6 +26,7 @@ namespace NKHook5
                     const std::string& assetPath = doc->GetTarget();
                     ghstl::string ghstlAssetPath = assetPath;
 
+                    ghstl::string error;
                     Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(ghstlAssetPath, error);
                     if (error.length() > 0) {
                         printf("%s\n", error.c_str());
@@ -35,6 +34,10 @@ namespace NKHook5
                     if (unzipped) {
                         doc->UseData(unzipped->fileContent, unzipped->fileSize);
                     }
+                    //Any text the game puts here cannot be freed by ghstl automatically, as
+                    //the text is sourced directly from the exe file and not copied
+                    error.box.ptr = nullptr;
+                    error.count = 0;
                 }
                 printf("Custom assets loaded!\n");
 
