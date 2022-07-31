@@ -38,7 +38,7 @@ namespace NKHook5
                         for (auto flagDef : towerFlagExt->GetFlags()) {
                             uint64_t moddedSlot = g_towerFlags.Register(flagDef);
                             allTowers.push_back(flagDef);
-                            printf("Injected '%s' at slot '%lld'\n", flagDef.c_str(), moddedSlot);
+                            printf("Injected '%s' at slot '%llx'\n", flagDef.c_str(), moddedSlot);
                         }
                         printf("New types injected!\n");
                         return ((void*(__thiscall*)(void*, int, void*, int, int))o_func)(self, category, allTowers.data(), allTowers.size(), indexMode);
