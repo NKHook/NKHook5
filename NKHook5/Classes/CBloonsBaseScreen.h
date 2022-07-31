@@ -1,6 +1,7 @@
 #ifndef NKHOOK5_CLASSES_CBLOONSBASESCREEN
 #define NKHOOK5_CLASSES_CBLOONSBASESCREEN
 
+#include "../../Util/Allocators.h"
 #include "boost/shared_ptr"
 #include "CAssetBag.h"
 #include "CBaseScreen.h"

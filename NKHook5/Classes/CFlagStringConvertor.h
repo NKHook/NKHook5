@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../Util/Allocators.h"
+
 namespace NKHook5 {
 	namespace Classes {
 		class CFlagStringConvertor

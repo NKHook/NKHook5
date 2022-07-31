@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Util/Allocators.h"
 #include "Macro.h"
 #include <ghstl/string>
 #include "../../Signatures/Signature.h"
@@ -10,6 +11,8 @@ namespace NKHook5 {
 
 		class CUnzippedFile {
 		public:
+			overload_new
+		public:
 			void* fileContent; //0x0004
 			char pad_0008[16]; //0x0008
 			int32_t fileSize; //0x0018
@@ -18,10 +21,6 @@ namespace NKHook5 {
 		public:
 			CUnzippedFile() {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
-			}
-			/* Somehow prevented some heap corruption bug... */
-			void* operator new(size_t size) {
-				return CdeclCall<void*, size_t>(Sigs::CRT_operator_new, size);
 			}
 			virtual ~CUnzippedFile() {};
 		};

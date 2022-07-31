@@ -154,6 +154,9 @@ void Signatures::FindAll() {
 	pointerMap[Sigs::CRT_operator_new] = Signatures::FindFirst(1,
 		"55 8B EC EB"
 	);
+	pointerMap[Sigs::CRT_free] = Signatures::FindFirst(1,
+		"55 8b ec ff 75 08 e8 f0 ff ff ff 59 5d c3"
+	);
 
 	for (int i = 0; i < (int)Sigs::SIGNATURE_COUNT; i++) {
 		if (!GetAddressOf((Sigs)i)) {

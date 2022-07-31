@@ -70,6 +70,7 @@ namespace NKHook5 {
 
 			/* C/C++ Runtime stuff */
 			CRT_operator_new,
+			CRT_free,
 
 			SIGNATURE_COUNT
 		};

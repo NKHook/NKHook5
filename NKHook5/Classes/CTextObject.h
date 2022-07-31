@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Util/Allocators.h"
 #include "Macro.h"
 #include "CRenderableTextureObject.h"
 #include "CFont.h"
@@ -15,6 +16,10 @@ namespace NKHook5
         class CTextObject : public CRenderableTextureObject
         {
         public:
+            /* Somehow prevented some heap corruption bug... */
+            overload_new
+
+        public:
             ghstl::string text; //0x00C8
             char pad_00E0[80]; //0x00E0
             int32_t unknownRenderRuleSetZero; //0x0130
@@ -28,11 +33,6 @@ namespace NKHook5
             }
             CTextObject(boost::shared_ptr<CFont>* font, ghstl::string* text) {
                 ThisCall<CTextObject*, CTextObject*, boost::shared_ptr<CFont>*, ghstl::string*>(Sigs::CTextObject_CCTOR_C, this, font, text);
-            }
-
-            /* Somehow prevented some heap corruption bug... */
-            void* operator new(size_t size) {
-                return CdeclCall<void*, size_t>(Sigs::CRT_operator_new, size);
             }
 
             virtual ~CTextObject() {}

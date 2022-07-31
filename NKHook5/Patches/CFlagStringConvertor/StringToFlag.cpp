@@ -1,12 +1,14 @@
 #include "StringToFlag.h"
 
+#include "../../Util/Allocators.h"
 #include "../../Classes/CTowerFactory.h"
 #include "../../Classes/CFlagStringConvertor.h"
 #include "../../Signatures/Signature.h"
+#include "../../Util/FlagManager.h"
 #include <ghstl/string>
 
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
-extern std::vector<ghstl::string> g_moddedTowerTypes;
+extern NKHook5::Util::FlagManager g_towerFlags;
 
 namespace NKHook5
 {
@@ -18,16 +20,13 @@ namespace NKHook5
 
             static uint64_t o_func;
             uint64_t __fastcall cb_hook(Classes::CFlagStringConvertor* self, int pad, int categoryId, ghstl::string* textId) {
+                uint64_t result = PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
                 if (self == &g_towerFactory->flagStringConvertor) {
-                    if (categoryId == 0 || categoryId == 5) {
-                        for (uint64_t i = 0; i < g_moddedTowerTypes.size(); i++) {
-                            if (g_moddedTowerTypes[i].cpp_str() == textId->cpp_str()) {
-                                return MAX_TOWER_ID + i + 1;
-                            }
-                        }
+                    if (categoryId == 0) {
+                        result = g_towerFlags.GetFlag(textId->cpp_str());
                     }
                 }
-                return PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
+                return result;
             }
 
             auto StringToFlag::Apply() -> bool
