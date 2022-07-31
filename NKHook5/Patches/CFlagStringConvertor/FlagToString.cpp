@@ -25,12 +25,6 @@ namespace NKHook5
                 if (self == &g_towerFactory->flagStringConvertor) {
                     if (categoryId == 0) {
                         resultStr->assign(g_towerFlags.GetName(numericId));
-                        /*if (numericId > MAX_TOWER_ID) {
-                            uint64_t realId = (numericId - MAX_TOWER_ID) + 1;
-                            ghstl::string* moddedId = &g_moddedTowerTypes.at(realId);
-                            printf("ID: '%llx' corresponds to modded type '%s'", numericId, moddedId->c_str());
-                            return moddedId;
-                        }*/
                     }
                 }
                 return resultStr;

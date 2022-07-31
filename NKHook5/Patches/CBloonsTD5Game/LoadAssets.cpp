@@ -1,5 +1,6 @@
 #include "LoadAssets.h"
 
+#include "../../Util/Allocators.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CZipFile.h"
 #include "../../Extensions/ExtensionManager.h"
@@ -17,27 +18,23 @@ namespace NKHook5
             static uint64_t o_func;
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
                 printf("Loading custom assets...\n");
-                ghstl::string archivePath = "./Assets/BTD5.jet";
+                std::string archivePath = "./Assets/BTD5.jet";
                 Classes::CZipFile* assetsArchive = new Classes::CZipFile();
                 assetsArchive->Open(archivePath);
 
                 std::vector<Extension*> customDocuments = ExtensionManager::GetCustomDocuments();
+                ghstl::string error;
                 for (Extension* doc : customDocuments) {
                     const std::string& assetPath = doc->GetTarget();
-                    ghstl::string ghstlAssetPath = assetPath;
 
-                    ghstl::string error;
-                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(ghstlAssetPath, error);
+                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(assetPath, error);
                     if (error.length() > 0) {
                         printf("%s\n", error.c_str());
                     }
                     if (unzipped) {
                         doc->UseData(unzipped->fileContent, unzipped->fileSize);
+                        delete unzipped;
                     }
-                    //Any text the game puts here cannot be freed by ghstl automatically, as
-                    //the text is sourced directly from the exe file and not copied
-                    error.box.ptr = nullptr;
-                    error.count = 0;
                 }
                 printf("Custom assets loaded!\n");
 

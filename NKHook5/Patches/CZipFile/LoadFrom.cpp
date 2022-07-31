@@ -21,23 +21,24 @@ namespace NKHook5
             using namespace Signatures;
 
             uint64_t o_func;
-            Classes::CUnzippedFile* __fastcall cb_hook(Classes::CZipFile* pBundle, uint32_t pad, ghstl::string* assetPath, void* param_2, ghstl::string* archivePassword) {
-                std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(assetPath->cpp_str());
-                Asset* injectedAsset = InjectionManager::FindInjectedAsset(assetPath->cpp_str());
+            Classes::CUnzippedFile* __fastcall cb_hook(Classes::CZipFile* pBundle, uint32_t pad, const std::string& assetPath, void* param_2, std::string& archivePassword) {
+                std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(assetPath);
+                Asset* injectedAsset = InjectionManager::FindInjectedAsset(assetPath);
                 
                 Classes::CUnzippedFile* pAsset = nullptr;
 
                 if (injectedAsset) {
-                    if (injectedAsset->GetPath() == assetPath->cpp_str()) {
+                    if (injectedAsset->GetPath() == assetPath) {
                         pAsset = new Classes::CUnzippedFile();
-                        pAsset->filePath = injectedAsset->GetPath();
+                        pAsset->filePath.assign(injectedAsset->GetPath());
                         pAsset->fileSize = injectedAsset->GetSizeOnHeap();
-                        pAsset->fileContent = injectedAsset->GetAssetOnHeap();
+                        pAsset->fileContent = malloc(pAsset->fileSize);
+                        memcpy_s(pAsset->fileContent, pAsset->fileSize, injectedAsset->GetAssetOnHeap(), pAsset->fileSize);
                         return pAsset;
                     }
                 }
                 if(!pAsset)
-                    pAsset = ((Classes::CUnzippedFile*(__thiscall*)(void*, void*, void*, void*))o_func)(pBundle, assetPath, param_2, archivePassword);
+                    pAsset = ((Classes::CUnzippedFile*(__thiscall*)(void*, const std::string&, void*, const std::string&))o_func)(pBundle, assetPath, param_2, archivePassword);
 
                 if (pAsset) {
                     for (Extension* ext : extsForFile) {
