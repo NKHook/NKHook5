@@ -18,8 +18,6 @@ namespace NKHook5
 
             static uint64_t o_func;
             bool __fastcall cb_hook(Classes::CPlayerProfileV1* profile, int pad, class CBaseFileIO* pFileIO, ghstl::string fileName, bool param_3) {
-                fileName = "Modded.save";
-                printf("Profile file has been set to '%s'\n", fileName.c_str());
                 bool result = PLH::FnCast(o_func, &cb_hook)(profile, pad, pFileIO, fileName, param_3);
                 /*SaveData* customData = SaveData::GetInstance();
                 customData->Load("./Modded.save");*/
