@@ -9,8 +9,13 @@ JsonExtension::JsonExtension(std::string name, std::string target) : Extension(n
 void JsonExtension::UseData(void* content, size_t contentLen)
 {
 	std::string strContent = std::string((char*)content, contentLen);
-	nlohmann::json jsonContent = nlohmann::json::parse(strContent);
-	this->UseJsonData(jsonContent);
+	try {
+		nlohmann::json jsonContent = nlohmann::json::parse(strContent);
+		this->UseJsonData(jsonContent);
+	}
+	catch (std::exception& ex) {
+		printf("Failed to read a JsonExtension: %s", ex.what());
+	}
 }
 
 void JsonExtension::UseJsonData(nlohmann::json content)
