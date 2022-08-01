@@ -60,3 +60,8 @@ std::string FlagManager::GetName(uint64_t flag)
 	}
 	return "INVALID";
 }
+
+const std::vector<std::pair<uint64_t, std::string>>& FlagManager::GetAll()
+{
+	return this->flags;
+}

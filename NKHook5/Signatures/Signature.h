@@ -33,6 +33,9 @@ namespace NKHook5 {
 			CLoc_FindText,
 			CLoc_GetText,
 			/* Color */
+			/* CPlayerProfileV1 */
+			CPlayerProfileV1_InternalLoad,
+			CPlayerProfileV1_Save,
 			/* CPopupScreenBase */
 			CPopupScreenBase_CCTOR,
 			CPopupScreenBase_AddObject,

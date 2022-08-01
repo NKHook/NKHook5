@@ -18,6 +18,7 @@ namespace NKHook5 {
 			bool IsIDAvailable(uint64_t id);
 			uint64_t GetFlag(std::string name);
 			std::string GetName(uint64_t flag);
+			const std::vector<std::pair<uint64_t, std::string>>& GetAll();
 		};
 	}
 }

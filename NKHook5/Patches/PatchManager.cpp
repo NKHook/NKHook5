@@ -9,6 +9,8 @@
 #include "CFlagStringConvertor/StringToFlag.h"
 #include "CLoc/FindText.h"
 #include "CLoc/GetText.h"
+#include "CPlayerProfileV1/InternalLoad.h"
+#include "CPlayerProfileV1/Save.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "CTowerFactory/Constructor.h"
 #include "CZipFile/LoadFrom.h"
@@ -29,6 +31,8 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
     PatchManager::ApplyPatch(new CLoc::FindText());
     PatchManager::ApplyPatch(new CLoc::GetText());
+    PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
+    PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
