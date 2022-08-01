@@ -1,6 +1,6 @@
 #include "LoadCategory.h"
 
-#include "../../Util/Allocators.h"
+#include "../../Util/NewFramework.h"
 #include <ghstl/string>
 #include "../../Classes/CTowerFactory.h"
 #include "../../Extensions/Tower/TowerFlagsExt.h"

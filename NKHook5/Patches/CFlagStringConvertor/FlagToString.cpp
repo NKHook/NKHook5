@@ -1,6 +1,6 @@
 #include "FlagToString.h"
 
-#include "../../Util/Allocators.h"
+#include "../../Util/NewFramework.h"
 #include "../../Classes/CFlagStringConvertor.h"
 #include "../../Classes/CTowerFactory.h"
 #include "../../Signatures/Signature.h"

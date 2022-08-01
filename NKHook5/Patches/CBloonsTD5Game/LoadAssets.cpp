@@ -1,6 +1,6 @@
 #include "LoadAssets.h"
 
-#include "../../Util/Allocators.h"
+#include "../../Util/NewFramework.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CZipFile.h"
 #include "../../Extensions/ExtensionManager.h"

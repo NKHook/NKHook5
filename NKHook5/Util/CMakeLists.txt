@@ -1,4 +1,4 @@
 target_sources(NKHook5 PRIVATE
-	"Allocators.cpp"
+	"NewFramework.cpp"
 	"FlagManager.cpp"
 )

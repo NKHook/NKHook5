@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../Util/Allocators.h"
+#include "Macro.h"
+#include "../../Util/NewFramework.h"
 #include <ghstl/string>
 #include <map>
 
@@ -14,8 +15,8 @@ namespace NKHook5 {
 			int32_t profileVersion[3]; //0x0008
 			int32_t gameVersion[3]; //0x0014
 			char pad_0020[132]; //0x0020
-			std::map<uint64_t, bool> towerUnlocks; //0x00A4
-			std::map<uint64_t, bool> unlockedLevel4; //0x00AC
+			nfw::map<uint64_t, bool> towerUnlocks; //0x00A4
+			nfw::map<uint64_t, bool> unlockedLevel4; //0x00AC
 			char pad_00B4[176]; //0x00B4
 			ghstl::string locale; //0x0164
 			char pad_017C[180]; //0x017C

@@ -1,7 +1,7 @@
 #ifndef NKHOOK5_CLASSES_CLOC
 #define NKHOOK5_CLASSES_CLOC
 
-#include "../../Util/Allocators.h"
+#include "../../Util/NewFramework.h"
 #include <ghstl/string>
 #include <ghstl/vector>
 #include "CLoc.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Util/Allocators.h"
+#include "../../Util/NewFramework.h"
 
 namespace NKHook5 {
 	namespace Classes {
