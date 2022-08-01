@@ -32,7 +32,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CLoc::FindText());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
-    PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
+    //PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());

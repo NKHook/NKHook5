@@ -21,8 +21,8 @@ namespace NKHook5
                 fileName = "Modded.save";
                 printf("Profile file has been set to '%s'\n", fileName.c_str());
                 bool result = PLH::FnCast(o_func, &cb_hook)(profile, pad, pFileIO, fileName, param_3);
-                SaveData* customData = SaveData::GetInstance();
-                customData->Load("./Modded.save");
+                /*SaveData* customData = SaveData::GetInstance();
+                customData->Load("./Modded.save");*/
                 //Add all towers to the profile
                 printf("Adding all towers to save...\n");
                 const auto& allTowerFlags = g_towerFlags.GetAll();
