@@ -35,18 +35,19 @@ Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 		fs::path modPath = fs::path(this->modDir) / "Mod";
 		modPath /= normalPath;
 
+		bool moddedAssetOnly = false;
 		if (!fs::exists(vanillaPath)) {
-			return nullptr;
+			moddedAssetOnly = true;
 		}
 		DiskAsset* vanillaAsset = new DiskAsset(path, vanillaPath.string());
 		if (!fs::exists(modPath)) {
-			vanillaAsset->Release();
-			delete vanillaAsset;
-			return nullptr;
+			return vanillaAsset;
 		}
 		DiskAsset* modAsset = new DiskAsset(path, modPath.string());
 
-		void* vanillaData = vanillaAsset->GetAssetOnHeap();
+		void* vanillaData = nullptr;
+		if(!moddedAssetOnly)
+			vanillaData = vanillaAsset->GetAssetOnHeap();
 		void* modData = modAsset->GetAssetOnHeap();
 
 		MergedDocument merged;

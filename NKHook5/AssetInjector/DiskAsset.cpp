@@ -20,6 +20,10 @@ void* DiskAsset::GetAssetOnHeap() {
 		size_t size = file.tellg();
 		file.seekg(0, std::ios::beg);
 
+		if (size == 0 || size == -1) {
+			return nullptr;
+		}
+
 		this->assetHeap = malloc(size);
 		file.read((char*)this->assetHeap, size);
 		file.close();
@@ -33,6 +37,9 @@ void* DiskAsset::GetAssetOnHeap() {
 }
 
 size_t DiskAsset::GetSizeOnHeap() {
+	if (!this->Exists()) {
+		return 0;
+	}
 	std::ifstream file(this->GetPathOnDisk(), std::ios::binary | std::ios::ate);
 	size_t size = file.tellg();
 	file.seekg(0, std::ios::beg);
