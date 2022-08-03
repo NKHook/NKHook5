@@ -5,9 +5,10 @@
 
 namespace NKHook5 {
 	namespace AssetInjector {
-		class HotAsset : public Asset {
+		class MemAsset : public Asset {
 		public:
-			HotAsset(std::string relAssetPath);
+			MemAsset(std::string relAssetPath);
+			virtual void Release();
 		};
 	}
 }

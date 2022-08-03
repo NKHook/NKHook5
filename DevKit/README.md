@@ -6,6 +6,7 @@ To ensure these tools work properly, make sure you have the following installed:
 
 1. Python 3
 2. Visual Studio Code
+3. NKHook5 (in your game's folder)
 
 # Setting up the MDK
 To setup the NKH5 MDK, simply open this folder in Command Prompt, and run the following command:

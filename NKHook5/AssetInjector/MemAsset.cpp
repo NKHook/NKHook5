@@ -1,11 +1,11 @@
-#include "HotAsset.h"
+#include "MemAsset.h"
 
 #include <fstream>
 
 using namespace NKHook5::AssetInjector;
 namespace fs = std::filesystem;
 
-HotAsset::HotAsset(std::string relAssetPath) : Asset(relAssetPath) {
+MemAsset::MemAsset(std::string relAssetPath) : Asset(relAssetPath) {
 
 	fs::path cd = fs::current_path();
 	fs::path hotdir = cd / "HotSeat";
@@ -19,4 +19,9 @@ HotAsset::HotAsset(std::string relAssetPath) : Asset(relAssetPath) {
 		void* buffer = this->GetAssetOnHeap();
 		file.read((char*)buffer, size);
 	}
+}
+
+void MemAsset::Release()
+{
+	return;
 }

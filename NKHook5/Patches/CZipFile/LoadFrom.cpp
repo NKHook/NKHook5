@@ -23,7 +23,8 @@ namespace NKHook5
             uint64_t o_func;
             Classes::CUnzippedFile* __fastcall cb_hook(Classes::CZipFile* pBundle, uint32_t pad, const std::string& assetPath, void* param_2, std::string& archivePassword) {
                 std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(assetPath);
-                Asset* injectedAsset = InjectionManager::FindInjectedAsset(assetPath);
+                AssetLoader* currentLoader = InjectionManager::GetLoader();
+                Asset* injectedAsset = currentLoader->FindInjectedAsset(assetPath);
                 
                 Classes::CUnzippedFile* pAsset = nullptr;
 
@@ -34,6 +35,9 @@ namespace NKHook5
                         pAsset->fileSize = injectedAsset->GetSizeOnHeap();
                         pAsset->fileContent = malloc(pAsset->fileSize);
                         memcpy_s(pAsset->fileContent, pAsset->fileSize, injectedAsset->GetAssetOnHeap(), pAsset->fileSize);
+                        
+                        injectedAsset->Release();
+                        
                         return pAsset;
                     }
                 }

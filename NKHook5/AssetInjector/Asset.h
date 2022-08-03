@@ -6,6 +6,9 @@ namespace NKHook5 {
 	namespace AssetInjector {
 		class Asset {
 		private:
+			friend class DiskAsset;
+			friend class MemAsset;
+
 			std::string assetPath = "";
 			void* assetHeap = nullptr;
 			size_t heapSize = 0;
@@ -16,6 +19,7 @@ namespace NKHook5 {
 			virtual void* GetAssetOnHeap();
 			virtual size_t GetSizeOnHeap();
 			virtual const std::string& GetPath();
+			virtual void Release();
 		};
 	}
 }

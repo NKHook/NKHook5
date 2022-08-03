@@ -2,48 +2,28 @@
 
 #include <filesystem>
 #include <vector>
-#include "HotAsset.h"
+#include "MemAsset.h"
+#include "AssetLoader.h"
+#include "TestModAssetLoader.h"
 
 using namespace NKHook5::AssetInjector;
 namespace fs = std::filesystem;
 
-static std::vector<Asset*> hotAssets;
+static AssetLoader* currentLoader;
 
-void InjectionManager::Initialize() {
-	fs::path hotSeat = fs::current_path() / "HotSeat";
-	if (fs::exists(hotSeat)) {
-		for (const fs::directory_entry& entry : fs::recursive_directory_iterator(hotSeat)) {
-			if (!entry.is_directory()) {
-				std::string entryStr = entry.path().string();
-				entryStr.replace(entryStr.find(hotSeat.string()), hotSeat.string().length() + 1, "");
-				while (entryStr.find("\\") != std::string::npos) {
-					entryStr.replace(entryStr.find("\\"), sizeof("\\") - 1, "/");
-				}
-				HotAsset* hotAsset = new HotAsset(entryStr);
-				hotAssets.push_back(hotAsset);
-				printf("Added new asset %s to hotAsset map\n", entryStr.c_str());
-			}
-		}
+//From main.cpp
+extern std::string* testModDir;
+
+void InjectionManager::SetupAssetLoader() {
+	if (testModDir != nullptr) {
+		currentLoader = new TestModAssetLoader(*testModDir);
+	}
+	else {
+		currentLoader = new AssetLoader();
 	}
 }
 
-Asset* InjectionManager::FindInjectedAsset(std::string path)
+AssetLoader* InjectionManager::GetLoader()
 {
-	fs::path cd = fs::current_path();
-
-	printf("Finding asset '%s'...\n", path.c_str());
-	//First check HotSeat, these are development assets for mod devs
-	for (const auto& asset : hotAssets) {
-		//printf("Checking asset '%s'\n", asset->GetPath().c_str());
-		if (asset->GetPath() == path) {
-			printf("Found a match for '%s' on the hotseat!\n", path.c_str());
-			return asset;
-		}
-	}
-
-	//Then, check mods in the user-defined order
-	fs::path modsDir = cd / "Mods";
-	//Finally, if the asset still isnt found, let the game handle it
-	//printf("Failed to find asset '%s', passing search back to the game.\n", path.c_str());
-	return nullptr;
+	return currentLoader;
 }

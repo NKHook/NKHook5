@@ -67,6 +67,8 @@ namespace NKHook5 {
 			/* Matrix16F */
 			/* Screens */
 			Screens_GetScreenForParadigm,
+			/* Unknown */
+			Unknown_WinMain,
 			/* Vec2F */
 			/* Vec3F */
 			/* ZipCpp */

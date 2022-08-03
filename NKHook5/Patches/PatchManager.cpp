@@ -18,6 +18,7 @@
 #include "OpenGL/Swapbuffers.h"
 #include "Screens/GetScreenForParadigm.h"
 #include "Unknown/GetDeltaLock60FPS.h"
+#include "Unknown/WinMain.h"
 
 using namespace NKHook5::Patches;
 
@@ -40,6 +41,7 @@ void PatchManager::ApplyAll()
     //PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     //PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());
+    PatchManager::ApplyPatch(new Unknown::WinMain());
 }
 
 void PatchManager::ApplyPatch(IPatch* toAdd)

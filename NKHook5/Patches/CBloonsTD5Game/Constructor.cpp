@@ -21,7 +21,7 @@ namespace NKHook5
                 g_appPtr = gameInstance;
                 printf("Game load started\n");
                 printf("Initializing asset injector...\n");
-                InjectionManager::Initialize();
+                InjectionManager::SetupAssetLoader();
                 printf("Asset injector ready!\n");
                 return PLH::FnCast(o_func, &cb_hook)(gameInstance);
             }

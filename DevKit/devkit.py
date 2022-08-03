@@ -2,24 +2,25 @@ import sys
 import argparse
 import json
 import shutil
+import os
 from pathlib import Path
 from zipfile import ZipFile
 
 def CheckGameDir(gameDir):
 	if gameDir == "":
-		return False
+		return None
 	gamePath = Path(gameDir);
 	if gamePath.is_dir():
 		if (gamePath / "BTD5-Win.exe").is_file():
-			return True
+			return "BTD5-Win.exe"
 		elif (gamePath / "BTD5-Kong.exe").is_file():
-			return True
+			return "BTD5-Kong.exe"
 		else:
 			print("Couldn't find BTD5-Win.exe or BTD5-Kong.exe")
 	else:
 		print(gameDir + " is not a valid directory")
-		return False
-	return False
+		return None
+	return None
 
 settings = {}
 def ReadConf():
@@ -39,10 +40,11 @@ def SaveConf():
 def Setup():
 	global settings
 	gameDir = "";
-	while not CheckGameDir(gameDir):
+	while CheckGameDir(gameDir) == None:
 		gameDir = input("Where is Bloons TD 5 installed? >")
 
 	settings["gameDir"] = gameDir
+	settings["exeName"] = CheckGameDir(gameDir)
 	SaveConf()
 
 def DumpAssets():
@@ -61,6 +63,7 @@ def DumpAssets():
 
 def CreateMod(modName):
 	global settings
+	print("Creating your mod...")
 	try:
 		baseAssets = Path("./BTD5/Assets/")
 		if not baseAssets.exists():
@@ -95,15 +98,36 @@ def CreateMod(modName):
 		return True
 	except Exception as ex:
 		print(ex)
+		print("Mod creation failed!")
 
 	return False
+
+def OpenEditor(modName):
+	os.system("code "+modName)
+
+def RunMod(modName):
+	global settings
+	modDir = Path(modName)
+	gameDir = Path(settings["gameDir"])
+	loaderDll = gameDir / "wininet.dll"
+	nkhDll = gameDir / "NKHook5.dll"
+	if not loaderDll.exists():
+		print("Cannot launch mod! wininet.dll is missing!")
+	if not nkhDll.exists():
+		print("Cannot launch mod! NKHook5.dll is missing!")
+
+	btdExe = gameDir / settings["exeName"]
+	launchCmd = str(btdExe.resolve())+" --LaunchMod "+str(modDir.resolve())
+	print("Launching BTD5 with "+launchCmd)
+	os.system(launchCmd)
 
 parser = argparse.ArgumentParser("NKHook5 MDK")
 parser.add_argument("--setup", help="Setup your MDK", required=False, action='store_true')
 parser.add_argument("--dump-assets", help="Dump BTD5 assets", required=False, action='store_true')
-parser.add_argument("--create-mod", help="Dump BTD5 assets", required=False)
+parser.add_argument("--create-mod", help="Create a new BTD5 mod", required=False)
+parser.add_argument("--editor", help="Opens Visual Studio Code with the specified mod as the workspace")
+parser.add_argument("--run-mod", help="Opens Bloons TD 5 with the specified mod")
 args = parser.parse_args()
-print(args)
 ReadConf()
 
 if args.setup:
@@ -112,3 +136,7 @@ if args.dump_assets:
 	DumpAssets()
 if not args.create_mod == None:
 	CreateMod(args.create_mod)
+if not args.editor == None:
+	OpenEditor(args.editor)
+if not args.run_mod == None:
+	RunMod(args.run_mod)

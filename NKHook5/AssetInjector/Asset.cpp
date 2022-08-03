@@ -13,9 +13,7 @@ Asset::Asset(const std::string& assetPath) : Asset::Asset() {
 }
 
 void Asset::AllocateFor(size_t assetSize) {
-	if (this->assetHeap != nullptr) {
-		free(this->assetHeap);
-	}
+	this->Release();
 	this->assetHeap = malloc(assetSize);
 	this->heapSize = assetSize;
 }
@@ -31,4 +29,11 @@ size_t Asset::GetSizeOnHeap() {
 const std::string& Asset::GetPath()
 {
 	return this->assetPath;
+}
+
+void Asset::Release() {
+	if (this->assetHeap != nullptr) {
+		free(this->assetHeap);
+		this->assetHeap = nullptr;
+	}
 }

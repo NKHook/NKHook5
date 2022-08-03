@@ -5,8 +5,35 @@
 #include "Patches/PatchManager.h"
 #include "Signatures/Signature.h"
 
+std::string* testModDir = nullptr;
+
 auto initialize() -> int {
     std::cout << "Loading NKHook5..." << std::endl;
+
+    wchar_t* cmdLine = GetCommandLineW();
+    int argc;
+    wchar_t** argv = CommandLineToArgvW(cmdLine, &argc);
+
+    bool wantsModLaunch = false;
+    wchar_t* wcModDir = nullptr;
+    if (argv) {
+        for (int i = 0; i < argc; i++) {
+            if (wantsModLaunch) {
+                wcModDir = argv[i];
+                continue;
+            }
+            if (lstrcmpW(argv[i], L"--LaunchMod")) {
+                wantsModLaunch = true;
+                continue;
+            }
+            wprintf(L"Unknown arg at %d: %s\n", i, argv[i]);
+        }
+    }
+    if (wcModDir) {
+        std::wstring modWStr(wcModDir);
+        testModDir = new std::string(modWStr.begin(), modWStr.end());
+        printf("Launching mod: %s\n", testModDir->c_str());
+    }
 
     printf("Searching signatures...\n");
     NKHook5::Signatures::FindAll();
