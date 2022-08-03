@@ -34,12 +34,12 @@ namespace NKHook5 {
 	namespace Util {
 		namespace Json {
 			class MergedDocument {
-				std::vector<nlohmann::json> documentsToMerge;
-				nlohmann::json mergedDocument;
+				std::vector<nlohmann::ordered_json> documentsToMerge;
+				nlohmann::ordered_json mergedDocument;
 			public:
 				MergedDocument();
-				void Add(nlohmann::json);
-				const nlohmann::json& GetMerged();
+				void Add(nlohmann::ordered_json);
+				const nlohmann::ordered_json& GetMerged();
 			};
 		}
 	}

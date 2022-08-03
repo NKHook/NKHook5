@@ -54,15 +54,15 @@ Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 
 		if (vanillaData != nullptr) {
 			std::string vanillaString = std::string((char*)vanillaAsset->GetAssetOnHeap(), vanillaAsset->GetSizeOnHeap());
-			nlohmann::json vanillaJson = nlohmann::json::parse(vanillaString);
+			nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaString);
 			merged.Add(vanillaJson);
 		}
 		if (modData != nullptr) {
 			std::string modString = std::string((char*)modAsset->GetAssetOnHeap(), modAsset->GetSizeOnHeap());
-			nlohmann::json modJson = nlohmann::json::parse(modString);
+			nlohmann::ordered_json modJson = nlohmann::ordered_json::parse(modString);
 			merged.Add(modJson);
 		}
-		nlohmann::json mergedJson = merged.GetMerged();
+		nlohmann::ordered_json mergedJson = merged.GetMerged();
 		std::string mergedString = mergedJson.dump();
 
 		MemAsset* memAsset = new MemAsset(path);
