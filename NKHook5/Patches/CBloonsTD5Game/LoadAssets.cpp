@@ -18,6 +18,7 @@ namespace NKHook5
             static uint64_t o_func;
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
                 printf("Loading custom assets...\n");
+                printf("CWD: %s\n", std::filesystem::current_path().string().c_str());
                 std::string archivePath = "./Assets/BTD5.jet";
                 Classes::CZipFile* assetsArchive = new Classes::CZipFile();
                 assetsArchive->Open(archivePath);

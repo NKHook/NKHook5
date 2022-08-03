@@ -20,52 +20,61 @@ void TestModAssetLoader::Initialize()
 Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 {
 	try {
-		std::string normalPath;
+		std::string normalPath = path;
 		if (path.find("./Assets/") != std::string::npos) {
-			normalPath = path.replace(0, sizeof("./Assets") - 1, "");
+			normalPath.replace(0, sizeof("./Assets/") - 1, "");
 		}
 		else if(path.find("/Assets/") != std::string::npos) {
-			normalPath = path.replace(0, sizeof("/Assets") - 1, "");
+			normalPath.replace(0, sizeof("/Assets/") - 1, "");
 		}
-		fs::path vanillaPath = fs::path(this->modDir) / "Vanilla" / normalPath;
-		fs::path modPath = fs::path(this->modDir) / "Mod" / normalPath;
+		else if (path.find("Assets/") != std::string::npos) {
+			normalPath.replace(0, sizeof("Assets/") - 1, "");
+		}
+		fs::path vanillaPath = fs::path(this->modDir) / "Vanilla";
+		vanillaPath /= normalPath;
+		fs::path modPath = fs::path(this->modDir) / "Mod";
+		modPath /= normalPath;
 
+		if (!fs::exists(vanillaPath)) {
+			return nullptr;
+		}
 		DiskAsset* vanillaAsset = new DiskAsset(path, vanillaPath.string());
+		if (!fs::exists(modPath)) {
+			vanillaAsset->Release();
+			delete vanillaAsset;
+			return nullptr;
+		}
 		DiskAsset* modAsset = new DiskAsset(path, modPath.string());
 
 		void* vanillaData = vanillaAsset->GetAssetOnHeap();
 		void* modData = modAsset->GetAssetOnHeap();
+
+		MergedDocument merged;
+
 		if (vanillaData != nullptr) {
-			if (modData != nullptr) {
-				std::string vanillaString = std::string((char*)vanillaAsset->GetAssetOnHeap(), vanillaAsset->GetSizeOnHeap());
-				std::string modString = std::string((char*)modAsset->GetAssetOnHeap(), modAsset->GetSizeOnHeap());
-
-				nlohmann::json vanillaJson = nlohmann::json::parse(vanillaString);
-				nlohmann::json modJson = nlohmann::json::parse(modString);
-
-				MergedDocument merged;
-				merged.Add(vanillaJson);
-				merged.Add(modJson);
-				nlohmann::json mergedJson = merged.GetMerged();
-				std::string mergedString = mergedJson.dump();
-
-				MemAsset* memAsset = new MemAsset(path);
-				memAsset->AllocateFor(mergedString.size());
-				memcpy(memAsset->GetAssetOnHeap(), mergedString.data(), mergedString.size());
-
-				vanillaAsset->Release();
-				modAsset->Release();
-
-				delete vanillaAsset;
-				delete modAsset;
-
-				return memAsset;
-			}
-			else {
-				delete modAsset;
-				return vanillaAsset;
-			}
+			std::string vanillaString = std::string((char*)vanillaAsset->GetAssetOnHeap(), vanillaAsset->GetSizeOnHeap());
+			nlohmann::json vanillaJson = nlohmann::json::parse(vanillaString);
+			merged.Add(vanillaJson);
 		}
+		if (modData != nullptr) {
+			std::string modString = std::string((char*)modAsset->GetAssetOnHeap(), modAsset->GetSizeOnHeap());
+			nlohmann::json modJson = nlohmann::json::parse(modString);
+			merged.Add(modJson);
+		}
+		nlohmann::json mergedJson = merged.GetMerged();
+		std::string mergedString = mergedJson.dump();
+
+		MemAsset* memAsset = new MemAsset(path);
+		memAsset->AllocateFor(mergedString.size());
+		memcpy(memAsset->GetAssetOnHeap(), mergedString.data(), mergedString.size());
+
+		vanillaAsset->Release();
+		modAsset->Release();
+
+		delete vanillaAsset;
+		delete modAsset;
+
+		return memAsset;
 	}
 	catch (std::exception& ex) {
 		printf("Error getting injected asset: %s\n", ex.what());

@@ -5,42 +5,42 @@
 using namespace NKHook5::AssetInjector;
 namespace fs = std::filesystem;
 
-DiskAsset::DiskAsset(const std::string& assetPath, const std::string& pathOnDisk) : Asset::Asset(assetPath) {
+DiskAsset::DiskAsset(const std::string& assetPath, const fs::path& pathOnDisk) : Asset::Asset(assetPath) {
 	this->pathOnDisk = pathOnDisk;
 }
 
 void* DiskAsset::GetAssetOnHeap() {
 	if (!this->Exists()) {
-		printf("Error loading asset '%s': %s", this->GetPathOnDisk().c_str(), "The asset does not exist");
+		printf("Error loading asset '%s': %s\n", this->GetPathOnDisk().string().c_str(), "The asset does not exist");
 		return nullptr;
 	}
 	try {
 		//Its really allocating for the size on disk
-		size_t length = this->GetSizeOnHeap();
-		this->AllocateFor(length);
+		std::ifstream file(this->GetPathOnDisk(), std::ios::binary | std::ios::ate);
+		size_t size = file.tellg();
+		file.seekg(0, std::ios::beg);
 
-		std::ifstream in(this->GetPathOnDisk(), std::ifstream::ate | std::ifstream::binary);
-		this->assetHeap = malloc(length + 1);
-		in.read((char*)this->assetHeap, length);
+		this->assetHeap = malloc(size);
+		file.read((char*)this->assetHeap, size);
+		file.close();
 
 		return this->assetHeap;
 	}
 	catch (std::exception& ex) {
-		printf("Error loading asset '%s': %s", this->GetPathOnDisk().c_str(), ex.what());
+		printf("Error loading asset '%s': %s\n", this->GetPathOnDisk().string().c_str(), ex.what());
 	}
 	return nullptr;
 }
 
 size_t DiskAsset::GetSizeOnHeap() {
-	std::ifstream in(this->GetPathOnDisk(), std::ifstream::ate | std::ifstream::binary);
-	in.seekg(0, std::ios::end);
-	size_t length = in.tellg();
-	in.seekg(0, std::ios::beg);
-	in.close();
-	return length;
+	std::ifstream file(this->GetPathOnDisk(), std::ios::binary | std::ios::ate);
+	size_t size = file.tellg();
+	file.seekg(0, std::ios::beg);
+	file.close();
+	return size;
 }
 
-const std::string& DiskAsset::GetPathOnDisk()
+const fs::path& DiskAsset::GetPathOnDisk()
 {
 	return this->pathOnDisk;
 }

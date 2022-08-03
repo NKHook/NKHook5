@@ -1,11 +1,8 @@
 #include "WinMain.h"
 
-#include <ghstl/string>
-#include "../../Classes/CGameSystemPointers.h"
-#include "../../Classes/CBloonsBaseScreen.h"
-#include "../../Classes/CPopupScreenBase.h"
-#include "../../Classes/DeviceType.h"
 #include "../../Signatures/Signature.h"
+#include <Windows.h>
+#include <filesystem>
 
 namespace NKHook5
 {
@@ -16,11 +13,17 @@ namespace NKHook5
             using namespace Signatures;
 
             uint64_t o_func;
-            void __stdcall hkWinMain(HINSTANCE param_1, HINSTANCE param_2, char* param_3, int param_4) {
-                if(param_3)
-                    param_3[0] = 0;
-                printf("Cleared CMDLINE\n");
-                return PLH::FnCast(o_func, &hkWinMain)(param_1, param_2, param_3, 0);
+            void __stdcall hkWinMain(HINSTANCE param_1, HINSTANCE param_2, char* argv, int nShowCmd) {
+                if (argv != nullptr) {
+                    printf("CMDLINE: %s\n", argv);
+                    argv[0] = 0;
+                    argv[1] = 0;
+                    printf("Cleared CMDLINE\n");
+                }
+                else {
+                    printf("CMDLINE has not been cleared\n");
+                }
+                return PLH::FnCast(o_func, &hkWinMain)(param_1, param_2, argv, nShowCmd);
             }
 
             auto WinMain::Apply() -> bool

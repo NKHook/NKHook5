@@ -119,7 +119,10 @@ def RunMod(modName):
 	btdExe = gameDir / settings["exeName"]
 	launchCmd = str(btdExe.resolve())+" --LaunchMod "+str(modDir.resolve())
 	print("Launching BTD5 with "+launchCmd)
+	cwd = os.getcwd()
+	os.chdir(gameDir)
 	os.system(launchCmd)
+	os.chdir(cwd)
 
 parser = argparse.ArgumentParser("NKHook5 MDK")
 parser.add_argument("--setup", help="Setup your MDK", required=False, action='store_true')

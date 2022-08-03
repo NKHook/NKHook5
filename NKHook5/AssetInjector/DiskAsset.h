@@ -7,12 +7,12 @@ namespace NKHook5 {
 	namespace AssetInjector {
 		class DiskAsset : public Asset {
 		private:
-			std::string pathOnDisk;
+			std::filesystem::path pathOnDisk;
 		public:
-			DiskAsset(const std::string& assetPath, const std::string& pathOnDisk);
+			DiskAsset(const std::string& assetPath, const std::filesystem::path& pathOnDisk);
 			virtual void* GetAssetOnHeap();
 			virtual size_t GetSizeOnHeap();
-			virtual const std::string& GetPathOnDisk();
+			virtual const std::filesystem::path& GetPathOnDisk();
 			virtual bool Exists();
 		};
 	}
