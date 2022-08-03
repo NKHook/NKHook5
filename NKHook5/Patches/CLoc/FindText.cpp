@@ -19,7 +19,7 @@ namespace NKHook5
             static uint64_t o_func;
             static std::map<std::string, Classes::SLang*> generatedTexts;
             Classes::SLang* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* textKey, Classes::SLangDef* desiredLang) {
-                if (generatedTexts.count(textKey->cpp_str())) {
+                /*if (generatedTexts.count(textKey->cpp_str())) {
                     return generatedTexts[textKey->cpp_str()];
                 }
                 Extensions::Extension* pLocExt = Extensions::ExtensionManager::GetByName("EnglishLocs");
@@ -35,7 +35,7 @@ namespace NKHook5
                         generatedTexts[textKey->cpp_str()] = generatedLoc;
                         return generatedLoc;
                     }
-                }
+                }*/
                 return PLH::FnCast(o_func, &cb_hook)(pCLoc, pad, textKey, desiredLang);
             }
 

@@ -17,7 +17,7 @@ namespace NKHook5
             static uint64_t o_func;
             void* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* result, Classes::eTexts textId, Classes::SLangDef* language) {
                 void* res = PLH::FnCast(o_func, &cb_hook)(pCLoc, pad, result, textId, language);
-                printf("ID: %x Result: %s\n", textId, result->c_str());
+                //printf("ID: %x Result: %s\n", textId, result->c_str());
                 return res;
             }
 
