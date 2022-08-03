@@ -37,6 +37,13 @@ def SaveConf():
 	with open("mdkconf.json", 'w') as conf:
 		json.dump(settings, conf)
 
+def ReadModConf(modName):
+	modConf = Path(modName) / "modinfo.json"
+	if not modConf.exists():
+		return {}
+	with modConf.open() as conf:
+		return json.load(conf)
+
 def Setup():
 	global settings
 	gameDir = "";
@@ -108,6 +115,9 @@ def OpenEditor(modName):
 def RunMod(modName):
 	global settings
 	modDir = Path(modName)
+	if not modDir.exists():
+		print("No suck mod "+modName+" exists")
+		return
 	gameDir = Path(settings["gameDir"])
 	loaderDll = gameDir / "wininet.dll"
 	nkhDll = gameDir / "NKHook5.dll"
@@ -124,12 +134,56 @@ def RunMod(modName):
 	os.system(launchCmd)
 	os.chdir(cwd)
 
+def MakeGit(modName, remote):
+	global settings
+	modDir = Path(modName)
+	if not modDir.exists():
+		print("No such mod "+modName+" exists")
+		return
+	modSettings = ReadModConf(modName)
+	if modSettings == {}:
+		print("Could not read modinfo for "+modName)
+	if shutil.which("git") is None:
+		print("Git is not installed!")
+		return
+	cwd = os.getcwd()
+	os.chdir(modDir)
+	os.system("git init")
+	if not remote == None:
+		os.system("git remote add origin "+remote)
+
+	defaultIgnore = """
+Vanilla/
+"""
+	with open(".gitignore", "w") as f:
+		f.write(defaultIgnore)
+
+	readme = Path("readme.md")
+	if not readme.exists():
+		with readme.open("w") as f:
+			defaultReadme = "# " + modName + """
+""" + modSettings["description"] + """
+
+Made with the NKHook5 Mod Development Kit
+"""
+			f.write(defaultReadme)
+
+	shouldCommit = input("Would you like to push the mod code to the remote? (Y/N)")
+	if shouldCommit.lower() == "y":
+		os.system("git add .")
+		os.system("git commit -m \"Created Git repository for "+modName+"\"")
+		os.system("git push origin master")
+
+	os.chdir(cwd)
+
 parser = argparse.ArgumentParser("NKHook5 MDK")
 parser.add_argument("--setup", help="Setup your MDK", required=False, action='store_true')
 parser.add_argument("--dump-assets", help="Dump BTD5 assets", required=False, action='store_true')
 parser.add_argument("--create-mod", help="Create a new BTD5 mod", required=False)
 parser.add_argument("--editor", help="Opens Visual Studio Code with the specified mod as the workspace")
 parser.add_argument("--run-mod", help="Opens Bloons TD 5 with the specified mod")
+parser.add_argument("--make-git", help="Makes a git repository for a specified mod")
+parser.add_argument("--remote", help="Specifies an upstream remote for the new git repo")
 args = parser.parse_args()
 ReadConf()
 
@@ -143,3 +197,5 @@ if not args.editor == None:
 	OpenEditor(args.editor)
 if not args.run_mod == None:
 	RunMod(args.run_mod)
+if not args.make_git == None:
+	MakeGit(args.make_git, args.remote)
