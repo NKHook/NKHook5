@@ -66,3 +66,10 @@ When another dev wants to make changes to your mod, they must first run the foll
 python3 devkit.py --clone-git <mod-url>
 ```
 This will download the repository to their computer, and they will then be able to make changes.
+
+# Updating your mod
+To update your mod, simply run the following command:
+```
+python3 devkit.py --update <mod-name>
+```
+This will take the dump that was last made and update the mod to have that for the Vanilla resources instead.

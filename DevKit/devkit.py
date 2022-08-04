@@ -9,6 +9,13 @@ from pathlib import Path
 from zipfile import ZipFile
 
 tempdir = Path("Temp")
+dumpIgnore = [
+	"*.exe",
+	"*.dll",
+	"*.jet",
+	"api_key.txt",
+	"AssetBunles/"
+]
 
 def CheckGameDir(gameDir):
 	if gameDir == "":
@@ -60,15 +67,24 @@ def Setup():
 
 def DumpAssets():
 	global settings
-	print("(Step 1/2) Dumping game into './BTD5/'...")
+	print("(Step 1/3) Dumping game into './BTD5/'...")
 	shutil.copytree(settings["gameDir"], "./BTD5/")
 
-	print("(Step 2/2) Extracting BTD5.jet into Assets directory...")
+	print("(Step 2/3) Extracting BTD5.jet into Assets directory...")
 	try:
 		with ZipFile('./BTD5/Assets/BTD5.jet') as zf:
 			zf.extractall(path="./BTD5/", pwd=b'Q%_{6#Px]]')
 	except Exception as ex:
 		print(ex)
+
+	print("(Step 3/3) Clean up useless files from dump...")
+	for root, dirs, files in os.walk("./BTD5/"):
+		for name in files:
+			filePath = Path(os.path.join(root, name))
+			for ignore in dumpIgnore:
+				if filePath.match(ignore):
+					print("Removing '" + str(filePath) + "'...")
+					os.remove(str(filePath))
 
 	print("Asset dump complete!")
 
@@ -93,13 +109,7 @@ def CreateMod(modName):
 		if not modDir.exists():
 			modDir.mkdir()
 
-		vanillaDir = modDir / "Vanilla"
-		if not vanillaDir.exists():
-			shutil.copytree(baseAssets.resolve(), vanillaDir.resolve())
-
-		modAssets = modDir / "Mod"
-		if not modAssets.exists():
-			modAssets.mkdir()
+		UpdateMod(modName)
 
 		modConf = modDir / "modinfo.json"
 		with modConf.open(mode='w') as f:
@@ -185,6 +195,26 @@ def CloneMod(modUrl):
 		print("Git is not installed!")
 		return
 	os.system("git clone "+modUrl)
+
+def UpdateMod(modName):
+	global settings
+	
+	modDir = Path(modName)
+	baseAssets = Path("./BTD5/Assets/")
+	if not baseAssets.exists():
+		print("Please dump the game assets before creating/updating a mod!")
+		return False;
+
+	print("Updating Vanilla assets...")
+	vanillaDir = modDir / "Vanilla"
+	if vanillaDir.exists():
+		shutil.rmtree(vanillaDir.resolve())
+	shutil.copytree(baseAssets.resolve(), vanillaDir.resolve())
+	print("Vanilla assets updated!")
+
+	modAssets = modDir / "Mod"
+	if not modAssets.exists():
+		modAssets.mkdir()
 
 def WalkAssets(modDir, modAssets):
 	assetFiles = []
@@ -351,9 +381,10 @@ NOTE: It's not wise to distribute copyrighted material!
 
 
 parser = argparse.ArgumentParser("NKHook5 MDK")
-parser.add_argument("--setup", help="Setup your MDK", required=False, action='store_true')
-parser.add_argument("--dump-assets", help="Dump BTD5 assets", required=False, action='store_true')
-parser.add_argument("--create-mod", help="Create a new BTD5 mod", required=False)
+parser.add_argument("--setup", help="Setup your MDK", action='store_true')
+parser.add_argument("--dump-assets", help="Dump BTD5 assets", action='store_true')
+parser.add_argument("--create-mod", help="Create a new BTD5 mod")
+parser.add_argument("--update-mod", help="Updates a mod to the latest dumped version")
 parser.add_argument("--editor", help="Opens Visual Studio Code with the specified mod as the workspace")
 parser.add_argument("--run-mod", help="Opens Bloons TD 5 with the specified mod")
 parser.add_argument("--make-git", help="Makes a git repository for a specified mod")
@@ -369,6 +400,8 @@ if args.dump_assets:
 	DumpAssets()
 if not args.create_mod == None:
 	CreateMod(args.create_mod)
+if not args.update_mod == None:
+	UpdateMod(args.update_mod)
 if not args.editor == None:
 	OpenEditor(args.editor)
 if not args.run_mod == None:
