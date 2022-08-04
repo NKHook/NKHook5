@@ -26,12 +26,12 @@ namespace NKHook5 {
 			bool Open(const ghstl::string& archivePath) {
 				return ThisCall<bool, CZipFile*, const ghstl::string&, int, int>(Signatures::Sigs::CZipFile_Open, this, archivePath, 0, 0);
 			}
-			CUnzippedFile* LoadFrom(const ghstl::string& assetPath, ghstl::string& param_2, ghstl::string& archivePassword) {
-				return ThisCall<CUnzippedFile*, CZipFile*, const ghstl::string&, ghstl::string&, ghstl::string&>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, archivePassword);
+			CUnzippedFile* LoadFrom(const ghstl::string& assetPath, ghstl::string& param_2, ghstl::string* archivePassword) {
+				return ThisCall<CUnzippedFile*, CZipFile*, const ghstl::string&, ghstl::string&, ghstl::string*>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, archivePassword);
 			}
 			CUnzippedFile* LoadFrom(const ghstl::string& assetPath, ghstl::string& param_2) {
 				ghstl::string password("Q%_{6#Px]]");
-				return ThisCall<CUnzippedFile*, CZipFile*, const ghstl::string&, ghstl::string&, ghstl::string&>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, password);
+				return ThisCall<CUnzippedFile*, CZipFile*, const ghstl::string&, ghstl::string&, ghstl::string*>(Signatures::Sigs::CZipFile_LoadFrom, this, assetPath, param_2, &password);
 			}
 		};
 	}

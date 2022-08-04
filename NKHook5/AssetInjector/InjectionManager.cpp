@@ -4,6 +4,7 @@
 #include <vector>
 #include "MemAsset.h"
 #include "AssetLoader.h"
+#include "ModLoader.h"
 #include "TestModAssetLoader.h"
 
 using namespace NKHook5::AssetInjector;
@@ -19,8 +20,9 @@ void InjectionManager::SetupAssetLoader() {
 		currentLoader = new TestModAssetLoader(*testModDir);
 	}
 	else {
-		currentLoader = new AssetLoader();
+		currentLoader = new ModLoader();
 	}
+	currentLoader->Initialize();
 }
 
 AssetLoader* InjectionManager::GetLoader()

@@ -1,2 +1,3 @@
 add_subdirectory(imgui)
 target_include_directories(NKHook5 PRIVATE imgui)
+add_subdirectory(ziplib)

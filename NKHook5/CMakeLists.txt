@@ -25,4 +25,4 @@ add_subdirectory(Util)
 
 message("${CMAKE_CURRENT_LIST_DIR}")
 
-target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl opengl32 magic_enum)
+target_link_libraries(NKHook5 PRIVATE PolyHook_2 ghstl opengl32 magic_enum ZipLib)
