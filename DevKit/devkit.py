@@ -168,6 +168,9 @@ def MakeGit(modName, remote):
 
 	defaultIgnore = """
 Vanilla/
+*.zip
+*.jet
+*.nkh
 """
 	with open(".gitignore", "w") as f:
 		f.write(defaultIgnore)
