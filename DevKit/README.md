@@ -60,3 +60,9 @@ The `remote-url` parameter is the upstream url of your git repository (if you ha
 This would be your repository's clone url if you are using GitHub.
 Afterwards, you can just use git commands directly from inside of your mod's folder. You will notice a .gitignore file
 has been added inside, this tells git which files/folders it should ignore. You must ignore the Vanilla directory!
+
+When another dev wants to make changes to your mod, they must first run the following command
+```
+python3 devkit.py --clone-git <mod-url>
+```
+This will download the repository to their computer, and they will then be able to make changes.

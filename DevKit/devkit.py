@@ -3,6 +3,7 @@ import argparse
 import json
 import shutil
 import os
+from nfpkg import *
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -176,6 +177,85 @@ Made with the NKHook5 Mod Development Kit
 
 	os.chdir(cwd)
 
+def CloneMod(modUrl):
+	if shutil.which("git") is None:
+		print("Git is not installed!")
+		return
+	os.system("git clone "+modUrl)
+
+def PackageUnpacked(modDir, modSettings, modFile, type):
+	modAssets = modDir / "Mod"
+	modPkg = Package(modFile, packageType=type)
+	for root, dirs, files in os.walk(modDir):
+		for name in dirs:
+			if str(modAssets) in root:
+				print(os.path.join(root, name))
+		for name in files:
+			if str(modAssets) in root:
+				nameInPkg = os.path.join(root, name).replace(str(modAssets), "Assets")
+				print("Packing '"+nameInPkg+"'...")
+				with open(os.path.join(root, name)) as f:
+					modPkg.Add(nameInPkg, str(f.read()))
+	return modPkg
+
+def PackageMod(modName):
+	global settings
+	modDir = Path(modName)
+	if not modDir.exists():
+		print("No such mod "+modName+" exists")
+		return
+	modSettings = ReadModConf(modName)
+	modFmt = input("""What format should your mod be packaged to?
+NOTE: It's not wise to distribute copyrighted material!
+	To avoid this, package your mod using either 'nkh' format, or 'AssetBundles' format!
+
+1. nkh
+	A mod format that takes full advantage of NKHook5's features.
+	REQUIRES NKHook5
+	Slowest build, smallest file size
+2. jet
+	The vanilla assets format.
+	Does not support NKHook5 features.
+	DOES NOT require NKHook5. 
+	Slow build, large file size
+3. AssetBundles
+	Another vanilla asset format.
+	Does not support NKHook5 features.
+	Typically does not require the user to replace or modify any game files
+	DOES NOT require NKHook5
+	Fast build, large file size
+4. Unpacked
+	Leaves all files unpacked, outside of any archives.
+	MUST BE EXTRACTED BY USER
+	DOES NOT require NKHook5
+	Fastest build, largest file size
+(1-4): """)
+
+	fileExt = ".zip"
+	if str(modFmt) == str(1):
+		modFmt = "nkh"
+		fileExt = ".nkh"
+
+	if str(modFmt) == str(2):
+		modFmt = "jet"
+		fileExt = ".jet"
+
+	if str(modFmt) == str(3):
+		modFmt = "assetbundles"
+		fileExt = ".jet"
+
+	if str(modFmt) == str(4):
+		modFmt = "unpacked"
+		fileExt = ".zip"
+
+	print("Packaging mod '"+modSettings["name"]+"'...'")
+	modPkg = None
+	if modFmt == "unpacked":
+		modPkg = PackageUnpacked(modDir, modSettings, modSettings["name"]+fileExt, modFmt)
+	modPkg.Store()
+	print("Mod package complete!")
+
+
 parser = argparse.ArgumentParser("NKHook5 MDK")
 parser.add_argument("--setup", help="Setup your MDK", required=False, action='store_true')
 parser.add_argument("--dump-assets", help="Dump BTD5 assets", required=False, action='store_true')
@@ -184,6 +264,8 @@ parser.add_argument("--editor", help="Opens Visual Studio Code with the specifie
 parser.add_argument("--run-mod", help="Opens Bloons TD 5 with the specified mod")
 parser.add_argument("--make-git", help="Makes a git repository for a specified mod")
 parser.add_argument("--remote", help="Specifies an upstream remote for the new git repo")
+parser.add_argument("--clone-git", help="Clone a mod from a remote repository")
+parser.add_argument("--package", help="Packages a mod into a single file that can be used by an NKHook5 user")
 args = parser.parse_args()
 ReadConf()
 
@@ -199,3 +281,5 @@ if not args.run_mod == None:
 	RunMod(args.run_mod)
 if not args.make_git == None:
 	MakeGit(args.make_git, args.remote)
+if not args.package == None:
+	PackageMod(args.package)
