@@ -23,6 +23,7 @@ class Package:
 		self.pathsOnDisk = []
 		self.pathsInArchive = []
 		self.dirsInArchive = []
+		self.level = 0;
 
 	def WriteIfAbsent(self, pathInArchive, pathOnDisk):
 		exists = False
@@ -38,5 +39,9 @@ class Package:
 		self.pathsInArchive.append(str(pathInArchive))
 		self.dirsInArchive.append(str(dirInArchive))
 
+	def NkhMode(self):
+		self.security = None;
+		self.level = 9
+
 	def Store(self):
-		pyminizip.compress_multiple(self.pathsOnDisk, self.dirsInArchive, self.filename, self.security, 0)
+		pyminizip.compress_multiple(self.pathsOnDisk, self.dirsInArchive, self.filename, self.security, self.level)

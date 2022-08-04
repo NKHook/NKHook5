@@ -82,3 +82,53 @@ def merge(base, next, mergeMode="SUBSTITUTIVE"):
 		result = next
 
 	return result;
+
+def strip(base, next):
+	result = next;
+	needsInsertive = False
+
+	if next == None:
+		if result == None:
+			print("Please don't strip null documents!")
+			raise Exception("Attempted to strip a pair of null documents")
+		return result
+
+	if result == None:
+		return next
+
+	if not type(result) == type(next):
+		print("Please don't try to strip documents of differing types!")
+		raise Exception("Attempted to strip documents of differing types")
+
+	if base == result:
+		result = None
+		return result, needsInsertive
+
+	if isinstance(base, list):
+		for x, y in zip(range(len(base)), range(len(next))):
+			baseValue = base[x]
+			nextValue = result[y]
+			if not type(baseValue) == type(nextValue):
+				print("Please don't try to strip lists of differing types!")
+				raise Exception("Attempted to strip documents of differing types")
+			if isinstance(baseValue, dict) or isinstance(baseValue, list):
+				result[y], needsInsertive = strip(baseValue, nextValue)
+				continue
+			if baseValue == nextValue:
+				result[y] = None
+				continue
+
+	if isinstance(base, dict):
+		for key, value in base.items():
+			if key in result:
+				if result[key] == value:
+					result.pop(key, None)
+					continue
+				if type(result[key]) != type(value):
+					continue
+				if (isinstance(result[key], dict) and isinstance(value, dict)) or (isinstance(result[key], list) and isinstance(value, list)):
+					result[key], needsInsertive = strip(value, result[key])
+					if needsInsertive and not HasMergeMode(result):
+						result["MERGE_MODE"] = "INSERTIVE"
+
+	return result, needsInsertive

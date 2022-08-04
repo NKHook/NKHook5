@@ -231,7 +231,7 @@ def PackageUnpacked(modDir, modSettings, modFile, type):
 	modAssets = modDir / "Mod"
 	modPkg = Package(modFile, packageType=type)
 	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
-		if str(modAssets) in root:
+		if str(modAssets) in nameOnDisk:
 			print("Packing '"+nameInPkg+"'...")
 			modPkg.Write(nameInPkg, nameOnDisk)
 	return modPkg
@@ -317,6 +317,61 @@ def PackageAssetbundles(modDir, modSettings, modFile, type):
 	modPkg.Write("AssetBundles/"+subPkgFileName, str(subPkgPath))
 	return modPkg
 
+def PackageNKH(modDir, modSettings, modFile, type):
+	modAssets = modDir / "Mod"
+	vanillaAssets = modDir / "Vanilla"
+	modPkg = Package(modFile, packageType=type)
+	modPkg.NkhMode()
+
+	print("Loading mod assets...")
+	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
+		vanillaPath = nameOnDisk.replace("Mod", "Vanilla")
+		if os.path.exists(vanillaPath):
+			try:
+				print("JSON DOCUMENT STRIP RESULT")
+				vanJson = None 
+				with open(vanillaPath, 'r') as vf:
+					vanJson = json.load(vf)
+
+				print("BASE DOCUMENT")
+				print(json.dumps(vanJson, indent=4))
+				print("END BASE DOCUMENT")
+
+				modJson = None
+				with open(nameOnDisk, 'r') as mf:
+					modJson = json.load(mf)
+
+				print("NEXT DOCUMENT")
+				print(json.dumps(modJson, indent=4))
+				print("END NEXT DOCUMENT")
+
+				strippedJson, needsInsertive = jsonutil.strip(vanJson, modJson)
+				
+				print("BEGIN RESULT")
+				print(json.dumps(strippedJson, indent=4))
+				print("END RESULT")
+				print("END OF STRIP RESULT")
+				
+				print("Loading '"+str(nameInPkg)+"' from '"+str(nameOnDisk)+"' merged with '"+str(vanillaPath)+"'...")
+				mergeTemp = tempdir / nameInPkg
+				mergeTemp.parents[0].mkdir(parents=True, exist_ok=True)
+				with open(mergeTemp, 'w') as f:
+					json.dump(strippedJson, f)
+					
+				modPkg.Write(nameInPkg, mergeTemp)
+
+				continue
+			except:
+				print("Tried to parse a non-json asset '"+vanillaPath+"'")
+		else:
+			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
+			modPkg.Write(nameInPkg, nameOnDisk)
+	print("Mod assets loaded!")
+
+	modPkg.Write("/modinfo.json", modDir / "modinfo.json")
+
+	return modPkg
+
 def PackageMod(modName):
 	global settings
 	modDir = Path(modName)
@@ -324,30 +379,33 @@ def PackageMod(modName):
 		print("No such mod "+modName+" exists")
 		return
 	modSettings = ReadModConf(modName)
-	modFmt = input("""What format should your mod be packaged to?
+	modFmt = input("""What format do you want to package your mod in?
 NOTE: It's not wise to distribute copyrighted material!
 	To avoid this, package your mod using either 'nkh' format, or 'AssetBundles' format!
 
 1. nkh
-	A mod format that takes full advantage of NKHook5's features.
-	REQUIRES NKHook5
-	Slowest build, smallest file size
-2. jet
-	The vanilla assets format.
-	Does not support NKHook5 features.
-	DOES NOT require NKHook5. 
-	Slow build, large file size
-3. AssetBundles
-	Another vanilla asset format.
-	Does not support NKHook5 features.
-	Typically does not require the user to replace or modify any game files
-	DOES NOT require NKHook5
-	Fast build, large file size
+	- Custom format
+	- Takes full advantage of NKHook5's features.
+	- REQUIRES NKHook5
+	- Fast build, smallest file size
+2. AssetBundles
+	- Vanilla asset format.
+	- Does not support NKHook5 features.
+	- Typically does not require the user to replace or modify any game files
+	- DOES NOT REQUIRE NKHook5
+	- Fast build, small file size (without vanilla assets)
+3. jet
+	- The vanilla assets format.
+	- Requires user to replace files
+	- DOES NOT SUPPORT NKH5 FEATURES.
+	- REQUIRES ALL VANILLA ASSETS
+	- Slowest build, largest file size
 4. Unpacked
-	Leaves all files unpacked, outside of any archives.
-	MUST BE EXTRACTED BY USER
-	DOES NOT require NKHook5
-	Fastest build, largest file size
+	- All files are unpacked with no archives
+	- DOES NOT SUPPORT NKH5
+	- MUST BE EXTRACTED BY USER
+	- REQUIRES ALL VANILLA ASSETS
+	- Slow build, medium file size (without vanilla assets)
 (1-4): """)
 
 	fileExt = ".zip"
@@ -356,12 +414,12 @@ NOTE: It's not wise to distribute copyrighted material!
 		fileExt = ".nkh"
 
 	if str(modFmt) == str(2):
-		modFmt = "jet"
-		fileExt = ".jet"
-
-	if str(modFmt) == str(3):
 		modFmt = "assetbundles"
 		fileExt = ".zip"
+
+	if str(modFmt) == str(3):
+		modFmt = "jet"
+		fileExt = ".jet"
 
 	if str(modFmt) == str(4):
 		modFmt = "unpacked"
@@ -369,6 +427,8 @@ NOTE: It's not wise to distribute copyrighted material!
 
 	print("Packaging mod '"+modSettings["name"]+"'...'")
 	modPkg = None
+	if modFmt == "nkh":
+		modPkg = PackageNKH(modDir, modSettings, modSettings["name"]+fileExt, modFmt)
 	if modFmt == "jet":
 		modPkg = PackageJet(modDir, modSettings, modSettings["name"]+fileExt, modFmt)
 	if modFmt == "assetbundles":
