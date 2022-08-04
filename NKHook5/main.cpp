@@ -48,8 +48,10 @@ auto initialize() -> int {
     std::cout << "All patches loaded!" << std::endl;
 
     std::cout << "Loaded NKHook5!" << std::endl;
+#ifdef _DEBUG
     printf("Press enter to boot game...\n");
     std::cin.get();
+#endif
 
     return 0;
 }

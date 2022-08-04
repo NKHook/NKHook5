@@ -12,8 +12,8 @@
 void* newframework_crt_malloc(size_t size);
 void newframework_crt_free(void* ptr);
 
-#define malloc(size) newframework_crt_malloc(size);
-#define free(ptr) newframework_crt_free(ptr);
+#define malloc(size) newframework_crt_malloc(size)
+#define free(ptr) newframework_crt_free(ptr)
 
 #define GHSTL_MALLOC(size) malloc(size)
 #define GHSTL_FREE(ptr) free(ptr)
