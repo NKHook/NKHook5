@@ -55,7 +55,7 @@ Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 		if (vanillaData != nullptr) {
 			std::string vanillaString = std::string((char*)vanillaAsset->GetAssetOnHeap(), vanillaAsset->GetSizeOnHeap());
 			nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaString);
-			merged.Add(vanillaJson);
+			merged.Add(vanillaJson, MergeMode::SUBSTITUTIVE);
 		}
 		if (modData != nullptr) {
 			std::string modString = std::string((char*)modAsset->GetAssetOnHeap(), modAsset->GetSizeOnHeap());
