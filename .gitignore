@@ -20,4 +20,7 @@ _deps/
 out/
 build/
 DevKit/*/
+DevKit/*.nkh
+DevKit/*.zip
+DevKit/*.jet
 mdkconf.json

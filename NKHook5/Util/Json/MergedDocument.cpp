@@ -41,6 +41,7 @@ nlohmann::ordered_json Merge(nlohmann::ordered_json base, nlohmann::ordered_json
 			//Every other mode uses this logic
 			if (result.size() <= i) {
 				result.push_back(next[i]);
+				continue;
 			}
 			if (result[i].is_primitive() && next[i].is_primitive()) {
 				result[i] = next[i];

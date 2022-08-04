@@ -3,9 +3,12 @@ import argparse
 import json
 import shutil
 import os
+import jsonutil
 from nfpkg import *
 from pathlib import Path
 from zipfile import ZipFile
+
+tempdir = Path("Temp")
 
 def CheckGameDir(gameDir):
 	if gameDir == "":
@@ -183,19 +186,105 @@ def CloneMod(modUrl):
 		return
 	os.system("git clone "+modUrl)
 
-def PackageUnpacked(modDir, modSettings, modFile, type):
-	modAssets = modDir / "Mod"
-	modPkg = Package(modFile, packageType=type)
+def WalkAssets(modDir, modAssets):
+	assetFiles = []
+	pathsOnDisk = []
 	for root, dirs, files in os.walk(modDir):
-		for name in dirs:
-			if str(modAssets) in root:
-				print(os.path.join(root, name))
 		for name in files:
 			if str(modAssets) in root:
 				nameInPkg = os.path.join(root, name).replace(str(modAssets), "Assets")
-				print("Packing '"+nameInPkg+"'...")
-				with open(os.path.join(root, name)) as f:
-					modPkg.Add(nameInPkg, str(f.read()))
+				assetFiles.append(nameInPkg)
+				pathsOnDisk.append(os.path.join(root, name))
+	return zip(assetFiles, pathsOnDisk)
+
+def PackageUnpacked(modDir, modSettings, modFile, type):
+	modAssets = modDir / "Mod"
+	modPkg = Package(modFile, packageType=type)
+	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
+		if str(modAssets) in root:
+			print("Packing '"+nameInPkg+"'...")
+			modPkg.Write(nameInPkg, nameOnDisk)
+	return modPkg
+
+def PackageJet(modDir, modSettings, modFile, type, includeVanilla=True):
+	vanillaAssets = modDir / "Vanilla"
+	modAssets = modDir / "Mod"
+	modPkg = Package(modFile, packageType=type)
+
+	print("Loading mod assets...")
+	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
+		vanillaPath = nameOnDisk.replace("Mod", "Vanilla")
+		if os.path.exists(vanillaPath):
+			try:
+				print("JSON DOCUMENT MERGE RESULT")
+				vanJson = None 
+				with open(vanillaPath, 'r') as vf:
+					vanJson = json.load(vf)
+
+				print("BASE DOCUMENT")
+				print(json.dumps(vanJson, indent=4))
+				print("END BASE DOCUMENT")
+
+				modJson = None
+				with open(nameOnDisk, 'r') as mf:
+					modJson = json.load(mf)
+
+				print("NEXT DOCUMENT")
+				print(json.dumps(modJson, indent=4))
+				print("END NEXT DOCUMENT")
+
+				mergedJson = jsonutil.merge(vanJson, modJson)
+				
+				print("BEGIN RESULT")
+				print(json.dumps(mergedJson, indent=4))
+				print("END RESULT")
+				print("END OF MERGE RESULT")
+				
+				print("Loading '"+str(nameInPkg)+"' from '"+str(nameOnDisk)+"' merged with '"+str(vanillaPath)+"'...")
+				mergeTemp = tempdir / nameInPkg
+				mergeTemp.parents[0].mkdir(parents=True, exist_ok=True)
+				with open(mergeTemp, 'w') as f:
+					json.dump(mergedJson, f)
+					
+				modPkg.Write(nameInPkg, mergeTemp)
+
+				continue
+			except:
+				print("Tried to parse a non-json asset '"+vanillaPath+"'")
+		else:
+			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
+			modPkg.Write(nameInPkg, nameOnDisk)
+	print("Mod assets loaded!")
+
+	if includeVanilla:
+		print("Loading vanilla assets...")
+		for nameInPkg, nameOnDisk in WalkAssets(modDir, vanillaAssets):
+			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
+			modPkg.WriteIfAbsent(nameInPkg, nameOnDisk)
+		print("Vanilla assets loaded!")
+
+	return modPkg
+
+def PackageAssetbundles(modDir, modSettings, modFile, type):
+	modAssets = modDir / "Mod"
+	subPkgFileName = str(modSettings["name"]+".jet");
+	subPkgPath = tempdir / subPkgFileName;
+	subPkg = PackageJet(modDir, modSettings, subPkgPath, type, includeVanilla=False)
+	print("Compiling AssetBundle package...")
+	subPkg.Store()
+
+	packagesJson = {
+		"packages": [
+			subPkgFileName
+		]
+	}
+	packagesPath = tempdir / "packages.json";
+	with packagesPath.open('w') as f:
+		json.dump(packagesJson, f)
+
+	modPkg = Package(modFile, packageType=type, security=None)
+	modPkg.Write("AssetBundles/packages.json", str(packagesPath))
+	modPkg.Write("AssetBundles/"+subPkgFileName, str(subPkgPath))
 	return modPkg
 
 def PackageMod(modName):
@@ -242,7 +331,7 @@ NOTE: It's not wise to distribute copyrighted material!
 
 	if str(modFmt) == str(3):
 		modFmt = "assetbundles"
-		fileExt = ".jet"
+		fileExt = ".zip"
 
 	if str(modFmt) == str(4):
 		modFmt = "unpacked"
@@ -250,8 +339,13 @@ NOTE: It's not wise to distribute copyrighted material!
 
 	print("Packaging mod '"+modSettings["name"]+"'...'")
 	modPkg = None
+	if modFmt == "jet":
+		modPkg = PackageJet(modDir, modSettings, modSettings["name"]+fileExt, modFmt)
+	if modFmt == "assetbundles":
+		modPkg = PackageAssetbundles(modDir, modSettings, modSettings["name"]+fileExt, modFmt)
 	if modFmt == "unpacked":
 		modPkg = PackageUnpacked(modDir, modSettings, modSettings["name"]+fileExt, modFmt)
+	print("Compiling package...")
 	modPkg.Store()
 	print("Mod package complete!")
 

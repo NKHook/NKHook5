@@ -3,7 +3,8 @@ NFPKG - A Python module for interacting with NewFramework packages & bundles
 Author: DisabledMallis
 """
 
-from zipfile import *
+import pyminizip
+from pathlib import *
 
 packageTypes = [
 	"nkh",
@@ -12,28 +13,30 @@ packageTypes = [
 	"unpacked"
 ]
 
-class PackageEntry:
-	def __init__(self, path, data):
-		self.path = path
-		self.data = data
-
 class Package:
-	def __init__(self, filename, packageType="nkh"):
-		self.filename = filename
+	def __init__(self, filename, packageType="nkh", security="Q%_{6#Px]]"):
+		self.filename = str(filename)
 		if packageType.lower() not in packageTypes:
 			raise Exception("The packageType "+packageType+" is not a valid packageType!")
 		self.packageType = packageType
-		self.entries = []
+		self.security = security
+		self.pathsOnDisk = []
+		self.pathsInArchive = []
+		self.dirsInArchive = []
 
-	def Add(self, path, data):
-		if not isinstance(data, bytes) and not isinstance(data, str):
-			raise TypeError("data must be bytes or str!")
-		packedFile = PackageEntry(path, data)
-		self.entries.append(packedFile)
+	def WriteIfAbsent(self, pathInArchive, pathOnDisk):
+		exists = False
+		for path in self.pathsInArchive:
+			if path == pathInArchive:
+				exists = True
+		if not exists:
+			self.Write(pathInArchive, pathOnDisk)
 
-	def Store(self, security=b"Q%_{6#Px]]"):
-		archive = ZipFile(self.filename, mode='w', compresslevel=ZIP_DEFLATED)
-		archive.setpassword(security)
-		for entry in self.entries:
-			archive.writestr(entry.path, entry.data)
-		archive.close()
+	def Write(self, pathInArchive, pathOnDisk):
+		dirInArchive = str(Path(pathInArchive).parents[0])
+		self.pathsOnDisk.append(str(pathOnDisk))
+		self.pathsInArchive.append(str(pathInArchive))
+		self.dirsInArchive.append(str(dirInArchive))
+
+	def Store(self):
+		pyminizip.compress_multiple(self.pathsOnDisk, self.dirsInArchive, self.filename, self.security, 0)
