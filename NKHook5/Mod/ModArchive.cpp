@@ -18,9 +18,11 @@ ModArchive::ModArchive(fs::path path)
 bool ModArchive::Open(fs::path path) {
 	try {
 		this->pArchive = ZipFile::Open(path.string());
-		auto pEntry = this->pArchive->GetEntry("modinfo.json");
-		std::istream* pStream = pEntry->GetDecompressionStream();
-		std::string infoDat(std::istreambuf_iterator<char>(*pStream), {});
+		std::string infoDat;
+		if (!this->ReadEntry("modinfo.json", &infoDat)) {
+			printf("Error opening mod");
+			return false;
+		}
 
 		nlohmann::json infoJson = nlohmann::json::parse(infoDat);
 		if (infoJson.contains("authors")) {
