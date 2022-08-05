@@ -25,7 +25,7 @@ class Package:
 		self.pathsOnDisk = []
 		self.pathsInArchive = []
 		self.dirsInArchive = []
-		self.level = 3;
+		self.level = 1;
 
 	def WriteIfAbsent(self, pathInArchive, pathOnDisk):
 		exists = False
@@ -53,7 +53,7 @@ class Package:
 
 		addBar = FillingSquaresBar('Packing files', max=len(self.pathsOnDisk), suffix='%(percent)d%% (%(index)d/%(max)d)')
 		for pathOnDisk, pathInArchive in zip(self.pathsOnDisk, self.pathsInArchive):
-			os.system("7z.exe a -tzip -mx0 "+self.filename+" \""+pathOnDisk+"\" "+pwArg+" > NUL")
+			os.system("7z.exe a -tzip -mx"+str(self.level)+" "+self.filename+" \""+pathOnDisk+"\" "+pwArg+" > NUL")
 			addBar.next()
 		print()
 
