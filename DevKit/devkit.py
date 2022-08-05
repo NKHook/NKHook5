@@ -7,6 +7,7 @@ import jsonutil
 from nfpkg import *
 from pathlib import Path
 from zipfile import ZipFile
+from progress.bar import FillingSquaresBar
 
 tempdir = Path("Temp")
 dumpIgnore = [
@@ -235,45 +236,46 @@ def PackageUnpacked(modDir, modSettings, modFile, type):
 	modPkg = Package(modFile, packageType=type)
 	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
 		if str(modAssets) in nameOnDisk:
-			print("Packing '"+nameInPkg+"'...")
+			#print("Packing '"+nameInPkg+"'...")
 			modPkg.Write(nameInPkg, nameOnDisk)
 	return modPkg
 
-def PackageJet(modDir, modSettings, modFile, type, includeVanilla=True):
+def PackageJet(modDir, modSettings, modFile, type, includeVanilla=True, jsonOnly=True):
 	vanillaAssets = modDir / "Vanilla"
 	modAssets = modDir / "Mod"
 	modPkg = Package(modFile, packageType=type)
-
-	print("Loading mod assets...")
+	
+	modLoadBar = FillingSquaresBar('Loading mod assets', max=1, suffix='%(index)d')
 	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
+		modLoadBar.next()
 		vanillaPath = nameOnDisk.replace("Mod", "Vanilla")
 		if os.path.exists(vanillaPath):
 			try:
-				print("JSON DOCUMENT MERGE RESULT")
+				#print("JSON DOCUMENT MERGE RESULT")
 				vanJson = None 
 				with open(vanillaPath, 'r') as vf:
 					vanJson = json.load(vf)
 
-				print("BASE DOCUMENT")
-				print(json.dumps(vanJson, indent=4))
-				print("END BASE DOCUMENT")
+				##print("BASE DOCUMENT")
+				#print(json.dumps(vanJson, indent=4))
+				#print("END BASE DOCUMENT")
 
 				modJson = None
 				with open(nameOnDisk, 'r') as mf:
 					modJson = json.load(mf)
 
-				print("NEXT DOCUMENT")
-				print(json.dumps(modJson, indent=4))
-				print("END NEXT DOCUMENT")
+				#print("NEXT DOCUMENT")
+				#print(json.dumps(modJson, indent=4))
+				#print("END NEXT DOCUMENT")
 
 				mergedJson = jsonutil.merge(vanJson, modJson)
 				
-				print("BEGIN RESULT")
-				print(json.dumps(mergedJson, indent=4))
-				print("END RESULT")
-				print("END OF MERGE RESULT")
+				#print("BEGIN RESULT")
+				#print(json.dumps(mergedJson, indent=4))
+				#print("END RESULT")
+				#print("END OF MERGE RESULT")
 				
-				print("Loading '"+str(nameInPkg)+"' from '"+str(nameOnDisk)+"' merged with '"+str(vanillaPath)+"'...")
+				#print("Loading '"+str(nameInPkg)+"' from '"+str(nameOnDisk)+"' merged with '"+str(vanillaPath)+"'...")
 				mergeTemp = tempdir / nameInPkg
 				mergeTemp.parents[0].mkdir(parents=True, exist_ok=True)
 				with open(mergeTemp, 'w') as f:
@@ -287,13 +289,19 @@ def PackageJet(modDir, modSettings, modFile, type, includeVanilla=True):
 		else:
 			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
 			modPkg.Write(nameInPkg, nameOnDisk)
+	print()
 	print("Mod assets loaded!")
 
 	if includeVanilla:
-		print("Loading vanilla assets...")
+		vanLoadBar = FillingSquaresBar('Loading vanilla assets', max=1, suffix='%(index)d')
 		for nameInPkg, nameOnDisk in WalkAssets(modDir, vanillaAssets):
-			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
+			if jsonOnly:
+				if not "Assets/JSON" in nameInPkg.replace('\\', '/'):
+					vanLoadBar.next()
+					continue
+			vanLoadBar.next()
 			modPkg.WriteIfAbsent(nameInPkg, nameOnDisk)
+		print()
 		print("Vanilla assets loaded!")
 
 	return modPkg
@@ -325,37 +333,38 @@ def PackageNKH(modDir, modSettings, modFile, type):
 	vanillaAssets = modDir / "Vanilla"
 	modPkg = Package(modFile, packageType=type)
 	modPkg.NkhMode()
-
-	print("Loading mod assets...")
+	
+	modLoadBar = FillingSquaresBar('Loading mod assets', max=1, suffix='%(index)d')
 	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
+		modLoadBar.next()
 		vanillaPath = nameOnDisk.replace("Mod", "Vanilla")
 		if os.path.exists(vanillaPath):
 			try:
-				print("JSON DOCUMENT STRIP RESULT")
+				#print("JSON DOCUMENT STRIP RESULT")
 				vanJson = None 
 				with open(vanillaPath, 'r') as vf:
 					vanJson = json.load(vf)
 
-				print("BASE DOCUMENT")
-				print(json.dumps(vanJson, indent=4))
-				print("END BASE DOCUMENT")
+				#print("BASE DOCUMENT")
+				#print(json.dumps(vanJson, indent=4))
+				#print("END BASE DOCUMENT")
 
 				modJson = None
 				with open(nameOnDisk, 'r') as mf:
 					modJson = json.load(mf)
 
-				print("NEXT DOCUMENT")
-				print(json.dumps(modJson, indent=4))
-				print("END NEXT DOCUMENT")
+				#print("NEXT DOCUMENT")
+				#print(json.dumps(modJson, indent=4))
+				#print("END NEXT DOCUMENT")
 
 				strippedJson, needsInsertive = jsonutil.strip(vanJson, modJson)
 				
-				print("BEGIN RESULT")
-				print(json.dumps(strippedJson, indent=4))
-				print("END RESULT")
-				print("END OF STRIP RESULT")
+				#print("BEGIN RESULT")
+				#print(json.dumps(strippedJson, indent=4))
+				#print("END RESULT")
+				#print("END OF STRIP RESULT")
 				
-				print("Loading '"+str(nameInPkg)+"' from '"+str(nameOnDisk)+"' merged with '"+str(vanillaPath)+"'...")
+				#print("Loading '"+str(nameInPkg)+"' from '"+str(nameOnDisk)+"' stripped with '"+str(vanillaPath)+"'...")
 				mergeTemp = tempdir / nameInPkg
 				mergeTemp.parents[0].mkdir(parents=True, exist_ok=True)
 				with open(mergeTemp, 'w') as f:
@@ -369,9 +378,10 @@ def PackageNKH(modDir, modSettings, modFile, type):
 		else:
 			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
 			modPkg.Write(nameInPkg, nameOnDisk)
+	print()
 	print("Mod assets loaded!")
 
-	modPkg.Write("/modinfo.json", modDir / "modinfo.json")
+	modPkg.Write("modinfo.json", modDir / "modinfo.json")
 
 	return modPkg
 

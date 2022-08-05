@@ -4,7 +4,9 @@ Author: DisabledMallis
 """
 
 import pyminizip
+import os
 from pathlib import *
+from progress.bar import FillingSquaresBar
 
 packageTypes = [
 	"nkh",
@@ -23,7 +25,7 @@ class Package:
 		self.pathsOnDisk = []
 		self.pathsInArchive = []
 		self.dirsInArchive = []
-		self.level = 0;
+		self.level = 3;
 
 	def WriteIfAbsent(self, pathInArchive, pathOnDisk):
 		exists = False
@@ -44,4 +46,20 @@ class Package:
 		self.level = 9
 
 	def Store(self):
-		pyminizip.compress_multiple(self.pathsOnDisk, self.dirsInArchive, self.filename, self.security, self.level)
+
+		pwArg = ""
+		if not self.security == None:
+			pwArg = "-p"+self.security
+
+		addBar = FillingSquaresBar('Packing files', max=len(self.pathsOnDisk), suffix='%(percent)d%% (%(index)d/%(max)d)')
+		for pathOnDisk, pathInArchive in zip(self.pathsOnDisk, self.pathsInArchive):
+			os.system("7z.exe a -tzip -mx0 "+self.filename+" \""+pathOnDisk+"\" "+pwArg+" > NUL")
+			addBar.next()
+		print()
+
+		nameBar = FillingSquaresBar('Renaming files', max=len(self.pathsOnDisk), suffix='%(percent)d%% (%(index)d/%(max)d)')
+		for pathOnDisk, pathInArchive in zip(self.pathsOnDisk, self.pathsInArchive):
+			os.system("7z.exe rn "+self.filename+" \""+pathOnDisk+"\" \""+pathInArchive+"\" > NUL")
+			nameBar.next()
+		print()
+		#pyminizip.compress_multiple(self.pathsOnDisk, self.dirsInArchive, self.filename, self.security, self.level)

@@ -22,6 +22,7 @@ namespace NKHook5 {
 		class ModArchive {
 			ModInfo info;
 			ZipArchive::Ptr pArchive;
+			//static std::vector
 		public:
 			ModArchive();
 			ModArchive(std::filesystem::path path);
