@@ -24,3 +24,4 @@ DevKit/*.nkh
 DevKit/*.zip
 DevKit/*.jet
 mdkconf.json
+*.tmp

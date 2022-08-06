@@ -285,7 +285,9 @@ def PackageJet(modDir, modSettings, modFile, type, includeVanilla=True, jsonOnly
 
 				continue
 			except:
-				print("Tried to parse a non-json asset '"+vanillaPath+"'")
+				print()
+				print("An error occured with '"+vanillaPath+"'")
+				print()
 		else:
 			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
 			modPkg.Write(nameInPkg, nameOnDisk)
@@ -334,9 +336,8 @@ def PackageNKH(modDir, modSettings, modFile, type):
 	modPkg = Package(modFile, packageType=type)
 	modPkg.NkhMode()
 	
-	modLoadBar = FillingSquaresBar('Loading mod assets', max=1, suffix='%(index)d')
+	print("Loading mod assets, please wait...")
 	for nameInPkg, nameOnDisk in WalkAssets(modDir, modAssets):
-		modLoadBar.next()
 		vanillaPath = nameOnDisk.replace("Mod", "Vanilla")
 		if os.path.exists(vanillaPath):
 			try:
@@ -356,7 +357,7 @@ def PackageNKH(modDir, modSettings, modFile, type):
 				#print("NEXT DOCUMENT")
 				#print(json.dumps(modJson, indent=4))
 				#print("END NEXT DOCUMENT")
-
+				
 				strippedJson, needsInsertive = jsonutil.strip(vanJson, modJson)
 				
 				#print("BEGIN RESULT")
@@ -373,8 +374,9 @@ def PackageNKH(modDir, modSettings, modFile, type):
 				modPkg.Write(nameInPkg, mergeTemp)
 
 				continue
-			except:
-				print("Tried to parse a non-json asset '"+vanillaPath+"'")
+			except Exception as ex:
+				print("An error occured with '"+vanillaPath+"'")
+				print(ex)
 		else:
 			#print("Loading '"+nameInPkg+"' from '"+nameOnDisk+"'...")
 			modPkg.Write(nameInPkg, nameOnDisk)

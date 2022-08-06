@@ -51,10 +51,23 @@ class Package:
 		if not self.security == None:
 			pwArg = "-p"+self.security
 
-		addBar = FillingSquaresBar('Packing files', max=len(self.pathsOnDisk), suffix='%(percent)d%% (%(index)d/%(max)d)')
+		idx = 0
+		idxEnd = len(self.pathsOnDisk)
+		addBar = FillingSquaresBar('Packing files', max=idxEnd, suffix='%(percent)d%% (%(index)d/%(max)d)')
+		toAdd = ""
+		individualMode = False;
 		for pathOnDisk, pathInArchive in zip(self.pathsOnDisk, self.pathsInArchive):
-			os.system("7z.exe a -tzip -mx"+str(self.level)+" "+self.filename+" \""+pathOnDisk+"\" "+pwArg+" > NUL")
+			toAdd = "\"" + pathOnDisk + "\" " + toAdd
+			if idx % 50 == 0 and not individualMode:
+				os.system("7z.exe a -tzip -mx"+str(self.level)+" "+self.filename+" "+toAdd+" "+pwArg+" > NUL")
+				toAdd = ""
+				idx = 0
+				if idxEnd - idx < 50:
+					individualMode = True
+			if individualMode:
+				os.system("7z.exe a -tzip -mx"+str(self.level)+" "+self.filename+" \""+pathOnDisk+"\" "+pwArg+" > NUL")
 			addBar.next()
+			idx += 1
 		print()
 
 		nameBar = FillingSquaresBar('Renaming files', max=len(self.pathsOnDisk), suffix='%(percent)d%% (%(index)d/%(max)d)')
