@@ -7,7 +7,7 @@
 #undef max
 #include <ZipFile.h>
 
-namespace NKHook5 {
+namespace Common {
 	namespace Mod {
 		struct ModInfo {
 			std::string name;

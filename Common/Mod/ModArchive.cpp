@@ -2,7 +2,7 @@
 
 #include <nlohmann/json.hpp>
 
-using namespace NKHook5::Mod;
+using namespace Common::Mod;
 namespace fs = std::filesystem;
 
 ModArchive::ModArchive() {}

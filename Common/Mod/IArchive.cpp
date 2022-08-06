@@ -1,6 +1,6 @@
 #include "IArchive.h"
 
-using namespace NKHook5::Mod;
+using namespace Common::Mod;
 namespace fs = std::filesystem;
 
 IArchive::IArchive(fs::path archivePath) {

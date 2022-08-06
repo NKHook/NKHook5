@@ -9,6 +9,8 @@
 #include "../../Utils.h"
 #include "../../Signatures/Signature.h"
 
+#include <Util/Macro.h>
+
 namespace NKHook5
 {
     namespace Patches

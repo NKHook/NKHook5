@@ -19,9 +19,5 @@ Win32/
 _deps/
 out/
 build/
-DevKit/*/
-DevKit/*.nkh
-DevKit/*.zip
-DevKit/*.jet
 mdkconf.json
 *.tmp

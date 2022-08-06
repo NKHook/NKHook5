@@ -1,19 +1,20 @@
 #include "ModLoader.h"
 
+#include "ModdedAsset.h"
 #include "../Classes/CZipFile.h"
-#include "../Mod/ModArchive.h"
-#include "../Util/Json/MergedDocument.h"
+
 #include <filesystem>
 #include <iostream>
-#include "ModdedAsset.h"
+#include <Mod/ModArchive.h>
+#include <Util/Json/MergedDocument.h>
 
 using namespace NKHook5;
 using namespace NKHook5::AssetInjector;
 using namespace NKHook5::Classes;
-using namespace NKHook5::Mod;
+using namespace Common::Mod;
 using namespace NKHook5::Signatures;
-using namespace NKHook5::Util;
-using namespace NKHook5::Util::Json;
+using namespace Common::Util;
+using namespace Common::Util::Json;
 namespace fs = std::filesystem;
 
 static std::vector<ModArchive*> loadedMods;

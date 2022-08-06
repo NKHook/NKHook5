@@ -1,6 +1,6 @@
 #include "MergedDocument.h"
 
-using namespace NKHook5::Util::Json;
+using namespace Common::Util::Json;
 
 MergedDocument::MergedDocument()
 {

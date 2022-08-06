@@ -1,6 +1,6 @@
 #pragma once
 
-namespace NKHook5 {
+namespace Common {
 	namespace Util {
 
 	}

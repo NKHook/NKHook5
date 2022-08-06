@@ -11,7 +11,7 @@ To ensure these tools work properly, make sure you have the following installed:
 # Setting up the MDK
 To setup the NKH5 MDK, simply open this folder in Command Prompt, and run the following command:
 ```
-python3 devkit.py --setup
+devkit.exe --setup
 ```
 This will ask you a few questions and then close. It will create an "mdkconf.json" file, which holds the responses you gave.
 
@@ -19,7 +19,7 @@ This will ask you a few questions and then close. It will create an "mdkconf.jso
 To dump the game's assets, run the following command
 **WARNING**: DO NOT have mods installed before running this command!
 ```
-python3 devkit.py --dump-assets
+devkit.exe --dump-assets
 ```
 This will create a new "BTD5" folder containing all of the game's assets. Don't touch this folder! You don't need to
 modify any of these files to create mods anymore. These assets will be used for reference when creating your own mod.
@@ -27,7 +27,7 @@ modify any of these files to create mods anymore. These assets will be used for 
 # Creating a mod
 To create a new mod, run the following command:
 ```
-python3 devkit.py --create-mod <mod-name>
+devkit.exe --create-mod <mod-name>
 ```
 Replace `<mod-name>` with the name of your mod. This will create a new mod workspace containing the
 vanilla assets (if dumped) inside of the "Vanilla" folder. It will also create a "Mod" folder which will hold all of
@@ -37,14 +37,14 @@ and any other information about your mod. Place your custom assets here.
 # Testing your mod
 To test your mod, run the following command:
 ```
-python3 devkit.py --run-mod <mod-name>
+devkit.exe --run-mod <mod-name>
 ```
 This will launch BTD5 with the specified mod loaded.
 
 # Packaging your mod
 To create a mod package to distribute your mod, run the following command:
 ```
-python3 devkit.py --package <mod-name>
+devkit.exe --package <mod-name>
 ```
 This will calculate the difference between your modded json documents (and other files), generate new stripped json
 documents with only the changed fields, and then put all necessary files into a `.zip` file. You can then share the .zip
@@ -53,7 +53,7 @@ file with anyone who has NKHook5. They simply place it into the "mods" folder, a
 # Collaboration with other devs
 The MDK by default uses Git for collaboration. To turn your mod into a Git repository, run the following command:
 ```
-python3 devkit.py --make-git <mod-name> --remote <remote-url>
+devkit.exe --make-git <mod-name> --remote <remote-url>
 ```
 The mod name parameter is the name of your mod.
 The `remote-url` parameter is the upstream url of your git repository (if you have one).
@@ -63,13 +63,13 @@ has been added inside, this tells git which files/folders it should ignore. You 
 
 When another dev wants to make changes to your mod, they must first run the following command
 ```
-python3 devkit.py --clone-git <mod-url>
+devkit.exe --clone-git <mod-url>
 ```
 This will download the repository to their computer, and they will then be able to make changes.
 
 # Updating your mod
 To update your mod, simply run the following command:
 ```
-python3 devkit.py --update <mod-name>
+devkit.exe --update <mod-name>
 ```
 This will take the dump that was last made and update the mod to have that for the Vanilla resources instead.

@@ -2,10 +2,10 @@
 
 #include "DiskAsset.h"
 #include "MemAsset.h"
-#include "../Util/Json/MergedDocument.h"
+#include <Util/Json/MergedDocument.h>
 
 using namespace NKHook5::AssetInjector;
-using namespace NKHook5::Util::Json;
+using namespace Common::Util::Json;
 namespace fs = std::filesystem;
 
 TestModAssetLoader::TestModAssetLoader(const std::string& modDir)

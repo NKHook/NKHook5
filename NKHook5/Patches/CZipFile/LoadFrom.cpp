@@ -5,7 +5,8 @@
 #include "../../AssetInjector/InjectionManager.h"
 #include "../../Extensions/ExtensionManager.h"
 #include "../../Signatures/Signature.h"
-#include "../../Util/Json/MergedDocument.h"
+
+#include <Util/Json/MergedDocument.h>
 
 #include <stdint.h>
 #include <ghstl/string>
@@ -18,8 +19,8 @@ namespace NKHook5
         {
             using namespace NKHook5::AssetInjector;
             using namespace NKHook5::Extensions;
-            using namespace NKHook5::Util;
-            using namespace NKHook5::Util::Json;
+            using namespace Common::Util;
+            using namespace Common::Util::Json;
             using namespace Signatures;
 
             uint64_t o_func;

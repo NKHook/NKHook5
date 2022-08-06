@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-namespace NKHook5 {
+namespace Common {
 	namespace Mod {
 		class IArchive {
 			std::filesystem::path archivePath;

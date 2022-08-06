@@ -30,7 +30,7 @@
 * }
 */
 
-namespace NKHook5 {
+namespace Common {
 	namespace Util {
 		namespace Json {
 			enum class MergeMode {

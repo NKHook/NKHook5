@@ -62,5 +62,16 @@ if(NOT menum_POPULATED)
     add_subdirectory(${menum_SOURCE_DIR} ${menum_BINARY_DIR})
 endif()
 
+include(FetchContent)
+FetchContent_Declare(
+    cli11
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11
+    GIT_TAG        v2.2.0
+)
+
+FetchContent_MakeAvailable(cli11)
+
+add_subdirectory(Common)
+add_subdirectory(DevKit)
 add_subdirectory(NKHook5)
 add_subdirectory(Loader)
