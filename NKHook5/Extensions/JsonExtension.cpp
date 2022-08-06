@@ -14,7 +14,7 @@ void JsonExtension::UseData(void* content, size_t contentLen)
 		this->UseJsonData(jsonContent);
 	}
 	catch (std::exception& ex) {
-		printf("Failed to read a JsonExtension: %s", ex.what());
+		printf("Failed to read a JsonExtension: %s\n", ex.what());
 	}
 }
 

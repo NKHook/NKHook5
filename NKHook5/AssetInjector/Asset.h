@@ -20,6 +20,7 @@ namespace NKHook5 {
 			virtual size_t GetSizeOnHeap();
 			virtual const std::string& GetPath();
 			virtual void Release();
+			virtual bool ExpectsMerge();
 		};
 	}
 }

@@ -87,13 +87,23 @@ bool ModArchive::Open(fs::path path) {
 				printf("'website' must be a string!");
 			}
 		}
+
+		for (size_t i = 0; i < this->pArchive->GetEntriesCount(); i++) {
+			auto entry = this->pArchive->GetEntry(i);
+			this->allEntries.push_back(entry->GetFullName());
+		}
 	}
 	catch (std::exception& ex) {
 		printf("Error whilst opening mod: %s", ex.what());
 	}
 }
 
-const ModInfo& ModArchive::GetInfo()
+const ModInfo& const ModArchive::GetInfo() const
 {
 	return this->info;
+}
+
+const std::vector<std::string>& const ModArchive::GetEntries() const
+{
+	return this->allEntries;
 }

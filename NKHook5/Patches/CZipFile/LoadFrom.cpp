@@ -2,10 +2,10 @@
 
 #include "../../Classes/CZipFile.h"
 #include "../../Classes/CUnzippedFile.h"
-
 #include "../../AssetInjector/InjectionManager.h"
 #include "../../Extensions/ExtensionManager.h"
 #include "../../Signatures/Signature.h"
+#include "../../Util/Json/MergedDocument.h"
 
 #include <stdint.h>
 #include <ghstl/string>
@@ -18,6 +18,8 @@ namespace NKHook5
         {
             using namespace NKHook5::AssetInjector;
             using namespace NKHook5::Extensions;
+            using namespace NKHook5::Util;
+            using namespace NKHook5::Util::Json;
             using namespace Signatures;
 
             uint64_t o_func;
@@ -28,27 +30,51 @@ namespace NKHook5
                 
                 Classes::CUnzippedFile* pAsset = nullptr;
 
-                if (injectedAsset) {
-                    if (injectedAsset->GetPath() == assetPath) {
-                        pAsset = new Classes::CUnzippedFile();
-                        pAsset->filePath.assign(injectedAsset->GetPath());
-                        pAsset->fileSize = injectedAsset->GetSizeOnHeap();
-                        pAsset->fileContent = malloc(pAsset->fileSize);
-                        memcpy_s(pAsset->fileContent, pAsset->fileSize, injectedAsset->GetAssetOnHeap(), pAsset->fileSize);
-                        
-                        injectedAsset->Release();
-                        
-                        return pAsset;
-                    }
-                }
                 if(!pAsset)
                     pAsset = ((Classes::CUnzippedFile*(__thiscall*)(void*, const std::string&, void*, const std::string&))o_func)(pBundle, assetPath, param_2, archivePassword);
 
-                if (pAsset) {
+                if (injectedAsset != nullptr) {
+                    if (injectedAsset->ExpectsMerge() && pAsset != nullptr) {
+                        try {
+                            std::string injectedStr = std::string((char*)injectedAsset->GetAssetOnHeap(), injectedAsset->GetSizeOnHeap());
+                            std::string baseStr = std::string((char*)pAsset->fileContent, pAsset->fileSize);
+
+                            nlohmann::ordered_json injectedJson = nlohmann::ordered_json::parse(injectedStr);
+                            nlohmann::ordered_json baseJson = nlohmann::ordered_json::parse(baseStr);
+
+                            MergedDocument merger;
+                            merger.Add(baseJson);
+                            merger.Add(injectedJson);
+                            std::string merged = merger.GetMerged().dump();
+
+                            if (pAsset->fileContent) {
+                                free(pAsset->fileContent);
+                            }
+
+                            pAsset->fileContent = malloc(merged.size());
+                            memcpy_s(pAsset->fileContent, merged.size(), merged.data(), merged.size());
+                            pAsset->fileSize = merged.size();
+                        }
+                        catch (std::exception& ex) {
+                            printf("Failed to merge asset that expected a merge! %s\n", ex.what());
+                        }
+                    }
+                    else {
+                        if(pAsset)
+                            if (pAsset->fileContent)
+                                free(pAsset->fileContent);
+                        pAsset = new Classes::CUnzippedFile(injectedAsset);
+                    }
+                }
+
+                if (pAsset != nullptr && pAsset->fileContent != nullptr) {
                     for (Extension* ext : extsForFile) {
                         ext->UseData(pAsset->fileContent, pAsset->fileSize);
                     }
                 }
+
+                if(injectedAsset)
+                    injectedAsset->Release();
 
                 return pAsset;
             }

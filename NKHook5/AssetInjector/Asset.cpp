@@ -37,3 +37,8 @@ void Asset::Release() {
 		this->assetHeap = nullptr;
 	}
 }
+
+bool Asset::ExpectsMerge()
+{
+	return false;
+}

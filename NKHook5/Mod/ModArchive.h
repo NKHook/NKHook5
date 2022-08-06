@@ -22,26 +22,29 @@ namespace NKHook5 {
 		class ModArchive {
 			ModInfo info;
 			ZipArchive::Ptr pArchive;
-			//static std::vector
+			std::vector<std::string> allEntries;
 		public:
 			ModArchive();
 			ModArchive(std::filesystem::path path);
 			bool Open(std::filesystem::path path);
-			const ModInfo& GetInfo();
+			const ModInfo& const GetInfo() const;
+			const std::vector<std::string>& const GetEntries() const;
 			template<typename T>
-			bool ReadEntry(std::string entry, T* buffer) {
+			bool const ReadEntry(std::string entry, T* buffer) const {
 				if (this->pArchive == nullptr) {
 					printf("Error: pArchive was null");
 					return false;
 				}
 				auto pEntry = this->pArchive->GetEntry(entry);
 				if (pEntry == nullptr) {
-					printf("Error: pEntry was null");
+					printf("Error: pEntry was null\n");
+					printf("Entry: %s\n", entry.c_str());
 					return false;
 				}
 				std::istream* pStream = pEntry->GetDecompressionStream();
 				if (pStream == nullptr) {
-					printf("Error: pStream was null");
+					printf("Error: pStream was null\n");
+					printf("Entry: %s\n", entry.c_str());
 					return false;
 				}
 				*buffer = T(std::istreambuf_iterator<char>(*pStream), {});

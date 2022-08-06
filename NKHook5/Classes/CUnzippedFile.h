@@ -1,12 +1,14 @@
 #pragma once
 
+#include "../AssetInjector/Asset.h"
 #include "../../Util/NewFramework.h"
+#include "../../Signatures/Signature.h"
 #include "Macro.h"
 #include <ghstl/string>
-#include "../../Signatures/Signature.h"
 
 namespace NKHook5 {
 	namespace Classes {
+		using namespace AssetInjector;
 		using namespace Signatures;
 
 		struct FileReadResult {
@@ -34,6 +36,14 @@ namespace NKHook5 {
 		public:
 			CUnzippedFile() {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
+			}
+			CUnzippedFile(Asset* asset) {
+				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
+
+				this->filePath.assign(asset->GetPath());
+				this->fileSize = asset->GetSizeOnHeap();
+				this->fileContent = malloc(this->fileSize);
+				memcpy_s(this->fileContent, this->fileSize, asset->GetAssetOnHeap(), this->fileSize);
 			}
 			virtual ~CUnzippedFile() {};
 		};
