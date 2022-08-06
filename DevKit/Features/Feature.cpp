@@ -22,6 +22,11 @@ std::string& Feature::HelpDesc()
 	return this->helpDesc;
 }
 
-void Feature::Run() {
+std::string& Feature::GetVariable()
+{
+	return this->variable;
+}
+
+void Feature::Run(std::vector<std::string> args) {
 
 }

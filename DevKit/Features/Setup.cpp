@@ -39,7 +39,7 @@ std::string AskStr(std::string question) {
 	return choice;
 }
 
-void Setup::Run() {
+void Setup::Run(std::vector<std::string> args) {
 	nlohmann::json settings = Settings::ReadSettings();
 
 	printf("Welcome to the NKHook5 MDK setup!\n");

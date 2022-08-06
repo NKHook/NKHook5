@@ -4,9 +4,9 @@
 
 namespace DevKit {
 	namespace Features {
-		class Setup : public Feature {
+		class CreateMod : public Feature {
 		public:
-			Setup();
+			CreateMod();
 			virtual std::string ActivatorArgs() override;
 			virtual void Run(std::vector<std::string> args) override;
 		};
