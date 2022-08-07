@@ -16,6 +16,11 @@ std::string Setup::ActivatorArgs() {
 	return "-s, --setup";
 }
 
+bool Setup::FlagOnly()
+{
+	return true;
+}
+
 #define SETUP_SETTING_CHECK(name, setting) printf("\t"name": %s\n", settings.contains(setting) ? settings[setting].dump().c_str() : "MISSING")
 #define HAS_SETTING(setting) settings.contains(setting)
 
@@ -40,7 +45,7 @@ std::string AskStr(std::string question) {
 }
 
 void Setup::Run(std::vector<std::string> args) {
-	nlohmann::json settings = Settings::ReadSettings();
+	nlohmann::json& settings = Settings::ReadSettings();
 
 	printf("Welcome to the NKHook5 MDK setup!\n");
 	bool noSettings = false;

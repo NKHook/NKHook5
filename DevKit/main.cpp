@@ -1,7 +1,9 @@
 #include "Features/CreateMod.h"
 #include "Features/Feature.h"
 #include "Features/Setup.h"
+#include "Features/UpdateMod.h"
 #include "Settings.h"
+#include "FeatureMgr.h"
 
 #include <Util/Macro.h>
 #include <Files/File.h>
@@ -19,19 +21,24 @@ using namespace DevKit;
 using namespace DevKit::Features;
 namespace fs = std::filesystem;
 
-static std::map<Feature*, CLI::Option*> features;
-
 int main(int argc, const char* argv[]) {
-	features.emplace(new Setup(), nullptr);
-	features.emplace(new CreateMod(), nullptr);
+	std::cin.get();
+	FeatureMgr::RegisterFeature(new CreateMod());
+	FeatureMgr::RegisterFeature(new Setup());
+	FeatureMgr::RegisterFeature(new UpdateMod());
 
 	CLI::App app("NKHook5 DevKit (" STRING(NKHOOK_BUILD_VERSION) ")");
-	for (const auto& [feature, option] : features) {
-		features[feature] = app.add_option(feature->ActivatorArgs(), feature->GetVariable(), feature->HelpDesc());
+	for (const auto& [feature, option] : FeatureMgr::AllFeatures()) {
+		if (feature->FlagOnly()) {
+			FeatureMgr::AllFeatures()[feature] = app.add_flag(feature->ActivatorArgs(), feature->HelpDesc());
+		}
+		else {
+			FeatureMgr::AllFeatures()[feature] = app.add_option(feature->ActivatorArgs(), feature->GetVariable(), feature->HelpDesc());
+		}
 	}
 	CLI11_PARSE(app, argc, argv);
 
-	for (const auto& [feature, option] : features) {
+	for (const auto& [feature, option] : FeatureMgr::AllFeatures()) {
 		if (option != nullptr) {
 			if (option->reduced_results().size() > 0) {
 				feature->Run(option->reduced_results());

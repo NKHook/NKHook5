@@ -4,7 +4,7 @@
 
 namespace DevKit {
 	namespace Settings {
-		nlohmann::json ReadSettings();
+		nlohmann::json& ReadSettings();
 		void SaveSettings();
 		bool HasSetting(std::string setting);
 	}

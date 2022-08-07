@@ -4,11 +4,10 @@
 
 namespace DevKit {
 	namespace Features {
-		class Setup : public Feature {
+		class UpdateMod : public Feature {
 		public:
-			Setup();
+			UpdateMod();
 			virtual std::string ActivatorArgs() override;
-			virtual bool FlagOnly() override;
 			virtual void Run(std::vector<std::string> args) override;
 		};
 	}

@@ -27,6 +27,11 @@ std::string& Feature::GetVariable()
 	return this->variable;
 }
 
+bool Feature::FlagOnly()
+{
+	return false;
+}
+
 void Feature::Run(std::vector<std::string> args) {
 
 }

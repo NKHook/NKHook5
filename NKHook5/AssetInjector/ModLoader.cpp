@@ -5,14 +5,14 @@
 
 #include <filesystem>
 #include <iostream>
-#include <Mod/ModArchive.h>
+#include <Files/ModArchive.h>
 #include <Util/Json/MergedDocument.h>
 
 using namespace NKHook5;
 using namespace NKHook5::AssetInjector;
 using namespace NKHook5::Classes;
-using namespace Common::Mod;
 using namespace NKHook5::Signatures;
+using namespace Common::Files;
 using namespace Common::Util;
 using namespace Common::Util::Json;
 namespace fs = std::filesystem;
@@ -28,7 +28,7 @@ void ModLoader::Initialize()
 				ModArchive* modFile = new ModArchive();
 				if (modFile->Open(file)) {
 					loadedMods.push_back(modFile);
-					printf("Loading %s...\n", modFile->GetInfo().name.c_str());
+					printf("Loading %s...\n", modFile->GetInfo().GetName().c_str());
 				}
 				else
 					printf("Failed to open mod file: %s\n", file.path().string().c_str());

@@ -3,21 +3,55 @@
 using namespace Common::Files;
 namespace fs = std::filesystem;
 
-File::File(fs::path path)
-{
-	this->path = path;
+File::File() {
+	this->writeMode = false;
 }
 
-const fs::path& File::GetPath()
+File::File(fs::path path) : IFile(path, 0)
 {
-	return this->path;
+	if (!this->Open(path)) {
+		printf("Failed to open file %s\n", path.string().c_str());
+	}
+}
+
+bool File::Open(fs::path path)
+{
+	IFile::Open(path);
+	return this->OpenRead(path);
+}
+
+bool File::OpenRead(std::filesystem::path path)
+{
+	IFile::Open(path);
+	if(this->stream.is_open())
+		this->Close();
+	this->writeMode = false;
+	this->stream.open(this->GetPath(), std::ios::in);
+	return this->stream.is_open();
+}
+
+bool File::OpenWrite(std::filesystem::path path)
+{
+	IFile::Open(path);
+	if (this->stream.is_open())
+		this->Close();
+	this->writeMode = true;
+	this->stream.open(this->GetPath(), std::ios::out);
+	return this->stream.is_open();
+}
+
+File::~File() {
+	this->Close();
+}
+
+void File::Close()
+{
+	this->stream.close();
 }
 
 size_t File::GetSize()
 {
-	std::ifstream in(this->path, std::ifstream::ate | std::ifstream::binary);
-	size_t size = in.tellg();
-	in.close();
+	size_t size = this->stream.tellg();
 	return size;
 }
 

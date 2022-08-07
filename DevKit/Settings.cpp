@@ -11,7 +11,10 @@ namespace fs = std::filesystem;
 
 static nlohmann::json settings;
 
-nlohmann::json Settings::ReadSettings() {
+nlohmann::json& Settings::ReadSettings() {
+	if (!settings.is_null()) {
+		return settings;
+	}
 	try {
 		File confFile = File(fs::path("mdkconf.json"));
 		std::string confData = confFile.ReadStr();
@@ -23,7 +26,7 @@ nlohmann::json Settings::ReadSettings() {
 		printf("Error reading config: %s\n", ex.what());
 #endif
 	}
-	return nlohmann::json::object();
+	return settings;
 }
 
 void Settings::SaveSettings() {
