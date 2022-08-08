@@ -10,6 +10,7 @@
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 bool g_initedImgui = false;
+uint64_t currentFrame = 0;
 namespace NKHook5
 {
     namespace Patches
@@ -51,16 +52,17 @@ namespace NKHook5
 
             static uint64_t o_func;
             bool __stdcall hkSwapbuffers(HDC hdc) {
-                HWND hWnd = WindowFromDC(hdc);
+                //HWND hWnd = WindowFromDC(hdc);
 
-                if (!g_initedImgui && hWnd) {
-                    SetupOpenGL(hWnd);
-                    //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
-                    g_initedImgui = true;
-                }
-                if (g_initedImgui) {
-                    RenderOpenGL();
-                }
+                //if (!g_initedImgui && hWnd) {
+                //    SetupOpenGL(hWnd);
+                //    //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
+                //    g_initedImgui = true;
+                //}
+                //if (g_initedImgui) {
+                //    RenderOpenGL();
+                //}
+                currentFrame++;
                 return PLH::FnCast(o_func, &hkSwapbuffers)(hdc);
             }
 

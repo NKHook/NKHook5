@@ -16,6 +16,8 @@ namespace NKHook5 {
 			CBaseScreen_CCTOR,
 			CBaseScreen_OpenPopup,
 			/* CBaseTower */
+			/* CBloon */
+			CBloon_Update,
 			/* CBloonsBaseScreen */
 			CBloonsBaseScreen_CCTOR,
 			/* CBloonsTD5Game */

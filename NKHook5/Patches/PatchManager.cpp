@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "CBasePositionableObject/Constructor.h"
+#include "CBloon/Update.h"
 #include "CBloonsTD5Game/Constructor.h"
 #include "CBloonsTD5Game/LoadAssets.h"
 #include "CFlagStringConvertor/FlagToString.h"
@@ -25,6 +26,7 @@ using namespace NKHook5::Patches;
 void PatchManager::ApplyAll()
 {
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
+    PatchManager::ApplyPatch(new CBloon::Update());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
     PatchManager::ApplyPatch(new CBloonsTD5Game::LoadAssets());
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
@@ -38,7 +40,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
     //PatchManager::ApplyPatch(new GLRenderLayer::Draw());
-    //PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
+    PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     //PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());
     PatchManager::ApplyPatch(new Unknown::WinMain());
