@@ -9,6 +9,7 @@ endif()
 add_library(Common STATIC)
 
 add_subdirectory(Files)
+add_subdirectory(Logging)
 add_subdirectory(Mod)
 add_subdirectory(thirdparty)
 add_subdirectory(Util)

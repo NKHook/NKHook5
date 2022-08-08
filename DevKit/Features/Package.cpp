@@ -1,9 +1,19 @@
 #include "Package.h"
+
+#include <Files/File.h>
+#include <Files/ZipBase.h>
+#include <Logging/Logger.h>
+
 #include <iostream>
 #include <algorithm>
+#include <filesystem>
 
+using namespace Common;
+using namespace Common::Files;
+using namespace Common::Logging;
 using namespace DevKit;
 using namespace DevKit::Features;
+namespace fs = std::filesystem;
 
 Package::Package() : Feature("package", "Packages a mod into a given mod format")
 {
@@ -23,6 +33,8 @@ void Package::Run(std::vector<std::string> args)
 {
 	std::string modName = args[0];
 	ModFmt modFmt = ModFmt::NONE;
+	fs::path modDir = modName;
+
 	if (args.size() > 1) {
 		std::transform(args[1].begin(), args[1].end(), args[1].begin(), [](unsigned char c) { return std::tolower(c); });
 		if (args[1] == "nkh") {
@@ -97,9 +109,43 @@ void Package::Run(std::vector<std::string> args)
 	}
 
 	if (modFmt == ModFmt::NONE) {
-		printf("Please specify a valid mod format!");
+		printf("Please specify a valid mod format!\n");
 		return;
 	}
 
-
+	if (modFmt == ModFmt::UNPACKED) {
+		printf("Creating unpacked package...\n");
+		ZipBase unpackedArch;
+		if (!unpackedArch.Open(modName + "_sources.zip")) {
+			printf("Failed to open archive to unpack\n");
+			return;
+		}
+		size_t idx = -1;
+		for (const auto& dirEntry : fs::recursive_directory_iterator(modDir)) {
+			idx++;
+			if (dirEntry.is_directory()) {
+				continue;
+			}
+			fs::path entryPath = dirEntry.path();
+			File entryFile;
+			if (!entryFile.OpenRead(entryPath)) {
+				printf("Failed to read file '%s'\n", entryPath.string().c_str());
+				continue;
+			}
+			std::vector<uint8_t> dataBytes = entryFile.ReadBytes();
+			if (dataBytes.empty()) {
+				printf("File read was empty for '%s', skipping...\n", entryPath.string().c_str());
+				continue;
+			}
+			entryFile.Close();
+			if (!unpackedArch.WriteEntry(entryPath.string(), dataBytes)) {
+				printf("Failed to save entry '%s'", entryPath.string().c_str());
+				continue;
+			}
+			//Logger::Print("Packed file '%s'\n", entryPath.string().c_str());
+			Logger::Progress(idx, 0, "Packaged files: ");
+		}
+		unpackedArch.Close();
+		printf("Done!\n");
+	}
 }

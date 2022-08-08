@@ -39,11 +39,12 @@ void ModLoader::Initialize()
 		printf("CANNOT LOAD MODS! The ./Mods directory is missing!\n");
 	}
 
-	for (const ModArchive* mod : loadedMods) {
+	for (ModArchive* mod : loadedMods) {
 		const std::vector<std::string>& entryPaths = mod->GetEntries();
 		for (auto& entryPath : entryPaths) {
-			std::string entryContent;
-			if (mod->ReadEntry(entryPath, &entryContent)) {
+			std::vector<uint8_t> entryBytes = mod->ReadEntry(entryPath);
+			std::string entryContent = std::string(reinterpret_cast<char*>(entryBytes.data()), entryBytes.size());
+			if (!entryContent.empty()) {
 				ModdedAsset* desiredAsset = nullptr;
 				for (ModdedAsset* asset : finalAssets) {
 					if (asset->GetPath() == entryPath) {

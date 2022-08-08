@@ -55,14 +55,34 @@ size_t File::GetSize()
 	return size;
 }
 
+std::vector<uint8_t> Common::Files::File::ReadBytes()
+{
+	if (this->writeMode) {
+		this->Close();
+		this->OpenRead(this->GetPath());
+	}
+	std::istreambuf_iterator<char> start(this->stream), end;
+	std::vector<uint8_t> result(start, end);
+	return result;
+}
+
+void File::WriteBytes(std::vector<uint8_t> data)
+{
+	if (!this->writeMode) {
+		this->Close();
+		this->OpenWrite(this->GetPath());
+	}
+	this->stream.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+}
+
 std::string File::ReadStr()
 {
-	std::vector<char> read = this->Read<char>();
-	return std::string(read.data(), read.size() * sizeof(char));
+	std::vector<uint8_t> read = this->ReadBytes();
+	return std::string((const char*)read.data(), read.size() * sizeof(char));
 }
 
 void File::WriteStr(std::string data)
 {
-	std::vector<char> write(data.begin(), data.end());
-	this->Write(write);
+	std::vector<uint8_t> write(data.begin(), data.end());
+	this->WriteBytes(write);
 }

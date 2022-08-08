@@ -16,6 +16,8 @@ namespace Common {
 		public:
 			ModArchive();
 			virtual bool Open(std::filesystem::path path) override;
+			virtual bool OpenRead(std::filesystem::path path);
+			virtual bool OpenWrite(std::filesystem::path path);
 			ModArchive(std::filesystem::path path);
 			const ModInfo& const GetInfo() const;
 		};

@@ -60,11 +60,8 @@ void UpdateMod::Run(std::vector<std::string> args) {
 		JetFile jetFile;
 		jetFile.Open(jetPath);
 		for (const auto& entryName : jetFile.GetEntries()) {
-			std::string jsonStr;
-			if (!jetFile.ReadEntry(entryName, &jsonStr)) {
-				printf("Failed to read jet entry while dumping '%s'\n", entryName.c_str());
-				continue;
-			}
+			std::vector<uint8_t> strBytes = jetFile.ReadEntry(entryName);
+			std::string jsonStr = std::string(reinterpret_cast<char*>(strBytes.data()), strBytes.size());
 			fs::path extractLoc = modVanillaPath / entryName.substr(sizeof("Assets"));
 			//Its a directory, ignore
 			if (!extractLoc.has_extension()) {

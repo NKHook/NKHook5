@@ -21,24 +21,8 @@ namespace Common {
 			virtual ~File();
 			virtual void Close();
 			virtual size_t GetSize() override;
-			template<typename T>
-			std::vector<T> Read() {
-				if (this->writeMode) {
-					this->Close();
-					this->OpenRead(this->GetPath());
-				}
-				std::istreambuf_iterator<T> start(this->stream), end;
-				std::vector<T> result(start, end);
-				return result;
-			}
-			template<typename T>
-			void Write(std::vector<T> buffer) {
-				if (!this->writeMode) {
-					this->Close();
-					this->OpenWrite(this->GetPath());
-				}
-				this->stream.write(buffer.data(), buffer.size() * sizeof(T));
-			}
+			virtual std::vector<uint8_t> ReadBytes() override;
+			virtual void WriteBytes(std::vector<uint8_t> data) override;
 			std::string ReadStr();
 			void WriteStr(std::string data);
 		};
