@@ -1,5 +1,7 @@
 #include "ZipBase.h"
 
+#include <Util/memstream>
+
 using namespace Common;
 using namespace Common::Files;
 namespace fs = std::filesystem;
@@ -97,7 +99,7 @@ std::vector<uint8_t> ZipBase::ReadEntry(std::string entry)
 
 bool ZipBase::WriteEntry(std::string entry, std::vector<uint8_t> data)
 {
-	std::replace(entry.begin(), entry.end(), '\\', '/');
+	std::replace(entry.begin(), entry.end(), '/', '\\');
 	if (this->archive == nullptr) {
 		printf("Error: pArchive was null in write");
 		return false;
@@ -109,8 +111,7 @@ bool ZipBase::WriteEntry(std::string entry, std::vector<uint8_t> data)
 	else {
 		pEntry = this->archive->CreateEntry(entry);
 	}
-	data.push_back(0); //Ensure its null terminated
-	std::istringstream writeStream((char*)data.data(), data.size());
+	memstream writeStream(data.data(), data.size() * sizeof(uint8_t));
 	DeflateMethod::Ptr method = DeflateMethod::Create();
 	DeflateMethod::CompressionLevel level;
 	switch (this->compressionLevel) {
@@ -145,6 +146,7 @@ bool ZipBase::WriteEntry(std::string entry, std::vector<uint8_t> data)
 		break;
 	}
 	method->SetCompressionLevel(level);
+	
 	if (!this->password.empty()) {
 		pEntry->SetPassword(this->password);
 		pEntry->UseDataDescriptor();

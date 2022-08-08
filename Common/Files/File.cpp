@@ -26,7 +26,7 @@ bool File::OpenRead(std::filesystem::path path)
 	if(this->stream.is_open())
 		this->Close();
 	this->writeMode = false;
-	this->stream.open(this->GetPath(), std::ios::in);
+	this->stream.open(this->GetPath(), std::ios::in | std::ios::binary);
 	return this->stream.is_open();
 }
 
@@ -36,7 +36,7 @@ bool File::OpenWrite(std::filesystem::path path)
 	if (this->stream.is_open())
 		this->Close();
 	this->writeMode = true;
-	this->stream.open(this->GetPath(), std::ios::out);
+	this->stream.open(this->GetPath(), std::ios::out | std::ios::binary);
 	return this->stream.is_open();
 }
 
@@ -51,27 +51,25 @@ void File::Close()
 
 size_t File::GetSize()
 {
-	size_t size = this->stream.tellg();
-	return size;
+	return fs::file_size(this->GetPath());
 }
 
-std::vector<uint8_t> Common::Files::File::ReadBytes()
+std::vector<uint8_t> File::ReadBytes()
 {
-	if (this->writeMode) {
+	if (this->stream.is_open()) {
 		this->Close();
-		this->OpenRead(this->GetPath());
 	}
-	std::istreambuf_iterator<char> start(this->stream), end;
-	std::vector<uint8_t> result(start, end);
+	this->OpenRead(this->GetPath());
+	std::vector<uint8_t> result((std::istreambuf_iterator<char>(this->stream)), std::istreambuf_iterator<char>());
 	return result;
 }
 
 void File::WriteBytes(std::vector<uint8_t> data)
 {
-	if (!this->writeMode) {
+	if (this->stream.is_open()) {
 		this->Close();
-		this->OpenWrite(this->GetPath());
 	}
+	this->OpenWrite(this->GetPath());
 	this->stream.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
 }
 

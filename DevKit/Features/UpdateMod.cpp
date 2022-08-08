@@ -5,12 +5,14 @@
 
 #include <Files/File.h>
 #include <Files/JetFile.h>
+#include <Logging/Logger.h>
 
 #include <filesystem>
 
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Mod;
+using namespace Common::Logging;
 using namespace DevKit;
 using namespace DevKit::Features;
 using namespace DevKit::Proj;
@@ -45,7 +47,15 @@ void UpdateMod::Run(std::vector<std::string> args) {
 	if (!fs::exists(modVanillaPath)) {
 		fs::create_directory(modVanillaPath);
 	}
+	Logger::Print("Indexing game files...\n");
+	size_t vanillaFileCount = 0;
 	for (const auto& vanillaAsset : fs::recursive_directory_iterator(assetsPath)) {
+		vanillaFileCount++;
+	}
+	size_t index = 0;
+	for (const auto& vanillaAsset : fs::recursive_directory_iterator(assetsPath)) {
+		index++;
+		Logger::Progress(index, vanillaFileCount, "Copying files... ");
 		fs::path modCopyPath = modVanillaPath / vanillaAsset.path().string().substr(assetsPath.string().length()+1);
 		if (vanillaAsset.is_directory())
 			continue;
@@ -59,7 +69,11 @@ void UpdateMod::Run(std::vector<std::string> args) {
 	if (fs::exists(jetPath)) {
 		JetFile jetFile;
 		jetFile.Open(jetPath);
+		index = 0;
+		size_t jetFileCount = jetFile.GetSize();
 		for (const auto& entryName : jetFile.GetEntries()) {
+			index++;
+			Logger::Progress(index, jetFileCount, "Extracting jet... ");
 			std::vector<uint8_t> strBytes = jetFile.ReadEntry(entryName);
 			std::string jsonStr = std::string(reinterpret_cast<char*>(strBytes.data()), strBytes.size());
 			fs::path extractLoc = modVanillaPath / entryName.substr(sizeof("Assets"));

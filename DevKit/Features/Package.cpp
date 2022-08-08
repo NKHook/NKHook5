@@ -88,6 +88,7 @@ void Package::Run(std::vector<std::string> args)
 		printf("\tCons:\n");
 		printf("\t- Requires vanilla assets\n");
 		printf("\t- Requires user to replace files to use\n");
+		printf("\t- The devkit only packages JSON assets into the file\n");
 		printf("4. Unpacked archive\n");
 		printf("\tNot really a format for mod use, but can be used to share mod source code\n");
 		printf("\tPros:\n");
