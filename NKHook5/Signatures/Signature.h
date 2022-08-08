@@ -41,6 +41,8 @@ namespace NKHook5 {
 			/* CPopupScreenBase */
 			CPopupScreenBase_CCTOR,
 			CPopupScreenBase_AddObject,
+			/* CProjectile */
+			CProjectile_Update,
 			/* CReferenceCounted */
 			/* CRenderableTextureObject */
 			/* CScreenManager */

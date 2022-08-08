@@ -12,6 +12,7 @@
 #include "CLoc/GetText.h"
 #include "CPlayerProfileV1/InternalLoad.h"
 #include "CPlayerProfileV1/Save.h"
+#include "CProjectile/Update.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "CTowerFactory/Constructor.h"
 #include "CZipFile/LoadFrom.h"
@@ -36,6 +37,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
     //PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
+    PatchManager::ApplyPatch(new CProjectile::Update());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
