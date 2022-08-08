@@ -23,6 +23,7 @@ namespace DevKit {
 			fs::path GetModInfoPath();
 			fs::path GetVanillaPath();
 			fs::path GetModPath();
+			const ModInfo& GetInfo();
 		};
 	}
 }

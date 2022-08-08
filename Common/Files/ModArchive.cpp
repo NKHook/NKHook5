@@ -56,3 +56,10 @@ const ModInfo& const ModArchive::GetInfo() const
 {
 	return this->info;
 }
+
+void ModArchive::SetInfo(ModInfo newInfo) {
+	std::string newInfoStr = newInfo.Serialize().dump();
+	std::vector<uint8_t> newInfoBytes(newInfoStr.begin(), newInfoStr.end());
+	this->WriteEntry("modinfo.json", newInfoBytes);
+	this->info = newInfo;
+}

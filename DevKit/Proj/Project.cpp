@@ -87,3 +87,8 @@ fs::path DevKit::Proj::Project::GetModPath()
 {
 	return this->modAssetsPath;
 }
+
+const ModInfo& Project::GetInfo()
+{
+	return this->info;
+}

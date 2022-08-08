@@ -20,6 +20,7 @@ namespace Common {
 			virtual bool OpenWrite(std::filesystem::path path);
 			ModArchive(std::filesystem::path path);
 			const ModInfo& const GetInfo() const;
+			void SetInfo(ModInfo);
 		};
 	}
 }
