@@ -8,6 +8,8 @@
 #include <backends/imgui_impl_opengl3_loader.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+extern int32_t maxProjectileUpdates;
+extern int32_t maxBloonUpdates;
 
 bool g_initedImgui = false;
 uint64_t currentFrame = 0;
@@ -44,7 +46,12 @@ namespace NKHook5
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui::NewFrame();
 
-                MenuEditor::Editor::Render();
+                //MenuEditor::Editor::Render();
+
+                ImGui::Begin("Update cap test");
+                ImGui::InputInt("Projectile update cap", &maxProjectileUpdates, 1, 50);
+                ImGui::InputInt("Bloon update cap", &maxBloonUpdates, 1, 50);
+                ImGui::End();
 
                 ImGui::Render();
                 ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -52,16 +59,16 @@ namespace NKHook5
 
             static uint64_t o_func;
             bool __stdcall hkSwapbuffers(HDC hdc) {
-                //HWND hWnd = WindowFromDC(hdc);
+                HWND hWnd = WindowFromDC(hdc);
 
-                //if (!g_initedImgui && hWnd) {
-                //    SetupOpenGL(hWnd);
-                //    //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
-                //    g_initedImgui = true;
-                //}
-                //if (g_initedImgui) {
-                //    RenderOpenGL();
-                //}
+                if (!g_initedImgui && hWnd) {
+                    SetupOpenGL(hWnd);
+                    //SetWindowTextA(hWnd, "Bloons TD5 | NKHook5");
+                    g_initedImgui = true;
+                }
+                if (g_initedImgui) {
+                    RenderOpenGL();
+                }
                 currentFrame++;
                 return PLH::FnCast(o_func, &hkSwapbuffers)(hdc);
             }

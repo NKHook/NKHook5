@@ -3,9 +3,8 @@
 #include "../../Classes/CProjectile.h"
 #include "../../Signatures/Signature.h"
 
-#define MAX_PROJECTILE_UPDATES 256
-
 extern uint64_t currentFrame;
+int32_t maxProjectileUpdates = 0x1000;
 
 namespace NKHook5
 {
@@ -26,7 +25,7 @@ namespace NKHook5
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
                 }
-                if (updatesThisFrame > MAX_PROJECTILE_UPDATES) {
+                if (updatesThisFrame > maxProjectileUpdates) {
                     return;
                 }
                 updatesThisFrame++;

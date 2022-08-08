@@ -3,9 +3,8 @@
 #include "../../Classes/CBloon.h"
 #include "../../Signatures/Signature.h"
 
-#define MAX_BLOON_UPDATES 256
-
 extern uint64_t currentFrame;
+int32_t maxBloonUpdates = 0x500;
 
 namespace NKHook5
 {
@@ -26,7 +25,7 @@ namespace NKHook5
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
                 }
-                if (updatesThisFrame > MAX_BLOON_UPDATES) {
+                if (updatesThisFrame > maxBloonUpdates) {
                     return;
                 }
                 updatesThisFrame++;
