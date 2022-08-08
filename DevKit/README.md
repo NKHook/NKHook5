@@ -15,22 +15,13 @@ devkit.exe --setup
 ```
 This will ask you a few questions and then close. It will create an "mdkconf.json" file, which holds the responses you gave.
 
-# Dumping game assets
-To dump the game's assets, run the following command
-**WARNING**: DO NOT have mods installed before running this command!
-```
-devkit.exe --dump-assets
-```
-This will create a new "BTD5" folder containing all of the game's assets. Don't touch this folder! You don't need to
-modify any of these files to create mods anymore. These assets will be used for reference when creating your own mod.
-
 # Creating a mod
 To create a new mod, run the following command:
 ```
 devkit.exe --create-mod <mod-name>
 ```
 Replace `<mod-name>` with the name of your mod. This will create a new mod workspace containing the
-vanilla assets (if dumped) inside of the "Vanilla" folder. It will also create a "Mod" folder which will hold all of
+vanilla assets inside of the "Vanilla" folder. It will also create a "Mod" folder which will hold all of
 your mod's assets. You will notice it comes with a "modinfo.json" file, which holds the name, version, description, author(s),
 and any other information about your mod. Place your custom assets here.
 

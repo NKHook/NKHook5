@@ -1,5 +1,6 @@
 #include "Features/CreateMod.h"
 #include "Features/Feature.h"
+#include "Features/RunMod.h"
 #include "Features/Setup.h"
 #include "Features/UpdateMod.h"
 #include "Settings.h"
@@ -23,9 +24,10 @@ namespace fs = std::filesystem;
 
 int main(int argc, const char* argv[]) {
 	std::cin.get();
-	FeatureMgr::RegisterFeature(new CreateMod());
 	FeatureMgr::RegisterFeature(new Setup());
+	FeatureMgr::RegisterFeature(new CreateMod());
 	FeatureMgr::RegisterFeature(new UpdateMod());
+	FeatureMgr::RegisterFeature(new RunMod());
 
 	CLI::App app("NKHook5 DevKit (" STRING(NKHOOK_BUILD_VERSION) ")");
 	for (const auto& [feature, option] : FeatureMgr::AllFeatures()) {
