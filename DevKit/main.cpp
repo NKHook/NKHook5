@@ -1,5 +1,6 @@
 #include "Features/CreateMod.h"
 #include "Features/Feature.h"
+#include "Features/Package.h"
 #include "Features/RunMod.h"
 #include "Features/Setup.h"
 #include "Features/UpdateMod.h"
@@ -28,6 +29,7 @@ int main(int argc, const char* argv[]) {
 	FeatureMgr::RegisterFeature(new CreateMod());
 	FeatureMgr::RegisterFeature(new UpdateMod());
 	FeatureMgr::RegisterFeature(new RunMod());
+	FeatureMgr::RegisterFeature(new Package());
 
 	CLI::App app("NKHook5 DevKit (" STRING(NKHOOK_BUILD_VERSION) ")");
 	for (const auto& [feature, option] : FeatureMgr::AllFeatures()) {
@@ -37,6 +39,9 @@ int main(int argc, const char* argv[]) {
 		else {
 			FeatureMgr::AllFeatures()[feature] = app.add_option(feature->ActivatorArgs(), feature->GetVariable(), feature->HelpDesc());
 		}
+		FeatureMgr::AllFeatures()[feature]->allow_extra_args(true);
+		int maxArgs = feature->MaxArgs();
+		FeatureMgr::AllFeatures()[feature]->expected(0, maxArgs);
 	}
 	CLI11_PARSE(app, argc, argv);
 

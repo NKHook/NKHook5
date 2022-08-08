@@ -32,6 +32,11 @@ bool Feature::FlagOnly()
 	return false;
 }
 
+int Feature::MaxArgs()
+{
+	return 2;
+}
+
 void Feature::Run(std::vector<std::string> args) {
 
 }

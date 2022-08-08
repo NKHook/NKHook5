@@ -16,6 +16,7 @@ namespace DevKit {
 			virtual std::string& HelpDesc();
 			virtual std::string& GetVariable();
 			virtual bool FlagOnly();
+			virtual int MaxArgs();
 			virtual void Run(std::vector<std::string> args);
 		};
 	}
