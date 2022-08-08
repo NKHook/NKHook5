@@ -1,8 +1,10 @@
 #include "Package.h"
 
 #include <Files/File.h>
+#include <Files/JetFile.h>
 #include <Files/ZipBase.h>
 #include <Logging/Logger.h>
+#include <Util/Json/MergedDocument.h>
 
 #include <iostream>
 #include <algorithm>
@@ -11,6 +13,8 @@
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Logging;
+using namespace Common::Util;
+using namespace Common::Util::Json;
 using namespace DevKit;
 using namespace DevKit::Features;
 namespace fs = std::filesystem;
@@ -147,5 +151,139 @@ void Package::Run(std::vector<std::string> args)
 		}
 		unpackedArch.Close();
 		printf("Done!\n");
+	}
+
+	if (modFmt == ModFmt::JET) {
+		Logger::Print("Creating jet package...");
+		JetFile jetFile;
+		if (!jetFile.Open(modName + ".jet")) {
+			Logger::Print("Failed to create jet file");
+			return;
+		}
+		fs::path modAssets = modDir / "Mod";
+		fs::path vanillaAssets = modDir / "Vanilla";
+		Logger::Print("Indexing mod files...");
+		size_t numModFiles = 0;
+		for (const auto& filePath : fs::recursive_directory_iterator(modAssets)) {
+			if (filePath.is_directory()) {
+				continue;
+			}
+			numModFiles++;
+		}
+
+		Logger::Print("Indexing vanilla files...");
+		size_t numVanillaFiles = 0;
+		for (const auto& filePath : fs::recursive_directory_iterator(vanillaAssets)) {
+			if (filePath.is_directory()) {
+				continue;
+			}
+			numVanillaFiles++;
+		}
+
+		Logger::Print("\n");
+
+		size_t idx = 0;
+		//Add all vanilla assets
+		for (const auto& assetFile : fs::recursive_directory_iterator(vanillaAssets)) {
+			if (assetFile.is_directory()) {
+				continue;
+			}
+			idx++;
+			fs::path onDisk = assetFile.path();
+			fs::path modFile = modAssets / onDisk.string().substr(vanillaAssets.string().length()+1);
+			fs::path entryPath = "Assets/" + onDisk.string().substr(vanillaAssets.string().length()+1);
+			if (entryPath.string().find("Assets/JSON") == std::string::npos) {
+				continue;
+			}
+
+			File theAsset;
+			if (!theAsset.OpenRead(assetFile)) {
+				Logger::Print("Failed to read file '%s'", entryPath.string().c_str());
+				continue;
+			}
+			std::vector<uint8_t> dataBytes = theAsset.ReadBytes();
+			if (dataBytes.empty()) {
+				Logger::Print("File read was empty for '%s', skipping...", entryPath.string().c_str());
+				continue;
+			}
+			theAsset.Close();
+			if (!jetFile.WriteEntry(entryPath.string(), dataBytes)) {
+				printf("Failed to save entry '%s'", entryPath.string().c_str());
+				continue;
+			}
+
+			Logger::Progress(idx, numVanillaFiles, "Packaged vanilla assets: ");
+		}
+
+		Logger::Print("\n");
+
+		idx = 0;
+		//Add all mod assets and merge if needed
+		for (const auto& assetFile : fs::recursive_directory_iterator(modAssets)) {
+			if (assetFile.is_directory()) {
+				continue;
+			}
+			idx++;
+			fs::path onDisk = assetFile.path();
+			fs::path vanillaFile = vanillaAssets / onDisk.string().substr(modAssets.string().length()+1);
+			fs::path entryPath = "Assets/" + onDisk.string().substr(modAssets.string().length()+1);
+			if (entryPath.string().find("Assets/JSON") == std::string::npos) {
+				continue;
+			}
+
+			File theAsset;
+			if (!theAsset.OpenRead(assetFile)) {
+				Logger::Print("Failed to read file '%s'", entryPath.string().c_str());
+				continue;
+			}
+			std::vector<uint8_t> dataBytes = theAsset.ReadBytes();
+			if (dataBytes.empty()) {
+				theAsset.Close();
+				Logger::Print("File read was empty for '%s', skipping...", entryPath.string().c_str());
+				continue;
+			}
+			theAsset.Close();
+
+			if (fs::exists(vanillaFile)) {
+				File vanillaAsset;
+				if (!vanillaAsset.Open(vanillaFile)) {
+					Logger::Print("Failed to open '%s', skipping merge step", vanillaFile.string().c_str());
+				}
+				else {
+					std::string modStr = std::string((char*)dataBytes.data(), dataBytes.size());
+					std::string vanillaStr = vanillaAsset.ReadStr();
+					if (vanillaStr.empty()) {
+						Logger::Print("The content of '%s' was empty, skipping merge", vanillaFile.string().c_str());
+					}
+					else {
+						try {
+							nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaStr);
+							nlohmann::ordered_json modJson = nlohmann::ordered_json::parse(modStr);
+
+							MergedDocument merger;
+							merger.Add(vanillaJson);
+							merger.Add(modJson);
+							nlohmann::ordered_json result = merger.GetMerged();
+
+							std::string resultStr = result.dump();
+							dataBytes = std::vector<uint8_t>(resultStr.begin(), resultStr.end());
+						}
+						catch (std::exception& ex) {
+							Logger::Print("Failed to merge '%s' and '%s' asset: %s", onDisk.string().c_str(), vanillaFile.string().c_str(), ex.what());
+						}
+					}
+				}
+			}
+
+			if (!jetFile.WriteEntry(entryPath.string(), dataBytes)) {
+				printf("Failed to save entry '%s'", entryPath.string().c_str());
+				continue;
+			}
+
+			Logger::Progress(idx, numModFiles, "Packaged mod assets: ");
+		}
+
+		jetFile.Close();
+		Logger::Print("Done!");
 	}
 }

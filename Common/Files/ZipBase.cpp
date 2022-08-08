@@ -62,6 +62,15 @@ std::vector<std::string> const ZipBase::GetEntries() const
 	return result;
 }
 
+bool const ZipBase::HasEntry(std::string entry) const {
+	for (const std::string& e : this->GetEntries()) {
+		if (e == entry) {
+			return true;
+		}
+	}
+	return false;
+}
+
 std::vector<uint8_t> ZipBase::ReadEntry(std::string entry)
 {
 	std::vector<uint8_t> result;
@@ -88,12 +97,16 @@ std::vector<uint8_t> ZipBase::ReadEntry(std::string entry)
 
 bool ZipBase::WriteEntry(std::string entry, std::vector<uint8_t> data)
 {
+	std::replace(entry.begin(), entry.end(), '\\', '/');
 	if (this->archive == nullptr) {
 		printf("Error: pArchive was null in write");
 		return false;
 	}
-	ZipArchiveEntry::Ptr pEntry = this->archive->GetEntry(entry);
-	if (pEntry == nullptr) {
+	ZipArchiveEntry::Ptr pEntry;
+	if (this->HasEntry(entry)) {
+		pEntry = this->archive->GetEntry(entry);
+	}
+	else {
 		pEntry = this->archive->CreateEntry(entry);
 	}
 	data.push_back(0); //Ensure its null terminated

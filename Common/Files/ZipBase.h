@@ -25,6 +25,7 @@ namespace Common {
 			virtual void SetPassword(std::string password);
 			virtual void SetCompressionLevel(size_t level);
 			std::vector<std::string> const GetEntries() const;
+			bool const HasEntry(std::string entry) const;
 			virtual std::vector<uint8_t> ReadEntry(std::string entry);
 			virtual bool WriteEntry(std::string entry, std::vector<uint8_t> data);
 		};
