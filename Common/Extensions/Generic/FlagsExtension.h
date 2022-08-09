@@ -3,7 +3,7 @@
 #include "../JsonExtension.h"
 #include <vector>
 
-namespace NKHook5 {
+namespace Common {
 	namespace Extensions {
 		namespace Generic {
 			class FlagsExtension : public JsonExtension {

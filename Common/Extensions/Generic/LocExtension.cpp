@@ -1,6 +1,6 @@
 #include "LocExtension.h"
 
-using namespace NKHook5::Extensions::Generic;
+using namespace Common::Extensions::Generic;
 
 LocExtension::LocExtension(std::string name, std::string target) : JsonExtension(name, target) {
 

@@ -1,6 +1,6 @@
 #include "Extension.h"
 
-using namespace NKHook5::Extensions;
+using namespace Common::Extensions;
 
 Extension::Extension(std::string name, std::string target) {
 	this->name = name;
@@ -16,7 +16,7 @@ const std::string& Extension::GetTarget()
 	return this->target;
 }
 
-bool NKHook5::Extensions::Extension::IsCustomDocument()
+bool Extension::IsCustomDocument()
 {
 	return false;
 }

@@ -5,6 +5,7 @@
 
 extern uint64_t currentFrame;
 int32_t maxBloonUpdates = 0x100;
+int32_t bloonPassDenom = 8;
 
 namespace NKHook5
 {

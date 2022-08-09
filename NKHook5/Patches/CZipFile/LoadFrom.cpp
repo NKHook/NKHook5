@@ -3,7 +3,7 @@
 #include "../../Classes/CZipFile.h"
 #include "../../Classes/CUnzippedFile.h"
 #include "../../AssetInjector/InjectionManager.h"
-#include "../../Extensions/ExtensionManager.h"
+#include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
 
 #include <Util/Json/MergedDocument.h>
@@ -18,7 +18,7 @@ namespace NKHook5
         namespace CZipFile
         {
             using namespace NKHook5::AssetInjector;
-            using namespace NKHook5::Extensions;
+            using namespace Common::Extensions;
             using namespace Common::Util;
             using namespace Common::Util::Json;
             using namespace Signatures;

@@ -1,6 +1,6 @@
 #include "FlagsExtension.h"
 
-using namespace NKHook5::Extensions::Generic;
+using namespace Common::Extensions::Generic;
 
 FlagsExtension::FlagsExtension(std::string name, std::string target) : JsonExtension(name, target) {
 

@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <string>
 #include <iostream>
-#include "Extensions/ExtensionManager.h"
+#include <Extensions/ExtensionManager.h>
 #include "Patches/PatchManager.h"
 #include "Signatures/Signature.h"
 
@@ -40,7 +40,7 @@ auto initialize() -> int {
     printf("Search complete! (Please report any search issues!!!)\n");
 
     printf("Loading Extensions...\n");
-    NKHook5::Extensions::ExtensionManager::AddAll();
+    Common::Extensions::ExtensionManager::AddAll();
     printf("All extensions loaded!\n");
 
     std::cout << "Loading all patches..." << std::endl;

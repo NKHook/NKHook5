@@ -4,7 +4,7 @@
 #include "Generic/LocExtension.h"
 #include "Tower/TowerFlagsExt.h"
 
-using namespace NKHook5::Extensions;
+using namespace Common::Extensions;
 
 static std::vector<Extension*> extensions;
 

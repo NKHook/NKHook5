@@ -2,7 +2,7 @@
 
 #include "../Generic/FlagsExtension.h"
 
-namespace NKHook5 {
+namespace Common {
 	namespace Extensions {
 		namespace Tower {
 			class TowerFlagExt : public Generic::FlagsExtension {

@@ -3,8 +3,8 @@
 #include "../../Util/NewFramework.h"
 #include <ghstl/string>
 #include "../../Classes/CTowerFactory.h"
-#include "../../Extensions/Tower/TowerFlagsExt.h"
-#include "../../Extensions/ExtensionManager.h"
+#include <Extensions/Tower/TowerFlagsExt.h>
+#include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
 
@@ -17,6 +17,8 @@ namespace NKHook5
     {
         namespace CFlagStringConvertor
         {
+            using namespace Common;
+            using namespace Common::Extensions;
             using namespace Signatures;
 
             static uint64_t o_func;

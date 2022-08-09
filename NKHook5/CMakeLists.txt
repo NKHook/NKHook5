@@ -11,11 +11,10 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "Classes/CBloonManager.h" "Classes/ObjectManager.h")
+)
 
 add_subdirectory(AssetInjector)
 add_subdirectory(Classes)
-add_subdirectory(Extensions)
 add_subdirectory(MenuEditor)
 add_subdirectory(Mod)
 add_subdirectory(Patches)

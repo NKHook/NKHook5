@@ -8,7 +8,7 @@
 * Extensions are new additional features for the game's asset files. For example, this may be a new key, or new file alltogether.
 */
 
-namespace NKHook5 {
+namespace Common {
 	namespace Extensions {
 		class Extension {
 			std::string name;

@@ -1,4 +1,4 @@
-target_sources(NKHook5 PRIVATE
+target_sources(Common PRIVATE
 	"FlagsExtension.cpp"
 	"LocExtension.cpp"
 )

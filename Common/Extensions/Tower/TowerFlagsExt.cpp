@@ -1,7 +1,7 @@
 #include "TowerFlagsExt.h"
 
-using namespace NKHook5::Extensions::Generic;
-using namespace NKHook5::Extensions::Tower;
+using namespace Common::Extensions::Generic;
+using namespace Common::Extensions::Tower;
 
 TowerFlagExt::TowerFlagExt() : FlagsExtension("TowerFlags", "Assets/JSON/TowerDefinitions/Flags.json")
 {

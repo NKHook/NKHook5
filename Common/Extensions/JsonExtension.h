@@ -3,7 +3,7 @@
 #include "Extension.h"
 #include <nlohmann/json.hpp>
 
-namespace NKHook5 {
+namespace Common {
 	namespace Extensions {
 		class JsonExtension : public Extension {
 		public:

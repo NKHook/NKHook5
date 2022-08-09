@@ -11,6 +11,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 extern int32_t maxProjectilesTotal;
 extern int32_t maxProjectileUpdates;
 extern int32_t maxBloonUpdates;
+extern int32_t bloonPassDenom;
 
 bool g_initedImgui = false;
 uint64_t currentFrame = 0;
@@ -53,7 +54,10 @@ namespace NKHook5
                 ImGui::InputInt("Projectile count cap", &maxProjectilesTotal, 1, 50);
                 ImGui::InputInt("Projectile update cap", &maxProjectileUpdates, 1, 50);
                 ImGui::InputInt("Bloon update cap", &maxBloonUpdates, 1, 50);
+                ImGui::InputInt("Bloon update bypass denominator", &bloonPassDenom, 1, 50);
                 ImGui::End();
+                
+                ImGui::ShowDemoWindow();
 
                 ImGui::Render();
                 ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

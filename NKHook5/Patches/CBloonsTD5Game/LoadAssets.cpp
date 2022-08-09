@@ -3,7 +3,7 @@
 #include "../../Util/NewFramework.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CZipFile.h"
-#include "../../Extensions/ExtensionManager.h"
+#include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
 
 namespace NKHook5
@@ -12,7 +12,7 @@ namespace NKHook5
     {
         namespace CBloonsTD5Game
         {
-            using namespace Extensions;
+            using namespace Common::Extensions;
             using namespace Signatures;
 
             static uint64_t o_func;

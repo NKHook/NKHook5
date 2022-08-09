@@ -3,7 +3,7 @@
 #include "Extension.h"
 #include <vector>
 
-namespace NKHook5 {
+namespace Common {
 	namespace Extensions {
 		namespace ExtensionManager {
 			void AddAll();

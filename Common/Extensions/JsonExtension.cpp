@@ -1,6 +1,6 @@
 #include "JsonExtension.h"
 
-using namespace NKHook5::Extensions;
+using namespace Common::Extensions;
 
 JsonExtension::JsonExtension(std::string name, std::string target) : Extension(name, target)
 {

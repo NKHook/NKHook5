@@ -1,4 +1,4 @@
-target_sources(NKHook5 PRIVATE
+target_sources(Common PRIVATE
 	"Extension.cpp"
 	"ExtensionManager.cpp"
 	"JsonExtension.cpp"
@@ -6,3 +6,4 @@ target_sources(NKHook5 PRIVATE
 
 add_subdirectory(Generic)
 add_subdirectory(Tower)
+add_subdirectory(Weapon)
