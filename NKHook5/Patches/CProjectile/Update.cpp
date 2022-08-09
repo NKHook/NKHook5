@@ -33,7 +33,7 @@ namespace NKHook5
                 if (updatesThisFrame > maxProjectileUpdates && updatesThisFrame % 2 == 0) {
                     if (updatesThisFrame > maxProjectilesTotal) {
                         pProjectile->Kill();
-                        Logger::Print("Killed a projectile");
+                        //Logger::Print("Killed a projectile");
                     }
                     return;
                 }
