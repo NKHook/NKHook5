@@ -3,8 +3,11 @@
 #include "../../Classes/CProjectile.h"
 #include "../../Signatures/Signature.h"
 
+#include <Logging/Logger.h>
+
 extern uint64_t currentFrame;
-int32_t maxProjectileUpdates = 0x1000;
+int32_t maxProjectileUpdates = 0x200;
+int32_t maxProjectilesTotal = 0x400;
 
 namespace NKHook5
 {
@@ -12,6 +15,7 @@ namespace NKHook5
     {
         namespace CProjectile
         {
+            using namespace Common::Logging;
             using namespace NKHook5;
             using namespace NKHook5::Classes;
             using namespace NKHook5::Patches;
@@ -25,10 +29,14 @@ namespace NKHook5
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
                 }
-                if (updatesThisFrame > maxProjectileUpdates) {
+                updatesThisFrame++;
+                if (updatesThisFrame > maxProjectileUpdates && updatesThisFrame % 2 == 0) {
+                    if (updatesThisFrame > maxProjectilesTotal) {
+                        pProjectile->Kill();
+                        Logger::Print("Killed a projectile");
+                    }
                     return;
                 }
-                updatesThisFrame++;
                 PLH::FnCast(o_func, &cb_hook)(pProjectile, pad, pSGameTime);
             }
 

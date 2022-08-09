@@ -4,7 +4,7 @@
 #include "../../Signatures/Signature.h"
 
 extern uint64_t currentFrame;
-int32_t maxBloonUpdates = 0x500;
+int32_t maxBloonUpdates = 0x100;
 
 namespace NKHook5
 {
@@ -25,10 +25,10 @@ namespace NKHook5
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
                 }
-                if (updatesThisFrame > maxBloonUpdates) {
+                updatesThisFrame++;
+                if (updatesThisFrame > maxBloonUpdates && updatesThisFrame % 2 == 0) {
                     return;
                 }
-                updatesThisFrame++;
                 PLH::FnCast(o_func, &cb_hook)(pBloon, pad, pSGameTime);
             }
 

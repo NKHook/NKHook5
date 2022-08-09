@@ -8,6 +8,7 @@
 #include <backends/imgui_impl_opengl3_loader.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+extern int32_t maxProjectilesTotal;
 extern int32_t maxProjectileUpdates;
 extern int32_t maxBloonUpdates;
 
@@ -49,6 +50,7 @@ namespace NKHook5
                 //MenuEditor::Editor::Render();
 
                 ImGui::Begin("Update cap test");
+                ImGui::InputInt("Projectile count cap", &maxProjectilesTotal, 1, 50);
                 ImGui::InputInt("Projectile update cap", &maxProjectileUpdates, 1, 50);
                 ImGui::InputInt("Bloon update cap", &maxBloonUpdates, 1, 50);
                 ImGui::End();

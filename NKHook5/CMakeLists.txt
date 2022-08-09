@@ -11,7 +11,7 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "Classes/CBloon.h" "Classes/CProjectile.h" "Patches/CProjectile/Update.cpp" "Patches/CProjectile/Update.h")
+ "Classes/CBloonManager.h" "Classes/ObjectManager.h")
 
 add_subdirectory(AssetInjector)
 add_subdirectory(Classes)

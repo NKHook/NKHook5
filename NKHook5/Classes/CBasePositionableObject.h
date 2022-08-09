@@ -1,6 +1,7 @@
 #ifndef NKHOOK5_CLASSES_CBASEPOSITIONABLEOBJECT
 #define NKHOOK5_CLASSES_CBASEPOSITIONABLEOBJECT
 
+#include "Macro.h"
 #include "Matrix16F.h"
 #include "Vec2F.h"
 #include "Vec3F.h"

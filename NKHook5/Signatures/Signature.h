@@ -57,6 +57,9 @@ namespace NKHook5 {
 			CTowerFactory_CCTOR,
 			/* CUnzippedFile */
 			CUnzippedFile_CCTOR,
+			/* CWeapon */
+			CWeapon_Fire,
+			/* CWeaponTask */
 			/* CXmlFontImporter */
 			/* CZipFile */
 			CZipFile_CCTOR,
