@@ -2,7 +2,7 @@
 
 #include "Macro.h"
 #include <ghstl/string>
-#include <map>
+#include "../Util/NewFramework.h"
 
 namespace NKHook5 {
 	namespace Classes {
@@ -23,19 +23,27 @@ namespace NKHook5 {
 				int64_t int64Value; //0x0000
 				float floatValue; //0x0000
 				double doubleValue; //0x0000
-				ghstl::string stringValue; //0x0000
-				std::map<std::string, JsonPropertyValue>* jsonValue; //0x0000
+				std::string stringValue; //0x0000
+				nfw::map<std::string, JsonPropertyValue>* jsonValue; //0x0000
 			} value;
 		public:
 		};
 
 		class JsonObject {
 		public:
-			class std::map<std::string, JsonPropertyValue>* dataMap; //0x0000
+			nfw::map<std::string, JsonPropertyValue>* dataMap; //0x0000
 			char pad_0004[4]; //0x0004
 		public:
 			uint32_t ReadBoolProperty(bool* result, ghstl::string propName) {
 				return ThisCall<uint32_t, JsonObject*, bool*, ghstl::string>(Sigs::JsonObject_ReadBoolProperty, this, result, propName);
+			}
+			JsonPropertyValue* Get(std::string key) {
+				for (auto& [prop, value] : *dataMap) {
+					if (key == prop) {
+						return &value;
+					}
+				}
+				return nullptr;
 			}
 		};
 	}

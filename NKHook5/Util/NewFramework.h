@@ -53,10 +53,9 @@ namespace nfw {
 
     vtable_meta* vtable_get_meta_ptr(void* vtable);
 
-    template<typename T>
-    void* class_get_vtable_ptr(T* object) {
-        return *(void**)object;
-    }
+    void* class_get_vtable_ptr(void* object);
+
+    std::string typeof(void* object);
 
     template <class T>
     class newframework_allocator

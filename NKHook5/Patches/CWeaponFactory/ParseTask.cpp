@@ -29,30 +29,21 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
     ClassesEx::CProjectileExt* baseTask = parseResults->resultTask;
 
     //Find its type name
-    void* vtable_ptr = nfw::class_get_vtable_ptr(baseTask);
-    nfw::vtable_meta* meta_ptr = nfw::vtable_get_meta_ptr(vtable_ptr);
-    nfw::type_descriptor* type_info = meta_ptr->pTypeDescriptor;
-    const char* type_name = &type_info->name;
-    std::string typeName = type_name;
+    std::string typeName = nfw::typeof(baseTask);
 
     //The typename is mangled, but it'll contain CProjectile. This is effectively if(self instanceof CProjectile) for you java devs
     if (typeName.find("CProjectile") != std::string::npos) {
         //Parse our custom json properties
         baseTask->NO_CLEANUP = false;
+        baseTask->ALWAYS_UPDATE = false;
         if (documentHandle.dataMap != nullptr) {
-            if (documentHandle.dataMap->contains("NO_CLEANUP")) {
-                Classes::JsonPropertyValue& noCleanup = documentHandle.dataMap->at("NO_CLEANUP");
-                if (noCleanup.value.boolValue) {
-                    baseTask->NO_CLEANUP = true;
-                    Print("A projectile requested no cleanup!!");
-                }
+            Classes::JsonPropertyValue* noCleanup = documentHandle.Get("NO_CLEANUP");
+            if (noCleanup != nullptr) {
+                baseTask->NO_CLEANUP = noCleanup->value.boolValue;
             }
-            if (documentHandle.dataMap->contains("ALWAYS_UPDATE")) {
-                Classes::JsonPropertyValue& alwaysUpdate = documentHandle.dataMap->at("ALWAYS_UPDATE");
-                if (alwaysUpdate.value.boolValue) {
-                    baseTask->ALWAYS_UPDATE = true;
-                    Print("A projectile requested to always update!!");
-                }
+            Classes::JsonPropertyValue* alwaysUpdate = documentHandle.Get("ALWAYS_UPDATE");
+            if (alwaysUpdate != nullptr) {
+                baseTask->ALWAYS_UPDATE = alwaysUpdate->value.boolValue;
             }
         }
     }
