@@ -41,23 +41,6 @@ This will calculate the difference between your modded json documents (and other
 documents with only the changed fields, and then put all necessary files into a `.zip` file. You can then share the .zip
 file with anyone who has NKHook5. They simply place it into the "mods" folder, and launch the game.
 
-# Collaboration with other devs
-The MDK by default uses Git for collaboration. To turn your mod into a Git repository, run the following command:
-```
-devkit.exe --make-git <mod-name> --remote <remote-url>
-```
-The mod name parameter is the name of your mod.
-The `remote-url` parameter is the upstream url of your git repository (if you have one).
-This would be your repository's clone url if you are using GitHub.
-Afterwards, you can just use git commands directly from inside of your mod's folder. You will notice a .gitignore file
-has been added inside, this tells git which files/folders it should ignore. You must ignore the Vanilla directory!
-
-When another dev wants to make changes to your mod, they must first run the following command
-```
-devkit.exe --clone-git <mod-url>
-```
-This will download the repository to their computer, and they will then be able to make changes.
-
 # Updating your mod
 To update your mod, simply run the following command:
 ```
