@@ -45,6 +45,10 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
             if (alwaysUpdate != nullptr) {
                 baseTask->ALWAYS_UPDATE = alwaysUpdate->value.boolValue;
             }
+            Classes::JsonPropertyValue* noOgc = documentHandle.Get("NO_OGC");
+            if (noOgc != nullptr) {
+                baseTask->NO_OGC = noOgc->value.boolValue;
+            }
         }
     }
     return result;

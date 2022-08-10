@@ -27,18 +27,25 @@ namespace NKHook5
             static uint64_t lastFrame = 0;
             static uint64_t o_func = 0;
             void __fastcall cb_hook(CProjectileExt* pExtProjectile, int pad, float* pSGameTime) {
+                //If we ignore this projectile, don't count it towards the update total
+                if (pExtProjectile->NO_OGC) {
+                    //Return because we don't want to run any OGC operations for this projectile
+                    return PLH::FnCast(o_func, &cb_hook)(pExtProjectile, pad, pSGameTime);
+                }
                 if (lastFrame != currentFrame) {
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
-                }
+                }                
                 updatesThisFrame++;
+                //Always update meant we still count it towards the update count
                 if (pExtProjectile->ALWAYS_UPDATE) {
                     return PLH::FnCast(o_func, &cb_hook)(pExtProjectile, pad, pSGameTime);
                 }
                 if (updatesThisFrame > maxProjectileUpdates && updatesThisFrame % 2 == 0) {
                     if (updatesThisFrame > maxProjectilesTotal) {
+                        //No cleanup means updates can be paused, but the projectile cannot be killed by OGC
                         if (pExtProjectile->NO_CLEANUP) {
-                            Logger::Print("A projectile was intended to be GC'd, but NO_CLEANUP was true, so the update was cancelled.");
+                            //Logger::Print("A projectile was intended to be GC'd, but NO_CLEANUP was true, so the update was cancelled.");
                         }
                         else {
                             pExtProjectile->Kill();
