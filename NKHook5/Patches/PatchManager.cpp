@@ -12,13 +12,17 @@
 #include "CLoc/GetText.h"
 #include "CPlayerProfileV1/InternalLoad.h"
 #include "CPlayerProfileV1/Save.h"
+#include "CProjectile/Clone.h"
 #include "CProjectile/Update.h"
 #include "CSettingsScreen/InitLayout.h"
 #include "CTowerFactory/Constructor.h"
+#include "CWeapon/Fire.h"
+#include "CWeaponFactory/ParseTask.h"
 #include "CZipFile/LoadFrom.h"
 #include "GLRenderLayer/Draw.h"
 #include "OpenGL/Swapbuffers.h"
 #include "Screens/GetScreenForParadigm.h"
+#include "Unknown/CrtMalloc.h"
 #include "Unknown/GetDeltaLock60FPS.h"
 #include "Unknown/WinMain.h"
 
@@ -37,13 +41,17 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
     //PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
+    PatchManager::ApplyPatch(new CProjectile::Clone());
     PatchManager::ApplyPatch(new CProjectile::Update());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
+    //PatchManager::ApplyPatch(new CWeapon::Fire());
+    PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
     //PatchManager::ApplyPatch(new GLRenderLayer::Draw());
     PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     //PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
+    PatchManager::ApplyPatch(new Unknown::CrtMalloc());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());
     PatchManager::ApplyPatch(new Unknown::WinMain());
 }

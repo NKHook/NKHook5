@@ -42,6 +42,10 @@ namespace NKHook5 {
 			CPopupScreenBase_CCTOR,
 			CPopupScreenBase_AddObject,
 			/* CProjectile */
+			CProjectile_CCTOR_A,
+			CProjectile_CCTOR_B,
+			CProjectile_CCTOR_C,
+			CProjectile_Clone,
 			CProjectile_Update,
 			/* CReferenceCounted */
 			/* CRenderableTextureObject */
@@ -59,6 +63,8 @@ namespace NKHook5 {
 			CUnzippedFile_CCTOR,
 			/* CWeapon */
 			CWeapon_Fire,
+			/* CWeaponFactory */
+			CWeaponFactory_ParseTask,
 			/* CWeaponTask */
 			/* CXmlFontImporter */
 			/* CZipFile */
@@ -71,6 +77,9 @@ namespace NKHook5 {
 			/* IFontImporter */
 			/* IScreenData */
 			/* ITextureLoaderListener */
+			/* JsonObject */
+			JsonObject_ReadBoolProperty,
+			JsonObject_ReadIntProperty,
 			/* Matrix16F */
 			/* Screens */
 			Screens_GetScreenForParadigm,

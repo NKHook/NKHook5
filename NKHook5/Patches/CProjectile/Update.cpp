@@ -1,6 +1,7 @@
 #include "Update.h"
 
 #include "../../Classes/CProjectile.h"
+#include "../../ClassesEx/CProjectileExt.h"
 #include "../../Signatures/Signature.h"
 
 #include <Logging/Logger.h>
@@ -18,26 +19,34 @@ namespace NKHook5
             using namespace Common::Logging;
             using namespace NKHook5;
             using namespace NKHook5::Classes;
+            using namespace NKHook5::ClassesEx;
             using namespace NKHook5::Patches;
             using namespace NKHook5::Signatures;
 
             static uint64_t updatesThisFrame = 0;
             static uint64_t lastFrame = 0;
             static uint64_t o_func = 0;
-            void __fastcall cb_hook(Classes::CProjectile* pProjectile, int pad, float* pSGameTime) {
+            void __fastcall cb_hook(CProjectileExt* pExtProjectile, int pad, float* pSGameTime) {
                 if (lastFrame != currentFrame) {
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
                 }
                 updatesThisFrame++;
+                if (pExtProjectile->ALWAYS_UPDATE) {
+                    return PLH::FnCast(o_func, &cb_hook)(pExtProjectile, pad, pSGameTime);
+                }
                 if (updatesThisFrame > maxProjectileUpdates && updatesThisFrame % 2 == 0) {
                     if (updatesThisFrame > maxProjectilesTotal) {
-                        pProjectile->Kill();
-                        //Logger::Print("Killed a projectile");
+                        if (pExtProjectile->NO_CLEANUP) {
+                            Logger::Print("A projectile was intended to be GC'd, but NO_CLEANUP was true, so the update was cancelled.");
+                        }
+                        else {
+                            pExtProjectile->Kill();
+                        }
                     }
                     return;
                 }
-                PLH::FnCast(o_func, &cb_hook)(pProjectile, pad, pSGameTime);
+                PLH::FnCast(o_func, &cb_hook)(pExtProjectile, pad, pSGameTime);
             }
 
             auto Update::Apply() -> bool

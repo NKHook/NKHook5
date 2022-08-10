@@ -24,6 +24,40 @@ void newframework_crt_free(void* ptr);
     };
 
 namespace nfw {
+    class class_descriptor
+    {
+    public:
+        int32_t signature; //0x0000
+        int32_t attributes; //0x0004
+        int32_t N00001A93; //0x0008
+        void** pBaseClassArray; //0x000C
+    }; //Size: 0x0010
+
+    class type_descriptor
+    {
+    public:
+        void* type_info_vtable; //0x0000
+        char pad_0004[4]; //0x0004
+        const char name; //0x0008
+    }; //Size: 0x000C
+
+    class vtable_meta
+    {
+    public:
+        int32_t signature; //0x0000
+        int32_t offset; //0x0004
+        int32_t cdOffset; //0x0008
+        class type_descriptor* pTypeDescriptor; //0x000C
+        class class_descriptor* pClassDescriptor; //0x0010
+    }; //Size: 0x0014
+
+    vtable_meta* vtable_get_meta_ptr(void* vtable);
+
+    template<typename T>
+    void* class_get_vtable_ptr(T* object) {
+        return *(void**)object;
+    }
+
     template <class T>
     class newframework_allocator
     {
@@ -38,8 +72,6 @@ namespace nfw {
 
         newframework_allocator() {}
         newframework_allocator(const newframework_allocator&) {}
-
-
 
         pointer allocate(size_type n, const void* = 0) {
             return (T*)newframework_crt_malloc(n * sizeof(T));

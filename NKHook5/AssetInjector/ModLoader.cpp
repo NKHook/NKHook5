@@ -7,12 +7,16 @@
 #include <iostream>
 #include <Files/ModArchive.h>
 #include <Util/Json/MergedDocument.h>
+#include <Logging/Logger.h>
 
 using namespace NKHook5;
 using namespace NKHook5::AssetInjector;
 using namespace NKHook5::Classes;
 using namespace NKHook5::Signatures;
+using namespace Common;
 using namespace Common::Files;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace Common::Util;
 using namespace Common::Util::Json;
 namespace fs = std::filesystem;
@@ -72,8 +76,8 @@ void ModLoader::Initialize()
 					memcpy_s(desiredAsset->GetAssetOnHeap(), merged.size(), merged.data(), merged.size());
 				}
 				catch (std::exception& ex) {
-					printf("Error whilst merging asset '%s'\n", ex.what());
-					printf("Overwriting with the newest asset\n");
+					//printf("Error whilst merging asset '%s'\n", ex.what());
+					//printf("Overwriting with the newest asset\n");
 					desiredAsset->AllocateFor(entryContent.size());
 					memcpy_s(desiredAsset->GetAssetOnHeap(), entryContent.size(), entryContent.data(), entryContent.size());
 				}
@@ -86,6 +90,10 @@ Asset* ModLoader::FindInjectedAsset(std::string path)
 {
 	for (ModdedAsset* asset : finalAssets) {
 		if (asset->GetPath() == path) {
+			std::string assetContent = std::string((char*)asset->GetAssetOnHeap(), asset->GetSizeOnHeap());
+			if (assetContent.find("NO_CLEANUP") != std::string::npos) {
+				Print("Asset %s has NO_CLEANUP", path.c_str());
+			}
 			return asset;
 		}
 	}

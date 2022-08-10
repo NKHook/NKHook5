@@ -9,3 +9,7 @@ void newframework_crt_free(void* ptr) {
     //printf("Freeing %p\n", ptr);
     return CdeclCall<void, void*>(NKHook5::Signatures::Sigs::CRT_free, ptr);
 }
+
+nfw::vtable_meta* nfw::vtable_get_meta_ptr(void* vtable) {
+    return (nfw::vtable_meta*)(((char**)vtable)[-1]);
+};
