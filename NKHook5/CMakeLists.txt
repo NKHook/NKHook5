@@ -11,7 +11,7 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
-)
+ "Patches/CCollectableTask/Clone.cpp" "Patches/CCollectableTask/Clone.h")
 
 add_subdirectory(AssetInjector)
 add_subdirectory(Classes)

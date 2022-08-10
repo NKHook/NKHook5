@@ -3,6 +3,8 @@
 #include "../../Signatures/Signature.h"
 #include "../../Classes/CProjectile.h"
 #include "../../ClassesEx/CProjectileExt.h"
+#include "../../Classes/CCollectableTask.h"
+#include "../../ClassesEx/CCollectableTaskExt.h"
 
 namespace NKHook5
 {
@@ -16,6 +18,9 @@ namespace NKHook5
             void* __cdecl hkMalloc(size_t size) {
                 if (size == sizeof(Classes::CProjectile)) {
                     size = sizeof(ClassesEx::CProjectileExt);
+                }
+                if (size == sizeof(Classes::CCollectableTask)) {
+                    size = sizeof(ClassesEx::CCollectableTaskExt);
                 }
                 return PLH::FnCast(o_func, &hkMalloc)(size);
             }

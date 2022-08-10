@@ -1,8 +1,10 @@
 #include "ParseTask.h"
 #include "../../Signatures/Signature.h"
-#include "../../Classes/CProjectile.h"
 #include "../../Classes/CWeaponFactory.h"
+#include "../../Classes/CProjectile.h"
 #include "../../ClassesEx/CProjectileExt.h"
+#include "../../Classes/CCollectableTask.h"
+#include "../../ClassesEx/CCollectableTaskExt.h"
 #include "../../Util/NewFramework.h"
 #include <Logging/Logger.h>
 
@@ -26,28 +28,44 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
     //Call the original CWeaponFactory::ParseTask function
     void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1, parseResults, param_3, param_4);
     //Get the resulting tasl
-    ClassesEx::CProjectileExt* baseTask = parseResults->resultTask;
+    Classes::CWeaponTask* baseTask = parseResults->resultTask;
 
     //Find its type name
     std::string typeName = nfw::typeof(baseTask);
 
     //The typename is mangled, but it'll contain CProjectile. This is effectively if(self instanceof CProjectile) for you java devs
     if (typeName.find("CProjectile") != std::string::npos) {
+        ClassesEx::CProjectileExt* projectileTask = (ClassesEx::CProjectileExt*)baseTask;
         //Parse our custom json properties
-        baseTask->NO_CLEANUP = false;
-        baseTask->ALWAYS_UPDATE = false;
+        projectileTask->NO_CLEANUP = false;
+        projectileTask->ALWAYS_UPDATE = false;
         if (documentHandle.dataMap != nullptr) {
             Classes::JsonPropertyValue* noCleanup = documentHandle.Get("NO_CLEANUP");
             if (noCleanup != nullptr) {
-                baseTask->NO_CLEANUP = noCleanup->value.boolValue;
+                projectileTask->NO_CLEANUP = noCleanup->value.boolValue;
             }
             Classes::JsonPropertyValue* alwaysUpdate = documentHandle.Get("ALWAYS_UPDATE");
             if (alwaysUpdate != nullptr) {
-                baseTask->ALWAYS_UPDATE = alwaysUpdate->value.boolValue;
+                projectileTask->ALWAYS_UPDATE = alwaysUpdate->value.boolValue;
             }
             Classes::JsonPropertyValue* noOgc = documentHandle.Get("NO_OGC");
             if (noOgc != nullptr) {
-                baseTask->NO_OGC = noOgc->value.boolValue;
+                projectileTask->NO_OGC = noOgc->value.boolValue;
+            }
+        }
+    }
+
+    //Cool
+    if (typeName.find("CCollectableTask") != std::string::npos) {
+        ClassesEx::CCollectableTaskExt* collectableExt = (ClassesEx::CCollectableTaskExt*)baseTask;
+        collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
+        if (documentHandle.dataMap != nullptr) {
+            Classes::JsonPropertyValue* collectMethod = documentHandle.Get("COLLECT_METHOD");
+            if (collectMethod->value.stringValue == "DEFAULT") {
+                collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
+            }
+            if (collectMethod->value.stringValue == "AUTOMATIC") {
+                collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::AUTOMATIC;
             }
         }
     }

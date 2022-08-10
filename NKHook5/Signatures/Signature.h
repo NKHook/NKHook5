@@ -23,6 +23,9 @@ namespace NKHook5 {
 			/* CBloonsTD5Game */
 			CBloonsTD5Game_CCTOR,
 			CBloonsTD5Game_LoadAssets,
+			/* CCollectableTask */
+			CCollectableTask_GiveContentsAndDie,
+			CCollectableTask_Update,
 			/* CFlagStringConvertor */
 			CFlagStringConvertor_FlagToString,
 			CFlagStringConvertor_LoadCategory,
