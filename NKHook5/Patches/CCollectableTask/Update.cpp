@@ -21,7 +21,9 @@ namespace NKHook5
 
             static uint64_t o_func = 0;
             void __fastcall cb_hook(CCollectableTaskExt* pCollectableExt, int pad, float* pSGameTime) {
-
+                if (pCollectableExt->COLLECT_METHOD == CollectMethod::AUTOMATIC) {
+                    pCollectableExt->GiveContentsAndDie();
+                }
                 PLH::FnCast(o_func, &cb_hook)(pCollectableExt, pad, pSGameTime);
             }
 

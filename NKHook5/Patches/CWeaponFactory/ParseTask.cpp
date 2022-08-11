@@ -61,11 +61,13 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
         collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
         if (documentHandle.dataMap != nullptr) {
             Classes::JsonPropertyValue* collectMethod = documentHandle.Get("COLLECT_METHOD");
-            if (collectMethod->value.stringValue == "DEFAULT") {
-                collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
-            }
-            if (collectMethod->value.stringValue == "AUTOMATIC") {
-                collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::AUTOMATIC;
+            if (collectMethod) {
+                if (collectMethod->value.stringValue == "DEFAULT") {
+                    collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
+                }
+                if (collectMethod->value.stringValue == "AUTOMATIC") {
+                    collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::AUTOMATIC;
+                }
             }
         }
     }

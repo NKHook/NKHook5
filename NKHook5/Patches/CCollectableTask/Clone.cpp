@@ -1,7 +1,7 @@
 #include "Clone.h"
 
-#include "../../Classes/CProjectile.h"
-#include "../../ClassesEx/CProjectileExt.h"
+#include "../../Classes/CCollectableTask.h"
+#include "../../ClassesEx/CCollectableTaskExt.h"
 #include "../../Signatures/Signature.h"
 #include "../../Util/NewFramework.h"
 
@@ -24,7 +24,7 @@ namespace NKHook5
             CCollectableTaskExt* __fastcall cb_hook(CCollectableTaskExt* self) {
                 auto* clone = PLH::FnCast(o_func, &cb_hook)(self);
                 /*Copy extended properties*/
-                clone->NO_CLEANUP = self->NO_CLEANUP;
+                clone->COLLECT_METHOD = self->COLLECT_METHOD;
                 return clone;
             }
 
