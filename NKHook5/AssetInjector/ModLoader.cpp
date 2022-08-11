@@ -64,8 +64,8 @@ void ModLoader::Initialize()
 				try {
 					std::string assetStr = std::string((char*)desiredAsset->GetAssetOnHeap(), desiredAsset->GetSizeOnHeap());
 
-					nlohmann::ordered_json assetJson = nlohmann::ordered_json::parse(assetStr);
-					nlohmann::ordered_json entryJson = nlohmann::ordered_json::parse(entryContent);
+					nlohmann::ordered_json assetJson = nlohmann::ordered_json::parse(assetStr, nullptr, true, true);
+					nlohmann::ordered_json entryJson = nlohmann::ordered_json::parse(entryContent, nullptr, true, true);
 
 					MergedDocument merger;
 					merger.Add(assetJson);

@@ -54,12 +54,12 @@ Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 
 		if (vanillaData != nullptr) {
 			std::string vanillaString = std::string((char*)vanillaAsset->GetAssetOnHeap(), vanillaAsset->GetSizeOnHeap());
-			nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaString);
+			nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaString, nullptr, true, true);
 			merged.Add(vanillaJson, MergeMode::SUBSTITUTIVE);
 		}
 		if (modData != nullptr) {
 			std::string modString = std::string((char*)modAsset->GetAssetOnHeap(), modAsset->GetSizeOnHeap());
-			nlohmann::ordered_json modJson = nlohmann::ordered_json::parse(modString);
+			nlohmann::ordered_json modJson = nlohmann::ordered_json::parse(modString, nullptr, true, true);
 			merged.Add(modJson);
 		}
 		nlohmann::ordered_json mergedJson = merged.GetMerged();
