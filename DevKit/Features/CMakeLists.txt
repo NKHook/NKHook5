@@ -4,5 +4,6 @@ target_sources(DevKit PRIVATE
 	"Package.cpp"
 	"RunMod.cpp"
     "Setup.cpp"
+	"SplitSprite.cpp"
     "UpdateMod.cpp"
 )
