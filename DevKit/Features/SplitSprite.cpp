@@ -23,7 +23,7 @@ std::string SplitSprite::ActivatorArgs()
 	return "-l, --split, --splitsprite";
 }
 
-int  SplitSprite::MaxArgs()
+int SplitSprite::MaxArgs()
 {
 	return 2;
 }

@@ -5,8 +5,9 @@
 namespace Common {
 	namespace Sprites {
 		class XmlInfo : public TexInfo {
+			bool required;
 		public:
-			XmlInfo(std::string name, TexType type);
+			XmlInfo(std::string name, TexType type, bool required = true);
 		};
 	}
 }

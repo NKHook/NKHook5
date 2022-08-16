@@ -12,6 +12,7 @@ namespace Common {
 			std::vector<XmlInfo> xmlFiles;
 		public:
 			SheetInfo(std::vector<FrameInfo> frames);
+			SheetInfo(std::vector<XmlInfo> xmls);
 			static std::shared_ptr<SheetInfo> Parse(std::string data);
 		};
 	}
