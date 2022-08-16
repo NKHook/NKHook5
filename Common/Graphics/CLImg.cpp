@@ -9,6 +9,7 @@ using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
 
+static bool inited = false;
 static cl_device_id parallelProcessor;
 static cl_context context;
 static cl_command_queue queue;
@@ -19,6 +20,9 @@ static const cl_image_format imageFormat = {
 };
 
 bool CLImg::SetupCL() {
+	if (inited) {
+		return true;
+	}
 	cl_platform_id platforms[64];
 	unsigned int platformCount;
 	cl_int platformResult = clGetPlatformIDs(64, platforms, &platformCount);
@@ -57,10 +61,14 @@ bool CLImg::SetupCL() {
 		return false;
 	}
 
+	inited = true;
 	return true;
 }
 
 cl_sampler CLImg::MakeSampler(bool normalized) {
+	if (!inited) {
+		SetupCL();
+	}
 	cl_bool cl_normalized = normalized ? CL_TRUE : CL_FALSE;
 	cl_int error = CL_SUCCESS;
 	cl_sampler sampler = clCreateSampler(context, cl_normalized, CL_ADDRESS_NONE, CL_FILTER_LINEAR, &error);
@@ -72,6 +80,9 @@ cl_sampler CLImg::MakeSampler(bool normalized) {
 }
 
 cl_mem CLImg::MakeImage(Image* image) {
+	if (!inited) {
+		SetupCL();
+	}
 	size_t width = image->GetWidth();
 	size_t height = image->GetHeight();
 	std::vector<uint32_t> colorData = image->ColorBytes();
@@ -94,6 +105,9 @@ cl_mem CLImg::MakeImage(Image* image) {
 }
 
 cl_mem CLImg::MakeImage(size_t width, size_t height) {
+	if (!inited) {
+		SetupCL();
+	}
 	cl_int error = CL_SUCCESS;
 	cl_mem result = clCreateImage2D(context,
 		CL_MEM_READ_WRITE,
@@ -111,10 +125,16 @@ cl_mem CLImg::MakeImage(size_t width, size_t height) {
 }
 
 BitmapImage* CLImg::NewImageFromCL(cl_mem image, size_t width, size_t height) {
+	if (!inited) {
+		SetupCL();
+	}
 	return NewImageFromCL(image, 0, 0, width, height);
 }
 
 BitmapImage* CLImg::NewImageFromCL(cl_mem image, size_t originX, size_t originY, size_t width, size_t height) {
+	if (!inited) {
+		SetupCL();
+	}
 	std::vector<uint32_t> resultBytes(width * height);
 	size_t origin[3] = { originX, originY, 0 };
 	size_t region[3] = { width, height, 1 };
@@ -124,6 +144,9 @@ BitmapImage* CLImg::NewImageFromCL(cl_mem image, size_t originX, size_t originY,
 }
 
 cl_program CLImg::MakeProgram(std::string source) {
+	if (!inited) {
+		SetupCL();
+	}
 	cl_int error;
 	const char* sourceText = source.c_str();
 	cl_program program = clCreateProgramWithSource(context, 1, &sourceText, NULL, &error);
@@ -135,6 +158,9 @@ cl_program CLImg::MakeProgram(std::string source) {
 }
 
 bool CLImg::BuildProgram(cl_program toBuild) {
+	if (!inited) {
+		SetupCL();
+	}
 	cl_int error = clBuildProgram(toBuild, 1, &parallelProcessor, NULL, NULL, NULL);
 	if (error != CL_SUCCESS) {
 		size_t len = 0;
@@ -157,6 +183,9 @@ bool CLImg::BuildProgram(cl_program toBuild) {
 }
 
 cl_kernel CLImg::MakeKernel(cl_program program, std::string kernelName) {
+	if (!inited) {
+		SetupCL();
+	}
 	cl_int error;
 	cl_kernel kernel = clCreateKernel(program, kernelName.c_str(), &error);
 	if (error != CL_SUCCESS) {
@@ -168,6 +197,9 @@ cl_kernel CLImg::MakeKernel(cl_program program, std::string kernelName) {
 }
 
 void CLImg::RunKernel(cl_kernel kernel, size_t width, size_t height) {
+	if (!inited) {
+		SetupCL();
+	}
 	cl_int error = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &width, &height, 0, NULL, NULL);
 	if (error != CL_SUCCESS) {
 		Print(LogLevel::ERR, "Error executing kernel: %d (%x)", error, error);
