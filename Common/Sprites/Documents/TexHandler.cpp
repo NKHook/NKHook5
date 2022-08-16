@@ -1,9 +1,10 @@
 #include "TexHandler.h"
-#include "../Files/File.h"
+#include "../../Files/File.h"
 
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Sprites;
+using namespace Common::Sprites::Documents;
 
 TexHandler::TexHandler() {
 	File spriteInfoFile;

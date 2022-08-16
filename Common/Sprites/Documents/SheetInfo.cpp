@@ -7,6 +7,7 @@
 
 using namespace Common;
 using namespace Common::Sprites;
+using namespace Common::Sprites::Documents;
 
 SheetInfo::SheetInfo(std::vector<FrameInfo> frames) {
 	this->frames = frames;
@@ -18,8 +19,6 @@ SheetInfo::SheetInfo(std::vector<XmlInfo> xmls) {
 
 std::shared_ptr<SheetInfo> SheetInfo::Parse(std::string data)
 {
-
-
 	rapidxml::xml_document<>* doc = new rapidxml::xml_document<>();
 	char* dataCopy = (char*)malloc(data.size()+1);
 	memset(dataCopy, 0, data.size() + 1);

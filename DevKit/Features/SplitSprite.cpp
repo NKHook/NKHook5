@@ -1,15 +1,16 @@
 #include "SplitSprite.h"
 #include <Files/File.h>
 #include <Logging/Logger.h>
-#include <Sprites/FrameInfo.h>
-#include <Sprites/SheetInfo.h>
-#include <Sprites/SpriteCell.h>
+#include <Sprites/Documents/FrameInfo.h>
+#include <Sprites/Documents/SheetInfo.h>
+#include <Sprites/Documents/SpriteCell.h>
 
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
+using namespace Common::Sprites::Documents;
 using namespace DevKit;
 using namespace DevKit::Features;
 

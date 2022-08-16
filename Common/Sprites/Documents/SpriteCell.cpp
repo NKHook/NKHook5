@@ -2,6 +2,7 @@
 
 using namespace Common;
 using namespace Common::Sprites;
+using namespace Common::Sprites::Documents;
 
 SpriteCell::SpriteCell(std::string name, size_t x, size_t y, size_t w, size_t h, size_t ax, size_t ay, size_t aw, size_t ah)
 {

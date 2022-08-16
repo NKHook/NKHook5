@@ -62,14 +62,38 @@ if(NOT menum_POPULATED)
     add_subdirectory(${menum_SOURCE_DIR} ${menum_BINARY_DIR})
 endif()
 
-include(FetchContent)
 FetchContent_Declare(
     cli11
     GIT_REPOSITORY https://github.com/CLIUtils/CLI11
     GIT_TAG        v2.2.0
 )
-
 FetchContent_MakeAvailable(cli11)
+
+# Build independent OpenCL library
+FetchContent_Declare(
+    oclh
+    GIT_REPOSITORY https://github.com/KhronosGroup/OpenCL-Headers.git
+    GIT_TAG main
+)
+FetchContent_GetProperties(oclh)
+if(NOT oclh_POPULATED)
+  FetchContent_Populate(oclh)
+  add_subdirectory(${oclh_SOURCE_DIR} ${oclh_BINARY_DIR})
+endif()
+set(OPENCL_ICD_LOADER_HEADERS_DIR ${opencl-headers_SOURCE_DIR} CACHE PATH "") # for OpenCL ICD Loader
+set(OpenCL_INCLUDE_DIR ${opencl-headers_SOURCE_DIR} CACHE PATH "") # for Boost::Compute
+
+FetchContent_Declare(
+    oclicdl
+    GIT_REPOSITORY https://github.com/KhronosGroup/OpenCL-ICD-Loader.git
+    GIT_TAG main
+)
+FetchContent_GetProperties(oclicdl)
+if(NOT oclicdl_POPULATED)
+  FetchContent_Populate(oclicdl)
+  set(USE_DYNAMIC_VCXX_RUNTIME ON)
+  add_subdirectory(${oclicdl_SOURCE_DIR} ${oclicdl_BINARY_DIR})
+endif()
 
 add_subdirectory(Common)
 add_subdirectory(DevKit)
