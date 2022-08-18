@@ -1,10 +1,9 @@
 #pragma once
 
 #include "../Images/BitmapImage.h"
-#include "Animation.h"
-#include "Cell.h"
-#include "SpriteInfo.h"
+#include "FrameInfo.h"
 
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -16,14 +15,13 @@ namespace Common {
 			using namespace Common::Sprites::Images;
 
 			class XmlInfo : public SpriteInfo {
-				std::vector<Animation> animations;
-				std::vector<Cell> cells;
-				BitmapImage* image;
+				std::vector<FrameInfo*> frames;
 			public:
 				XmlInfo();
-				XmlInfo(std::string name, TexType type, bool required = true);
-				XmlInfo(std::string name, TexType type, std::vector<Animation> animations, std::vector<Cell> cells, bool required = true);
-				XmlInfo(std::string name, TexType type, std::vector<Animation> animations, std::vector<Cell> cells, BitmapImage* image, bool required = true);
+				XmlInfo(std::string name, TexType type);
+				XmlInfo(std::string name, TexType type, std::vector<FrameInfo*> frames);
+			public:
+				static XmlInfo* ReadDoc(std::filesystem::path path, std::string name, TexType type);
 			};
 		}
 	}

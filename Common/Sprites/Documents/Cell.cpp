@@ -87,3 +87,60 @@ BitmapImage* Cell::ExtractedImage() {
 	}
 	return this->image;
 }
+
+Cell* Cell::FromNode(rapidxml::xml_node<>* cellNode, BitmapImage* fullImage)
+{
+	//We only need to read cell attributes
+	//I can't find an example where Cells have child nodes
+	//If only NK publicly released specs for all the formats for these games
+	//would make it so much easier to implement, but they hate modding, so :(
+	//NK pls hire me I'd be great for your PR team & Development team I promise
+
+	std::string cellName;
+	size_t cellX = 0;
+	size_t cellY = 0;
+	size_t cellW = 0;
+	size_t cellH = 0;
+	size_t cellAx = 0;
+	size_t cellAy = 0;
+	size_t cellAw = 0;
+	size_t cellAh = 0;
+
+	rapidxml::xml_attribute<>* nextAttrib = cellNode->first_attribute();
+	while (nextAttrib) {
+		std::string attribName = nextAttrib->name();
+		std::string attribValue = nextAttrib->value();
+
+		if (attribName == "name") {
+			cellName = attribValue;
+		}
+		if (attribName == "x") {
+			cellX = std::stoi(attribValue);
+		}
+		if (attribName == "y") {
+			cellY = std::stoi(attribValue);
+		}
+		if (attribName == "w") {
+			cellW = std::stoi(attribValue);
+		}
+		if (attribName == "h") {
+			cellH = std::stoi(attribValue);
+		}
+		if (attribName == "ax") {
+			cellAx = std::stoi(attribValue);
+		}
+		if (attribName == "ay") {
+			cellAy = std::stoi(attribValue);
+		}
+		if (attribName == "aw") {
+			cellAw = std::stoi(attribValue);
+		}
+		if (attribName == "ah") {
+			cellAh = std::stoi(attribValue);
+		}
+
+		nextAttrib = nextAttrib->next_attribute();
+	}
+
+	return new Cell(cellName, cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh, fullImage);
+}

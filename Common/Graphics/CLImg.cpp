@@ -10,7 +10,7 @@ using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
 
 static bool inited = false;
-static cl_device_id parallelProcessor;
+static std::vector<cl_device_id> computeDevices;
 static cl_context context;
 static cl_command_queue queue;
 
@@ -27,6 +27,7 @@ bool CLImg::SetupCL() {
 	unsigned int platformCount;
 	cl_int platformResult = clGetPlatformIDs(64, platforms, &platformCount);
 	if (platformResult != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to get platform ids for OpenCL");
 		return false;
 	}
 	for (int i = 0; i < platformCount; ++i) {
@@ -38,10 +39,10 @@ bool CLImg::SetupCL() {
 				char vendorName[256];
 				size_t vendorNameLength;
 				cl_int deviceInfoResult = clGetDeviceInfo(devices[j], CL_DEVICE_VENDOR, 256, vendorName, &vendorNameLength);
-				if (deviceInfoResult != CL_SUCCESS) {
+				if (deviceInfoResult == CL_SUCCESS) {
 					std::string sVendorName = vendorName;
-					if (sVendorName.find("NVIDIA") != std::string::npos || sVendorName.find("AMD") != std::string::npos) {
-						parallelProcessor = devices[j];
+					if (sVendorName.find("NVIDIA") != std::string::npos || sVendorName.find("AMD") != std::string::npos || sVendorName.find("Advanced Micro Devices") != std::string::npos) {
+						computeDevices.push_back(devices[j]);
 						break;
 					}
 				}
@@ -50,18 +51,24 @@ bool CLImg::SetupCL() {
 	}
 
 	cl_int contextResult;
-	context = clCreateContext(nullptr, 1, &parallelProcessor, nullptr, nullptr, &contextResult);
+	context = clCreateContext(nullptr, 1, &computeDevices[0], nullptr, nullptr, &contextResult);
 	if (contextResult != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to create context for OpenCL");
 		return false;
 	}
 
 	cl_int commandQueueResult;
-	queue = clCreateCommandQueue(context, parallelProcessor, 0, &commandQueueResult);
+	queue = clCreateCommandQueue(context, computeDevices[0], 0, &commandQueueResult);
 	if (commandQueueResult != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to create queues for OpenCL");
 		return false;
 	}
 
 	inited = true;
+	return true;
+}
+
+bool CLImg::StopCL() {
 	return true;
 }
 
@@ -86,6 +93,7 @@ cl_mem CLImg::MakeImage(Image* image) {
 	size_t width = image->GetWidth();
 	size_t height = image->GetHeight();
 	std::vector<uint32_t> colorData = image->ColorBytes();
+	void* colorBytes = colorData.data();
 
 	cl_int error = CL_SUCCESS;
 	cl_mem result = clCreateImage2D(context,
@@ -94,7 +102,7 @@ cl_mem CLImg::MakeImage(Image* image) {
 		width,
 		height,
 		1,
-		colorData.data(),
+		colorBytes,
 		&error
 	);
 	if (error != CL_SUCCESS) {
@@ -161,17 +169,17 @@ bool CLImg::BuildProgram(cl_program toBuild) {
 	if (!inited) {
 		SetupCL();
 	}
-	cl_int error = clBuildProgram(toBuild, 1, &parallelProcessor, NULL, NULL, NULL);
+	cl_int error = clBuildProgram(toBuild, 1, &computeDevices[0], NULL, NULL, NULL);
 	if (error != CL_SUCCESS) {
 		size_t len = 0;
-		cl_int logRes = clGetProgramBuildInfo(toBuild, parallelProcessor, CL_PROGRAM_BUILD_LOG, 0, NULL, &len);
+		cl_int logRes = clGetProgramBuildInfo(toBuild, computeDevices[0], CL_PROGRAM_BUILD_LOG, 0, NULL, &len);
 		if (logRes != CL_SUCCESS) {
 			Print(LogLevel::ERR, "Failed to size OpenCL build log: %d (%x)", logRes, logRes);
 			return false;
 		}
 		char* buffer = (char*)_malloca(len+1);
 		memset(buffer, 0, len + 1);
-		logRes = clGetProgramBuildInfo(toBuild, parallelProcessor, CL_PROGRAM_BUILD_LOG, len, buffer, NULL);
+		logRes = clGetProgramBuildInfo(toBuild, computeDevices[0], CL_PROGRAM_BUILD_LOG, len, buffer, NULL);
 		if (logRes != CL_SUCCESS) {
 			Print(LogLevel::ERR, "Failed to read OpenCL build log: %d (%x)", logRes, logRes);
 			return false;

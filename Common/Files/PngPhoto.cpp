@@ -8,7 +8,7 @@
 #include "../Graphics/GdiUtil.h"
 #endif
 
-#include "BmpPhoto.h"
+#include "PngPhoto.h"
 #include "../Sprites/Images/BitmapImage.h"
 
 using namespace Common;
@@ -18,18 +18,18 @@ using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
 namespace fs = std::filesystem;
 
-BmpPhoto::BmpPhoto() : Photo() {
+PngPhoto::PngPhoto() : Photo() {
 	this->image = nullptr;
 }
 
-BmpPhoto::BmpPhoto(fs::path path) : Photo(path) {
+PngPhoto::PngPhoto(fs::path path) : Photo(path) {
 	this->image = nullptr;
 }
 
-bool BmpPhoto::Open(fs::path path) {
+bool PngPhoto::Open(fs::path path) {
 	return this->OpenRead(path);
 }
-bool BmpPhoto::OpenRead(fs::path path) {
+bool PngPhoto::OpenRead(fs::path path) {
 	Photo::OpenRead(path);
 
 	Gdiplus::Bitmap gdiBmp(path.wstring().c_str());
@@ -55,15 +55,15 @@ bool BmpPhoto::OpenRead(fs::path path) {
 
 	return true;
 }
-bool BmpPhoto::OpenWrite(fs::path path) {
+bool PngPhoto::OpenWrite(fs::path path) {
 	return Photo::OpenWrite(path);;
 }
 
-Images::Image* BmpPhoto::ReadImg() {
+Images::Image* PngPhoto::ReadImg() {
 	return this->image;
 }
 
-void BmpPhoto::WriteImg(Images::Image* image) {
+void PngPhoto::WriteImg(Images::Image* image) {
 	Photo::WriteImg(image);
 
 	HDC memHdc = CreateCompatibleDC(NULL);
@@ -81,7 +81,7 @@ void BmpPhoto::WriteImg(Images::Image* image) {
 	}
 
 	CLSID encoderClsid;
-	Gdiplus::GetEncoderClsid(L"image/bmp", &encoderClsid);
+	Gdiplus::GetEncoderClsid(L"image/png", &encoderClsid);
 
 	gdiBmp.Save(this->GetPath().wstring().c_str(), &encoderClsid, NULL);
 }

@@ -15,19 +15,19 @@ BitmapImage::BitmapImage() {
 
 BitmapImage::BitmapImage(std::vector<uint32_t> bmpColors, size_t width, size_t height) {
 	std::vector<std::vector<uint32_t>> splitColors = std::vector<std::vector<uint32_t>>(width, std::vector<uint32_t>(height));
-	size_t fullLen = width + height;
-	if (fullLen >= bmpColors.size()) {
-		Print("The width and height of the BitmapImage is creater than the data given!");
-		throw std::exception("The width and height of the BitmapImage is creater than the data given!");
+	size_t fullLen = width * height;
+	if (fullLen > bmpColors.size()) {
+		Print("The width and height of the BitmapImage is greater than the data given!");
+		throw std::exception("The width and height of the BitmapImage is greater than the data given!");
 	}
-	size_t idx;
+	size_t idx = 0;
 	for (size_t x = 0; x < width; x++) {
 		for (size_t y = 0; y < height; y++) {
 			splitColors[x][y] = bmpColors[idx];
 			idx++;
 		}
 	}
-	this->bmpColors = bmpColors;
+	this->bmpColors = splitColors;
 	this->width = width;
 	this->height = height;
 }

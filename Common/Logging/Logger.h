@@ -9,7 +9,8 @@ namespace Common {
 				INFO,
 				ERR,
 				SUCCESS,
-				DEBUG
+				DEBUG,
+				WARNING
 			};
 
 			size_t* GetCursor();

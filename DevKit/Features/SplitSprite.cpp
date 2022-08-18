@@ -1,16 +1,18 @@
 #include "SplitSprite.h"
 #include <Files/File.h>
+#include <Graphics/CLImg.h>
+#include <Graphics/GdiUtil.h>
 #include <Logging/Logger.h>
-#include <Sprites/Documents/FrameInfo.h>
-#include <Sprites/Documents/SheetInfo.h>
-#include <Sprites/Documents/SpriteCell.h>
+#include <Sprites/Documents/SpriteTable.h>
 
 using namespace Common;
 using namespace Common::Files;
+using namespace Common::Graphics;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Documents;
+using namespace Common::Sprites::Images;
 using namespace DevKit;
 using namespace DevKit::Features;
 
@@ -39,10 +41,11 @@ void SplitSprite::Run(std::vector<std::string> args)
 	if (args.size() > 1) {
 		resultPath = args[1];
 	}
-	File xmlFile;
-	xmlFile.Open(xmlPath);
-	std::string xmlData = xmlFile.ReadStr();
-	std::shared_ptr<SheetInfo> sheetInfo = SheetInfo::Parse(xmlData);
 
-	
+	CLImg::SetupCL();
+	Gdiplus::SetupGDI();
+	SpriteTable* parsedTable = SpriteTable::ReadTable(xmlPath);
+	/*Do extraction*/
+	Gdiplus::StopGDI();
+	CLImg::StopCL();
 }

@@ -9,11 +9,11 @@ Image::Image() {
 }
 
 size_t Image::GetWidth() {
-
+	return 0;
 }
 
 size_t Image::GetHeight() {
-
+	return 0;
 }
 
 uint32_t Image::At(size_t x, size_t y) {

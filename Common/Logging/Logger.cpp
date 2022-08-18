@@ -58,7 +58,13 @@ size_t Logger::VPrint(LogLevel level, const char* fmt, va_list lst)
         SetConsoleTextAttribute(hConsole, 10);
         break;
     }
-    case LogLevel::DEBUG: {
+    case LogLevel::DEBUG:
+#ifndef _DEBUG
+    {
+        break;
+    }
+#endif
+    case LogLevel::WARNING: {
         SetConsoleTextAttribute(hConsole, 14);
         break;
     }

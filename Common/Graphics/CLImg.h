@@ -19,6 +19,7 @@ namespace Common {
 			using namespace Common::Sprites::Images;
 
 			bool SetupCL();
+			bool StopCL();
 			cl_sampler MakeSampler(bool normalized = false);
 			cl_mem MakeImage(Image* image);
 			cl_mem MakeImage(size_t width, size_t height);
