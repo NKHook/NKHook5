@@ -56,7 +56,7 @@ uint32_t BitmapImage::At(size_t x, size_t y) {
 	return this->colorBytes[(y*width)+x];
 }
 
-const std::vector<uint32_t>& BitmapImage::ColorBytes() {
+std::vector<uint32_t> BitmapImage::ColorBytes() {
 	return this->colorBytes;
 	/*std::vector<uint32_t> result;
 	for (size_t y = 0; y < this->GetHeight(); y++) {

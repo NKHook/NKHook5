@@ -23,8 +23,12 @@ namespace Common {
 			cl_sampler MakeSampler(bool normalized = false);
 			cl_mem MakeImage(Image* image);
 			cl_mem MakeImage(size_t width, size_t height);
+			cl_mem MakeImage(std::vector<uint32_t> colors, size_t width, size_t height);
+			std::vector<uint32_t> ColorsFromCL(cl_mem image, size_t width, size_t height);
+			std::vector<uint32_t> ColorsFromCL(cl_mem image, size_t originX, size_t originY, size_t width, size_t height);
 			BitmapImage* NewImageFromCL(cl_mem clImage, size_t width, size_t height);
 			BitmapImage* NewImageFromCL(cl_mem clImage, size_t originX, size_t originY, size_t width, size_t height);
+			uint32_t GetColorAt(cl_mem image, size_t x, size_t y);
 			cl_program MakeProgram(std::string source);
 			bool BuildProgram(cl_program toBuild);
 			cl_kernel MakeKernel(cl_program program, std::string kernelName);

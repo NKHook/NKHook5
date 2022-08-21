@@ -11,7 +11,7 @@ namespace Common {
 				virtual size_t GetWidth();
 				virtual size_t GetHeight();
 				virtual uint32_t At(size_t x, size_t y);
-				virtual const std::vector<uint32_t>& ColorBytes();
+				virtual std::vector<uint32_t> ColorBytes();
 			};
 		}
 	}

@@ -99,23 +99,7 @@ cl_mem CLImg::MakeImage(Image* image) {
 	size_t width = image->GetWidth();
 	size_t height = image->GetHeight();
 	std::vector<uint32_t> colorData = image->ColorBytes();
-	void* colorBytes = colorData.data();
-
-	cl_int error = CL_SUCCESS;
-	cl_mem result = clCreateImage2D(context,
-		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-		&imageFormat,
-		width,
-		height,
-		width * sizeof(uint32_t),
-		colorBytes,
-		&error
-	);
-	if (error != CL_SUCCESS) {
-		Print(LogLevel::ERR, "Couldn't make an OpenCL Image2D buffer from an Image*: %d (%x)", error, error);
-		return 0;
-	}
-	return result;
+	return MakeImage(colorData, width, height);
 }
 
 cl_mem CLImg::MakeImage(size_t width, size_t height) {
@@ -138,6 +122,47 @@ cl_mem CLImg::MakeImage(size_t width, size_t height) {
 	return result;
 }
 
+cl_mem CLImg::MakeImage(std::vector<uint32_t> colors, size_t width, size_t height) {
+	if (!inited) {
+		SetupCL();
+	}
+	void* colorBytes = colors.data();
+
+	cl_int error = CL_SUCCESS;
+	cl_mem result = clCreateImage2D(context,
+		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+		&imageFormat,
+		width,
+		height,
+		width * sizeof(uint32_t),
+		colorBytes,
+		&error
+	);
+	if (error != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Couldn't make an OpenCL Image2D buffer from color bytes: %d (%x)", error, error);
+		return 0;
+	}
+	return result;
+}
+
+std::vector<uint32_t> CLImg::ColorsFromCL(cl_mem image, size_t width, size_t height)
+{
+	return ColorsFromCL(image, 0, 0, width, height);
+}
+
+std::vector<uint32_t> CLImg::ColorsFromCL(cl_mem image, size_t originX, size_t originY, size_t width, size_t height)
+{
+	std::vector<uint32_t> resultBytes(width * height);
+	size_t origin[3] = { originX, originY, 0 };
+	size_t region[3] = { width, height, 1 };
+	cl_int error = clEnqueueReadImage(queue, image, CL_TRUE, origin, region, 0, 0, resultBytes.data(), 0, NULL, NULL);
+	if (error != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to read all colors from CL Image: %d (%x)", error, error);
+		return std::vector<uint32_t>();
+	}
+	return resultBytes;
+}
+
 BitmapImage* CLImg::NewImageFromCL(cl_mem image, size_t width, size_t height) {
 	if (!inited) {
 		SetupCL();
@@ -153,8 +178,28 @@ BitmapImage* CLImg::NewImageFromCL(cl_mem image, size_t originX, size_t originY,
 	size_t origin[3] = { originX, originY, 0 };
 	size_t region[3] = { width, height, 1 };
 	cl_int error = clEnqueueReadImage(queue, image, CL_TRUE, origin, region, 0, 0, resultBytes.data(), 0, NULL, NULL);
+	if (error != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to create BitmapImage* from CL Image: %d (%x)", error, error);
+		return 0;
+	}
 	BitmapImage* result = new BitmapImage(resultBytes, width, height);
 	return result;
+}
+
+uint32_t CLImg::GetColorAt(cl_mem image, size_t x, size_t y)
+{
+	if (!inited) {
+		SetupCL();
+	}
+	size_t origin[3] = { x, y, 0 };
+	size_t region[3] = { 1, 1, 1 };
+	uint32_t pixel;
+	cl_int error = clEnqueueReadImage(queue, image, CL_TRUE, origin, region, 0, 0, &pixel, 0, NULL, NULL);
+	if (error != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to read a pixel from a CL Image: %d (%x)", error, error);
+		return 0;
+	}
+	return pixel;
 }
 
 cl_program CLImg::MakeProgram(std::string source) {

@@ -21,6 +21,6 @@ uint32_t Image::At(size_t x, size_t y) {
 }
 
 static std::vector<uint32_t> empty;
-const std::vector<uint32_t>& Image::ColorBytes() {
+std::vector<uint32_t> Image::ColorBytes() {
 	return empty;
 }

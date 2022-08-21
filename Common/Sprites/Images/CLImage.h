@@ -1,20 +1,19 @@
 #pragma once
 
 #include "Image.h"
-#include <stdint.h>
-#include <vector>
 
 namespace Common {
 	namespace Sprites {
 		namespace Images {
-			class BitmapImage : public Image {
-				std::vector<uint32_t> colorBytes;
+			class CLImage : public Image {
+				cl_mem gpuImage;
 				size_t width;
 				size_t height;
 			public:
-				BitmapImage();
-				BitmapImage(std::vector<uint32_t> bmpColors, size_t width, size_t height);
-				BitmapImage(std::vector<std::vector<uint32_t>> bmpColors, size_t width, size_t height);
+				CLImage();
+				CLImage(std::vector<uint32_t> bmpColors, size_t width, size_t height);
+				CLImage(std::vector<std::vector<uint32_t>> bmpColors, size_t width, size_t height);
+				CLImage(cl_mem gpuImage, size_t width, size_t height);
 
 				virtual size_t GetWidth() override;
 				virtual size_t GetHeight() override;
