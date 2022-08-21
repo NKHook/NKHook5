@@ -8,7 +8,7 @@ namespace Common {
 	namespace Sprites {
 		namespace Images {
 			class BitmapImage : public Image {
-				std::vector<std::vector<uint32_t>> bmpColors;
+				std::vector<uint32_t> colorBytes;
 				size_t width;
 				size_t height;
 			public:
@@ -19,7 +19,7 @@ namespace Common {
 				virtual size_t GetWidth() override;
 				virtual size_t GetHeight() override;
 				virtual uint32_t At(size_t x, size_t y) override;
-				virtual std::vector<uint32_t> ColorBytes() override;
+				virtual const std::vector<uint32_t>& ColorBytes() override;
 			};
 		}
 	}

@@ -20,6 +20,7 @@ uint32_t Image::At(size_t x, size_t y) {
 	return 0;
 }
 
-std::vector<uint32_t> Image::ColorBytes() {
-	return std::vector<uint32_t>();
+static std::vector<uint32_t> empty;
+const std::vector<uint32_t>& Image::ColorBytes() {
+	return empty;
 }
