@@ -2,6 +2,8 @@
 #include "../Files/PngPhoto.h"
 #include "../Logging/Logger.h"
 #include "../Graphics/CLImg.h"
+#include "../Threading/WorkerThread.h"
+#include "../Threading/WorkGroup.h"
 
 using namespace Common;
 using namespace Common::Files;
@@ -9,6 +11,7 @@ using namespace Common::Graphics;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
+using namespace Common::Threading;
 namespace fs = std::filesystem;
 
 SpriteExtract::SpriteExtract(SpriteTable* table) {
@@ -22,6 +25,8 @@ void SpriteExtract::SetResult(fs::path resultDir)
 
 void SpriteExtract::ExtractAll()
 {
+	WorkGroup extractWorkers(16);
+
 	auto& xmls = table->GetXmls();
 	for (auto* xmlInfo : xmls) {
 		TexType type = xmlInfo->GetTexType();
@@ -49,13 +54,15 @@ void SpriteExtract::ExtractAll()
 					//Make necessary parent dirs
 					fs::create_directories(cellFilePath.parent_path());
 
-					BitmapImage* splitImage = CLImg::NewImageFromCL(clImage, cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
-					PngPhoto cellPhoto;
-					cellPhoto.OpenWrite(cellFilePath);
-					cellPhoto.WriteImg(splitImage);
-					cellPhoto.Close();
+					extractWorkers.DoWork([clImage, cell, cellFilePath]() {
+						BitmapImage* splitImage = CLImg::NewImageFromCL(clImage, cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+						PngPhoto cellPhoto;
+						cellPhoto.OpenWrite(cellFilePath);
+						cellPhoto.WriteImg(splitImage);
+						cellPhoto.Close();
 
-					delete splitImage;
+						delete splitImage;
+					});
 				}
 			}
 			for (auto* cell : frame->GetCells()) {
@@ -63,17 +70,23 @@ void SpriteExtract::ExtractAll()
 				//Make necessary parent dirs
 				fs::create_directories(cellFilePath.parent_path());
 
-				BitmapImage* splitImage = CLImg::NewImageFromCL(clImage, cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
-				PngPhoto cellPhoto;
-				cellPhoto.OpenWrite(cellFilePath);
-				cellPhoto.WriteImg(splitImage);
-				cellPhoto.Close();
+				extractWorkers.DoWork([clImage, cell, cellFilePath]() {
+					BitmapImage* splitImage = CLImg::NewImageFromCL(clImage, cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+					PngPhoto cellPhoto;
+					cellPhoto.OpenWrite(cellFilePath);
+					cellPhoto.WriteImg(splitImage);
+					cellPhoto.Close();
 
-				delete splitImage;
+					delete splitImage;
+				});
 			}
 
 			delete image;
 		}
 	}
+
+	Print("Extraction complete, waiting for extract worker to finish...");
+	extractWorkers.AwaitQueue();
+	Print("Images saved!");
 }
 

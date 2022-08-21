@@ -1,7 +1,5 @@
 #include "CLImage.h"
 
-#include "../../Graphics/CLImg.h"
-
 using namespace Common;
 using namespace Common::Graphics;
 using namespace Common::Sprites;
@@ -9,6 +7,9 @@ using namespace Common::Sprites::Images;
 
 CLImage::CLImage()
 {
+	this->gpuImage = 0;
+	this->width = 0;
+	this->height = 0;
 }
 
 CLImage::CLImage(std::vector<uint32_t> bmpColors, size_t width, size_t height)
@@ -45,7 +46,7 @@ size_t CLImage::GetWidth()
 
 size_t CLImage::GetHeight()
 {
-	return this->height
+	return this->height;
 }
 
 uint32_t CLImage::At(size_t x, size_t y)

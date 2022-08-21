@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Image.h"
+#include "../../Graphics/CLImg.h"
+#include <vector>
 
 namespace Common {
 	namespace Sprites {
