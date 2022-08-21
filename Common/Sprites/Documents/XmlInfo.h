@@ -22,6 +22,7 @@ namespace Common {
 				XmlInfo(std::string name, TexType type, std::vector<FrameInfo*> frames);
 			public:
 				static XmlInfo* ReadDoc(std::filesystem::path path, std::string name, TexType type);
+				const std::vector<FrameInfo*>& GetFrames();
 			};
 		}
 	}

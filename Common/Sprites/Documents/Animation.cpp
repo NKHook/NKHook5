@@ -9,25 +9,17 @@ using namespace Common::Sprites::Documents;
 
 Animation::Animation() : InfoBase() {
 	this->animCells = std::vector<Cell*>();
-	this->fullImage = nullptr;
 }
 
 Animation::Animation(std::string name) : InfoBase(name) {
 	this->animCells = std::vector<Cell*>();
-	this->fullImage = nullptr;
 }
 
 Animation::Animation(std::string name, std::vector<Cell*> cells) : InfoBase(name) {
 	this->animCells = cells;
-	this->fullImage = nullptr;
 }
 
-Animation::Animation(std::string name, std::vector<Cell*> cells, BitmapImage* fullImage) : InfoBase(name) {
-	this->animCells = cells;
-	this->fullImage = fullImage;
-}
-
-Animation* Animation::FromNode(rapidxml::xml_node<>* animNode, BitmapImage* fullImage) {
+Animation* Animation::FromNode(rapidxml::xml_node<>* animNode) {
 	rapidxml::xml_attribute<>* nextAttrib = animNode->first_attribute();
 
 	/* Read the animation name */
@@ -52,10 +44,15 @@ Animation* Animation::FromNode(rapidxml::xml_node<>* animNode, BitmapImage* full
 	std::vector<Cell*> animCells;
 	while (nextNode) {
 
-		animCells.push_back(Cell::FromNode(nextNode, fullImage));
+		animCells.push_back(Cell::FromNode(nextNode));
 
 		nextNode = nextNode->next_sibling();
 	}
 
-	return new Animation(animName, animCells, fullImage);
+	return new Animation(animName, animCells);
+}
+
+const std::vector<Cell*>& Animation::GetCells()
+{
+	return this->animCells;
 }

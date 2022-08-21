@@ -26,12 +26,6 @@ namespace Common {
 				* Origin alignment effectively means how it should be placed if it was to
 				* be rendered at the position (0,0)
 				*/
-
-				/* Pointers to NKH images so we can manipulate the cell image */
-				BitmapImage* fullImage;
-				BitmapImage* image;
-
-				void ExtractImage();
 			public:
 				Cell();
 				Cell(std::string name,
@@ -43,19 +37,17 @@ namespace Common {
 					size_t ay,
 					size_t aw,
 					size_t ah);
-				Cell(std::string name,
-					size_t x,
-					size_t y,
-					size_t w,
-					size_t h,
-					size_t ax,
-					size_t ay,
-					size_t aw,
-					size_t ah,
-					BitmapImage* fullImage);
-				BitmapImage* ExtractedImage();
 			public:
-				static Cell* FromNode(rapidxml::xml_node<>* cellNode, BitmapImage* fullImage);
+				static Cell* FromNode(rapidxml::xml_node<>* cellNode);
+
+				size_t GetX();
+				size_t GetY();
+				size_t GetWidth();
+				size_t GetHeight();
+				size_t GetAlignedX();
+				size_t GetAlignedY();
+				size_t GetAlignedWidth();
+				size_t GetAlignedHeight();
 			};
 		}
 	}

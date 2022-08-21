@@ -38,7 +38,13 @@ bool CLImg::SetupCL() {
 			for (int j = 0; j < deviceCount; ++j) {
 				char vendorName[256];
 				size_t vendorNameLength;
-				cl_int deviceInfoResult = clGetDeviceInfo(devices[j], CL_DEVICE_VENDOR, 256, vendorName, &vendorNameLength);
+
+				size_t maxImgDim[] = {0, 0};
+				size_t dimLen = 0;
+
+				cl_int deviceInfoResult = clGetDeviceInfo(devices[j], CL_DEVICE_IMAGE2D_MAX_WIDTH, sizeof(size_t), &maxImgDim[0], &dimLen);
+				deviceInfoResult = clGetDeviceInfo(devices[j], CL_DEVICE_IMAGE2D_MAX_HEIGHT, sizeof(size_t), &maxImgDim[1], &dimLen);
+				deviceInfoResult = clGetDeviceInfo(devices[j], CL_DEVICE_VENDOR, 256, vendorName, &vendorNameLength);
 				if (deviceInfoResult == CL_SUCCESS) {
 					std::string sVendorName = vendorName;
 					if (sVendorName.find("NVIDIA") != std::string::npos || sVendorName.find("AMD") != std::string::npos || sVendorName.find("Advanced Micro Devices") != std::string::npos) {
@@ -101,7 +107,7 @@ cl_mem CLImg::MakeImage(Image* image) {
 		&imageFormat,
 		width,
 		height,
-		1,
+		width * sizeof(uint32_t),
 		colorBytes,
 		&error
 	);

@@ -9,15 +9,6 @@ using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Documents;
 
-void Cell::ExtractImage() {
-	if (!this->fullImage) {
-		Print(LogLevel::ERR, "Cannot extract a cell as the full image is nullptr!");
-		return;
-	}
-	cl_mem gpuImage = CLImg::MakeImage(this->fullImage);
-	this->image = CLImg::NewImageFromCL(gpuImage, this->x, this->y, this->w, this->h);
-}
-
 Cell::Cell() : InfoBase() {
 	this->x = 0;
 	this->y = 0;
@@ -27,8 +18,6 @@ Cell::Cell() : InfoBase() {
 	this->ay = 0;
 	this->aw = 0;
 	this->ah = 0;
-	this->fullImage = nullptr;
-	this->image = nullptr;
 }
 
 Cell::Cell(std::string name,
@@ -49,46 +38,9 @@ Cell::Cell(std::string name,
 	this->ay = ay;
 	this->aw = aw;
 	this->ah = ah;
-	this->fullImage = nullptr;
-	this->image = nullptr;
 }
 
-Cell::Cell(std::string name,
-	size_t x,
-	size_t y,
-	size_t w,
-	size_t h,
-	size_t ax,
-	size_t ay,
-	size_t aw,
-	size_t ah,
-	BitmapImage* fullImage) : InfoBase(name)
-{
-	this->x = x;
-	this->y = y;
-	this->w = w;
-	this->h = h;
-	this->ax = ax;
-	this->ay = ay;
-	this->aw = aw;
-	this->ah = ah;
-	this->fullImage = fullImage;
-	this->image = nullptr;
-	this->ExtractImage();
-}
-
-BitmapImage* Cell::ExtractedImage() {
-	if (this->image == nullptr) {
-		if (this->fullImage == nullptr) {
-			Print(LogLevel::ERR, "Tried to get a cell's extracted image but the fullImage was null!");
-			return nullptr;
-		}
-		this->ExtractImage();
-	}
-	return this->image;
-}
-
-Cell* Cell::FromNode(rapidxml::xml_node<>* cellNode, BitmapImage* fullImage)
+Cell* Cell::FromNode(rapidxml::xml_node<>* cellNode)
 {
 	//We only need to read cell attributes
 	//I can't find an example where Cells have child nodes
@@ -142,5 +94,38 @@ Cell* Cell::FromNode(rapidxml::xml_node<>* cellNode, BitmapImage* fullImage)
 		nextAttrib = nextAttrib->next_attribute();
 	}
 
-	return new Cell(cellName, cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh, fullImage);
+	return new Cell(cellName, cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh);
+}
+
+size_t Cell::GetX()
+{
+	return this->x;
+}
+size_t Cell::GetY()
+{
+	return this->y;
+}
+size_t Cell::GetWidth()
+{
+	return this->w;
+}
+size_t Cell::GetHeight()
+{
+	return this->h;
+}
+size_t Cell::GetAlignedX()
+{
+	return this->ax;
+}
+size_t Cell::GetAlignedY()
+{
+	return this->ay;
+}
+size_t Cell::GetAlignedWidth()
+{
+	return this->aw;
+}
+size_t Cell::GetAlignedHeight()
+{
+	return this->ah;
 }

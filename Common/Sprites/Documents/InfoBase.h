@@ -13,6 +13,7 @@ namespace Common {
 				InfoBase(std::string);
 				virtual void SetParent(InfoBase*);
 				virtual InfoBase* GetParent();
+				const std::string& GetName();
 			};
 		}
 	}

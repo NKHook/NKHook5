@@ -70,3 +70,8 @@ SpriteTable* SpriteTable::ReadTable(fs::path path) {
 
 	return new SpriteTable(results);
 }
+
+const std::vector<XmlInfo*>& SpriteTable::GetXmls()
+{
+	return this->spriteXmls;
+}

@@ -15,6 +15,7 @@ add_subdirectory(Logging)
 add_subdirectory(Mod)
 add_subdirectory(Sprites)
 add_subdirectory(thirdparty)
+add_subdirectory(Threading)
 add_subdirectory(Util)
 
 target_include_directories(Common PUBLIC "${CMAKE_CURRENT_LIST_DIR}")

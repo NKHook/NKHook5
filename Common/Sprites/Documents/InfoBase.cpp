@@ -20,3 +20,8 @@ void InfoBase::SetParent(InfoBase* parent) {
 InfoBase* InfoBase::GetParent() {
 	return this->parent;
 }
+
+const std::string& InfoBase::GetName()
+{
+	return this->name;
+}

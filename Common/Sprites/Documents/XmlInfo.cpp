@@ -46,3 +46,8 @@ XmlInfo* XmlInfo::ReadDoc(fs::path path, std::string tableName, TexType tableTyp
 	}
 	return new XmlInfo(tableName, tableType, resultFrames);
 }
+
+const std::vector<FrameInfo*>& XmlInfo::GetFrames()
+{
+	return this->frames;
+}

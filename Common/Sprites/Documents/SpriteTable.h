@@ -14,6 +14,7 @@ namespace Common {
 				SpriteTable(std::vector<XmlInfo*>);
 			public:
 				static SpriteTable* ReadTable(std::filesystem::path tableFile);
+				const std::vector<XmlInfo*>& GetXmls();
 			};
 		}
 	}

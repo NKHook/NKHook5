@@ -9,11 +9,14 @@
 #endif
 
 #include "PngPhoto.h"
+#include "../Logging/Logger.h"
 #include "../Sprites/Images/BitmapImage.h"
 
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Files::Images;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
 namespace fs = std::filesystem;
@@ -66,11 +69,11 @@ Images::Image* PngPhoto::ReadImg() {
 void PngPhoto::WriteImg(Images::Image* image) {
 	Photo::WriteImg(image);
 
-	HDC memHdc = CreateCompatibleDC(NULL);
-	Gdiplus::Bitmap gdiBmp(this->GetPath().wstring().c_str());
-
 	size_t width = image->GetWidth();
 	size_t height = image->GetHeight();
+	std::vector<uint32_t> colors = image->ColorBytes();
+
+	Gdiplus::Bitmap gdiBmp(width, height, PixelFormat32bppARGB);
 
 	for (size_t x = 0; x < width; x++) {
 		for (size_t y = 0; y < height; y++) {
@@ -83,5 +86,9 @@ void PngPhoto::WriteImg(Images::Image* image) {
 	CLSID encoderClsid;
 	Gdiplus::GetEncoderClsid(L"image/png", &encoderClsid);
 
-	gdiBmp.Save(this->GetPath().wstring().c_str(), &encoderClsid, NULL);
+	Gdiplus::Status error = gdiBmp.Save(this->GetPath().lexically_normal().c_str(), &encoderClsid);
+	if (error == Gdiplus::Win32Error) {
+		size_t gle = GetLastError();
+		Print("Last error: %d (%x)", gle, gle);
+	}
 }

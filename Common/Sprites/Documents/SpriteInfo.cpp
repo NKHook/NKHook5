@@ -13,3 +13,13 @@ SpriteInfo::SpriteInfo(std::string name, TexType type, bool required) : InfoBase
 	this->type = type;
 	this->required = required;
 }
+
+TexType SpriteInfo::GetTexType()
+{
+	return this->type;
+}
+
+bool SpriteInfo::IsRequired()
+{
+	return this->required;
+}

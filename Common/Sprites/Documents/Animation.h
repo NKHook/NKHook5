@@ -10,16 +10,15 @@
 namespace Common {
 	namespace Sprites {
 		namespace Documents {
-			class Animation : InfoBase {
+			class Animation : public InfoBase {
 				std::vector<Cell*> animCells;
-				BitmapImage* fullImage;
 			public:
 				Animation();
 				Animation(std::string name);
 				Animation(std::string name, std::vector<Cell*> cells);
-				Animation(std::string name, std::vector<Cell*> cells, BitmapImage* fullImage);
 			public:
-				static Animation* FromNode(rapidxml::xml_node<>*, BitmapImage* fullImage);
+				static Animation* FromNode(rapidxml::xml_node<>*);
+				const std::vector<Cell*>& GetCells();
 			};
 		}
 	}

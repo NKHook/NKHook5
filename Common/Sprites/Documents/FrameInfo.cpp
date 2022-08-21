@@ -14,35 +14,33 @@ namespace fs = std::filesystem;
 FrameInfo::FrameInfo() : SpriteInfo() {
 	this->texW = 0;
 	this->texH = 0;
-	this->image = nullptr;
+	this->imagePath = "";
 }
 
 FrameInfo::FrameInfo(std::string name, TexType type, bool required) : SpriteInfo(name, type, required) {
 	this->texW = 0;
 	this->texH = 0;
-	this->image = nullptr;
+	this->imagePath = "";
 }
 
 FrameInfo::FrameInfo(std::string name, TexType type, size_t texW, size_t texH, bool required) : SpriteInfo(name, type, required) {
 	this->texW = texW;
 	this->texH = texH;
-	this->image = nullptr;
+	this->imagePath = "";
 }
 
-FrameInfo::FrameInfo(std::string name, TexType type, size_t texW, size_t texH, std::vector<Animation*> animations, std::vector<Cell*> cells, bool required) : SpriteInfo(name, type, required) {
+FrameInfo::FrameInfo(std::string name, TexType type, size_t texW, size_t texH, std::filesystem::path imagePath, bool required) : SpriteInfo(name, type, required) {
+	this->texW = texW;
+	this->texH = texH;
+	this->imagePath = imagePath;
+}
+
+FrameInfo::FrameInfo(std::string name, TexType type, size_t texW, size_t texH, std::filesystem::path imagePath, std::vector<Animation*> animations, std::vector<Cell*> cells, bool required) : SpriteInfo(name, type, required) {
 	this->texW = texW;
 	this->texH = texH;
 	this->animations = animations;
 	this->cells = cells;
-	this->image = nullptr;
-}
-
-FrameInfo::FrameInfo(std::string name, TexType type, size_t texW, size_t texH, std::vector<Animation*> animations, std::vector<Cell*> cells, BitmapImage* image, bool required) : SpriteInfo(name, type, required) {
-	this->texW = texW;
-	this->texH = texH;
-	this->animations = animations;
-	this->cells = cells;
-	this->image = image;
+	this->imagePath = imagePath;
 }
 
 FrameInfo* FrameInfo::FromNode(fs::path docPath, rapidxml::xml_node<>* frameNode, std::string tableName, TexType tableType) {
@@ -99,41 +97,47 @@ FrameInfo* FrameInfo::FromNode(fs::path docPath, rapidxml::xml_node<>* frameNode
 	}
 	fs::path imagePath = qualityDir / std::string(frameName + fileExt);
 
-	BitmapImage* fullImage;
-	switch (type) {
-	case TexType::PNG: {
-		PngPhoto photo;
-		photo.OpenRead(imagePath);
-		fullImage = (BitmapImage*)photo.ReadImg();
-		break;
-	}
-	case TexType::JPNG: {
-		Print(LogLevel::ERR, "TODO: Implement JPNG image support");
-		return new FrameInfo();
-		break;
-	}
-	default: {
-		Print(LogLevel::ERR, "TexType was NONE? Uh-oh!");
-		break;
-	}
-	}
-
 	rapidxml::xml_node<>* spriteNode = frameNode->first_node();
 	std::vector<Animation*> resultAnims;
 	std::vector<Cell*> resultCells;
 	while (spriteNode) {
 		std::string nodeName = spriteNode->name();
 		if (nodeName == "Animation") {
-			Animation* nextAnim = Animation::FromNode(spriteNode, fullImage);
+			Animation* nextAnim = Animation::FromNode(spriteNode);
 			resultAnims.push_back(nextAnim);
 		}
 		if (nodeName == "Cell") {
-			Cell* nextCell = Cell::FromNode(spriteNode, fullImage);
+			Cell* nextCell = Cell::FromNode(spriteNode);
 			resultCells.push_back(nextCell);
 		}
 
 		spriteNode = spriteNode->next_sibling();
 	}
 
-	return new FrameInfo(frameName, type, texW, texH, resultAnims, resultCells);
+	return new FrameInfo(frameName, type, texW, texH, imagePath, resultAnims, resultCells);
+}
+
+size_t FrameInfo::GetTexWidth()
+{
+	return this->texW;
+}
+
+size_t FrameInfo::GetTexHeight()
+{
+	return this->texH;
+}
+
+const fs::path& FrameInfo::GetImagePath()
+{
+	return this->imagePath;
+}
+
+const std::vector<Animation*>& FrameInfo::GetAnimations()
+{
+	return this->animations;
+}
+
+const std::vector<Cell*>& FrameInfo::GetCells()
+{
+	return this->cells;
 }

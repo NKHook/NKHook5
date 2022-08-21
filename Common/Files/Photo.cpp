@@ -22,7 +22,6 @@ Photo::Photo(fs::path path) : File() {
 bool Photo::Open(fs::path path) {
 	IFile::Open(path);
 	return this->OpenRead(path);
-	return true;
 };
 bool Photo::OpenRead(fs::path path) {
 	IFile::Open(path);

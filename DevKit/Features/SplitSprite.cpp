@@ -3,6 +3,7 @@
 #include <Graphics/CLImg.h>
 #include <Graphics/GdiUtil.h>
 #include <Logging/Logger.h>
+#include <Sprites/SpriteExtract.h>
 #include <Sprites/Documents/SpriteTable.h>
 
 using namespace Common;
@@ -15,6 +16,7 @@ using namespace Common::Sprites::Documents;
 using namespace Common::Sprites::Images;
 using namespace DevKit;
 using namespace DevKit::Features;
+namespace fs = std::filesystem;
 
 SplitSprite::SplitSprite() : Feature("split_sprite", "Splits a spritesheet into individual image files")
 {
@@ -46,6 +48,10 @@ void SplitSprite::Run(std::vector<std::string> args)
 	Gdiplus::SetupGDI();
 	SpriteTable* parsedTable = SpriteTable::ReadTable(xmlPath);
 	/*Do extraction*/
+	SpriteExtract extract(parsedTable);
+	extract.SetResult(fs::current_path() / "Testing");
+	extract.ExtractAll();
+
 	Gdiplus::StopGDI();
 	CLImg::StopCL();
 }

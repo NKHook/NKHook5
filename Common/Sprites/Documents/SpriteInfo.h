@@ -12,12 +12,15 @@ namespace Common {
 				JPNG
 			};
 
-			class SpriteInfo : InfoBase {
+			class SpriteInfo : public InfoBase {
 				TexType type;
 				bool required;
 			public:
 				SpriteInfo();
 				SpriteInfo(std::string name, TexType type, bool required = true);
+
+				TexType GetTexType();
+				bool IsRequired();
 			};
 		}
 	}
