@@ -6,7 +6,8 @@
 namespace Common {
 	namespace Threading {
 		class WorkGroup {
-			std::vector<WorkerThread> workers;
+			std::vector<WorkerThread*> workers;
+			size_t toQNext = 0;
 		public:
 			WorkGroup(size_t workerCount);
 			void DoWork(std::function<void()> work);

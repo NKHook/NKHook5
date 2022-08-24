@@ -7,18 +7,18 @@ using namespace Common::Threading;
 
 WorkGroup::WorkGroup(size_t workerCount)
 {
-	this->workers = std::vector<WorkerThread>(workerCount);
+	for (size_t i = 0; i < workerCount; i++) {
+		this->workers.push_back(new WorkerThread());
+	}
 }
 
 void WorkGroup::DoWork(std::function<void()> work)
 {
-	for (auto& worker : this->workers) {
-		if (worker.IsWaiting()) {
-			worker.DoWork(work);
-			return;
-		}
+	if (toQNext >= workers.size()) {
+		toQNext = 0;
 	}
-	this->workers[0].DoWork(work);
+	this->workers[toQNext]->DoWork(work);
+	toQNext++;
 }
 
 void WorkGroup::AwaitQueue()
@@ -32,7 +32,7 @@ bool WorkGroup::IsWaiting()
 {
 	bool allWaiting = true;
 	for (auto& worker : this->workers) {
-		if (!worker.IsWaiting()) {
+		if (!worker->IsWaiting()) {
 			allWaiting = false;
 		}
 	}

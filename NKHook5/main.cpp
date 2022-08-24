@@ -8,6 +8,10 @@
 std::string* testModDir = nullptr;
 
 auto initialize() -> int {
+#ifdef _DEBUG
+    printf("Press enter to launch NKH...\n");
+    std::cin.get();
+#endif
     std::cout << "Loading NKHook5..." << std::endl;
 
     wchar_t* cmdLine = GetCommandLineW();
