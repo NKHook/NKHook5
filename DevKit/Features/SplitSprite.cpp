@@ -5,6 +5,7 @@
 #include <Logging/Logger.h>
 #include <Sprites/SpriteExtract.h>
 #include <Sprites/Documents/SpriteTable.h>
+#include <Util/Timer.h>
 
 using namespace Common;
 using namespace Common::Files;
@@ -14,6 +15,7 @@ using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Documents;
 using namespace Common::Sprites::Images;
+using namespace Common::Util;
 using namespace DevKit;
 using namespace DevKit::Features;
 namespace fs = std::filesystem;
@@ -35,6 +37,7 @@ int SplitSprite::MaxArgs()
 
 void SplitSprite::Run(std::vector<std::string> args)
 {
+	Timer timer("SplitSprite");
 	if (args.size() == 0) {
 		Print(LogLevel::ERR, "No sprite file given to %s", this->GetName());
 	}
