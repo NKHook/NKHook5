@@ -35,11 +35,9 @@ bool PngPhoto::OpenRead(fs::path path) {
 	int channels = 0;
 	uint32_t* colorBytes = (uint32_t*)stbi_load(path.string().c_str(), &width, &height, &channels, 4);
 	std::vector<uint32_t> imgData;
-	for (size_t i = 0; i < width * height; i++) {
-		imgData.push_back(colorBytes[i]);
-	}
+	imgData.assign(colorBytes, colorBytes + (width * height));
 
-	BitmapImage* memImg = new BitmapImage(imgData, width, height);
+	CLImage* memImg = new CLImage(imgData, width, height);
 	this->image = memImg;
 
 	return true;
