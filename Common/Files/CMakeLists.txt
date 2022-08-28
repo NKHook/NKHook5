@@ -3,6 +3,7 @@ target_sources(Common PRIVATE
 	"File.cpp"
 	"IFile.cpp"
 	"JetFile.cpp"
+	"JPngPhoto.cpp"
 	"ModArchive.cpp"
 	"Photo.cpp"
 	"PngPhoto.cpp"

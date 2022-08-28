@@ -95,6 +95,18 @@ if(NOT oclicdl_POPULATED)
   add_subdirectory(${oclicdl_SOURCE_DIR} ${oclicdl_BINARY_DIR})
 endif()
 
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG master
+)
+FetchContent_GetProperties(stb)
+if(NOT stb_POPULATED)
+  FetchContent_Populate(stb)
+  add_library(stb INTERFACE)
+  target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+endif()
+
 add_subdirectory(Common)
 add_subdirectory(DevKit)
 add_subdirectory(NKHook5)
