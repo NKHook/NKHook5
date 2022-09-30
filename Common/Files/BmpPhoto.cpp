@@ -24,17 +24,21 @@ bool BmpPhoto::Open(fs::path path) {
 	return this->OpenRead(path);
 }
 bool BmpPhoto::OpenRead(fs::path path) {
+	//Call the base Photo::OpenRead function
 	Photo::OpenRead(path);
 
+	//Variables for photo information
 	int width = 0;
 	int height = 0;
 	int channels = 0;
+	//Read the actual photo bytes
 	uint32_t* colorBytes = (uint32_t*)stbi_load(path.string().c_str(), &width, &height, &channels, 4);
+	//Store it all into a vector for simplicity
 	std::vector<uint32_t> imgData;
 	for (size_t i = 0; i < width * height; i++) {
 		imgData.push_back(colorBytes[i]);
 	}
-
+	//Create a new CLImage with the image data on the GPU
 	this->image = new CLImage(imgData, width, height);
 
 	return true;
@@ -48,11 +52,15 @@ Images::Image* BmpPhoto::ReadImg() {
 }
 
 void BmpPhoto::WriteImg(Images::Image* image) {
+	//Call the base Photo::WriteImage function
 	Photo::WriteImg(image);
 
+	//Get the image width/height
 	size_t width = image->GetWidth();
 	size_t height = image->GetHeight();
+	//Get the image colors vector
 	std::vector<uint32_t> colors = image->ColorBytes();
 
+	//Store the photo into a file
 	stbi_write_bmp(this->GetPath().string().c_str(), width, height, 4, colors.data());
 }

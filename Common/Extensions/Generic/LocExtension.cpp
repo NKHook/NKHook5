@@ -1,3 +1,4 @@
+//TODO: Deprecate this and merge actual xml files
 #include "LocExtension.h"
 
 using namespace Common::Extensions::Generic;
