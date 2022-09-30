@@ -1,4 +1,7 @@
 #include "SplitSprite.h"
+
+#include "../Proj/Project.h"
+
 #include <Files/File.h>
 #include <Logging/Logger.h>
 #include <Sprites/SpriteExtract.h>
@@ -14,9 +17,10 @@ using namespace Common::Sprites::Documents;
 using namespace Common::Util;
 using namespace DevKit;
 using namespace DevKit::Features;
+using namespace DevKit::Proj;
 namespace fs = std::filesystem;
 
-SplitSprite::SplitSprite() : Feature("split_sprite", "Splits a spritesheet into individual image files")
+SplitSprite::SplitSprite() : Feature("split_sprite", "Splits a mod's vanilla spritesheet(s) into individual image files")
 {
 	
 }
@@ -37,15 +41,42 @@ void SplitSprite::Run(std::vector<std::string> args)
 	if (args.size() == 0) {
 		Print(LogLevel::ERR, "No sprite file given to %s", this->GetName());
 	}
-	std::string xmlPath = args[0];
+	std::string modName = args[0];
 	std::string resultPath;
 	if (args.size() > 1) {
 		resultPath = args[1];
 	}
 
-	SpriteTable* parsedTable = SpriteTable::ReadTable(xmlPath);
-	/*Do extraction*/
-	SpriteExtract extract(parsedTable);
-	extract.SetResult(fs::current_path() / "Testing");
-	extract.ExtractAll();
+	fs::path cwd = fs::current_path();
+	fs::path modPath = cwd / modName;
+	if (!fs::exists(modPath)) {
+		Print(LogLevel::ERR, "No such mod '%s'", modName.c_str());
+		return;
+	}
+
+	Project modProj;
+	modProj.Open(modName);
+	fs::path modDir = modProj.GetModPath();
+	fs::path modTextureDir = modDir / "Textures";
+	fs::path vanillaDir = modProj.GetVanillaPath();
+	fs::path vanillaTextureDir = vanillaDir / "Textures";
+
+	std::vector<fs::path> spriteSheets;
+	for (auto entry : fs::directory_iterator(vanillaTextureDir)) {
+		if (!entry.is_directory()) {
+			spriteSheets.push_back(entry);
+		}
+	}
+
+	for (fs::path spriteSheet : spriteSheets) {
+		fs::path sheetFile = vanillaTextureDir / spriteSheet.filename();
+		fs::path sheetDir = modTextureDir / spriteSheet.stem();
+		fs::create_directories(sheetDir);
+
+		SpriteTable* parsedTable = SpriteTable::ReadTable(sheetFile);
+		/*Do extraction*/
+		SpriteExtract extract(parsedTable);
+		extract.SetResult(sheetDir);
+		extract.ExtractAll();
+	}
 }

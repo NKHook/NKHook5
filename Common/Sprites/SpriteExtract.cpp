@@ -24,8 +24,6 @@ void SpriteExtract::SetResult(fs::path resultDir)
 
 void SpriteExtract::ExtractAll()
 {
-	WorkGroup extractWorkers(16);
-
 	auto& xmls = table->GetXmls();
 	for (auto* xmlInfo : xmls) {
 		TexType type = xmlInfo->GetTexType();
@@ -52,23 +50,6 @@ void SpriteExtract::ExtractAll()
 					//Make necessary parent dirs
 					fs::create_directories(cellFilePath.parent_path());
 
-					extractWorkers.DoWork([&]() {
-						CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
-						PngPhoto cellPhoto;
-						cellPhoto.OpenWrite(cellFilePath);
-						cellPhoto.WriteImg(splitImage);
-						cellPhoto.Close();
-
-						delete splitImage;
-					});
-				}
-			}
-			for (auto* cell : frame->GetCells()) {
-				fs::path cellFilePath = xmlOutDir / std::string(cell->GetName() + ".png");
-				//Make necessary parent dirs
-				fs::create_directories(cellFilePath.parent_path());
-
-				extractWorkers.DoWork([&]() {
 					CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
 					PngPhoto cellPhoto;
 					cellPhoto.OpenWrite(cellFilePath);
@@ -76,11 +57,22 @@ void SpriteExtract::ExtractAll()
 					cellPhoto.Close();
 
 					delete splitImage;
-				});
+				}
+			}
+			for (auto* cell : frame->GetCells()) {
+				fs::path cellFilePath = xmlOutDir / std::string(cell->GetName() + ".png");
+				//Make necessary parent dirs
+				fs::create_directories(cellFilePath.parent_path());
+
+				CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+				PngPhoto cellPhoto;
+				cellPhoto.OpenWrite(cellFilePath);
+				cellPhoto.WriteImg(splitImage);
+				cellPhoto.Close();
+
+				delete splitImage;
 			}
 
-			Print("Extraction complete, waiting for extract worker to finish...");
-			extractWorkers.AwaitQueue();
 			Print("Saved %s!", frame->GetName().c_str());
 
 			delete image;
