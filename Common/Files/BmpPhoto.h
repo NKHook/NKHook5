@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Photo.h"
-#include "../Sprites/Images/BitmapImage.h"
+#include "../Sprites/Images/CLImage.h"
 
 namespace Common {
 	namespace Files {
@@ -9,7 +9,7 @@ namespace Common {
 		using namespace Common::Sprites;
 
 		class BmpPhoto : public Photo {
-			BitmapImage* image = nullptr;
+			CLImage* image = nullptr;
 		public:
 			BmpPhoto();
 			BmpPhoto(std::filesystem::path path);

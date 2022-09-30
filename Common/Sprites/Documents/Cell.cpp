@@ -1,11 +1,6 @@
 #include "Cell.h"
 
-#include "../../Graphics/CLImg.h"
-
 using namespace Common;
-using namespace Common::Graphics;
-using namespace Common::Logging;
-using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Documents;
 

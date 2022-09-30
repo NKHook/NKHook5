@@ -1,5 +1,4 @@
 #include "BmpPhoto.h"
-#include "../Sprites/Images/BitmapImage.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -36,8 +35,7 @@ bool BmpPhoto::OpenRead(fs::path path) {
 		imgData.push_back(colorBytes[i]);
 	}
 
-	BitmapImage* memImg = new BitmapImage(imgData, width, height);
-	this->image = memImg;
+	this->image = new CLImage(imgData, width, height);
 
 	return true;
 }

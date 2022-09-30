@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Images/BitmapImage.h"
 #include "InfoBase.h"
 
 #include <rapidxml.hpp>
@@ -9,7 +8,6 @@ namespace Common {
 	namespace Sprites {
 		using namespace Common;
 		using namespace Common::Sprites;
-		using namespace Common::Sprites::Images;
 
 		namespace Documents {
 			class Cell : public InfoBase {

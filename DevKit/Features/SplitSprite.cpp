@@ -1,6 +1,5 @@
 #include "SplitSprite.h"
 #include <Files/File.h>
-#include <Graphics/CLImg.h>
 #include <Logging/Logger.h>
 #include <Sprites/SpriteExtract.h>
 #include <Sprites/Documents/SpriteTable.h>
@@ -8,12 +7,10 @@
 
 using namespace Common;
 using namespace Common::Files;
-using namespace Common::Graphics;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Documents;
-using namespace Common::Sprites::Images;
 using namespace Common::Util;
 using namespace DevKit;
 using namespace DevKit::Features;
@@ -46,12 +43,9 @@ void SplitSprite::Run(std::vector<std::string> args)
 		resultPath = args[1];
 	}
 
-	CLImg::SetupCL();
 	SpriteTable* parsedTable = SpriteTable::ReadTable(xmlPath);
 	/*Do extraction*/
 	SpriteExtract extract(parsedTable);
 	extract.SetResult(fs::current_path() / "Testing");
 	extract.ExtractAll();
-
-	CLImg::StopCL();
 }

@@ -10,7 +10,6 @@ add_library(Common STATIC)
 
 add_subdirectory(Extensions)
 add_subdirectory(Files)
-add_subdirectory(Graphics)
 add_subdirectory(Logging)
 add_subdirectory(Mod)
 add_subdirectory(Sprites)

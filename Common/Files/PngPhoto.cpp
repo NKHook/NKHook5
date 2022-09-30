@@ -1,6 +1,6 @@
 #include "PngPhoto.h"
 #include "../Logging/Logger.h"
-#include "../Sprites/Images/BitmapImage.h"
+#include "../Sprites/Images/CLImage.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -37,8 +37,7 @@ bool PngPhoto::OpenRead(fs::path path) {
 	std::vector<uint32_t> imgData;
 	imgData.assign(colorBytes, colorBytes + (width * height));
 
-	CLImage* memImg = new CLImage(imgData, width, height);
-	this->image = memImg;
+	this->image = new CLImage(imgData, width, height);
 
 	return true;
 }

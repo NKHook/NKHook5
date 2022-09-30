@@ -10,7 +10,6 @@ using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Documents;
-using namespace Common::Sprites::Images;
 namespace fs = std::filesystem;
 
 SpriteTable::SpriteTable() {

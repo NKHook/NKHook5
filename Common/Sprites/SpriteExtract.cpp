@@ -1,13 +1,12 @@
 #include "SpriteExtract.h"
 #include "../Files/PngPhoto.h"
 #include "../Logging/Logger.h"
-#include "../Graphics/CLImg.h"
+#include "../Sprites/Images/CLImage.h"
 #include "../Threading/WorkerThread.h"
 #include "../Threading/WorkGroup.h"
 
 using namespace Common;
 using namespace Common::Files;
-using namespace Common::Graphics;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
@@ -43,8 +42,7 @@ void SpriteExtract::ExtractAll()
 			fs::path imagePath = frame->GetImagePath();
 			PngPhoto imageFile;
 			imageFile.OpenRead(imagePath);
-			Image* image = imageFile.ReadImg();
-			cl_mem clImage = CLImg::MakeImage(image);
+			CLImage* image = (CLImage*)imageFile.ReadImg();
 
 			for (auto* anim : frame->GetAnimations()) {
 				fs::path animOutDir = xmlOutDir / anim->GetName();
@@ -54,8 +52,8 @@ void SpriteExtract::ExtractAll()
 					//Make necessary parent dirs
 					fs::create_directories(cellFilePath.parent_path());
 
-					extractWorkers.DoWork([clImage, cell, cellFilePath]() {
-						BitmapImage* splitImage = CLImg::NewImageFromCL(clImage, cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+					extractWorkers.DoWork([&]() {
+						CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
 						PngPhoto cellPhoto;
 						cellPhoto.OpenWrite(cellFilePath);
 						cellPhoto.WriteImg(splitImage);
@@ -70,8 +68,8 @@ void SpriteExtract::ExtractAll()
 				//Make necessary parent dirs
 				fs::create_directories(cellFilePath.parent_path());
 
-				extractWorkers.DoWork([clImage, cell, cellFilePath]() {
-					BitmapImage* splitImage = CLImg::NewImageFromCL(clImage, cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+				extractWorkers.DoWork([&]() {
+					CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
 					PngPhoto cellPhoto;
 					cellPhoto.OpenWrite(cellFilePath);
 					cellPhoto.WriteImg(splitImage);
@@ -81,12 +79,13 @@ void SpriteExtract::ExtractAll()
 				});
 			}
 
+			Print("Extraction complete, waiting for extract worker to finish...");
+			extractWorkers.AwaitQueue();
+			Print("Saved %s!", frame->GetName().c_str());
+
 			delete image;
 		}
 	}
 
-	Print("Extraction complete, waiting for extract worker to finish...");
-	extractWorkers.AwaitQueue();
-	Print("Images saved!");
 }
 

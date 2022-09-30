@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Images/BitmapImage.h"
 #include "FrameInfo.h"
 
 #include <filesystem>
@@ -12,7 +11,6 @@ namespace Common {
 		namespace Documents {
 			using namespace Common;
 			using namespace Common::Sprites;
-			using namespace Common::Sprites::Images;
 
 			class XmlInfo : public SpriteInfo {
 				std::vector<FrameInfo*> frames;
