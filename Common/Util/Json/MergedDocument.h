@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Doc/MergedDocument.h"
+
 #include <nlohmann/json.hpp>
 #include <vector>
 
