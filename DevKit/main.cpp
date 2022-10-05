@@ -4,6 +4,9 @@
 #include "Features/RunMod.h"
 #include "Features/Setup.h"
 #include "Features/SplitSprite.h"
+#ifdef _DEBUG
+#include "Features/Test.h"
+#endif
 #include "Features/UpdateMod.h"
 #include "Settings.h"
 #include "FeatureMgr.h"
@@ -32,6 +35,9 @@ int main(int argc, const char* argv[]) {
 	FeatureMgr::RegisterFeature(new RunMod());
 	FeatureMgr::RegisterFeature(new Package());
 	FeatureMgr::RegisterFeature(new SplitSprite());
+#ifdef _DEBUG
+	FeatureMgr::RegisterFeature(new Test());
+#endif
 
 	CLI::App app("NKHook5 DevKit (" STRING(NKHOOK_BUILD_VERSION) ")");
 	for (const auto& [feature, option] : FeatureMgr::AllFeatures()) {

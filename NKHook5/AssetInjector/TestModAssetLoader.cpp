@@ -5,7 +5,6 @@
 #include <Util/Json/MergedDocument.h>
 
 using namespace NKHook5::AssetInjector;
-using namespace Common::Util::Doc;
 using namespace Common::Util::Json;
 namespace fs = std::filesystem;
 
