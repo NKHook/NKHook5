@@ -42,10 +42,6 @@ void SplitSprite::Run(std::vector<std::string> args)
 		Print(LogLevel::ERR, "No sprite file given to %s", this->GetName());
 	}
 	std::string modName = args[0];
-	std::string resultPath;
-	if (args.size() > 1) {
-		resultPath = args[1];
-	}
 
 	fs::path cwd = fs::current_path();
 	fs::path modPath = cwd / modName;
