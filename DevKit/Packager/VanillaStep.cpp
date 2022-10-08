@@ -55,5 +55,9 @@ bool VanillaStep::Execute(Project& proj, ZipBase& arch) {
 				continue;
 			}
 		}
+
+		arch.WriteEntry(entryPath.string(), dataBytes);
 	}
+
+	return true;
 }

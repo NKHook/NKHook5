@@ -1,6 +1,7 @@
 #include "Package.h"
 #include "../Proj/Project.h"
 #include "../Packager/JsonStep.h"
+#include "../Packager/VanillaStep.h"
 
 #include <Files/File.h>
 #include <Files/JetFile.h>
@@ -171,6 +172,11 @@ void Package::Run(std::vector<std::string> args)
 			return;
 		}
 
+		//Add the vanilla files
+		VanillaStep vanillaStep(true, VanillaTarget::JSON);
+		vanillaStep.Execute(modProj, jetFile);
+
+		//Add the json files & merge the vanilla files if needed
 		JsonStep jsonStep(JsonPkgRule::MERGE);
 		jsonStep.Execute(modProj, jetFile);
 
@@ -188,6 +194,8 @@ void Package::Run(std::vector<std::string> args)
 		
 		JsonStep jsonStep(JsonPkgRule::MERGE);
 		jsonStep.Execute(modProj, jetFile);
+
+		jetFile.Close();
 
 		Logger::Print("Creating AssetBundles package...");
 		ZipBase assetBundle;

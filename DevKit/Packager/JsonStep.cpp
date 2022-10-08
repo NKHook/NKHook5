@@ -16,7 +16,7 @@ using namespace DevKit;
 using namespace DevKit::Packager;
 using namespace DevKit::Proj;
 
-JsonStep::JsonStep(JsonPkgRule rule) : PackageStep("JsonStep")
+JsonStep::JsonStep(JsonPkgRule rule) : PackageStep("JSON")
 {
 	this->rule = rule;
 }
