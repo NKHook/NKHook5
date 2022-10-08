@@ -1,3 +1,5 @@
 target_sources(DevKit PRIVATE
-	"PackagerBase.cpp"
+	"JsonStep.cpp"
+	"PackageStep.cpp"
+	"VanillaStep.cpp"
 )

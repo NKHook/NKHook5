@@ -15,6 +15,7 @@ target_sources(DevKit PRIVATE
 )
 
 add_subdirectory(Features)
+add_subdirectory(Packager)
 add_subdirectory(Proj)
 
 target_link_libraries(DevKit PRIVATE Common)

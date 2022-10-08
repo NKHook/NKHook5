@@ -53,9 +53,9 @@ void SplitSprite::Run(std::vector<std::string> args)
 	Project modProj;
 	modProj.Open(modName);
 	fs::path modDir = modProj.GetModPath();
-	fs::path modTextureDir = modDir / "Textures";
 	fs::path vanillaDir = modProj.GetVanillaPath();
 	fs::path vanillaTextureDir = vanillaDir / "Textures";
+	fs::path extractTextureDir = vanillaTextureDir / "Extracted";
 
 	std::vector<fs::path> spriteSheets;
 	for (auto entry : fs::directory_iterator(vanillaTextureDir)) {
@@ -66,7 +66,7 @@ void SplitSprite::Run(std::vector<std::string> args)
 
 	for (fs::path spriteSheet : spriteSheets) {
 		fs::path sheetFile = vanillaTextureDir / spriteSheet.filename();
-		fs::path sheetDir = modTextureDir / spriteSheet.stem();
+		fs::path sheetDir = extractTextureDir / spriteSheet.stem();
 		fs::create_directories(sheetDir);
 
 		SpriteTable* parsedTable = SpriteTable::ReadTable(sheetFile);

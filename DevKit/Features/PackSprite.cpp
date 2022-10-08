@@ -43,11 +43,13 @@ void PackSprite::Run(std::vector<std::string> args)
 	}
 	std::string modName = args[0];
 	std::string spriteName = args[1];
-	
+
 	Project modProj;
 	modProj.Open(modName);
 	fs::path modDir = modProj.GetModPath();
 	fs::path modTextureDir = modDir / "Textures";
 	fs::path vanillaDir = modProj.GetVanillaPath();
 	fs::path vanillaTextureDir = vanillaDir / "Textures";
+
+
 }
