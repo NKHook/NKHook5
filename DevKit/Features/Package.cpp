@@ -1,6 +1,7 @@
 #include "Package.h"
 #include "../Proj/Project.h"
 #include "../Packager/JsonStep.h"
+#include "../Packager/TextureStep.h"
 #include "../Packager/VanillaStep.h"
 
 #include <Files/File.h>
@@ -236,6 +237,8 @@ void Package::Run(std::vector<std::string> args)
 		
 		JsonStep jsonStep(JsonPkgRule::STRIP);
 		jsonStep.Execute(modProj, modFile);
+		TextureStep textureStep;
+		textureStep.Execute(modProj, modFile);
 
 		modFile.SetInfo(modProj.GetInfo());
 

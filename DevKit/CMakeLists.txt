@@ -19,4 +19,4 @@ add_subdirectory(Packager)
 add_subdirectory(Proj)
 add_subdirectory(Util)
 
-target_link_libraries(DevKit PRIVATE Common)
+target_link_libraries(DevKit PRIVATE Common binpack)

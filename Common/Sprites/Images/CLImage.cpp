@@ -337,3 +337,30 @@ CLImage* CLImage::CopyImage(size_t x, size_t y, size_t width, size_t height) {
 	}
 	return new CLImage(resultBytes, width, height);
 }
+
+bool CLImage::PasteImage(CLImage* other, size_t x, size_t y, int32_t width, int32_t height) {
+	if (!inited) {
+		SetupCL();
+	}
+	
+	if (width == -1) {
+		width = other->GetWidth();
+	}
+	if (height == -1) {
+		height = other->GetHeight();
+	}
+
+	size_t src_origin[3] = { 0, 0, 0 };
+	size_t src_region[3] = { other->GetWidth(), other->GetHeight(), 0};
+	size_t dst_origin[3] = { x, y, 0 };
+	size_t dst_region[3] = { width, height, 1 };
+
+	cl_int error = clEnqueueCopyImage(queue, other->gpuImage, this->gpuImage, src_origin, dst_origin, dst_region, 0, nullptr, nullptr);
+
+	if (error != CL_SUCCESS) {
+		Print(LogLevel::ERR, "Failed to copy CLImage* on to CLImage: %d (%x)", error, error);
+		return false;
+	}
+
+	return true;
+}

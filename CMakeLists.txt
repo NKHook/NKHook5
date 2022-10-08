@@ -90,9 +90,9 @@ FetchContent_Declare(
 )
 FetchContent_GetProperties(oclicdl)
 if(NOT oclicdl_POPULATED)
-  FetchContent_Populate(oclicdl)
-  set(USE_DYNAMIC_VCXX_RUNTIME ON)
-  add_subdirectory(${oclicdl_SOURCE_DIR} ${oclicdl_BINARY_DIR})
+    FetchContent_Populate(oclicdl)
+    set(USE_DYNAMIC_VCXX_RUNTIME ON)
+    add_subdirectory(${oclicdl_SOURCE_DIR} ${oclicdl_BINARY_DIR})
 endif()
 
 FetchContent_Declare(
@@ -102,9 +102,21 @@ FetchContent_Declare(
 )
 FetchContent_GetProperties(stb)
 if(NOT stb_POPULATED)
-  FetchContent_Populate(stb)
-  add_library(stb INTERFACE)
-  target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+    FetchContent_Populate(stb)
+    add_library(stb INTERFACE)
+    target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+endif()
+
+FetchContent_Declare(
+    binpack
+    GIT_REPOSITORY https://github.com/chris-stones/BinPack2D.git
+    GIT_TAG master
+)
+FetchContent_GetProperties(binpack)
+if(NOT binpack_POPULATED)
+    FetchContent_Populate(binpack)
+    add_library(binpack INTERFACE)
+    target_include_directories(binpack INTERFACE ${binpack_SOURCE_DIR})
 endif()
 
 add_subdirectory(Common)

@@ -45,7 +45,7 @@ Compile::Compile(nlohmann::json document)
 		throw std::exception("Compile expected SourceDir to be a string, but it was not.");
 	}
 
-	this->sourceDir = sourceDir.dump();
+	this->sourceDir = sourceDir;
 
 	nlohmann::json results = document["Results"];
 	if (!results.is_array()) {
