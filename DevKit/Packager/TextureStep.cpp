@@ -34,6 +34,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 {
 	fs::path modTextures = proj.GetModPath() / "Textures";
 	fs::path vanillaTextures = proj.GetVanillaPath() / "Textures";
+	fs::path entryTextures = "Assets/Textures";
 
 	fs::path texRules = modTextures / "Rules.json";
 	File rulesFile;
@@ -140,6 +141,15 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			resultPhoto.OpenWrite(resultFile);
 			resultPhoto.WriteImg(&atlas);
 			resultPhoto.Close();
+
+			File photoFile;
+			photoFile.OpenRead(resultFile);
+			std::vector<uint8_t> fileData = photoFile.ReadBytes();
+			photoFile.Close();
+			fs::remove(resultFile);
+
+			fs::path entryResult = entryTextures / quality / texFile;
+			arch.WriteEntry(entryResult.string(), fileData);
 		}
 
 		//Export the atlas' XML map
@@ -186,10 +196,9 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			rapidxml::xml_document<>* spriteSheet = spriteInfo->ToXML();
 			rapidxml::internal::print_node(std::back_inserter(xmlStr), spriteSheet, 0, 0);
 
-			File resultFile;
-			resultFile.OpenWrite(resultPath);
-			resultFile.WriteStr(xmlStr);
-			resultFile.Close();
+			fs::path entryResult = entryTextures / quality / infoXml;
+			std::vector<uint8_t> entryData(xmlStr.begin(), xmlStr.end());
+			arch.WriteEntry(entryResult.string(), entryData);
 
 			delete spriteInfo;
 		}
