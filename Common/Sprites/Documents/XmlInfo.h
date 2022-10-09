@@ -19,8 +19,16 @@ namespace Common {
 				XmlInfo(std::string name, TexType type);
 				XmlInfo(std::string name, TexType type, std::vector<FrameInfo*> frames);
 			public:
+				static XmlInfo* Create(
+					std::string name,
+					TexType type
+				);
 				static XmlInfo* ReadDoc(std::filesystem::path path, std::string name, TexType type);
 				const std::vector<FrameInfo*>& GetFrames();
+
+				void AddFrame(FrameInfo*);
+
+				rapidxml::xml_document<>* ToXML();
 			};
 		}
 	}

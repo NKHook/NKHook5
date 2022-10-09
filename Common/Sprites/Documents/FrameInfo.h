@@ -40,6 +40,8 @@ namespace Common {
 
 				void AddCell(Cell* toAdd);
 				void AddAnimation(Animation* toAdd);
+
+				rapidxml::xml_node<>* ToXML(rapidxml::xml_document<>* document);
 			};
 		}
 	}

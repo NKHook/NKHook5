@@ -21,9 +21,11 @@ namespace Common {
 				static Animation* Create(
 					std::string name,
 					std::vector<Cell*> cells
-				)
+				);
 
 				const std::vector<Cell*>& GetCells();
+
+				rapidxml::xml_node<>* ToXML(rapidxml::xml_document<>* document);
 			};
 		}
 	}

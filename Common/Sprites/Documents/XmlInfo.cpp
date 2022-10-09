@@ -19,6 +19,11 @@ XmlInfo::XmlInfo(std::string name, TexType type, std::vector<FrameInfo*> frames)
 	this->frames = frames;
 }
 
+XmlInfo* XmlInfo::Create(std::string name, TexType type)
+{
+	return new XmlInfo(name, type);
+}
+
 XmlInfo* XmlInfo::ReadDoc(fs::path path, std::string tableName, TexType tableType) {
 	File docFile;
 	docFile.OpenRead(path);
@@ -50,4 +55,20 @@ XmlInfo* XmlInfo::ReadDoc(fs::path path, std::string tableName, TexType tableTyp
 const std::vector<FrameInfo*>& XmlInfo::GetFrames()
 {
 	return this->frames;
+}
+
+void XmlInfo::AddFrame(FrameInfo* frame)
+{
+	this->frames.push_back(frame);
+}
+
+rapidxml::xml_document<>* XmlInfo::ToXML()
+{
+	rapidxml::xml_document<>* resultDoc = new rapidxml::xml_document<>();
+	rapidxml::xml_node<>* spriteNode = resultDoc->allocate_node(rapidxml::node_element, "SpriteInformation");
+	for (FrameInfo* frame : this->GetFrames()) {
+		spriteNode->append_node(frame->ToXML(resultDoc));
+	}
+	resultDoc->append_node(spriteNode);
+	return resultDoc;
 }

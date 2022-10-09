@@ -129,3 +129,72 @@ size_t Cell::GetAlignedHeight()
 {
 	return this->ah;
 }
+
+rapidxml::xml_node<>* Cell::ToXML(rapidxml::xml_document<>* document)
+{
+	rapidxml::xml_node<>* result = document->allocate_node(rapidxml::node_element, "Cell");
+	rapidxml::xml_attribute<>* nameAttrib = document->allocate_attribute(
+		"name",
+		document->allocate_string(
+			this->GetName().c_str()
+		)
+	);
+	result->append_attribute(nameAttrib);
+	rapidxml::xml_attribute<>* xAttrib = document->allocate_attribute(
+		"x",
+		document->allocate_string(
+			std::to_string(this->GetX()).c_str()
+		)
+	);
+	result->append_attribute(xAttrib);
+	rapidxml::xml_attribute<>* yAttrib = document->allocate_attribute(
+		"y",
+		document->allocate_string(
+			std::to_string(this->GetY()).c_str()
+		)
+	);
+	result->append_attribute(yAttrib);
+	rapidxml::xml_attribute<>* wAttrib = document->allocate_attribute(
+		"w",
+		document->allocate_string(
+			std::to_string(this->GetWidth()).c_str()
+		)
+	);
+	result->append_attribute(wAttrib);
+	rapidxml::xml_attribute<>* hAttrib = document->allocate_attribute(
+		"h",
+		document->allocate_string(
+			std::to_string(this->GetHeight()).c_str()
+		)
+	);
+	result->append_attribute(hAttrib);
+	rapidxml::xml_attribute<>* axAttrib = document->allocate_attribute(
+		"ax",
+		document->allocate_string(
+			std::to_string(this->GetAlignedX()).c_str()
+		)
+	);
+	result->append_attribute(axAttrib);
+	rapidxml::xml_attribute<>* ayAttrib = document->allocate_attribute(
+		"ay",
+		document->allocate_string(
+			std::to_string(this->GetAlignedY()).c_str()
+		)
+	);
+	result->append_attribute(ayAttrib);
+	rapidxml::xml_attribute<>* awAttrib = document->allocate_attribute(
+		"aw",
+		document->allocate_string(
+			std::to_string(this->GetAlignedWidth()).c_str()
+		)
+	);
+	result->append_attribute(awAttrib);
+	rapidxml::xml_attribute<>* ahAttrib = document->allocate_attribute(
+		"ah",
+		document->allocate_string(
+			std::to_string(this->GetAlignedHeight()).c_str()
+		)
+	);
+	result->append_attribute(ahAttrib);
+	return result;
+}

@@ -57,6 +57,8 @@ namespace Common {
 				size_t GetAlignedY();
 				size_t GetAlignedWidth();
 				size_t GetAlignedHeight();
+
+				rapidxml::xml_node<>* ToXML(rapidxml::xml_document<>* document);
 			};
 		}
 	}

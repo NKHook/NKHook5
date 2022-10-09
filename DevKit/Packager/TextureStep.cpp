@@ -4,11 +4,13 @@
 
 #include <Files/File.h>
 #include <Files/PngPhoto.h>
-#include <Sprites/Documents/Cell.h>
-#include <Sprites/Documents/Animation.h>
+#include <Sprites/Documents/XmlInfo.h>
 #include <Sprites/Images/CLImage.h>
 
 #include <binpack2d.hpp>
+#include <rapidxml.hpp>
+#include <rapidxml_ext.hpp>
+#include <rapidxml_print.hpp>
 
 #include <filesystem>
 
@@ -126,7 +128,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			atlas.PasteImage(texImage, posX, posY, width, height);
 		}
 
-		//Export the atlas to a file
+		//Export the atlas to an image file
 		for (const CompileResult& result : compile.GetResults()) {
 			std::string quality = result.GetQuality();
 			std::string texFile = result.GetTexture();
@@ -138,6 +140,58 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			resultPhoto.OpenWrite(resultFile);
 			resultPhoto.WriteImg(&atlas);
 			resultPhoto.Close();
+		}
+
+		//Export the atlas' XML map
+		for (const CompileResult& result : compile.GetResults()) {
+			std::string quality = result.GetQuality();
+			std::string texFile = result.GetTexture();
+			std::string infoXml = result.GetInfoXml();
+
+			fs::path resultPath = modTextures / quality / infoXml;
+			fs::create_directories(resultPath.parent_path());
+
+			XmlInfo* spriteInfo = XmlInfo::Create(compile.GetSourceDir(), TexType::PNG);
+			FrameInfo* frameInfo = FrameInfo::Create(
+				compile.GetSourceDir(),
+				TexType::PNG,
+				furthestX,
+				furthestY
+			);
+			spriteInfo->AddFrame(frameInfo);
+			//Iterate the content again and store the image locations in XML
+			for (const auto& content : outputContent.Get()) {
+				//Get the size from calculations
+				size_t posX = content.coord.x;
+				size_t posY = content.coord.y;
+				size_t width = content.size.w;
+				size_t height = content.size.h;
+
+				Cell* imageCell = Cell::Create(
+					content.content.first,
+					posX,
+					posY,
+					width,
+					height,
+					0,
+					0,
+					width,
+					height
+				);
+
+				frameInfo->AddCell(imageCell);
+			}
+
+			std::string xmlStr;
+			rapidxml::xml_document<>* spriteSheet = spriteInfo->ToXML();
+			rapidxml::internal::print_node(std::back_inserter(xmlStr), spriteSheet, 0, 0);
+
+			File resultFile;
+			resultFile.OpenWrite(resultPath);
+			resultFile.WriteStr(xmlStr);
+			resultFile.Close();
+
+			delete spriteInfo;
 		}
 
 		//Free the images

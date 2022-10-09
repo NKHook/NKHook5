@@ -56,3 +56,19 @@ const std::vector<Cell*>& Animation::GetCells()
 {
 	return this->animCells;
 }
+
+rapidxml::xml_node<>* Animation::ToXML(rapidxml::xml_document<>* document)
+{
+	rapidxml::xml_node<>* animNode = document->allocate_node(rapidxml::node_element, "Animation");
+	rapidxml::xml_attribute<>* nameAttrib = document->allocate_attribute(
+		"name",
+		document->allocate_string(
+			this->GetName().c_str()
+		)
+	);
+	animNode->append_attribute(nameAttrib);
+	for (Cell* c : this->GetCells()) {
+		animNode->append_node(c->ToXML(document));
+	}
+	return animNode;
+}

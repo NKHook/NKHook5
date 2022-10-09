@@ -146,3 +146,72 @@ const std::vector<Cell*>& FrameInfo::GetCells()
 {
 	return this->cells;
 }
+
+void FrameInfo::AddCell(Cell* toAdd)
+{
+	this->cells.push_back(toAdd);
+}
+
+void FrameInfo::AddAnimation(Animation* toAdd)
+{
+	this->animations.push_back(toAdd);
+}
+
+rapidxml::xml_node<>* FrameInfo::ToXML(rapidxml::xml_document<>* document)
+{
+	rapidxml::xml_node<>* frameNode = document->allocate_node(
+		rapidxml::node_element,
+		"FrameInformation"
+	);
+	rapidxml::xml_attribute<>* nameAttrib = document->allocate_attribute(
+		"name",
+		document->allocate_string(
+			this->GetName().c_str()
+		)
+	);
+	frameNode->append_attribute(nameAttrib);
+	rapidxml::xml_attribute<>* texwAttrib = document->allocate_attribute(
+		"texw",
+		document->allocate_string(
+			std::to_string(this->GetTexWidth()).c_str()
+		)
+	);
+	frameNode->append_attribute(texwAttrib);
+	rapidxml::xml_attribute<>* texhAttrib = document->allocate_attribute(
+		"texh",
+		document->allocate_string(
+			std::to_string(this->GetTexHeight()).c_str()
+		)
+	);
+	frameNode->append_attribute(texhAttrib);
+	std::string typeStr;
+	switch (this->GetTexType()) {
+	case TexType::JPNG:
+		typeStr = "jpng";
+		break;
+	case TexType::PNG:
+		typeStr = "png";
+		break;
+	case TexType::NONE:
+	default:
+		typeStr = "NONE";
+		break;
+	}
+	rapidxml::xml_attribute<>* typeAttrib = document->allocate_attribute(
+		"type",
+		document->allocate_string(
+			typeStr.c_str()
+		)
+	);
+	frameNode->append_attribute(typeAttrib);
+
+	for (Animation* anim : this->GetAnimations()) {
+		frameNode->append_node(anim->ToXML(document));
+	}
+
+	for (Cell* cell : this->GetCells()) {
+		frameNode->append_node(cell->ToXML(document));
+	}
+
+	return frameNode;
+}
