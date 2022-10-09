@@ -32,11 +32,13 @@ namespace DevKit {
 		};
 
 		class TextureRules {
+			std::vector<std::string> reflections;
 			std::vector<Compile> compiles;
 		public:
-			TextureRules(std::vector<Compile> compiles);
+			TextureRules(std::vector<std::string> reflections, std::vector<Compile> compiles);
 			TextureRules(nlohmann::json document);
 
+			const std::vector<std::string>& GetReflects() const;
 			const std::vector<Compile>& GetCompiles() const;
 		};
 	}

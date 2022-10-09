@@ -70,24 +70,41 @@ const std::vector<CompileResult>& Compile::GetResults() const
 	return this->results;
 }
 
-TextureRules::TextureRules(std::vector<Compile> compiles)
+TextureRules::TextureRules(std::vector<std::string> reflections, std::vector<Compile> compiles)
 {
+	this->reflections = reflections;
 	this->compiles = compiles;
 }
 
 TextureRules::TextureRules(nlohmann::json document)
 {
+	nlohmann::json reflections = document["Reflections"];
+	if (!reflections.is_array()) {
+		throw std::exception("TextureRules expected Reflections to be a list, but it was not.");
+	}
+
+	std::vector<std::string> reflectsVec;
+	for (auto& reflect : reflections) {
+		reflectsVec.emplace_back(reflect);
+	}
+
 	nlohmann::json compiles = document["Compiles"];
 	if (!compiles.is_array()) {
 		throw std::exception("TextureRules expected Compiles to be a list, but it was not.");
 	}
 
-	std::vector<Compile> result;
+	std::vector<Compile> compilesVec;
 	for (auto& compile : compiles) {
-		result.emplace_back(compile);
+		compilesVec.emplace_back(compile);
 	}
 
-	this->compiles = result;
+	this->reflections = reflectsVec;
+	this->compiles = compilesVec;
+}
+
+const std::vector<std::string>& TextureRules::GetReflects() const
+{
+	return this->reflections;
 }
 
 const std::vector<Compile>& TextureRules::GetCompiles() const

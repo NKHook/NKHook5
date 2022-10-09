@@ -44,6 +44,20 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 
 	nlohmann::json parsedRules = nlohmann::json::parse(rulesJson);
 	TextureRules rules(parsedRules);
+	const std::vector<std::string>& texReflects = rules.GetReflects();
+	for (const std::string& reflect : texReflects) {
+		fs::path modPath = modTextures / reflect;
+		fs::path entryPath = entryTextures / reflect;
+
+		File reflectFile;
+		reflectFile.OpenRead(modPath);
+		std::string reflectStr = reflectFile.ReadStr();
+		reflectFile.Close();
+
+		std::vector<uint8_t> reflectData(reflectStr.begin(), reflectStr.end());
+		arch.WriteEntry(entryPath.string(), reflectData);
+	}
+
 	const std::vector<Compile>& texCompiles = rules.GetCompiles();
 	for (const Compile& compile : texCompiles) {
 		fs::path sourceDir = modTextures / compile.GetSourceDir();
@@ -136,7 +150,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			std::string infoXml = result.GetInfoXml();
 
 			fs::path resultFile = modTextures / quality / texFile;
-			fs::create_directories(resultFile.parent_path());
+			//fs::create_directories(resultFile.parent_path());
 			PngPhoto resultPhoto;
 			resultPhoto.OpenWrite(resultFile);
 			resultPhoto.WriteImg(&atlas);
@@ -159,7 +173,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			std::string infoXml = result.GetInfoXml();
 
 			fs::path resultPath = modTextures / quality / infoXml;
-			fs::create_directories(resultPath.parent_path());
+			//fs::create_directories(resultPath.parent_path());
 
 			XmlInfo* spriteInfo = XmlInfo::Create(compile.GetSourceDir(), TexType::PNG);
 			FrameInfo* frameInfo = FrameInfo::Create(
