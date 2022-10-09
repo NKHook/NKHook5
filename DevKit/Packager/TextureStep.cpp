@@ -4,6 +4,8 @@
 
 #include <Files/File.h>
 #include <Files/PngPhoto.h>
+#include <Sprites/Documents/Cell.h>
+#include <Sprites/Documents/Animation.h>
 #include <Sprites/Images/CLImage.h>
 
 #include <binpack2d.hpp>
@@ -14,6 +16,7 @@ using namespace Common;
 using namespace Common::Files;
 using namespace Common::Mod;
 using namespace Common::Sprites;
+using namespace Common::Sprites::Documents;
 using namespace Common::Sprites::Images;
 using namespace DevKit;
 using namespace DevKit::Packager;
@@ -43,22 +46,35 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 		fs::path sourceDir = modTextures / compile.GetSourceDir();
 
 		//We need to calculate the size the atlas needs to be
-		BinPack2D::CanvasArray<Image*> atlasArray = BinPack2D::UniformCanvasArrayBuilder<Image*>(0x1000, 0x1000, 1).Build();
-		BinPack2D::ContentAccumulator<Image*> inputContent;
+		BinPack2D::CanvasArray<
+			std::pair<std::string, Image*>
+		> atlasArray = BinPack2D::UniformCanvasArrayBuilder<
+			std::pair<std::string, Image*>
+		>(0x1000, 0x1000, 1).Build();
+
+		BinPack2D::ContentAccumulator<std::pair<std::string, Image*>> inputContent;
 		for (const auto& dirEntry : fs::directory_iterator(sourceDir)) {
+			fs::path entryPath = dirEntry;
 			//If the entry is a directory, its an animation
 			if (dirEntry.is_directory()) {
 
 			}
 			//Else its just a sprite
 			else {
+				std::string imageName = entryPath.stem().string();
 				PngPhoto spriteFile;
 				spriteFile.OpenRead(dirEntry);
 				Image* spriteImage = spriteFile.ReadImg();
-				inputContent += BinPack2D::Content<Image*>(
-					spriteImage,
+				inputContent += BinPack2D::Content<std::pair<std::string, Image*>>(
+					{
+						imageName,
+						spriteImage
+					},
 					BinPack2D::Coord(),
-					BinPack2D::Size(spriteImage->GetWidth(), spriteImage->GetHeight()),
+					BinPack2D::Size(
+						spriteImage->GetWidth(),
+						spriteImage->GetHeight()
+					),
 					false);
 				spriteFile.Close();
 			}
@@ -68,7 +84,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 		//Place the content into the canvas
 		atlasArray.Place(inputContent);
 		//Get the output content
-		BinPack2D::ContentAccumulator<Image*> outputContent;
+		BinPack2D::ContentAccumulator<std::pair<std::string, Image*>> outputContent;
 		atlasArray.CollectContent(outputContent);
 		//Find the width and height after sort
 		size_t furthestX = 0;
@@ -105,7 +121,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			size_t height = content.size.h;
 
 			//Get the texture image
-			CLImage* texImage = (CLImage*)content.content;
+			CLImage* texImage = (CLImage*)content.content.second;
 			//Paste it in the atlas
 			atlas.PasteImage(texImage, posX, posY, width, height);
 		}
@@ -126,7 +142,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 
 		//Free the images
 		for (const auto& content : inputContent.Get()) {
-			delete content.content;
+			delete content.content.second;
 		}
 	}
 

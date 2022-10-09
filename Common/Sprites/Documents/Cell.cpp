@@ -92,6 +92,11 @@ Cell* Cell::FromNode(rapidxml::xml_node<>* cellNode)
 	return new Cell(cellName, cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh);
 }
 
+Cell* Cell::Create(std::string name, size_t x, size_t y, size_t w, size_t h, size_t ax, size_t ay, size_t aw, size_t ah)
+{
+	return new Cell(name, x, y, w, h, ax, ay, aw, ah);
+}
+
 size_t Cell::GetX()
 {
 	return this->x;

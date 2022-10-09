@@ -117,6 +117,11 @@ FrameInfo* FrameInfo::FromNode(fs::path docPath, rapidxml::xml_node<>* frameNode
 	return new FrameInfo(frameName, type, texW, texH, imagePath, resultAnims, resultCells);
 }
 
+FrameInfo* FrameInfo::Create(std::string name, TexType type, size_t texW, size_t texH, bool required)
+{
+	return new FrameInfo(name, type, texW, texH, required);
+}
+
 size_t FrameInfo::GetTexWidth()
 {
 	return this->texW;

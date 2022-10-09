@@ -24,12 +24,22 @@ namespace Common {
 				FrameInfo(std::string name, TexType type, size_t texW, size_t texH, std::filesystem::path imagePath, std::vector<Animation*> animations, std::vector<Cell*> cells, bool required = true);
 			public:
 				static FrameInfo* FromNode(std::filesystem::path docPath, rapidxml::xml_node<>*, std::string name, TexType type);
+				static FrameInfo* Create(
+					std::string name,
+					TexType type,
+					size_t texW,
+					size_t texH,
+					bool required = true
+				);
 
 				size_t GetTexWidth();
 				size_t GetTexHeight();
 				const std::filesystem::path& GetImagePath();
 				const std::vector<Animation*>& GetAnimations();
 				const std::vector<Cell*>& GetCells();
+
+				void AddCell(Cell* toAdd);
+				void AddAnimation(Animation* toAdd);
 			};
 		}
 	}

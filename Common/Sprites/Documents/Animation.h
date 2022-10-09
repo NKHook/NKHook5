@@ -18,6 +18,11 @@ namespace Common {
 				Animation(std::string name, std::vector<Cell*> cells);
 			public:
 				static Animation* FromNode(rapidxml::xml_node<>*);
+				static Animation* Create(
+					std::string name,
+					std::vector<Cell*> cells
+				)
+
 				const std::vector<Cell*>& GetCells();
 			};
 		}
