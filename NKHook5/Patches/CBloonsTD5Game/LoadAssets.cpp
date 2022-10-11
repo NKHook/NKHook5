@@ -3,8 +3,9 @@
 #include "../../Util/NewFramework.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CZipFile.h"
-#include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
+
+#include <Extensions/ExtensionManager.h>
 
 namespace NKHook5
 {

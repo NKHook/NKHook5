@@ -13,7 +13,6 @@ target_sources(NKHook5 PRIVATE
     "Utils.cpp"
 )
 
-add_subdirectory(AssetInjector)
 add_subdirectory(Classes)
 add_subdirectory(MenuEditor)
 add_subdirectory(Mod)

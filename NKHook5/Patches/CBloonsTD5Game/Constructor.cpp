@@ -1,7 +1,6 @@
 #include "Constructor.h"
 
 #include "../../Classes/CBloonsTD5Game.h"
-#include "../../AssetInjector/InjectionManager.h"
 #include "../../Signatures/Signature.h"
 
 NKHook5::Classes::CBloonsTD5Game* g_appPtr;
@@ -12,7 +11,6 @@ namespace NKHook5
     {
         namespace CBloonsTD5Game
         {
-            using namespace AssetInjector;
             using namespace Signatures;
 
             static uint64_t o_func;
@@ -20,9 +18,6 @@ namespace NKHook5
                 printf("Game Instance: %p\n", gameInstance);
                 g_appPtr = gameInstance;
                 printf("Game load started\n");
-                printf("Initializing asset injector...\n");
-                InjectionManager::SetupAssetLoader();
-                printf("Asset injector ready!\n");
                 return PLH::FnCast(o_func, &cb_hook)(gameInstance);
             }
 
