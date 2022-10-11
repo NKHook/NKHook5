@@ -11,8 +11,9 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
-)
+ "Assets/AssetBin.h" "Assets/AssetBin.cpp" "Assets/AssetSource.h" "Assets/AssetSource.cpp")
 
+add_subdirectory(Assets)
 add_subdirectory(Classes)
 add_subdirectory(MenuEditor)
 add_subdirectory(Mod)
