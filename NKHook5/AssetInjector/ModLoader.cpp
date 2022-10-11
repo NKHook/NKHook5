@@ -46,56 +46,66 @@ void ModLoader::Initialize()
 	for (ModArchive* mod : loadedMods) {
 		const std::vector<std::string>& entryPaths = mod->GetEntries();
 		for (auto& entryPath : entryPaths) {
-			std::vector<uint8_t> entryBytes = mod->ReadEntry(entryPath);
-			std::string entryContent = std::string(reinterpret_cast<char*>(entryBytes.data()), entryBytes.size());
-			if (!entryContent.empty()) {
-				ModdedAsset* desiredAsset = nullptr;
-				for (ModdedAsset* asset : finalAssets) {
-					if (asset->GetPath() == entryPath) {
-						desiredAsset = asset;
-						break;
+			if (entryPath.find("Assets/JSON/") == 0) {
+				std::vector<uint8_t> entryBytes = mod->ReadEntry(entryPath);
+				std::string entryContent = std::string(reinterpret_cast<char*>(entryBytes.data()), entryBytes.size());
+				if (!entryContent.empty()) {
+					ModdedAsset* desiredAsset = nullptr;
+					for (ModdedAsset* asset : finalAssets) {
+						if (asset->GetPath() == entryPath) {
+							desiredAsset = asset;
+							break;
+						}
+					}
+					if (desiredAsset == nullptr) {
+						desiredAsset = new ModdedAsset(entryPath);
+						finalAssets.push_back(desiredAsset);
+					}
+
+					try {
+						std::string assetStr = std::string((char*)desiredAsset->GetAssetOnHeap(), desiredAsset->GetSizeOnHeap());
+
+						nlohmann::ordered_json assetJson = nlohmann::ordered_json::parse(assetStr, nullptr, true, true);
+						nlohmann::ordered_json entryJson = nlohmann::ordered_json::parse(entryContent, nullptr, true, true);
+
+						MergedDocument merger;
+						merger.Add(assetJson);
+						merger.Add(entryJson);
+						std::string merged = merger.GetMerged().dump();
+
+						desiredAsset->AllocateFor(merged.size());
+						memcpy_s(desiredAsset->GetAssetOnHeap(), merged.size(), merged.data(), merged.size());
+					}
+					catch (std::exception& ex) {
+						//printf("Error whilst merging asset '%s'\n", ex.what());
+						//printf("Overwriting with the newest asset\n");
+						desiredAsset->AllocateFor(entryContent.size());
+						memcpy_s(desiredAsset->GetAssetOnHeap(), entryContent.size(), entryContent.data(), entryContent.size());
 					}
 				}
-				if (desiredAsset == nullptr) {
-					desiredAsset = new ModdedAsset(entryPath);
-					finalAssets.push_back(desiredAsset);
-				}
+			}
+			if (entryPath.find("Assets/Textures/") == 0) {
+				std::string relPath = entryPath.substr(sizeof("Assets/Textures/")-1);
+				if (relPath.find(".rxml") != std::string::npos) {
+					std::vector<uint8_t> patchData = mod->ReadEntry(entryPath);
 
-				try {
-					std::string assetStr = std::string((char*)desiredAsset->GetAssetOnHeap(), desiredAsset->GetSizeOnHeap());
-
-					nlohmann::ordered_json assetJson = nlohmann::ordered_json::parse(assetStr, nullptr, true, true);
-					nlohmann::ordered_json entryJson = nlohmann::ordered_json::parse(entryContent, nullptr, true, true);
-
-					MergedDocument merger;
-					merger.Add(assetJson);
-					merger.Add(entryJson);
-					std::string merged = merger.GetMerged().dump();
-
-					desiredAsset->AllocateFor(merged.size());
-					memcpy_s(desiredAsset->GetAssetOnHeap(), merged.size(), merged.data(), merged.size());
-				}
-				catch (std::exception& ex) {
-					//printf("Error whilst merging asset '%s'\n", ex.what());
-					//printf("Overwriting with the newest asset\n");
-					desiredAsset->AllocateFor(entryContent.size());
-					memcpy_s(desiredAsset->GetAssetOnHeap(), entryContent.size(), entryContent.data(), entryContent.size());
+					ModdedAsset* patchAsset = new ModdedAsset(entryPath);
+					patchAsset->AllocateFor(patchData.size());
+					memcpy_s(patchAsset->GetAssetOnHeap(), patchData.size(), patchData.data(), patchData.size());
+					finalAssets.push_back(patchAsset);
 				}
 			}
 		}
 	}
 }
 
-Asset* ModLoader::FindInjectedAsset(std::string path)
+std::vector<Asset*> ModLoader::FindInjectedAsset(std::string path)
 {
+	std::vector<Asset*> foundAssets;
 	for (ModdedAsset* asset : finalAssets) {
 		if (asset->GetPath() == path) {
-			std::string assetContent = std::string((char*)asset->GetAssetOnHeap(), asset->GetSizeOnHeap());
-			if (assetContent.find("NO_CLEANUP") != std::string::npos) {
-				Print("Asset %s has NO_CLEANUP", path.c_str());
-			}
-			return asset;
+			foundAssets.push_back(asset);
 		}
 	}
-	return nullptr;
+	return foundAssets;
 }

@@ -9,7 +9,7 @@ namespace NKHook5 {
 		public:
 			TestModAssetLoader(const std::string& modDir);
 			virtual void Initialize();
-			virtual Asset* FindInjectedAsset(std::string path);
+			virtual std::vector<Asset*> FindInjectedAsset(std::string path);
 		};
 	}
 }

@@ -24,8 +24,9 @@ void AssetLoader::Initialize()
 	}
 }
 
-Asset* AssetLoader::FindInjectedAsset(std::string path)
+std::vector<Asset*> AssetLoader::FindInjectedAsset(std::string path)
 {
+	std::vector<Asset*> foundAssets;
 	fs::path cd = fs::current_path();
 
 	printf("Finding asset '%s'...\n", path.c_str());
@@ -34,7 +35,7 @@ Asset* AssetLoader::FindInjectedAsset(std::string path)
 		//printf("Checking asset '%s'\n", asset->GetPath().c_str());
 		if (asset->GetPath() == path) {
 			printf("Found a match for '%s' on the hotseat!\n", path.c_str());
-			return asset;
+			foundAssets.push_back(asset);
 		}
 	}
 
@@ -42,5 +43,5 @@ Asset* AssetLoader::FindInjectedAsset(std::string path)
 	fs::path modsDir = cd / "Mods";
 	//Finally, if the asset still isnt found, let the game handle it
 	//printf("Failed to find asset '%s', passing search back to the game.\n", path.c_str());
-	return nullptr;
+	return foundAssets;
 }

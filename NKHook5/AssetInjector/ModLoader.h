@@ -6,7 +6,7 @@ namespace NKHook5 {
 	namespace AssetInjector {
 		class ModLoader : public AssetLoader {
 			virtual void Initialize();
-			virtual Asset* FindInjectedAsset(std::string path);
+			virtual std::vector<Asset*> FindInjectedAsset(std::string path);
 		};
 	}
 }

@@ -17,8 +17,9 @@ void TestModAssetLoader::Initialize()
 {
 }
 
-Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
+std::vector<Asset*> TestModAssetLoader::FindInjectedAsset(std::string path)
 {
+	std::vector<Asset*> foundAssets;
 	try {
 		std::string normalPath = path;
 		if (path.find("./Assets/") != std::string::npos) {
@@ -41,7 +42,8 @@ Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 		}
 		DiskAsset* vanillaAsset = new DiskAsset(path, vanillaPath.string());
 		if (!fs::exists(modPath)) {
-			return vanillaAsset;
+			foundAssets.push_back(vanillaAsset);
+			return foundAssets;
 		}
 		DiskAsset* modAsset = new DiskAsset(path, modPath.string());
 
@@ -75,11 +77,11 @@ Asset* TestModAssetLoader::FindInjectedAsset(std::string path)
 		delete vanillaAsset;
 		delete modAsset;
 
-		return memAsset;
+		foundAssets.push_back(memAsset);
 	}
 	catch (std::exception& ex) {
 		printf("Error getting injected asset: %s\n", ex.what());
 	}
 
-	return nullptr;
+	return foundAssets;
 }

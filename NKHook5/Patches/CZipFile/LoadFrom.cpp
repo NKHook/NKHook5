@@ -3,10 +3,11 @@
 #include "../../Classes/CZipFile.h"
 #include "../../Classes/CUnzippedFile.h"
 #include "../../AssetInjector/InjectionManager.h"
-#include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
 
+#include <Extensions/ExtensionManager.h>
 #include <Util/Json/MergedDocument.h>
+#include <Util/Xml/ReflectedDocument.h>
 
 #include <stdint.h>
 #include <ghstl/string>
@@ -21,20 +22,21 @@ namespace NKHook5
             using namespace Common::Extensions;
             using namespace Common::Util;
             using namespace Common::Util::Json;
+            using namespace Common::Util::Xml;
             using namespace Signatures;
 
             uint64_t o_func;
             Classes::CUnzippedFile* __fastcall cb_hook(Classes::CZipFile* pBundle, uint32_t pad, const std::string& assetPath, void* param_2, std::string& archivePassword) {
                 std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(assetPath);
                 AssetLoader* currentLoader = InjectionManager::GetLoader();
-                Asset* injectedAsset = currentLoader->FindInjectedAsset(assetPath);
+                std::vector<Asset*> injectedAssets = currentLoader->FindInjectedAsset(assetPath);
                 
                 Classes::CUnzippedFile* pAsset = nullptr;
 
                 if(!pAsset)
                     pAsset = ((Classes::CUnzippedFile*(__thiscall*)(void*, const std::string&, void*, const std::string&))o_func)(pBundle, assetPath, param_2, archivePassword);
 
-                if (injectedAsset != nullptr) {
+                for(Asset* injectedAsset : injectedAssets) {
                     if (injectedAsset->ExpectsMerge() && pAsset != nullptr) {
                         try {
                             std::string injectedStr = std::string((char*)injectedAsset->GetAssetOnHeap(), injectedAsset->GetSizeOnHeap());
@@ -59,6 +61,16 @@ namespace NKHook5
                         catch (std::exception& ex) {
                             printf("Failed to merge asset that expected a merge! %s\n", ex.what());
                         }
+                        try {
+                            std::string injectedStr = std::string((char*)injectedAsset->GetAssetOnHeap(), injectedAsset->GetSizeOnHeap());
+                            std::string baseStr = std::string((char*)pAsset->fileContent, pAsset->fileSize);
+
+                            ReflectedDocument reflected(injectedStr);
+                            //reflected.Reflect()
+                        }
+                        catch (std::exception& ex) {
+
+                            }
                     }
                     else {
                         if(pAsset)
@@ -66,6 +78,8 @@ namespace NKHook5
                                 free(pAsset->fileContent);
                         pAsset = new Classes::CUnzippedFile(injectedAsset);
                     }
+
+                    injectedAsset->Release();
                 }
 
                 if (pAsset != nullptr && pAsset->fileContent != nullptr) {
@@ -73,9 +87,6 @@ namespace NKHook5
                         ext->UseData(pAsset->fileContent, pAsset->fileSize);
                     }
                 }
-
-                if(injectedAsset)
-                    injectedAsset->Release();
 
                 return pAsset;
             }

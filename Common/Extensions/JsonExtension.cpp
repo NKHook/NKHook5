@@ -10,7 +10,7 @@ void JsonExtension::UseData(void* content, size_t contentLen)
 {
 	std::string strContent = std::string((char*)content, contentLen);
 	try {
-		nlohmann::json jsonContent = nlohmann::json::parse(strContent);
+		nlohmann::json jsonContent = nlohmann::json::parse(strContent, nullptr, true, true);
 		this->UseJsonData(jsonContent);
 	}
 	catch (std::exception& ex) {
