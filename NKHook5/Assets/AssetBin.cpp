@@ -16,6 +16,16 @@ AssetBin NKHook5::Assets::FromString(std::string binName) {
 	return result;
 }
 
+AssetBin NKHook5::Assets::FromPath(fs::path assetPath) {
+	if (assetPath.string().find("Assets/") == 0) {
+		assetPath = assetPath.string().substr(sizeof("Assets/") - 1);
+		size_t slashPos = assetPath.string().find("/");
+		std::string binName = assetPath.string().substr(slashPos);
+		return FromString(binName);
+	}
+	return AssetBin::INVALID;
+}
+
 std::string NKHook5::Assets::ToString(AssetBin bin) {
 	std::string result = "Invalid";
 	if (bin <= AssetBin::BIN_COUNT && bin >= AssetBin::INVALID) {

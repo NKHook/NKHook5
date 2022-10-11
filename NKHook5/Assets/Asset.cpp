@@ -3,16 +3,6 @@
 using namespace NKHook5;
 using namespace NKHook5::Assets;
 
-AssetBin FromPath(fs::path assetPath) {
-	if (assetPath.string().find("Assets/") == 0) {
-		assetPath = assetPath.string().substr(sizeof("Assets/") - 1);
-		size_t slashPos = assetPath.string().find("/");
-		std::string binName = assetPath.string().substr(slashPos);
-		return FromString(binName);
-	}
-	return AssetBin::INVALID;
-}
-
 Asset::Asset(fs::path assetPath)
 {
 	this->assetBin = FromPath(assetPath);

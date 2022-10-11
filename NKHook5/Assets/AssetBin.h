@@ -1,9 +1,12 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 
 namespace NKHook5 {
 	namespace Assets {
+		namespace fs = std::filesystem;
+
 		enum class AssetBin {
 			INVALID,
 			AUDIO,
@@ -28,6 +31,7 @@ namespace NKHook5 {
 		};
 
 		AssetBin FromString(std::string binName);
+		AssetBin FromPath(fs::path assetPath);
 		std::string ToString(AssetBin bin);
 	}
 }
