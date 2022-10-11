@@ -13,17 +13,18 @@ namespace NKHook5 {
 
 		class AssetServer {
 			std::vector<AssetSource*> sources;
+			std::vector<std::shared_ptr<Asset>> cache;
 
 			AssetServer() = default;
 		public:
 			static AssetServer* GetServer();
 
 			virtual void AddSource(AssetSource* source);
-			virtual std::shared_ptr<Asset> Serve(fs::path assetPath); //Serves any file after it has been fully merged, reflected, etc
+			virtual std::shared_ptr<Asset> Serve(fs::path assetPath, std::vector<uint8_t> vanilla); //Serves any file after it has been fully merged, reflected, etc
 
-			virtual std::shared_ptr<Asset> ServeGeneric(fs::path assetPath); //Serves any file
-			virtual std::shared_ptr<Asset> ServeJSON(fs::path assetPath); //Serves a merged JSON file
-			virtual std::shared_ptr<Asset> ServeXML(fs::path assetPath); //Serves a reflected XML file
+			virtual std::shared_ptr<Asset> ServeGeneric(fs::path assetPath, std::vector<uint8_t> vanilla); //Serves any file
+			virtual std::shared_ptr<Asset> ServeJSON(fs::path assetPath, std::vector<uint8_t> vanilla); //Serves a merged JSON file
+			virtual std::shared_ptr<Asset> ServeXML(fs::path assetPath, std::vector<uint8_t> vanilla); //Serves a reflected XML file
 		};
 	}
 }

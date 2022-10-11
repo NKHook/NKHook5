@@ -11,7 +11,7 @@ namespace Common {
 				rapidxml::xml_document<>* reflect_document = nullptr;
 			public:
 				ReflectedDocument();
-				ReflectedDocument(std::string);
+				ReflectedDocument(std::string filter);
 				~ReflectedDocument();
 				void Reflect(rapidxml::xml_document<>* victim);
 			};

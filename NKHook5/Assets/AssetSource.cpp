@@ -8,14 +8,14 @@ AssetSource::AssetSource(std::string sourceName) {
 	this->sourceName = sourceName;
 }
 
-std::shared_ptr<Asset> Find(fs::path assetPath) {
+std::shared_ptr<Asset> AssetSource::Find(fs::path assetPath) {
 	return nullptr;
 }
 
-std::shared_ptr<Asset> FindRel(AssetBin bin, fs::path relativePath) {
+std::shared_ptr<Asset> AssetSource::FindRel(AssetBin bin, fs::path relativePath) {
 	return nullptr;
 }
 
-std::shared_ptr<Asset> FindInBin(AssetBin bin, std::string filename) {
+std::shared_ptr<Asset> AssetSource::FindInBin(AssetBin bin, std::string filename) {
 	return nullptr;
 }
