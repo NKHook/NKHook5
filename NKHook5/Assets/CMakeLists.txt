@@ -3,4 +3,5 @@ target_sources(NKHook5 PRIVATE
 	"AssetBin.cpp"
 	"AssetServer.cpp"
 	"AssetSource.cpp"
+	"ModAssetSource.cpp"
 )

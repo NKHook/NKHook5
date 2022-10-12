@@ -77,7 +77,7 @@ std::vector<uint8_t> ZipBase::ReadEntry(std::string entry)
 {
 	std::vector<uint8_t> result;
 	if (this->archive == nullptr) {
-		printf("Error: pArchive was null in read");
+		//printf("Error: pArchive was null in read");
 		return result;
 	}
 	auto pEntry = this->archive->GetEntry(entry);

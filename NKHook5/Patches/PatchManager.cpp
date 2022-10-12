@@ -1,6 +1,8 @@
 #include "PatchManager.h"
 #include <iostream>
 
+#include "CBaseFileIO/FileExists.h"
+#include "CBaseFileIO/OpenFile.h"
 #include "CBasePositionableObject/Constructor.h"
 #include "CBloon/Update.h"
 #include "CBloonsTD5Game/Constructor.h"
@@ -32,6 +34,8 @@ using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
+    PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
+    PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloon::Update());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());

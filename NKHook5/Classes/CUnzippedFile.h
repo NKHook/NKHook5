@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Assets/Asset.h"
 #include "../../Util/NewFramework.h"
 #include "../../Signatures/Signature.h"
 #include "Macro.h"
@@ -7,7 +8,9 @@
 
 namespace NKHook5 {
 	namespace Classes {
-		using namespace Signatures;
+		using namespace NKHook5;
+		using namespace NKHook5::Signatures;
+		using namespace NKHook5::Assets;
 
 		struct FileReadResult {
 			size_t content;
@@ -35,14 +38,14 @@ namespace NKHook5 {
 			CUnzippedFile() {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
 			}
-			/*CUnzippedFile(Asset* asset) {
+			CUnzippedFile(std::shared_ptr<Asset> asset) {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
 
-				this->filePath.assign(asset->GetPath());
-				this->fileSize = asset->GetSizeOnHeap();
+				this->filePath.assign(asset->GetFullPath().string());
+				this->fileSize = asset->GetData().size();
 				this->fileContent = malloc(this->fileSize);
-				memcpy_s(this->fileContent, this->fileSize, asset->GetAssetOnHeap(), this->fileSize);
-			}*/
+				memcpy_s(this->fileContent, this->fileSize, asset->GetData().data(), this->fileSize);
+			}
 			virtual ~CUnzippedFile() {};
 		};
 

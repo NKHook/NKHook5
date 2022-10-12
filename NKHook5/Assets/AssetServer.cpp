@@ -32,8 +32,10 @@ void AssetServer::AddSource(AssetSource* source) {
 
 std::shared_ptr<Asset> AssetServer::Serve(fs::path assetPath, std::vector<uint8_t> vanilla) {
 	for (const auto& cached : this->cache) {
-		if (cached->GetFullPath() == assetPath) {
-			return cached;
+		if (cached != nullptr) {
+			if (cached->GetFullPath() == assetPath) {
+				return cached;
+			}
 		}
 	}
 
@@ -50,6 +52,8 @@ std::shared_ptr<Asset> AssetServer::Serve(fs::path assetPath, std::vector<uint8_
 		this->cache.push_back(toCache);
 		return toCache;
 	}
+
+	return nullptr;
 }
 
 std::shared_ptr<Asset> AssetServer::ServeGeneric(fs::path assetPath, std::vector<uint8_t> vanilla) {

@@ -9,6 +9,9 @@ namespace NKHook5 {
 			/* CApp */
 			/* CAssetBag */
 			/* CBaseFactory */
+			/* CBaseFileIO */
+			CBaseFileIO_FileExists,
+			CBaseFileIO_OpenFile,
 			/* CBasePositionableObject */
 			CBasePositionableObject_AssignParent,
 			CBasePositionableObject_SetComplete,
@@ -27,6 +30,8 @@ namespace NKHook5 {
 			CCollectableTask_Clone,
 			CCollectableTask_GiveContentsAndDie,
 			CCollectableTask_Update,
+			/* CFile */
+			CFile_ReadBytes,
 			/* CFlagStringConvertor */
 			CFlagStringConvertor_FlagToString,
 			CFlagStringConvertor_LoadCategory,
