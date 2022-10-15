@@ -75,15 +75,18 @@ namespace NKHook5
                 std::shared_ptr<Asset> servedAsset = server->Serve(assetPath, vanillaData);
                 //If there is an asset to serve
                 if (servedAsset != nullptr) {
-                    //Create a copy
-                    void* contentCopy = malloc(servedAsset->GetData().size());
-                    memcpy_s(
-                        contentCopy,
-                        servedAsset->GetData().size(),
-                        servedAsset->GetData().data(),
-                        servedAsset->GetData().size()
-                    );
                     if (pAsset) {
+                        //Create a copy
+                        void* contentCopy = malloc(servedAsset->GetData().size());
+                        memcpy_s(
+                            contentCopy,
+                            servedAsset->GetData().size(),
+                            servedAsset->GetData().data(),
+                            servedAsset->GetData().size()
+                        );
+                        if (pAsset->fileContent) {
+                            free(pAsset->fileContent);
+                        }
                         //Place the new pointer and size into the asset structure
                         pAsset->fileContent = contentCopy;
                         pAsset->fileSize = servedAsset->GetData().size();

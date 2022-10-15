@@ -82,15 +82,15 @@ std::vector<uint8_t> ZipBase::ReadEntry(std::string entry)
 	}
 	auto pEntry = this->archive->GetEntry(entry);
 	if (pEntry == nullptr) {
-		printf("Error: pEntry was null in read\n");
-		printf("Entry: %s\n", entry.c_str());
+		//printf("Error: pEntry was null in read\n");
+		//printf("Entry: %s\n", entry.c_str());
 		return result;
 	}
 	pEntry->SetPassword(this->password);
 	std::istream* pStream = pEntry->GetDecompressionStream();
 	if (pStream == nullptr) {
-		printf("Error: pStream was null in read\n");
-		printf("Entry: %s\n", entry.c_str());
+		//printf("Error: pStream was null in read\n");
+		//printf("Entry: %s\n", entry.c_str());
 		return result;
 	}
 	result = std::vector<uint8_t>(std::istreambuf_iterator<char>(*pStream), {});

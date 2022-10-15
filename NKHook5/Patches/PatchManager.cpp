@@ -34,8 +34,8 @@ using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
-    PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
-    PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
+    //PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
+    //PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloon::Update());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());

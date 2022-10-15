@@ -132,7 +132,8 @@ std::shared_ptr<Asset> AssetServer::ServeXML(fs::path assetPath, std::vector<uin
 			baseXmlStr = std::string((char*)baseXmlData.data(), baseXmlData.size());
 		}
 
-		fs::path reflectivePath = assetPath.replace_extension("rxml");
+		fs::path reflectivePath = assetPath;
+		reflectivePath.replace_extension("rxml");
 		std::vector<std::shared_ptr<Asset>> reflections;
 		for (AssetSource* source : this->sources) {
 			std::shared_ptr<Asset> find = source->Find(reflectivePath);

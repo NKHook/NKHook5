@@ -1,8 +1,16 @@
 #include "FileExists.h"
 
+#include <Logging/Logger.h>
+
+#include "../../Assets/Asset.h"
+#include "../../Assets/AssetServer.h"
 #include "../../Classes/CBaseFileIO.h"
+#include "../../Classes/CUnzippedFile.h"
+#include "../../Classes/CZipFile.h"
 #include "../../Classes/IFile.h"
 #include "../../Signatures/Signature.h"
+
+#include <ghstl/string>
 
 #include <string>
 
@@ -12,24 +20,34 @@ namespace NKHook5
     {
         namespace CBaseFileIO
         {
+            using namespace Common;
+            using namespace Common::Logging;
+            using namespace Common::Logging::Logger;
             using namespace NKHook5;
+            using namespace NKHook5::Assets;
             using namespace NKHook5::Signatures;
 
-            /* THIS METHOD DOES NOT WORK, IGNORE */
-
             static uint64_t o_func;
-            bool __fastcall cb_hook(Classes::CBaseFileIO* pCBaseFileIO, int pad, std::string* path, int policy) {
-                //return PLH::FnCast(o_func, &cb_hook)(pCBaseFileIO, pad, path, policy);
-                
-                //check if the game is looking for a font, those can only be loaded from disk 
-                if (path->find("Assets/Fonts") != std::string::npos) {
-                    return PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, path, policy);
+            static Classes::CZipFile* assetsArchive;
+            bool __fastcall cb_hook(Classes::CBaseFileIO* pCBaseFileIO, int pad, std::string& assetPath, int policy) {
+                bool result = false;
+
+                //Get the AssetServer
+                AssetServer* server = AssetServer::GetServer();
+                //Serve the asset
+                std::shared_ptr<Asset> servedAsset = server->Serve(assetPath, std::vector<uint8_t>()); //We have no vanilla data yet
+                //Check if an asset was served
+                result = servedAsset != nullptr;
+
+                //If we cannot find the file
+                if (!result) {
+                    //Let the game try
+                    result = PLH::FnCast(o_func, &cb_hook)(pCBaseFileIO, pad, assetPath, policy);
                 }
 
-                //Its easier to replace file content if we make the game think its loaded from the zip file
-                //replacing contents of files on disk in memory is a little bit of a hassle
-                //so by returning false we effectively tell the game that the files do not exist on disk, and only in the jet file
-                return false;
+                Print("Found %x: %s", result, assetPath.c_str());
+
+                return result;
             }
 
             auto FileExists::Apply() -> bool

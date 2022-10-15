@@ -6,13 +6,17 @@ using namespace NKHook5::Assets;
 Asset::Asset(fs::path assetPath)
 {
 	this->assetBin = FromPath(assetPath);
-	this->assetPath = assetPath;
+	this->assetPath = assetPath.string()
+		.substr(sizeof("Assets/"))
+		.substr(ToString(this->assetBin).size());
 }
 
 Asset::Asset(fs::path assetPath, std::vector<uint8_t> assetData)
 {
 	this->assetBin = FromPath(assetPath);
-	this->assetPath = assetPath;
+	this->assetPath = assetPath.string()
+		.substr(sizeof("Assets/"))
+		.substr(ToString(this->assetBin).size());
 	this->assetData = assetData;
 }
 

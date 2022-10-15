@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IFile.h"
 #include "../../Assets/Asset.h"
 #include "../../Util/NewFramework.h"
 #include "../../Signatures/Signature.h"
@@ -22,7 +23,7 @@ namespace NKHook5 {
 			size_t readEnd;
 		};
 
-		class CUnzippedFile {
+		class CUnzippedFile : public IFile {
 		public:
 			overload_new
 		public:
@@ -35,10 +36,10 @@ namespace NKHook5 {
 			uint8_t field7_0x36;
 			uint8_t field8_0x37;
 		public:
-			CUnzippedFile() {
+			CUnzippedFile() : IFile() {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
 			}
-			CUnzippedFile(std::shared_ptr<Asset> asset) {
+			CUnzippedFile(std::shared_ptr<Asset> asset) : IFile() {
 				ThisCall<CUnzippedFile*, CUnzippedFile*>(Sigs::CUnzippedFile_CCTOR, this);
 
 				this->filePath.assign(asset->GetFullPath().string());
