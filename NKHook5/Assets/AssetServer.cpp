@@ -65,6 +65,12 @@ std::shared_ptr<Asset> AssetServer::Serve(fs::path assetPath, std::vector<uint8_
 		return toCache;
 	}
 
+	if (theBin == AssetBin::TEXTURES) {
+		auto toCache = this->ServeGeneric(assetPath, vanilla);
+		this->cache.push_back(toCache);
+		return toCache;
+	}
+
 	return nullptr;
 }
 
@@ -77,6 +83,9 @@ std::shared_ptr<Asset> AssetServer::ServeGeneric(fs::path assetPath, std::vector
 		}
 	}
 
+	if (finds.empty()) {
+		return nullptr;
+	}
 	return finds[0];
 }
 

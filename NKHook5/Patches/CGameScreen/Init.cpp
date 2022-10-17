@@ -16,7 +16,8 @@ namespace NKHook5
             static uint64_t o_func;
             void __fastcall cb_hook(Classes::CGameScreen* pCGameScreen, int pad, Classes::IScreenData* pScreenData) {
                 PLH::FnCast(o_func, &cb_hook)(pCGameScreen, pad, pScreenData);
-                
+                std::string textureName("btdr_sprites");
+                pCGameScreen->StartUsingAsset(Classes::eAssetType::TEXTURE, textureName);
             }
 
             auto Init::Apply() -> bool
