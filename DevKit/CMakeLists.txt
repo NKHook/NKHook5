@@ -12,7 +12,7 @@ target_sources(DevKit PRIVATE
 	"main.cpp"
     "Settings.cpp"
     "FeatureMgr.cpp"
- "Packager/TextureStep.h")
+)
 
 add_subdirectory(Features)
 add_subdirectory(Packager)

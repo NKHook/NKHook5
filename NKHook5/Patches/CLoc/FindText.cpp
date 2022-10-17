@@ -4,7 +4,6 @@
 #include <string>
 #include "../../Classes/CLoc.h"
 #include "../../Classes/Texts.h"
-#include <Extensions/Generic/LocExtension.h>
 #include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
 

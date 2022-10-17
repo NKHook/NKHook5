@@ -11,7 +11,7 @@ add_library(NKHook5 SHARED)
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "Classes/CGameScreen.h")
+)
 
 add_subdirectory(Assets)
 add_subdirectory(Classes)
