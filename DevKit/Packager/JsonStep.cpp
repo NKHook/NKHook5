@@ -86,7 +86,7 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 								StrippedDocument stripper; //Hehehe
 								stripper.Add(vanillaJson);
 								stripper.Add(modJson);
-								nlohmann::ordered_json result = stripper.GetStripped();
+								result = stripper.GetStripped();
 							}
 							else {
 								Print(LogLevel::ERR, "Unknown merge rule for file! This should have been unreachable!");
