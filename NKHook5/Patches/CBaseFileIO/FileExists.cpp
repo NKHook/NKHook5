@@ -34,10 +34,8 @@ namespace NKHook5
 
                 //Get the AssetServer
                 AssetServer* server = AssetServer::GetServer();
-                //Serve the asset
-                std::shared_ptr<Asset> servedAsset = server->Serve(assetPath, std::vector<uint8_t>()); //We have no vanilla data yet
-                //Check if an asset was served
-                result = servedAsset != nullptr;
+                //Check if an asset exists
+                result = server->Has(assetPath);
 
                 //If we cannot find the file
                 if (!result) {

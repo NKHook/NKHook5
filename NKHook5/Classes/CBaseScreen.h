@@ -1,12 +1,17 @@
-#ifndef NKHOOK5_CLASSES_CBASESCREEN
-#define NKHOOK5_CLASSES_CBASESCREEN
+#pragma once
 
 #include "../Utils.h"
-#include "Macro.h"
+
+#include "AssetType.h"
 #include "IBasePointers.h"
 #include "IScreenData.h"
+#include "Macro.h"
+
 #include <ghstl/string>
 #include <ghstl/vector>
+
+#include <stdint.h>
+#include <string>
 
 namespace NKHook5
 {
@@ -31,6 +36,7 @@ namespace NKHook5
 				ThisCall<void, CBaseScreen*, ghstl::string*>(Sigs::CBaseScreen_CCTOR, this, screenName);
 			};
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, uint32_t* param_3);
+			void StartUsingAsset(eAssetType type, std::string& assetName);
 			virtual ~CBaseScreen() {};
 		};
 
@@ -38,5 +44,3 @@ namespace NKHook5
 	} // namespace Classes
 
 } // namespace NKHook5
-
-#endif /* NKHOOK5_CLASSES_CBASESCREEN */

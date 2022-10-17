@@ -12,6 +12,7 @@
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CFlagStringConvertor/LoadCategory.h"
 #include "CFlagStringConvertor/StringToFlag.h"
+#include "CGameScreen/Init.h"
 #include "CLoc/FindText.h"
 #include "CLoc/GetText.h"
 #include "CPlayerProfileV1/InternalLoad.h"
@@ -34,8 +35,8 @@ using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
-    //PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
-    //PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
+    PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
+    PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloon::Update());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
@@ -45,6 +46,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
+    PatchManager::ApplyPatch(new CGameScreen::Init());
     PatchManager::ApplyPatch(new CLoc::FindText());
     PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());

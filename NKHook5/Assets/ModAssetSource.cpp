@@ -15,6 +15,11 @@ ModAssetSource::ModAssetSource(fs::path modPath) : AssetSource(modPath.stem().st
 	}
 }
 
+bool ModAssetSource::Has(fs::path assetPath)
+{
+	return this->modArch->HasEntry(assetPath.string());
+}
+
 std::shared_ptr<Asset> ModAssetSource::Find(fs::path assetPath)
 {
 	const std::vector<uint8_t>& entryData = this->modArch->ReadEntry(assetPath.string());

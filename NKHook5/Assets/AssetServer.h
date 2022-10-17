@@ -20,6 +20,7 @@ namespace NKHook5 {
 			static AssetServer* GetServer();
 
 			virtual void AddSource(AssetSource* source);
+			virtual bool Has(fs::path assetPath);
 			virtual std::shared_ptr<Asset> Serve(fs::path assetPath, std::vector<uint8_t> vanilla); //Serves any file after it has been fully merged, reflected, etc
 
 			virtual std::shared_ptr<Asset> ServeGeneric(fs::path assetPath, std::vector<uint8_t> vanilla); //Serves any file

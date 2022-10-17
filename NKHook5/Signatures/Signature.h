@@ -18,6 +18,7 @@ namespace NKHook5 {
 			/* CBaseScreen */
 			CBaseScreen_CCTOR,
 			CBaseScreen_OpenPopup,
+			CBaseScreen_StartUsingAsset,
 			/* CBaseTower */
 			/* CBloon */
 			CBloon_Update,
@@ -39,6 +40,8 @@ namespace NKHook5 {
 			/* CFont */
 			/* CFontManager */
 			CFontManager_GetFont,
+			/* CGameScreen */
+			CGameScreen_Init,
 			/* CGameSystemPointers */
 			/* CLoc */
 			CLoc_FindText,

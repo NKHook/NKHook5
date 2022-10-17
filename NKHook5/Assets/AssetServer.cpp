@@ -30,6 +30,18 @@ void AssetServer::AddSource(AssetSource* source) {
 	this->sources.push_back(source);
 }
 
+bool AssetServer::Has(fs::path assetPath)
+{
+	bool has = false;
+	for (AssetSource* source : this->sources) {
+		if (source->Has(assetPath)) {
+			has = true;
+			break;
+		}
+	}
+	return has;
+}
+
 std::shared_ptr<Asset> AssetServer::Serve(fs::path assetPath, std::vector<uint8_t> vanilla) {
 	for (const auto& cached : this->cache) {
 		if (cached != nullptr) {

@@ -8,6 +8,11 @@ AssetSource::AssetSource(std::string sourceName) {
 	this->sourceName = sourceName;
 }
 
+bool AssetSource::Has(fs::path assetPath)
+{
+	return false;
+}
+
 std::shared_ptr<Asset> AssetSource::Find(fs::path assetPath) {
 	return nullptr;
 }
