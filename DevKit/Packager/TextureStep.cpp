@@ -67,7 +67,8 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 		const std::vector<Compile>& texCompiles = rules.GetCompiles();
 		for (const Compile& compile : texCompiles) {
 			sheetsJson.push_back(compile.GetSourceDir());
-			fs::path sourceDir = modTextures / compile.GetSourceDir();
+			std::string quality = compile.GetQuality();
+			fs::path sourceDir = modTextures / quality / compile.GetSourceDir();
 
 			//We need to calculate the size the atlas needs to be
 			BinPack2D::CanvasArray<
@@ -152,7 +153,6 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 
 			//Export the atlas to an image file
 			for (const CompileResult& result : compile.GetResults()) {
-				std::string quality = result.GetQuality();
 				std::string texFile = result.GetTexture();
 				std::string infoXml = result.GetInfoXml();
 
@@ -175,7 +175,6 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 
 			//Export the atlas' XML map
 			for (const CompileResult& result : compile.GetResults()) {
-				std::string quality = result.GetQuality();
 				std::string texFile = result.GetTexture();
 				std::string infoXml = result.GetInfoXml();
 
@@ -224,17 +223,17 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 				delete spriteInfo;
 			}
 
-			//Add the sheets.json file
-			std::string sheetsJsonContent = sheetsJson.dump();
-			std::vector<uint8_t> sheetsJsonVec(sheetsJsonContent.begin(), sheetsJsonContent.end());
-			fs::path sheetsJsonEntry = entryTextures / "sheets.json";
-			arch.WriteEntry(sheetsJsonEntry.string(), sheetsJsonVec);
-
 			//Free the images
 			for (const auto& content : inputContent.Get()) {
 				delete content.content.second;
 			}
 		}
+
+		//Add the sheets.json file
+		std::string sheetsJsonContent = sheetsJson.dump();
+		std::vector<uint8_t> sheetsJsonVec(sheetsJsonContent.begin(), sheetsJsonContent.end());
+		fs::path sheetsJsonEntry = entryTextures / "sheets.json";
+		arch.WriteEntry(sheetsJsonEntry.string(), sheetsJsonVec);
 
 		return true;
 	}

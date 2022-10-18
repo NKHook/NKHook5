@@ -58,6 +58,8 @@ namespace NKHook5
                     printf("%s\n", error.c_str());
                 }
 
+                //return pAsset;
+
                 /* Ok so calling this function un-corrupts the stack? */
                 Classes::CFile* resultFile = (Classes::CFile*)PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, assetPath, policy, eFileOpenMode);
                 /* But result file returns with the data of pAsset ?? which is good but the fuck? */

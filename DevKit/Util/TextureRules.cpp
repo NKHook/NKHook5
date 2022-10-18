@@ -3,23 +3,16 @@
 using namespace DevKit;
 using namespace DevKit::Util;
 
-CompileResult::CompileResult(std::string quality, std::string texture, std::string infoXml)
+CompileResult::CompileResult(std::string texture, std::string infoXml)
 {
-	this->quality = quality;
 	this->texture = texture;
 	this->infoXml = infoXml;
 }
 
 CompileResult::CompileResult(nlohmann::json document)
 {
-	this->quality = document["Quality"];
 	this->texture = document["Texture"];
 	this->infoXml = document["InfoXml"];
-}
-
-const std::string& CompileResult::GetQuality() const
-{
-	return this->quality;
 }
 
 const std::string& CompileResult::GetTexture() const
@@ -32,9 +25,10 @@ const std::string& CompileResult::GetInfoXml() const
 	return this->infoXml;
 }
 
-Compile::Compile(std::string sourceDir, std::vector<CompileResult> results)
+Compile::Compile(std::string sourceDir, std::string quality, std::vector<CompileResult> results)
 {
 	this->sourceDir = sourceDir;
+	this->quality = quality;
 	this->results = results;
 }
 
@@ -44,8 +38,13 @@ Compile::Compile(nlohmann::json document)
 	if (!sourceDir.is_string()) {
 		throw std::exception("Compile expected SourceDir to be a string, but it was not.");
 	}
-
 	this->sourceDir = sourceDir;
+
+	nlohmann::json quality = document["Quality"];
+	if (!quality.is_string()) {
+		throw std::exception("Compile expected Quality to be a string, but it was not.");
+	}
+	this->quality = quality;
 
 	nlohmann::json results = document["Results"];
 	if (!results.is_array()) {
@@ -63,6 +62,11 @@ Compile::Compile(nlohmann::json document)
 const std::string& Compile::GetSourceDir() const
 {
 	return this->sourceDir;
+}
+
+const std::string& Compile::GetQuality() const
+{
+	return this->quality;
 }
 
 const std::vector<CompileResult>& Compile::GetResults() const
