@@ -41,7 +41,7 @@ int main(int argc, const char* argv[]) {
 	FeatureMgr::RegisterFeature(new Test());
 #endif
 
-	CLI::App app("NKHook5 DevKit (" STRING(NKHOOK_BUILD_VERSION) ")");
+	CLI::App app("NKHook5 DevKit for v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
 	for (const auto& [feature, option] : FeatureMgr::AllFeatures()) {
 		if (feature->FlagOnly()) {
 			FeatureMgr::AllFeatures()[feature] = app.add_flag(feature->ActivatorArgs(), feature->HelpDesc());
