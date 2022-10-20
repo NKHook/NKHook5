@@ -24,6 +24,10 @@ JsonStep::JsonStep(JsonPkgRule rule) : PackageStep("JSON")
 bool JsonStep::Execute(Project& proj, ZipBase& arch)
 {
 	fs::path modAssets = proj.GetModPath() / "JSON";
+	if (!fs::exists(modAssets)) {
+		Print("No json files, skipping...");
+		return true;
+	}
 	fs::path vanillaAssets = proj.GetVanillaPath() / "JSON";
 	Logger::Print("Indexing mod files...");
 	size_t numModFiles = 0;

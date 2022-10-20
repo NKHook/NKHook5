@@ -37,12 +37,20 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 {
 	try {
 		fs::path modTextures = proj.GetModPath() / "Textures";
+		if (!fs::exists(modTextures)) {
+			Print("No textures to pack, skipping...");
+			return true;
+		}
 		fs::path vanillaTextures = proj.GetVanillaPath() / "Textures";
 		fs::path entryTextures = "Assets/Textures";
 
 		nlohmann::json sheetsJson;
 
 		fs::path texRules = modTextures / "Rules.json";
+		if (!fs::exists(texRules)) {
+			Print(LogLevel::WARNING, "Mod textures dir found, but no Rules.json exists for how it should compile. Skipping...");
+			return true;
+		}
 		File rulesFile;
 		rulesFile.OpenRead(texRules);
 		std::string rulesJson = rulesFile.ReadStr();
