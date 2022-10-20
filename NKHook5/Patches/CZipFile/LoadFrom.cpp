@@ -57,7 +57,9 @@ namespace NKHook5
                         vanillaFile.Close();
                     }
                     else {
+#ifdef _DEBUG
                         Print(LogLevel::ERR, "Failed to find asset: %s", assetPath.c_str());
+#endif
                     }
                 }
 

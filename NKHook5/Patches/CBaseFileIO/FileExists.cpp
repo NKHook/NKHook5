@@ -43,7 +43,9 @@ namespace NKHook5
                     result = PLH::FnCast(o_func, &cb_hook)(pCBaseFileIO, pad, assetPath, policy);
                 }
 
+#ifdef _DEBUG
                 Print("Found %x: %s", result, assetPath.c_str());
+#endif
 
                 return result;
             }

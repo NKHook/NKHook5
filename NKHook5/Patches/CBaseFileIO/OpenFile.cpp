@@ -54,9 +54,11 @@ namespace NKHook5
 
                 ghstl::string error;
                 pAsset = assetsArchive->LoadFrom(assetPath, error);
+#ifdef _DEBUG
                 if (error.length() > 0) {
                     printf("%s\n", error.c_str());
                 }
+#endif
 
                 //return pAsset;
 

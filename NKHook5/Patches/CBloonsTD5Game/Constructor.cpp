@@ -33,6 +33,9 @@ namespace NKHook5
                 Print("Loading Mods...");
                 fs::path cwd = fs::current_path();
                 fs::path modsDir = cwd / "Mods";
+                if (!fs::exists(modsDir)) {
+                    fs::create_directories(modsDir);
+                }
                 AssetServer* server = AssetServer::GetServer();
                 for (const auto& mod : fs::directory_iterator(modsDir)) {
                     try {

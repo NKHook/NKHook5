@@ -25,7 +25,7 @@ namespace NKHook5
                 PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
                 printf("CSettingsScreen*: %p\n", self);
                 printf("SettingScreen inited\n");
-                ghstl::string nkhookText("NKHook5 v1.0 (" STRING(NKHOOK_BUILD_VERSION) ")");
+                ghstl::string nkhookText("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
                 printf("Made watermark\n");
                 boost::shared_ptr<Classes::CFont>* pCFont = &self->pMenuFont;
                 printf("Retrieved font\n");

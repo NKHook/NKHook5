@@ -28,7 +28,9 @@ using namespace DevKit::Features;
 namespace fs = std::filesystem;
 
 int main(int argc, const char* argv[]) {
+#ifdef _DEBUG
 	std::cin.get();
+#endif
 	FeatureMgr::RegisterFeature(new Setup());
 	FeatureMgr::RegisterFeature(new CreateMod());
 	FeatureMgr::RegisterFeature(new UpdateMod());

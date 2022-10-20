@@ -47,8 +47,8 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
     PatchManager::ApplyPatch(new CGameScreen::Init());
-    PatchManager::ApplyPatch(new CLoc::FindText());
-    PatchManager::ApplyPatch(new CLoc::GetText());
+    //PatchManager::ApplyPatch(new CLoc::FindText());
+    //PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
     //PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
     PatchManager::ApplyPatch(new CProjectile::Clone());
