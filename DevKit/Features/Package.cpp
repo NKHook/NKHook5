@@ -19,6 +19,7 @@
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace Common::Util;
 using namespace Common::Util::Json;
 using namespace DevKit;
@@ -229,8 +230,13 @@ void Package::Run(std::vector<std::string> args)
 
 	if (modFmt == ModFmt::NKH) {
 		printf("Creating NKH package...\n");
+		fs::path resultPath = modName + ".nkh";
+		if (fs::exists(resultPath)) {
+			Print("Deleting existing .nkh file...");
+			fs::remove(resultPath);
+		}
 		ModArchive modFile;
-		if (!modFile.OpenWrite(modName + ".nkh")) {
+		if (!modFile.OpenWrite(resultPath)) {
 			printf("Failed to open archive to unpack\n");
 			return;
 		}
