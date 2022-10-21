@@ -39,7 +39,7 @@ std::string AskStr(std::string question) {
 	do
 	{
 		printf("%s\n", question.c_str());
-		std::cin >> choice;
+		std::getline(std::cin, choice);
 	} while (!std::cin.fail() && choice.length() == 0);
 	return choice;
 }
