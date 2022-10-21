@@ -39,7 +39,11 @@ namespace NKHook5
                 AssetServer* server = AssetServer::GetServer();
                 for (const auto& mod : fs::directory_iterator(modsDir)) {
                     try {
-                        server->AddSource(new ModAssetSource(mod));
+                        ModAssetSource* source = new ModAssetSource(mod);
+                        server->AddSource(source);
+                        std::shared_ptr<ModArchive> modArch = source->GetModArch();
+                        const ModInfo& modInfo = modArch->GetInfo();
+                        Print("Loading %s", modInfo.GetName().c_str());
                     }
                     catch (std::exception& ex) {
                         Print("An error occured while loading a mod: %s", ex.what());

@@ -17,6 +17,7 @@ namespace NKHook5 {
 		public:
 			ModAssetSource(std::filesystem::path modPath);
 
+			virtual const std::shared_ptr<ModArchive>& GetModArch();
 			virtual bool Has(fs::path assetPath);
 			virtual std::shared_ptr<Asset> Find(fs::path assetPath) override;
 			virtual std::shared_ptr<Asset> FindRel(AssetBin bin, fs::path relativePath) override;
