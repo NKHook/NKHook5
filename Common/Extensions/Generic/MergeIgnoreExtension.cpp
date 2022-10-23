@@ -9,7 +9,7 @@ using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Util;
 
-MergeIgnoreExtension::MergeIgnoreExtension() : JsonExtension("MergeIgnore", "Assets/MergeIgnore.json")
+MergeIgnoreExtension::MergeIgnoreExtension() : JsonExtension("MergeIgnore", "Assets/JSON/MergeIgnore.json")
 {
 }
 

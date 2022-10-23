@@ -1,5 +1,6 @@
 #include "Package.h"
 #include "../Proj/Project.h"
+#include "../Packager/ExtensionStep.h"
 #include "../Packager/JsonStep.h"
 #include "../Packager/TextureStep.h"
 #include "../Packager/VanillaStep.h"
@@ -174,6 +175,10 @@ void Package::Run(std::vector<std::string> args)
 			return;
 		}
 
+		//Load extensions
+		ExtensionStep extensionStep;
+		extensionStep.Execute(modProj, jetFile);
+
 		//Add the vanilla files
 		VanillaStep vanillaStep(true, VanillaTarget::JSON);
 		vanillaStep.Execute(modProj, jetFile);
@@ -194,6 +199,10 @@ void Package::Run(std::vector<std::string> args)
 			return;
 		}
 		
+		//Load extensions
+		ExtensionStep extensionStep;
+		extensionStep.Execute(modProj, jetFile);
+
 		JsonStep jsonStep(JsonPkgRule::MERGE);
 		jsonStep.Execute(modProj, jetFile);
 
@@ -241,6 +250,10 @@ void Package::Run(std::vector<std::string> args)
 			return;
 		}
 		
+		//Load extensions
+		ExtensionStep extensionStep;
+		extensionStep.Execute(modProj, modFile);
+
 		JsonStep jsonStep(JsonPkgRule::STRIP);
 		jsonStep.Execute(modProj, modFile);
 		TextureStep textureStep;

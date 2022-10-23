@@ -23,12 +23,12 @@ bool MatchPart(std::string pathPart, std::string globPart) {
 		//Get the glob's stub
 		std::string globStub = globPart.substr(0, globPart.find("."));
 		//Get the glob's extension
-		std::string globExt = globPart.substr(globPart.find("."));
+		std::string globExt = globPart.substr(globPart.find(".")+1);
 
 		//Get the path's stub
 		std::string pathStub = pathPart.substr(0, pathPart.find("."));
 		//Get the path's extension
-		std::string pathExt = pathPart.substr(pathPart.find("."));
+		std::string pathExt = pathPart.substr(pathPart.find(".")+1);
 
 		bool stubsMatch = MatchPart(pathStub, globStub);
 		bool extensionsMatch = MatchPart(pathExt, globExt);
@@ -52,8 +52,12 @@ Glob::Glob(std::string globStr) {
 		//Append it to the vector
 		this->globParts.push_back(part);
 		//Next part
-		sanitizedGlob = sanitizedGlob.substr(slashPos);
+		sanitizedGlob = sanitizedGlob.substr(slashPos+1);
 	}
+
+	//Push the last part of the glob (stored in sanatizedGlob)
+	if(!sanitizedGlob.empty())
+		this->globParts.push_back(sanitizedGlob);
 }
 
 bool Glob::Match(std::string filePath) const {
@@ -69,8 +73,12 @@ bool Glob::Match(std::string filePath) const {
 		//Append it to the vector
 		pathParts.push_back(part);
 		//Next part
-		sanitizedPath = sanitizedPath.substr(slashPos);
+		sanitizedPath = sanitizedPath.substr(slashPos+1);
 	}
+
+	//Push the last part of the path (stored in sanatizedPath)
+	if (!sanitizedPath.empty())
+		pathParts.push_back(sanitizedPath);
 
 	//If the parts are different sizes, they cant possibly match
 	if (pathParts.size() != globParts.size()) {
