@@ -10,7 +10,7 @@ namespace Common {
 			std::vector<std::string> globParts;
 		public:
 			Glob(std::string globStr);
-			virtual bool Match(std::string path);
+			virtual bool Match(std::string path) const;
 		};
 	}
 }

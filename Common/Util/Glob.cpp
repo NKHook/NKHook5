@@ -56,7 +56,7 @@ Glob::Glob(std::string globStr) {
 	}
 }
 
-bool Glob::Match(std::string filePath) {
+bool Glob::Match(std::string filePath) const {
 	//First we need to sanitize the path and replace all \\ with /
 	std::string sanitizedPath = Sanitize(filePath);
 
@@ -80,6 +80,7 @@ bool Glob::Match(std::string filePath) {
 	//Assume they match before checking
 	bool theyMatch = true;
 
+	//Match each part
 	for (size_t i = 0; i < pathParts.size(); i++) {
 		std::string pathPart = pathParts[i];
 		std::string globPart = globParts[i];

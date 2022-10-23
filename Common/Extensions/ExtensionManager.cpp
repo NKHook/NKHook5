@@ -1,6 +1,7 @@
 #include "ExtensionManager.h"
 
 #include "Generic/FlagsExtension.h"
+#include "Generic/MergeIgnoreExtension.h"
 #include "Textures/SheetsExtension.h"
 #include "Tower/TowerFlagsExt.h"
 
@@ -10,6 +11,7 @@ static std::vector<Extension*> extensions;
 
 void ExtensionManager::AddAll()
 {
+	ExtensionManager::AddExtension(new Generic::MergeIgnoreExtension());
 	ExtensionManager::AddExtension(new Textures::SheetsExtension());
 	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
 }
