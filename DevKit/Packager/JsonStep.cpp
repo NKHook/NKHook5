@@ -1,11 +1,15 @@
 #include "JsonStep.h"
 
+#include <Extensions/Generic/MergeIgnoreExtension.h>
+#include <Extensions/ExtensionManager.h>
 #include <Files/File.h>
 #include <Logging/Logger.h>
 #include <Util/Json/StrippedDocument.h>
 #include <Util/Json/MergedDocument.h>
 
 using namespace Common;
+using namespace Common::Extensions;
+using namespace Common::Extensions::Generic;
 using namespace Common::Files;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
@@ -49,6 +53,20 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 		fs::path vanillaFile = vanillaAssets / onDisk.string().substr(modAssets.string().length() + 1);
 		fs::path entryPath = "Assets/JSON/" + onDisk.string().substr(modAssets.string().length() + 1);
 
+		//Determines if we should not merge with vanilla, or override entirely
+		bool ignoreMerge = false;
+		//Get the merge ignore extension
+		MergeIgnoreExtension* mergeIgnores = (MergeIgnoreExtension*)ExtensionManager::GetByName("MergeIgnore");
+		if (mergeIgnores) {
+			const std::vector<Glob>& ignoreGlobs = mergeIgnores->GetIgnores();
+			//Check if the asset path matches any
+			for (const Glob& glob : ignoreGlobs) {
+				if (glob.Match(entryPath.string())) {
+					ignoreMerge = true;
+				}
+			}
+		}
+
 		File theAsset;
 		if (!theAsset.OpenRead(assetFile)) {
 			Logger::Print("Failed to read file '%s'", entryPath.string().c_str());
@@ -82,13 +100,15 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 							nlohmann::ordered_json result;
 							if (this->rule == JsonPkgRule::MERGE) {
 								MergedDocument merger;
-								merger.Add(vanillaJson);
+								if(!ignoreMerge)
+									merger.Add(vanillaJson);
 								merger.Add(modJson);
 								result = merger.GetMerged();
 							}
 							else if (this->rule == JsonPkgRule::STRIP) {
 								StrippedDocument stripper; //Hehehe
-								stripper.Add(vanillaJson);
+								if(!ignoreMerge)
+									stripper.Add(vanillaJson);
 								stripper.Add(modJson);
 								result = stripper.GetStripped();
 							}

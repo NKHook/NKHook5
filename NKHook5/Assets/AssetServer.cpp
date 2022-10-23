@@ -1,5 +1,7 @@
 #include "AssetServer.h"
 
+#include <Extensions/Generic/MergeIgnoreExtension.h>
+#include <Extensions/ExtensionManager.h>
 #include <Logging/Logger.h>
 #include <Util/Json/MergedDocument.h>
 #include <Util/Xml/ReflectedDocument.h>
@@ -9,6 +11,8 @@
 #include <rapidxml_print.hpp>
 
 using namespace Common;
+using namespace Common::Extensions;
+using namespace Common::Extensions::Generic;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 using namespace Common::Util::Json;
@@ -90,6 +94,19 @@ std::shared_ptr<Asset> AssetServer::ServeGeneric(fs::path assetPath, std::vector
 }
 
 std::shared_ptr<Asset> AssetServer::ServeJSON(fs::path assetPath, std::vector<uint8_t> vanilla) {
+
+	//Determines if we should not merge with vanilla, or override entirely
+	bool ignoreMerge = false;
+	//Get the merge ignore extension
+	MergeIgnoreExtension* mergeIgnores = (MergeIgnoreExtension*)ExtensionManager::GetByName("MergeIgnore");
+	const std::vector<Glob>& ignoreGlobs = mergeIgnores->GetIgnores();
+	//Check if the asset path matches any
+	for (const Glob& glob : ignoreGlobs) {
+		if (glob.Match(assetPath.string())) {
+			ignoreMerge = true;
+		}
+	}
+
 	std::vector<std::shared_ptr<Asset>> finds;
 	for (AssetSource* source : this->sources) {
 		std::shared_ptr<Asset> find = source->Find(assetPath);
@@ -100,7 +117,7 @@ std::shared_ptr<Asset> AssetServer::ServeJSON(fs::path assetPath, std::vector<ui
 
 	try {
 		MergedDocument merged;
-		if (!vanilla.empty()) {
+		if (!vanilla.empty() && !ignoreMerge) {
 			std::string vanillaStr(vanilla.begin(), vanilla.end());
 			nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaStr, nullptr, true, true);
 			merged.Add(vanillaJson);
