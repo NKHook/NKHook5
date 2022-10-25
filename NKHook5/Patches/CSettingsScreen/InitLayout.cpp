@@ -29,7 +29,7 @@ namespace NKHook5
                 printf("Made watermark\n");
                 boost::shared_ptr<Classes::CFont>* pCFont = &self->pMenuFont;
                 printf("Retrieved font\n");
-                Classes::Vec2F location(160, -150);
+                Classes::Vec2F location(160, -100);
                 printf("Created location\n");
                 //Looks like a memory leak, but the game deletes it when its no longer used.
                 Classes::CTextObject* testObj = new Classes::CTextObject(&location, pCFont, &nkhookText);
