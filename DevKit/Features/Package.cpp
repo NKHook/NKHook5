@@ -2,6 +2,7 @@
 #include "../Proj/Project.h"
 #include "../Packager/ExtensionStep.h"
 #include "../Packager/JsonStep.h"
+#include "../Packager/LocStep.h"
 #include "../Packager/TextureStep.h"
 #include "../Packager/VanillaStep.h"
 
@@ -187,6 +188,10 @@ void Package::Run(std::vector<std::string> args)
 		JsonStep jsonStep(JsonPkgRule::MERGE);
 		jsonStep.Execute(modProj, jetFile);
 
+		//Add locale files
+		LocStep locStep;
+		locStep.Execute(modProj, jetFile);
+
 		jetFile.Close();
 		Logger::Print("Done!");
 	}
@@ -205,6 +210,10 @@ void Package::Run(std::vector<std::string> args)
 
 		JsonStep jsonStep(JsonPkgRule::MERGE);
 		jsonStep.Execute(modProj, jetFile);
+
+		//Add locale files
+		LocStep locStep;
+		locStep.Execute(modProj, jetFile);
 
 		jetFile.Close();
 
@@ -254,10 +263,17 @@ void Package::Run(std::vector<std::string> args)
 		ExtensionStep extensionStep;
 		extensionStep.Execute(modProj, modFile);
 
+		//Add stripped JSON
 		JsonStep jsonStep(JsonPkgRule::STRIP);
 		jsonStep.Execute(modProj, modFile);
+
+		//Add textures
 		TextureStep textureStep;
 		textureStep.Execute(modProj, modFile);
+
+		//Add locale files
+		LocStep locStep;
+		locStep.Execute(modProj, modFile);
 
 		modFile.SetInfo(modProj.GetInfo());
 

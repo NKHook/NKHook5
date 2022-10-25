@@ -58,16 +58,16 @@ void Test::Run(std::vector<std::string> args) {
 	Project modProj;
 	modProj.Open(modName);
 	fs::path modDir = modProj.GetModPath();
-	fs::path modTextureDir = modDir / "Textures";
+	fs::path modLocDir = modDir / "Loc";
 	fs::path vanillaDir = modProj.GetVanillaPath();
-	fs::path vanillaTextureDir = vanillaDir / "Textures";
+	fs::path vanillaLocDir = vanillaDir / "Loc";
 
-	fs::path reflectPath = modTextureDir / "SpriteInfo.rxml";
+	fs::path reflectPath = modLocDir / "English.rxml";
 
 	File reflectFile(reflectPath);
 	std::string reflectXml = reflectFile.ReadStr();
 
-	fs::path spriteXmlPath = vanillaTextureDir / "SpriteInfo.xml";
+	fs::path spriteXmlPath = vanillaLocDir / "English.xml";
 
 	File spriteXmlFile(spriteXmlPath);
 	std::string spriteXml = spriteXmlFile.ReadStr();

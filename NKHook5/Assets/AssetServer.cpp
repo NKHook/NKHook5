@@ -55,20 +55,24 @@ std::shared_ptr<Asset> AssetServer::Serve(fs::path assetPath, std::vector<uint8_
 		}
 	}
 
-	AssetBin theBin = FromPath(assetPath);
-
-	if (theBin == AssetBin::JSON) {
-		auto toCache = this->ServeJSON(assetPath, vanilla);
-		this->cache.push_back(toCache);
-		return toCache;
-	}
-
+	//This applies to all xml, regardless of the bin
 	if (assetPath.filename().string().ends_with(".xml")) {
 		auto toCache = this->ServeXML(assetPath, vanilla);
 		this->cache.push_back(toCache);
 		return toCache;
 	}
 
+	//Get the bin type
+	AssetBin theBin = FromPath(assetPath);
+
+	//JSON files are only found in the json bin
+	if (theBin == AssetBin::JSON) {
+		auto toCache = this->ServeJSON(assetPath, vanilla);
+		this->cache.push_back(toCache);
+		return toCache;
+	}
+
+	//Textures need to be from their own bin like json
 	if (theBin == AssetBin::TEXTURES) {
 		auto toCache = this->ServeGeneric(assetPath, vanilla);
 		this->cache.push_back(toCache);

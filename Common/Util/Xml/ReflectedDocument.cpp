@@ -159,9 +159,9 @@ void ExecuteReflect(rapidxml::xml_node<>* reflectNode, rapidxml::xml_document<>*
 			rapidxml::xml_node<>* new_node = victim->allocate_node(rapidxml::node_element, 
 				victim->allocate_string(
 					node.c_str()),
-					0,
+					victim->allocate_string(curOp->value()),
 					node.size(),
-					0
+					curOp->value_size()
 			);
 			for (const auto& [key, value] : attribCopies) {
 				rapidxml::xml_attribute<>* new_attrib = victim->allocate_attribute(

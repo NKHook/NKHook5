@@ -19,8 +19,8 @@ namespace NKHook5
                 
                 g_towerFactory = self;
                 printf("g_towerFactory: %p", g_towerFactory);
-                return ((Classes::CTowerFactory*(__thiscall*)(void*, void*, void*))o_func)(self, param_1, param_2);
-                //return PLH::FnCast(o_func, &cb_hook)(self);
+                //return ((Classes::CTowerFactory*(__thiscall*)(void*, void*, void*))o_func)(self, param_1, param_2);
+                return PLH::FnCast(o_func, &cb_hook)(self, pad, param_1, param_2);
             }
 
             auto Constructor::Apply() -> bool
