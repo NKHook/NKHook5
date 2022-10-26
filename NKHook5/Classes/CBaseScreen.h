@@ -55,6 +55,7 @@ namespace NKHook5
 			CBaseScreen(ghstl::string* screenName) {
 				ThisCall<void, CBaseScreen*, ghstl::string*>(Sigs::CBaseScreen_CCTOR, this, screenName);
 			};
+			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData);
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, uint32_t* param_3);
 			void StartUsingAsset(eAssetType type, std::string& assetName);
 			virtual ~CBaseScreen() {};
