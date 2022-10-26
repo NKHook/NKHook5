@@ -5,6 +5,9 @@
 #include "../../Classes/CSettingsScreen.h"
 #include "../../Classes/CTextObject.h"
 #include "../../Classes/CBloonsTD5Game.h"
+#include "../../Classes/CScreenManager.h"
+#include "../../Classes/ScriptedScreen.h"
+#include "../../Classes/ScriptedScreenData.h"
 #include "../../Classes/Vec2F.h"
 #include "../../Utils.h"
 #include "../../Signatures/Signature.h"
@@ -41,6 +44,12 @@ namespace NKHook5
                 printf("Made text object for watermark (%p)\n", testObj);
                 self->parentObj->AddChild(testObj);
                 printf("Added object to screen\n");
+
+                printf("Testing custom menu");
+                Classes::ScriptedScreenData data("Assets/Scripts/collectionEvent_popup.lua");
+                Classes::ScriptedScreen* customScreen = new Classes::ScriptedScreen(self->pCGameSystemPointers);
+                self->pCGameSystemPointers->basePointers.pCScreenManager->OpenPopup(customScreen, &data);
+                printf("Test passed");
             }
 
             auto InitLayout::Apply() -> bool

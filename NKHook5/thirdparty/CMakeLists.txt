@@ -1,2 +1,3 @@
 add_subdirectory(imgui)
+add_subdirectory(rttihelper)
 target_include_directories(NKHook5 PRIVATE imgui)

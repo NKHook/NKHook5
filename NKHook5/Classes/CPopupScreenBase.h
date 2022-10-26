@@ -4,6 +4,10 @@
 #include "Macro.h"
 #include "CBloonsBaseScreen.h"
 #include "CBasePositionableObject.h"
+#include "IButtonDelegate.h"
+#include "SMainButtonStyle.h"
+
+#include <string>
 
 namespace NKHook5
 {
@@ -11,15 +15,20 @@ namespace NKHook5
 
 	namespace Classes
 	{
-		class CPopupScreenBase : public CBloonsBaseScreen
+		class CPopupScreenBase : public CBloonsBaseScreen, public IButtonDelegate
 		{
 		public:
-			char pad_00EC[80]; //0x00EC
-			class CBasePositionableObject* pRootObj; //0x013C
-			char pad_0140[280]; //0x0140
+			char pad_010C[48]; //0x010C
+			CBasePositionableObject* pRootObj; //0x013C
+			char pad_0140[184]; //0x0140
+			SMainButtonStyle buttonStyle; //0x01F8
+			char pad_0254[4]; //0x0254
 		public:
-			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, ghstl::string* screenName) : CBloonsBaseScreen(screenName, pCGameSystemPointers) {
-				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, ghstl::string*>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
+			CPopupScreenBase() : CBloonsBaseScreen() {
+
+			};
+			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, std::string screenName) : CBloonsBaseScreen(screenName, pCGameSystemPointers) {
+				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, std::string&>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
 			}
 			void AddObject(CBasePositionableObject* object, int param_1) {
 				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CBasePositionableObject*, int>(Sigs::CPopupScreenBase_AddObject, this, object, param_1);

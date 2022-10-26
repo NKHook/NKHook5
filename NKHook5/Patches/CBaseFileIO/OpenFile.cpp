@@ -35,14 +35,14 @@ namespace NKHook5
 
             static uint64_t o_func;
             static Classes::CZipFile* assetsArchive;
-            Classes::IFile* __fastcall cb_hook(Classes::CBaseFileIO* pCBaseFileIO, int pad, std::string& assetPath, int policy, int eFileOpenMode) {
+            Classes::IFile* __fastcall cb_hook(Classes::CBaseFileIO* pCBaseFileIO, int pad, std::string* assetPath, int policy, int eFileOpenMode) {
                 //return PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, assetPath, policy, eFileOpenMode);
                 /*
                 Because both CFile and CUnzippedFile implement IFile, maybe we can just return a CUnzippedFile?
                 */
 
                 //Get the extensions for the file
-                std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(assetPath);
+                std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(*assetPath);
 
                 Classes::CUnzippedFile* pAsset = nullptr;
 
@@ -53,7 +53,7 @@ namespace NKHook5
                 }
 
                 ghstl::string error;
-                pAsset = assetsArchive->LoadFrom(assetPath, error);
+                pAsset = assetsArchive->LoadFrom(*assetPath, error);
 #ifdef _DEBUG
                 if (error.length() > 0) {
                     printf("%s\n", error.c_str());

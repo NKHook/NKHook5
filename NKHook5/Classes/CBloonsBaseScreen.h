@@ -9,6 +9,8 @@
 #include "CFont.h"
 #include "CGameSystemPointers.h"
 #include "Macro.h"
+
+#include <string>
 #include <vector>
 
 namespace NKHook5
@@ -20,20 +22,20 @@ namespace NKHook5
 		class CBloonsBaseScreen : public CBaseScreen
 		{
 		public:
-			CGameSystemPointers* pCGameSystemPointers; //0x00B8
-			char pad_00BC[12]; //0x00BC
-			boost::shared_ptr<CFont> pMenuFont; //0x00C8
-			char pad_00D0[4]; //0x00D0
-			std::vector<CBasePositionableObject*> elements; //0x00D4
-			char pad_00E0[8]; //0x00E0
+			CGameSystemPointers* pCGameSystemPointers; //0x00BC
+			char pad_00C0[12]; //0x00C0
+			boost::shared_ptr<CFont> pMenuFont; //0x00CC
 		public:
-			CBloonsBaseScreen(ghstl::string* screenName, CGameSystemPointers* pCGameSystemPointers) : CBaseScreen(screenName)  {
-				ThisCall<void, CBloonsBaseScreen*, ghstl::string*, CGameSystemPointers*>(Sigs::CBloonsBaseScreen_CCTOR, this, screenName, pCGameSystemPointers);
+			CBloonsBaseScreen() : CBaseScreen() {
+
+			}
+			CBloonsBaseScreen(std::string screenName, CGameSystemPointers* pCGameSystemPointers) : CBaseScreen(screenName)  {
+				ThisCall<void, CBloonsBaseScreen*, std::string&, CGameSystemPointers*>(Sigs::CBloonsBaseScreen_CCTOR, this, screenName, pCGameSystemPointers);
 			}
 			virtual ~CBloonsBaseScreen() {};
 		};
 
-		static_assert(sizeof(CBloonsBaseScreen) == 0x00EC);
+		static_assert(sizeof(CBloonsBaseScreen) == 0x00D4);
 		static_assert(offsetof(CBloonsBaseScreen, pMenuFont) == 0x00CC);
 	} // namespace Classes
 

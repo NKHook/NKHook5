@@ -11,7 +11,6 @@ namespace NKHook5
 	{
 		using namespace Signatures;
 
-		ghstl::string* settingScreen = new ghstl::string("SettingsScreen");
 		class CSettingsScreen : public CPopupScreenBase
 		{
 		public:
@@ -19,7 +18,7 @@ namespace NKHook5
 			class CBasePositionableObject* parentObj; //0x029C
 			char pad_02A0[4]; //0x02A0
 
-			CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) : CPopupScreenBase(pCGameSystemPointers, settingScreen) {
+			CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) : CPopupScreenBase(pCGameSystemPointers, "SettingsScreen") {
 				ThisCall<CSettingsScreen*, CSettingsScreen*, CGameSystemPointers*>(Sigs::CSettingsScreen_CCTOR, this, pCGameSystemPointers);
 			}
 

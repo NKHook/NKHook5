@@ -88,6 +88,7 @@ namespace NKHook5 {
 			IBasePointers_CCTOR,
 			/* IFontImporter */
 			/* IScreenData */
+			IScreenData_VTable,
 			/* ITextureLoaderListener */
 			/* JsonObject */
 			JsonObject_ReadBoolProperty,
@@ -95,6 +96,11 @@ namespace NKHook5 {
 			/* Matrix16F */
 			/* Screens */
 			Screens_GetScreenForParadigm,
+			/* ScriptedScreen */
+			ScriptedScreen_VTable,
+			ScriptedScreen_CCTOR,
+			/* ScriptedScreenData */
+			ScriptedScreenData_VTable,
 			/* Unknown */
 			Unknown_WinMain,
 			/* Vec2F */

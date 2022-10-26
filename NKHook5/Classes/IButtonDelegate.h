@@ -13,17 +13,16 @@ namespace NKHook5 {
             std::vector<CBaseButton*> buttons;
             std::vector<CBaseButton*> moreButtons;
             bool avoidDuplicates = false;
-            char padding[3];
-            char padding_2[12];
+            char padding[15];
             std::vector<CButtonDelegateWatcher*> watchers;
         public:
             virtual ~IButtonDelegate() = default;
             virtual void ButtonPressed(SButtonCB& callback) = 0;
-            virtual void InputAll(SGameTime& gameTime);
-            virtual void AddButton(CBaseButton* button);
-            virtual void RemoveButton(CBaseButton* button);
-            virtual void AddWatcher(CButtonDelegateWatcher* watcher);
-            virtual void RemoveWatcher(CButtonDelegateWatcher* watcher);
+            virtual void InputAll(SGameTime& gameTime) {};
+            virtual void AddButton(CBaseButton* button) {};
+            virtual void RemoveButton(CBaseButton* button) {};
+            virtual void AddWatcher(CButtonDelegateWatcher* watcher) {};
+            virtual void RemoveWatcher(CButtonDelegateWatcher* watcher) {};
         };
 	}
 }

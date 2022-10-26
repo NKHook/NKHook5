@@ -4,6 +4,7 @@
 #include "../../Classes/CBloonsBaseScreen.h"
 #include "../../Classes/CPopupScreenBase.h"
 #include "../../Classes/DeviceType.h"
+#include "../../Classes/ScriptedScreen.h"
 #include "../../Signatures/Signature.h"
 
 #include <string>
@@ -18,6 +19,13 @@ namespace NKHook5
 
             Classes::CBloonsBaseScreen* __cdecl ModdedScreenProxy(std::string& screenName, Classes::eDeviceType deviceType, Classes::CGameSystemPointers* pCGameSystemPointers) {
                 printf("Finding screen \"%s\"", screenName.c_str());
+                printf("Device type: %x", deviceType);
+                printf("pCGSP: %p", pCGameSystemPointers);
+
+                if (screenName == "ModScreen") {
+                    return new Classes::ScriptedScreen(pCGameSystemPointers);
+                }
+
                 return nullptr;
             }
 
@@ -26,12 +34,13 @@ namespace NKHook5
                 CallProxy:
                 __asm {
                     push esp
+                    push [esp + 8]
                     push edx
                     push ecx
                     call ModdedScreenProxy
                     pop ecx
                     pop edx
-                    pop esp
+                    add esp, 8
                     test eax, eax
                     jnz Otherwise
                 }

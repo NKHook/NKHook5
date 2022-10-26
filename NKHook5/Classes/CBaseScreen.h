@@ -52,8 +52,9 @@ namespace NKHook5
 			char pad_00B8[4]; //0x00B8
 
 		public:
-			CBaseScreen(ghstl::string* screenName) {
-				ThisCall<void, CBaseScreen*, ghstl::string*>(Sigs::CBaseScreen_CCTOR, this, screenName);
+			CBaseScreen() {}
+			CBaseScreen(std::string screenName) {
+				ThisCall<void, CBaseScreen*, std::string&>(Sigs::CBaseScreen_CCTOR, this, screenName);
 			};
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData);
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, uint32_t* param_3);
@@ -70,15 +71,15 @@ namespace NKHook5
 			virtual void SelectButtonPressed() {};
 			virtual void BackButtonPressed() {};
 			virtual void ScreenResized() {};
-			virtual std::string ChildScreenClosed(std::string screenName, bool param_2) {};
+			virtual std::string ChildScreenClosed(std::string screenName, bool param_2) { return screenName; };
 			virtual void BatteryLevelDidChange() {};
 			virtual void ProcessInit() {};
 			virtual void ProcessUninit() {};
-			virtual void* Process() {};
+			virtual void Process() {};
 			virtual void Input(struct SGameTime* pGameTime) {};
 			virtual void Draw() {};
 			virtual void DrawOverlay() {};
-			virtual bool AllAssetsLoaded() {};
+			virtual bool AllAssetsLoaded() { return false; };
 			virtual void SetupPointers(CBaseScreen* child) {};
 			virtual void RemoveScreen(CBaseScreen* child) {};
 			virtual void PrintTree(int param_1, std::stringstream outstream) {};
