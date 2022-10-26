@@ -60,7 +60,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
     //PatchManager::ApplyPatch(new GLRenderLayer::Draw());
     PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
-    //PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
+    PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());
     PatchManager::ApplyPatch(new Unknown::CrtMalloc());
     PatchManager::ApplyPatch(new Unknown::GetDeltaLock60FPS());
     PatchManager::ApplyPatch(new Unknown::WinMain());
