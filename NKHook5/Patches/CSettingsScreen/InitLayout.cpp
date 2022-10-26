@@ -46,9 +46,9 @@ namespace NKHook5
                 printf("Added object to screen\n");
 
                 printf("Testing custom menu");
-                Classes::ScriptedScreenData data("Assets/Scripts/collectionEvent_popup.lua");
+                Classes::ScriptedScreenData data("Assets/Scripts/testMenu.lua");
                 Classes::ScriptedScreen* customScreen = new Classes::ScriptedScreen(self->pCGameSystemPointers);
-                self->pCGameSystemPointers->basePointers.pCScreenManager->OpenPopup(customScreen, &data);
+                self->basePointers.pCScreenManager->OpenPopup(customScreen, &data);
                 printf("Test passed");
             }
 

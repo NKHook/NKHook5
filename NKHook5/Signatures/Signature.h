@@ -51,6 +51,7 @@ namespace NKHook5 {
 			CPlayerProfileV1_InternalLoad,
 			CPlayerProfileV1_Save,
 			/* CPopupScreenBase */
+			CPopupScreenBase_VTable,
 			CPopupScreenBase_CCTOR,
 			CPopupScreenBase_AddObject,
 			/* CProjectile */

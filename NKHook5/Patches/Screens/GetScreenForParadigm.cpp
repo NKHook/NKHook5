@@ -22,7 +22,7 @@ namespace NKHook5
                 printf("Device type: %x", deviceType);
                 printf("pCGSP: %p", pCGameSystemPointers);
 
-                if (screenName == "ModScreen") {
+                if (screenName == "ModListScreen") {
                     return new Classes::ScriptedScreen(pCGameSystemPointers);
                 }
 
@@ -50,7 +50,9 @@ namespace NKHook5
                     jmp [o_func]
                 }
                 Otherwise:
-                __asm {}
+                __asm {
+                    ret
+                }
             }
 
             auto GetScreenForParadigm::Apply() -> bool

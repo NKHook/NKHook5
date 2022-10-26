@@ -1,11 +1,13 @@
-#ifndef NKHOOK5_CLASSES_CPOPUPSCREENBASE
-#define NKHOOK5_CLASSES_CPOPUPSCREENBASE
+#pragma once
 
 #include "Macro.h"
 #include "CBloonsBaseScreen.h"
 #include "CBasePositionableObject.h"
+#include "CMainButton.h"
+#include "CToggleButton.h"
 #include "IButtonDelegate.h"
 #include "SMainButtonStyle.h"
+#include "Vec2F.h"
 
 #include <string>
 
@@ -34,6 +36,16 @@ namespace NKHook5
 				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CBasePositionableObject*, int>(Sigs::CPopupScreenBase_AddObject, this, object, param_1);
 			}
 			virtual ~CPopupScreenBase() {};
+
+			virtual void DrawForeground() {}
+			virtual CMainButton* CreateDebugButton(std::string param_1, std::string iconSprite, std::string buttonSprite, std::string param_4, Vec2F& param_5) { return nullptr; }
+			virtual CMainButton* CreateButton(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
+			virtual CMainButton* CreateButton_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
+			virtual CMainButton* CreateButtonBasic(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
+			virtual CMainButton* CreateButtonBasic_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
+			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
+			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
+			virtual void ChangeState(int eScreenSubState) {}
 		};
 
 		static_assert(sizeof(CPopupScreenBase) == 0x0258);
@@ -41,6 +53,3 @@ namespace NKHook5
 	} // namespace Classes
 
 } // namespace NKHook5
-
-
-#endif /* NKHOOK5_CLASSES_CPOPUPSCREENBASE */
