@@ -17,6 +17,10 @@ namespace NKHook5
 
 	namespace Classes
 	{
+		enum class eNavButtonType {
+			CLOSE = 0xF,
+		};
+
 		class CPopupScreenBase : public CBloonsBaseScreen, public IButtonDelegate
 		{
 		public:
@@ -29,11 +33,8 @@ namespace NKHook5
 			CPopupScreenBase() : CBloonsBaseScreen() {
 
 			};
-			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, std::string screenName) : CBloonsBaseScreen(screenName, pCGameSystemPointers) {
+			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, std::string screenName) : CBloonsBaseScreen() {
 				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, std::string&>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
-			}
-			void AddObject(CBasePositionableObject* object, int param_1) {
-				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CBasePositionableObject*, int>(Sigs::CPopupScreenBase_AddObject, this, object, param_1);
 			}
 			virtual ~CPopupScreenBase() {};
 
@@ -44,8 +45,16 @@ namespace NKHook5
 			virtual CMainButton* CreateButtonBasic(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
 			virtual CMainButton* CreateButtonBasic_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
 			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
-			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
+			virtual CToggleButton* CreateButtonToggle_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
 			virtual void ChangeState(int eScreenSubState) {}
+
+
+			void AddObject(CBasePositionableObject* object, int param_1) {
+				ThisCall<void, CPopupScreenBase*, CBasePositionableObject*, int>(Sigs::CPopupScreenBase_AddObject, this, object, param_1);
+			}
+			void AddNavButton(eNavButtonType type, std::string icon) {
+				ThisCall<void, CPopupScreenBase*, eNavButtonType, std::string>(Sigs::CPopupScreenBase_AddNavButton, this, type, icon);
+			}
 		};
 
 		static_assert(sizeof(CPopupScreenBase) == 0x0258);

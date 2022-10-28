@@ -5,6 +5,7 @@
 #include "../../Classes/CPopupScreenBase.h"
 #include "../../Classes/DeviceType.h"
 #include "../../Classes/ScriptedScreen.h"
+#include "../../ClassesEx/CModListScreen.h"
 #include "../../Signatures/Signature.h"
 
 #include <string>
@@ -22,8 +23,8 @@ namespace NKHook5
                 printf("Device type: %x", deviceType);
                 printf("pCGSP: %p", pCGameSystemPointers);
 
-                if (screenName == "ModListScreen") {
-                    return new Classes::ScriptedScreen(pCGameSystemPointers);
+                if (screenName == "SettingsScreen") {
+                    return new ClassesEx::CModListScreen(pCGameSystemPointers);
                 }
 
                 return nullptr;

@@ -54,6 +54,7 @@ namespace NKHook5 {
 			CPopupScreenBase_VTable,
 			CPopupScreenBase_CCTOR,
 			CPopupScreenBase_AddObject,
+			CPopupScreenBase_AddNavButton,
 			/* CProjectile */
 			CProjectile_CCTOR_A,
 			CProjectile_CCTOR_B,

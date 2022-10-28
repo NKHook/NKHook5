@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Classes/CGameSystemPointers.h"
+#include "../Classes/CTextObject.h"
 #include "../Classes/CPopupScreenBase.h"
+#include "../Classes/Macro.h"
 #include <polyhook2/Detour/ADetour.hpp>
 
 namespace NKHook5 {
@@ -9,11 +11,13 @@ namespace NKHook5 {
 		class CModListScreen : public Classes::CPopupScreenBase {
 			void** pVanillaVTable = nullptr;
 		public:
+			static void __fastcall InitLayout(CModListScreen* self, size_t pad, Classes::IScreenData* pScreenData);
+
 			CModListScreen(Classes::CGameSystemPointers* pCGSP) : Classes::CPopupScreenBase(pCGSP, "ModListScreen")
 			{
 				//Get the vtables here
 				void*** ppVanillaVTable = (void***)Signatures::GetAddressOf(Sigs::CPopupScreenBase_VTable);
-				this->pVanillaVTable = ppVanillaVTable;
+				this->pVanillaVTable = *ppVanillaVTable;
 
 				void*** ppCustomVTable = (void***)this;
 
@@ -22,25 +26,20 @@ namespace NKHook5 {
 				//Keep track of funcs we don't want replaced
 
 				//Change our vtable's protection (the 33 is the num of virtual funcs)
-				int oprot = 0;
+				DWORD oprot = 0;
 				VirtualProtect(ppCustomVTable, sizeof(size_t) * 33, PAGE_EXECUTE_READWRITE, &oprot);
 
 				//Write the vanilla vtable to our custom vtable
 				memcpy(ppCustomVTable, ppVanillaVTable, sizeof(size_t));
 
 				//Place back the funcs we dont want replaced
-				ppCustomVTable[2] = &InitLayout;
+				(*ppCustomVTable)[2] = &CModListScreen::InitLayout;
 
 				//Now we have our own vtable overridden by the game's vtable, and we are free to make changes.
 			}
 
-			void InitLayout(Classes::IScreenData* pScreenData) {
-				//Get the original InitLayout function
-				void* baseInitLayout = pVanillaVTable[2];
-				//Call it
-				PLH::FnCast(baseInitLayout, InitLayout)(pScreenData);
+			virtual void ButtonPressed(Classes::SButtonCB& callback) override {
 
-				//Do custom layout stuff
 			}
 		};
 	}
