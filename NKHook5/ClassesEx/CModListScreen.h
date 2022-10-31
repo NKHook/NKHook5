@@ -12,6 +12,7 @@ namespace NKHook5 {
 			void** pVanillaVTable = nullptr;
 		public:
 			static void __fastcall InitLayout(CModListScreen* self, size_t pad, Classes::IScreenData* pScreenData);
+			static void __fastcall Hide(CModListScreen* self);
 
 			CModListScreen(Classes::CGameSystemPointers* pCGSP) : Classes::CPopupScreenBase(pCGSP, "ModListScreen")
 			{
@@ -34,11 +35,12 @@ namespace NKHook5 {
 
 				//Place back the funcs we dont want replaced
 				(*ppCustomVTable)[2] = &CModListScreen::InitLayout;
+				(*ppCustomVTable)[5] = &CModListScreen::Hide;
 
 				//Now we have our own vtable overridden by the game's vtable, and we are free to make changes.
 			}
 
-			virtual void ButtonPressed(Classes::SButtonCB& callback) override {
+			virtual void ButtonPressed(Classes::CBaseButton* callback) override {
 
 			}
 		};

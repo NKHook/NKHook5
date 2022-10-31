@@ -20,6 +20,8 @@
 #include "CProjectile/Clone.h"
 #include "CProjectile/Update.h"
 #include "CSettingsScreen/InitLayout.h"
+#include "CSettingsScreen/Input.h"
+#include "CSettingsScreen/Process.h"
 #include "CTowerFactory/Constructor.h"
 #include "CWeapon/Fire.h"
 #include "CWeaponFactory/ParseTask.h"
@@ -54,6 +56,8 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CProjectile::Clone());
     PatchManager::ApplyPatch(new CProjectile::Update());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
+    PatchManager::ApplyPatch(new CSettingsScreen::Input());
+    PatchManager::ApplyPatch(new CSettingsScreen::Process());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     //PatchManager::ApplyPatch(new CWeapon::Fire());
     PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());

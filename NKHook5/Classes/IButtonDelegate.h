@@ -17,7 +17,7 @@ namespace NKHook5 {
             std::vector<CButtonDelegateWatcher*> watchers;
         public:
             virtual ~IButtonDelegate() = default;
-            virtual void ButtonPressed(SButtonCB& callback) = 0;
+            virtual void ButtonPressed(CBaseButton* callback) = 0;
             virtual void InputAll(SGameTime& gameTime) {};
             virtual void AddButton(CBaseButton* button) {};
             virtual void RemoveButton(CBaseButton* button) {};

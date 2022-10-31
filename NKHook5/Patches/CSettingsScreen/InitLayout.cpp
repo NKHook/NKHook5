@@ -3,6 +3,7 @@
 #include "../../Classes/CFont.h"
 #include "../../Classes/CFontManager.h"
 #include "../../Classes/CSettingsScreen.h"
+#include "../../ClassesEx/CSettingsScreenExt.h"
 #include "../../Classes/CTextObject.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CScreenManager.h"
@@ -22,18 +23,13 @@ namespace NKHook5
         {
             using namespace Signatures;
 
-            uint64_t o_func;
-            void __fastcall cb_hook(Classes::CSettingsScreen* self, int pad, int param_1) {
+            static uint64_t o_func;
+            static void __fastcall cb_hook(ClassesEx::CSettingsScreenExt* self, int pad, int param_1) {
                 //((void(__thiscall*)(void*, int))o_func)(self, param_1);
                 PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
-                printf("CSettingsScreen*: %p\n", self);
-                printf("SettingScreen inited\n");
                 ghstl::string nkhookText("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
-                printf("Made watermark\n");
                 boost::shared_ptr<Classes::CFont>* pCFont = &self->pMenuFont;
-                printf("Retrieved font\n");
                 Classes::Vec2F location(160, -100);
-                printf("Created location\n");
                 //Looks like a memory leak, but the game deletes it when its no longer used.
                 Classes::CTextObject* testObj = new Classes::CTextObject(&location, pCFont, &nkhookText);
                 Classes::Vec2F textScale(0.5, 0.5);
@@ -41,9 +37,9 @@ namespace NKHook5
                 testObj->SetRotation(40);
                 Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
                 testObj->SetColor(&c, 0);
-                printf("Made text object for watermark (%p)\n", testObj);
                 self->parentObj->AddChild(testObj);
-                printf("Added object to screen\n");
+
+                Classes::CMainButton* button = self->CreateButton("MODS", "newshared_button", "coop_icon_shared", "Mods");
 
                 /*printf("Testing custom menu");
                 Classes::ScriptedScreenData data("Assets/Scripts/testMenu.lua");

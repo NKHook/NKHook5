@@ -19,7 +19,7 @@ namespace NKHook5 {
 			{
 				ThisCall<ScriptedScreen*, ScriptedScreen*, CGameSystemPointers*>(Sigs::ScriptedScreen_CCTOR, this, pGamePtrs);
 			}
-			virtual void ButtonPressed(SButtonCB& callback) override {};
+			virtual void ButtonPressed(Classes::CBaseButton* callback) override {};
 		};
 	}
 }

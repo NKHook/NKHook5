@@ -8,6 +8,7 @@
 #include "CAssetBag.h"
 #include "IBasePointers.h"
 #include "IScreenData.h"
+#include "SGameTime.h"
 #include "Macro.h"
 
 #include <ghstl/string>
@@ -59,6 +60,8 @@ namespace NKHook5
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData);
 			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, uint32_t* param_3);
 			void StartUsingAsset(eAssetType type, std::string& assetName);
+			CBaseScreen* GetScreen(std::string screenName);
+
 			virtual ~CBaseScreen() {};
 			virtual void _PreloadAssets() {};
 			virtual void Init(IScreenData* screenData) {};
@@ -76,7 +79,7 @@ namespace NKHook5
 			virtual void ProcessInit() {};
 			virtual void ProcessUninit() {};
 			virtual void Process() {};
-			virtual void Input(struct SGameTime* pGameTime) {};
+			virtual void Input(SGameTime* pGameTime) {};
 			virtual void Draw() {};
 			virtual void DrawOverlay() {};
 			virtual bool AllAssetsLoaded() { return false; };

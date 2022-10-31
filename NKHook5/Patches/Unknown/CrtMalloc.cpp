@@ -5,6 +5,8 @@
 #include "../../ClassesEx/CProjectileExt.h"
 #include "../../Classes/CCollectableTask.h"
 #include "../../ClassesEx/CCollectableTaskExt.h"
+#include "../../Classes/CSettingsScreen.h"
+#include "../../ClassesEx/CSettingsScreenExt.h"
 
 namespace NKHook5
 {
@@ -21,6 +23,9 @@ namespace NKHook5
                 }
                 if (size == sizeof(Classes::CCollectableTask)) {
                     size = sizeof(ClassesEx::CCollectableTaskExt);
+                }
+                if (size == sizeof(Classes::CSettingsScreen)) {
+                    size = sizeof(ClassesEx::CSettingsScreenExt);
                 }
                 return PLH::FnCast(o_func, &hkMalloc)(size);
             }

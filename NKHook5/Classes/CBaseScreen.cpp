@@ -19,3 +19,7 @@ void CBaseScreen::OpenPopup(CPopupScreenBase* popupScreen, IScreenData* popupDat
 void CBaseScreen::StartUsingAsset(eAssetType type, std::string& assetName) {
 	ThisCall<void, CBaseScreen*, eAssetType*, std::string&>(Sigs::CBaseScreen_StartUsingAsset, this, &type, assetName);
 }
+
+CBaseScreen* CBaseScreen::GetScreen(std::string screenName) {
+	return ThisCall<CBaseScreen*, CBaseScreen*, std::string&>(Sigs::CBaseScreen_GetScreen, this, screenName);
+}

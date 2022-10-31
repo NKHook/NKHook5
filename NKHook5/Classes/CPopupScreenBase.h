@@ -41,12 +41,12 @@ namespace NKHook5
 
 			virtual void DrawForeground() {}
 			virtual CMainButton* CreateDebugButton(std::string param_1, std::string iconSprite, std::string buttonSprite, std::string param_4, Vec2F& param_5) { return nullptr; }
-			virtual CMainButton* CreateButton(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
-			virtual CMainButton* CreateButton_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
+			virtual CMainButton* CreateButton(std::string buttonName, std::string buttonImage, std::string iconImage, std::string buttonText, Vec2F& position) { return nullptr; }
+			virtual CMainButton* CreateButton(CBasePositionableObject* button, std::string buttonName, std::string buttonImage, std::string iconImage, std::string buttonText, Vec2F& position) { return nullptr; }
 			virtual CMainButton* CreateButtonBasic(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
-			virtual CMainButton* CreateButtonBasic_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
+			virtual CMainButton* CreateButtonBasic(CBasePositionableObject* button, std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
 			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
-			virtual CToggleButton* CreateButtonToggle_1(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
+			virtual CToggleButton* CreateButtonToggle(CBasePositionableObject* button, std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
 			virtual void ChangeState(int eScreenSubState) {}
 
 

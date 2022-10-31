@@ -8,6 +8,9 @@ namespace NKHook5 {
 		enum class Sigs {
 			/* CApp */
 			/* CAssetBag */
+			/* CBaseButton */
+			CBaseButton_VTable,
+			CBaseButton_CCTOR,
 			/* CBaseFactory */
 			/* CBaseFileIO */
 			CBaseFileIO_FileExists,
@@ -17,6 +20,7 @@ namespace NKHook5 {
 			CBasePositionableObject_SetComplete,
 			/* CBaseScreen */
 			CBaseScreen_CCTOR,
+			CBaseScreen_GetScreen,
 			CBaseScreen_OpenPopup,
 			CBaseScreen_StartUsingAsset,
 			/* CBaseTower */
@@ -65,8 +69,12 @@ namespace NKHook5 {
 			/* CRenderableTextureObject */
 			/* CScreenManager */
 			/* CSettingsScreen */
+			CSettingsScreen_VTable,
 			CSettingsScreen_CCTOR,
+			CSettingsScreen_Hide,
 			CSettingsScreen_InitLayout,
+			CSettingsScreen_Input,
+			CSettingsScreen_Process,
 			/* CTextObject */
 			CTextObject_CCTOR_A,
 			CTextObject_CCTOR_B,

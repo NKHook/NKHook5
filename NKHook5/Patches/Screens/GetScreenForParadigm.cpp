@@ -3,6 +3,8 @@
 #include "../../Classes/CGameSystemPointers.h"
 #include "../../Classes/CBloonsBaseScreen.h"
 #include "../../Classes/CPopupScreenBase.h"
+#include "../../Classes/CScreenManager.h"
+#include "../../Classes/CGameSystemPointers.h"
 #include "../../Classes/DeviceType.h"
 #include "../../Classes/ScriptedScreen.h"
 #include "../../ClassesEx/CModListScreen.h"
@@ -22,10 +24,6 @@ namespace NKHook5
                 printf("Finding screen \"%s\"", screenName.c_str());
                 printf("Device type: %x", deviceType);
                 printf("pCGSP: %p", pCGameSystemPointers);
-
-                if (screenName == "SettingsScreen") {
-                    return new ClassesEx::CModListScreen(pCGameSystemPointers);
-                }
 
                 return nullptr;
             }
