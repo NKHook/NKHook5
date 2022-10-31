@@ -21,6 +21,7 @@ namespace NKHook5
 			CLOSE = 0xF,
 		};
 
+#define CPopupScreenBase_VFuncCount 33
 		class CPopupScreenBase : public CBloonsBaseScreen, public IButtonDelegate
 		{
 		public:
@@ -34,7 +35,7 @@ namespace NKHook5
 
 			};
 			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, std::string screenName) : CBloonsBaseScreen() {
-				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, std::string&>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
+				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, std::string>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
 			}
 			virtual ~CPopupScreenBase() {};
 

@@ -45,11 +45,11 @@ namespace NKHook5
                 self->parentObj->AddChild(testObj);
                 printf("Added object to screen\n");
 
-                printf("Testing custom menu");
+                /*printf("Testing custom menu");
                 Classes::ScriptedScreenData data("Assets/Scripts/testMenu.lua");
                 Classes::ScriptedScreen* customScreen = new Classes::ScriptedScreen(self->pCGameSystemPointers);
                 self->basePointers.pCScreenManager->OpenPopup(customScreen, &data);
-                printf("Test passed");
+                printf("Test passed");*/
             }
 
             auto InitLayout::Apply() -> bool

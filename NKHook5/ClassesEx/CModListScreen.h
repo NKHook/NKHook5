@@ -27,10 +27,10 @@ namespace NKHook5 {
 
 				//Change our vtable's protection (the 33 is the num of virtual funcs)
 				DWORD oprot = 0;
-				VirtualProtect(ppCustomVTable, sizeof(size_t) * 33, PAGE_EXECUTE_READWRITE, &oprot);
+				VirtualProtect(*ppCustomVTable, sizeof(size_t) * CPopupScreenBase_VFuncCount, PAGE_EXECUTE_READWRITE, &oprot);
 
 				//Write the vanilla vtable to our custom vtable
-				memcpy(ppCustomVTable, ppVanillaVTable, sizeof(size_t));
+				memcpy(*ppCustomVTable, *ppVanillaVTable, sizeof(size_t) * CPopupScreenBase_VFuncCount);
 
 				//Place back the funcs we dont want replaced
 				(*ppCustomVTable)[2] = &CModListScreen::InitLayout;
