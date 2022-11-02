@@ -56,8 +56,8 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CProjectile::Clone());
     PatchManager::ApplyPatch(new CProjectile::Update());
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
-    PatchManager::ApplyPatch(new CSettingsScreen::Input());
-    PatchManager::ApplyPatch(new CSettingsScreen::Process());
+    //PatchManager::ApplyPatch(new CSettingsScreen::Input());
+    //PatchManager::ApplyPatch(new CSettingsScreen::Process());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     //PatchManager::ApplyPatch(new CWeapon::Fire());
     PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());

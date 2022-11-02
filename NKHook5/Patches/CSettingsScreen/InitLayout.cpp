@@ -5,6 +5,7 @@
 #include "../../Classes/CSettingsScreen.h"
 #include "../../ClassesEx/CSettingsScreenExt.h"
 #include "../../Classes/CTextObject.h"
+#include "../../Classes/CTextureManager.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CScreenManager.h"
 #include "../../Classes/ScriptedScreen.h"
@@ -39,7 +40,17 @@ namespace NKHook5
                 testObj->SetColor(&c, 0);
                 self->parentObj->AddChild(testObj);
 
-                Classes::CMainButton* button = self->CreateButton("MODS", "newshared_button", "coop_icon_shared", "Mods");
+                printf("Primary sheet: %s", self->buttonStyle.primarySheet.c_str());
+                printf("Secondary sheet: %s", self->buttonStyle.secondarySheet.c_str());
+
+                Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
+                Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button");
+                Classes::SSpriteInfo* resumeSprite = textureMgr->GetSpriteInfoPtr("shared_sheet", "resume");
+
+                Classes::SMainButtonStyle style;
+                style.font = self->pMenuFont;
+                self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, resumeSprite, style);
+                self->parentObj->AddChild(&self->modsButton->sprite);
 
                 /*printf("Testing custom menu");
                 Classes::ScriptedScreenData data("Assets/Scripts/testMenu.lua");

@@ -5,8 +5,15 @@
 
 namespace NKHook5 {
 	namespace Classes {
-		class CSpriteButton : public CBaseButton, public CSprite {
+		class CSpriteButton : public CBaseButton {
+		public:
+			CSprite sprite;
+		public:
+			CSpriteButton() {
 
+			}
 		};
+
+		static_assert(sizeof(CSpriteButton) == 0x1D4);
 	}
 }

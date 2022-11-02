@@ -18,9 +18,12 @@ namespace NKHook5 {
 			CInput* pCInput; //0x0030
 			char pad_0034[20]; //0x0034
 			std::string buttonName; //0x0048
-			char pad_0060[108]; //0x0060
+			char pad_0060[112]; //0x0060
 
 		public:
+			CBaseButton() {
+
+			}
 			CBaseButton(CInput* input, std::string buttonName, size_t param_3 = 0) {
 				ThisCall<void, CBaseButton*, CInput*, std::string&, size_t>(Sigs::CBaseButton_CCTOR, this, input, buttonName, param_3);
 			}
@@ -34,5 +37,7 @@ namespace NKHook5 {
 			virtual void SetDisabled(bool b) {};
 			virtual void UpdateHitArea() {};
 		};
+
+		static_assert(sizeof(CBaseButton) == 0xD0);
 	}
 }

@@ -13,7 +13,7 @@ namespace NKHook5
         class IBasePointers
         {
 		public:
-			char pad_0000[4]; //0x0000
+			class CTextureManager* textureManager;
 			class CTextureLoader* pCTextureLoader; //0x0004
 			class CInput* pCInput; //0x0008
 			class CApp* pCApp; //0x000C

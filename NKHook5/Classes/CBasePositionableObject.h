@@ -19,7 +19,7 @@ namespace NKHook5
         {
         public:
             char pad_0000[16]; //0x0000
-            CBasePositionableObject* prevRelative; //0x0010
+            CBasePositionableObject* parent; //0x0010
             ghstl::list<CBasePositionableObject*> children; //0x0014
             Vec2F size; //0x0020
             Vec2F sizeHalf; //0x0028
@@ -49,7 +49,7 @@ namespace NKHook5
             virtual void Update(class SGameTime* pSGameTime) {}
             virtual void UpdateRecursive(class SGameTime* param_1) {}
             virtual bool HitTest(Vec2F location, float param_2) { return false;  }
-            virtual void AddChild(class CBasePositionableObject* param_1) {}
+            virtual void AddChild(CBasePositionableObject* child) {}
             virtual void AddChildAndUpdate(class CBasePositionableObject* param_1, int* param_2) {}
             virtual void FUN_009e6dc0(int* param_1, int** param_2) {}
             virtual void DeleteChildren() {}

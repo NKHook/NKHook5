@@ -25,11 +25,13 @@ namespace NKHook5
 		class CPopupScreenBase : public CBloonsBaseScreen, public IButtonDelegate
 		{
 		public:
-			char pad_010C[48]; //0x010C
+			char pad_010C[32]; //0x010C
+			CBasePositionableObject* pPopRoot; //0x012C
+			char pad_0130[12]; //0x0130
 			CBasePositionableObject* pRootObj; //0x013C
 			char pad_0140[184]; //0x0140
 			SMainButtonStyle buttonStyle; //0x01F8
-			char pad_0254[4]; //0x0254
+			char pad_0254[8]; //0x0254
 		public:
 			CPopupScreenBase() : CBloonsBaseScreen() {
 
@@ -37,16 +39,15 @@ namespace NKHook5
 			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, std::string screenName) : CBloonsBaseScreen() {
 				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, std::string>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
 			}
-			virtual ~CPopupScreenBase() {};
 
-			virtual void DrawForeground() {}
+			//virtual void DrawForeground() {}
 			virtual CMainButton* CreateDebugButton(std::string param_1, std::string iconSprite, std::string buttonSprite, std::string param_4, Vec2F& param_5) { return nullptr; }
-			virtual CMainButton* CreateButton(std::string buttonName, std::string buttonImage, std::string iconImage, std::string buttonText, Vec2F& position) { return nullptr; }
-			virtual CMainButton* CreateButton(CBasePositionableObject* button, std::string buttonName, std::string buttonImage, std::string iconImage, std::string buttonText, Vec2F& position) { return nullptr; }
-			virtual CMainButton* CreateButtonBasic(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
-			virtual CMainButton* CreateButtonBasic(CBasePositionableObject* button, std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F& position) { return nullptr; }
-			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
-			virtual CToggleButton* CreateButtonToggle(CBasePositionableObject* button, std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F& param_7, Vec2F& param_8) { return nullptr; }
+			virtual CMainButton* CreateButton(std::string buttonName, std::string buttonImage, std::string iconImage, std::string buttonText, Vec2F position) { return nullptr; }
+			virtual CMainButton* CreateButton(CBasePositionableObject* button, std::string buttonName, std::string buttonImage, std::string iconImage, std::string buttonText, Vec2F position) { return nullptr; }
+			virtual CMainButton* CreateButtonBasic(std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F position) { return nullptr; }
+			virtual CMainButton* CreateButtonBasic(CBasePositionableObject* button, std::string param_1, std::string param_2, std::string param_3, std::string param_4, Vec2F position) { return nullptr; }
+			virtual CToggleButton* CreateButtonToggle(std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F param_7, Vec2F param_8) { return nullptr; }
+			virtual CToggleButton* CreateButtonToggle(CBasePositionableObject* button, std::string param_1, std::string param_2, std::string param_3, std::string param_4, std::string param_5, bool param_6, Vec2F param_7, Vec2F param_8) { return nullptr; }
 			virtual void ChangeState(int eScreenSubState) {}
 
 
@@ -55,6 +56,9 @@ namespace NKHook5
 			}
 			void AddNavButton(eNavButtonType type, std::string icon) {
 				ThisCall<void, CPopupScreenBase*, eNavButtonType, std::string>(Sigs::CPopupScreenBase_AddNavButton, this, type, icon);
+			}
+			void* AddToPoppingList(CBasePositionableObject* object, CBasePositionableObject* parent, CBasePositionableObject* object_src, bool param_4) {
+				return ThisCall<void*, CPopupScreenBase*, CBasePositionableObject*, CBasePositionableObject*, CBasePositionableObject*,bool>(Sigs::CPopupScreenBase_AddToPoppingList, this, object, parent, object_src, param_4);
 			}
 		};
 

@@ -50,6 +50,8 @@ namespace NKHook5 {
 			/* CLoc */
 			CLoc_FindText,
 			CLoc_GetText,
+			/* CMainButton */
+			CMainButton_CCTOR,
 			/* Color */
 			/* CPlayerProfileV1 */
 			CPlayerProfileV1_InternalLoad,
@@ -59,6 +61,7 @@ namespace NKHook5 {
 			CPopupScreenBase_CCTOR,
 			CPopupScreenBase_AddObject,
 			CPopupScreenBase_AddNavButton,
+			CPopupScreenBase_AddToPoppingList,
 			/* CProjectile */
 			CProjectile_CCTOR_A,
 			CProjectile_CCTOR_B,
@@ -79,6 +82,8 @@ namespace NKHook5 {
 			CTextObject_CCTOR_A,
 			CTextObject_CCTOR_B,
 			CTextObject_CCTOR_C,
+			/* CTextureManager */
+			CTextureManager_GetSpriteInfoPtr,
 			/* CTowerFactory */
 			CTowerFactory_CCTOR,
 			/* CUnzippedFile */
@@ -111,6 +116,9 @@ namespace NKHook5 {
 			ScriptedScreen_CCTOR,
 			/* ScriptedScreenData */
 			ScriptedScreenData_VTable,
+			/* SMainButtonStyle */
+			SMainButtonStyle_CCTOR,
+			SMainButtonStyle_CopyCCTOR,
 			/* Unknown */
 			Unknown_WinMain,
 			/* Vec2F */

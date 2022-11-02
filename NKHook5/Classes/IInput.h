@@ -4,7 +4,7 @@ namespace NKHook5 {
 	namespace Classes {
 		class IInput {
 		public:
-			virtual ~IInput();
+			virtual ~IInput() {};
 			virtual void FirstTouch(void* param_1, void* param_2) {};
 			virtual void ContinuedTouch(void* param_1, void* param_2) {};
 			virtual void TouchReleased(void* param_1, void* param_2) {};
