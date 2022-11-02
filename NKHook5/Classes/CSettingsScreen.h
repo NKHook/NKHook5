@@ -21,8 +21,8 @@ namespace NKHook5
 			class CSpriteButton* controlsButton; //0x028C
 			class CTextObject* controlsButtonText; //0x0290
 			class CMainButton* languageButton; //0x0294
-			class CBasePositionableObject* languageButton_1; //0x0298
-			class CBasePositionableObject* menu_root; //0x029C
+			class CBasePositionableObject* languageGroup; //0x0298
+			class CBasePositionableObject* controlsGroup; //0x029C
 
 		public:
 			CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) {
@@ -33,7 +33,7 @@ namespace NKHook5
 		};
 
 		static_assert(sizeof(CSettingsScreen) == 0x2A0);
-		static_assert(offsetof(CSettingsScreen, menu_root) == 0x29C);
+		static_assert(offsetof(CSettingsScreen, controlsGroup) == 0x29C);
 	} // namespace Classes
 
 } // namespace NKHook5

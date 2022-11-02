@@ -30,20 +30,24 @@ namespace NKHook5
                 PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
                 
                 /* Modify the base game ui stuff */
-                //Add the BTD5: text
-                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, 0 }, self->pMenuFont, "BTD5:");
+                //Add the BTD5 text
+                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->pMenuFont, "BTD5");
                 vanillaText->SetColor(Classes::Colors::white, 0);
-                self->menu_root->AddChild(vanillaText);
+                vanillaText->Scale({ .75, .75 });
+                self->rootObj->AddChild(vanillaText);
 
                 //Move the vanilla UI elements
-                self->languageButton->SetX(-100);
-                self->controlsButton->SetX(-100);
+                self->languageGroup->SetXY({ -100, 0 });
+                self->languageGroup->ForceUpdate();
+                self->controlsGroup->SetXY({ -100, 60});
+                self->controlsGroup->ForceUpdate();
 
                 /* Custom settings ui stuff */
-                //Add the NKHook5: text
-                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, 0 }, self->pMenuFont, "NKHook5:");
+                //Add the NKHook5 text
+                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->pMenuFont, "NKHook5");
                 nkhookText->SetColor(Classes::Colors::white, 0);
-                self->menu_root->AddChild(nkhookText);
+                nkhookText->Scale({ .75, .75 });
+                self->rootObj->AddChild(nkhookText);
 
                 //Add the Mods button
                 Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
@@ -51,8 +55,8 @@ namespace NKHook5
                 Classes::SMainButtonStyle style;
                 style.font = self->pMenuFont;
                 self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
-                self->modsButton->SetXY({ 100, 33 });
-                self->menu_root->AddChild(self->modsButton);
+                self->modsButton->SetXY({ 100, 18 });
+                self->rootObj->AddChild(self->modsButton);
             }
 
             auto InitLayout::Apply() -> bool

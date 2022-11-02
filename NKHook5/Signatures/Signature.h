@@ -78,7 +78,10 @@ namespace NKHook5 {
 			CSettingsScreen_InitLayout,
 			CSettingsScreen_Input,
 			CSettingsScreen_Process,
+			/* CSprite */
+			CSprite_VTable,
 			/* CTextObject */
+			CTextObject_VTable,
 			CTextObject_CCTOR_A,
 			CTextObject_CCTOR_B,
 			CTextObject_CCTOR_C,

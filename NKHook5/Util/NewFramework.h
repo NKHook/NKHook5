@@ -105,4 +105,7 @@ namespace nfw {
 
     template<typename K, typename V>
     using map = std::map<K, V, std::less<K>, newframework_allocator<std::pair<const K, V>>>;
+
+    template<typename T>
+    using list = std::list<T, newframework_allocator<T>>;
 }

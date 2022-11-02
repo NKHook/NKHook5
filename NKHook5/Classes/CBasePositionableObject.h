@@ -25,7 +25,7 @@ namespace NKHook5
         public:
             char pad_0000[16]; //0x0000
             CBasePositionableObject* parent; //0x0010
-            ghstl::list<CBasePositionableObject*> children; //0x0014
+            nfw::list<CBasePositionableObject*> children; //0x0014
             Vec2F size; //0x0020
             Vec2F sizeHalf; //0x0028
             char pad_0030[8]; //0x0030
