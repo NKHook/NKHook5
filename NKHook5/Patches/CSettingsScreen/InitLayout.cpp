@@ -44,13 +44,14 @@ namespace NKHook5
                 printf("Secondary sheet: %s", self->buttonStyle.secondarySheet.c_str());
 
                 Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
-                Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button");
-                Classes::SSpriteInfo* resumeSprite = textureMgr->GetSpriteInfoPtr("shared_sheet", "resume");
+                Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button_wider");
+                //Classes::SSpriteInfo* resumeSprite = textureMgr->GetSpriteInfoPtr("shared_sheet", "resume");
 
                 Classes::SMainButtonStyle style;
                 style.font = self->pMenuFont;
-                self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, resumeSprite, style);
-                self->parentObj->AddChild(&self->modsButton->sprite);
+                self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
+                self->modsButton->SetY(183);
+                self->parentObj->AddChild(self->modsButton);
 
                 /*printf("Testing custom menu");
                 Classes::ScriptedScreenData data("Assets/Scripts/testMenu.lua");

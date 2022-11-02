@@ -5,9 +5,8 @@
 
 namespace NKHook5 {
 	namespace Classes {
-		class CSpriteButton : public CBaseButton {
+		class CSpriteButton : public CBaseButton, public CSprite {
 		public:
-			CSprite sprite;
 		public:
 			CSpriteButton() {
 
