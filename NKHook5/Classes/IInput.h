@@ -1,8 +1,13 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
+
 namespace NKHook5 {
 	namespace Classes {
 		class IInput {
+		public:
+			overload_new
+
 		public:
 			virtual ~IInput() {};
 			virtual void FirstTouch(void* param_1, void* param_2) {};

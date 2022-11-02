@@ -1,6 +1,7 @@
 #ifndef NKHOOK5_CLASSES_CBASEPOSITIONABLEOBJECT
 #define NKHOOK5_CLASSES_CBASEPOSITIONABLEOBJECT
 
+#include "../../Util/NewFramework.h"
 #include "Macro.h"
 #include "Matrix16F.h"
 #include "Vec2F.h"
@@ -17,6 +18,10 @@ namespace NKHook5
 
         class CBasePositionableObject
         {
+        public:
+            /* Somehow prevented some heap corruption bug... */
+            overload_new
+
         public:
             char pad_0000[16]; //0x0000
             CBasePositionableObject* parent; //0x0010

@@ -28,36 +28,31 @@ namespace NKHook5
             static void __fastcall cb_hook(ClassesEx::CSettingsScreenExt* self, int pad, int param_1) {
                 //((void(__thiscall*)(void*, int))o_func)(self, param_1);
                 PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
-                ghstl::string nkhookText("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
-                boost::shared_ptr<Classes::CFont>* pCFont = &self->pMenuFont;
-                Classes::Vec2F location(160, -100);
-                //Looks like a memory leak, but the game deletes it when its no longer used.
-                Classes::CTextObject* testObj = new Classes::CTextObject(&location, pCFont, &nkhookText);
-                Classes::Vec2F textScale(0.5, 0.5);
-                testObj->Scale(textScale);
-                testObj->SetRotation(40);
-                Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
-                testObj->SetColor(&c, 0);
-                self->parentObj->AddChild(testObj);
+                
+                /* Modify the base game ui stuff */
+                //Add the BTD5: text
+                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, 0 }, self->pMenuFont, "BTD5:");
+                vanillaText->SetColor(Classes::Colors::white, 0);
+                self->menu_root->AddChild(vanillaText);
 
-                printf("Primary sheet: %s", self->buttonStyle.primarySheet.c_str());
-                printf("Secondary sheet: %s", self->buttonStyle.secondarySheet.c_str());
+                //Move the vanilla UI elements
+                self->languageButton->SetX(-100);
+                self->controlsButton->SetX(-100);
 
+                /* Custom settings ui stuff */
+                //Add the NKHook5: text
+                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, 0 }, self->pMenuFont, "NKHook5:");
+                nkhookText->SetColor(Classes::Colors::white, 0);
+                self->menu_root->AddChild(nkhookText);
+
+                //Add the Mods button
                 Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
                 Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button_wider");
-                //Classes::SSpriteInfo* resumeSprite = textureMgr->GetSpriteInfoPtr("shared_sheet", "resume");
-
                 Classes::SMainButtonStyle style;
                 style.font = self->pMenuFont;
                 self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
-                self->modsButton->SetY(183);
-                self->parentObj->AddChild(self->modsButton);
-
-                /*printf("Testing custom menu");
-                Classes::ScriptedScreenData data("Assets/Scripts/testMenu.lua");
-                Classes::ScriptedScreen* customScreen = new Classes::ScriptedScreen(self->pCGameSystemPointers);
-                self->basePointers.pCScreenManager->OpenPopup(customScreen, &data);
-                printf("Test passed");*/
+                self->modsButton->SetXY({ 100, 33 });
+                self->menu_root->AddChild(self->modsButton);
             }
 
             auto InitLayout::Apply() -> bool

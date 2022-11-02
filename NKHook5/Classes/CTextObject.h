@@ -28,18 +28,18 @@ namespace NKHook5
             CTextObject() {
                 ThisCall<CTextObject*, CTextObject*>(Sigs::CTextObject_CCTOR_A, this);
             }
-            CTextObject(Vec2F* position, boost::shared_ptr<CFont>* font, ghstl::string* text) {
-                ThisCall<CTextObject*, CTextObject*, Vec2F*, boost::shared_ptr<CFont>*, ghstl::string*>(Sigs::CTextObject_CCTOR_B, this, position, font, text);
+            CTextObject(Vec2F position, boost::shared_ptr<CFont>& font, std::string text) {
+                ThisCall<CTextObject*, CTextObject*, Vec2F&, boost::shared_ptr<CFont>&, std::string&>(Sigs::CTextObject_CCTOR_B, this, position, font, text);
             }
-            CTextObject(boost::shared_ptr<CFont>* font, ghstl::string* text) {
-                ThisCall<CTextObject*, CTextObject*, boost::shared_ptr<CFont>*, ghstl::string*>(Sigs::CTextObject_CCTOR_C, this, font, text);
+            CTextObject(boost::shared_ptr<CFont>& font, std::string text) {
+                ThisCall<CTextObject*, CTextObject*, boost::shared_ptr<CFont>&, std::string&>(Sigs::CTextObject_CCTOR_C, this, font, text);
             }
 
             virtual ~CTextObject() {}
             
             virtual void SetAlpha(float alpha) {}
-            virtual void SetColor(Color* color, int param_2) {}
-            virtual void MixWithColor(Color* color) {}
+            virtual void SetColor(Color& color, int param_2) {}
+            virtual void MixWithColor(Color& color) {}
             virtual void* FUN_009ad610(uint32_t param_2) { return nullptr; }
             virtual void SetGradient(class Vec4F* firstColor, class Vec4F* secondColor, int param_3) {}
             virtual void SetString(ghstl::string* text) {}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
 #include "boost/shared_ptr"
 #include "CFont.h"
 #include "Macro.h"
@@ -9,6 +10,9 @@
 namespace NKHook5 {
 	namespace Classes {
 		struct SMainButtonStyle {
+			overload_new
+
+		public:
 			boost::shared_ptr<CFont> font;
 			char pad_0008[8]; //0x0008
 			Vec3F position; //0x0010

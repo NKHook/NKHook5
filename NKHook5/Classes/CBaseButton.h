@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
 #include "Macro.h"
 
 #include "CInput.h"
@@ -11,6 +12,9 @@
 namespace NKHook5 {
 	namespace Classes {
 		class CBaseButton : public IInput {
+		public:
+			overload_new
+
 		public:
 			char pad_0004[4]; //0x0004
 			class AABoundingBox2D* pAABoundingBox2D; //0x0008

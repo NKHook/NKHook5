@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
 #include "Macro.h"
 #include "CBloonsBaseScreen.h"
 #include "CBasePositionableObject.h"
@@ -25,13 +26,23 @@ namespace NKHook5
 		class CPopupScreenBase : public CBloonsBaseScreen, public IButtonDelegate
 		{
 		public:
-			char pad_010C[32]; //0x010C
-			CBasePositionableObject* pPopRoot; //0x012C
+			/* Somehow prevented some heap corruption bug... */
+			overload_new
+
+		public:
+			char pad_010C[20]; //0x010C
+			class CBasePositionableObject* rootObj; //0x0120
+			class CBasePositionableObject* N00000182; //0x0124
+			class CBasePositionableObject* N00000183; //0x0128
+			class CBasePositionableObject* popObj; //0x012C
 			char pad_0130[12]; //0x0130
-			CBasePositionableObject* pRootObj; //0x013C
-			char pad_0140[184]; //0x0140
-			SMainButtonStyle buttonStyle; //0x01F8
-			char pad_0254[8]; //0x0254
+			class CBasePositionableObject* ui_root; //0x013C
+			char pad_0140[132]; //0x0140
+			class CSpriteButton* closeButton; //0x01C4
+			char pad_01C8[48]; //0x01C8
+			class SMainButtonStyle buttonStyle; //0x01F8
+			char pad_0250[8]; //0x0250
+
 		public:
 			CPopupScreenBase() : CBloonsBaseScreen() {
 
@@ -63,7 +74,7 @@ namespace NKHook5
 		};
 
 		static_assert(sizeof(CPopupScreenBase) == 0x0258);
-		static_assert(offsetof(CPopupScreenBase, pRootObj) == 0x13C);
+		static_assert(offsetof(CPopupScreenBase, ui_root) == 0x13C);
 	} // namespace Classes
 
 } // namespace NKHook5

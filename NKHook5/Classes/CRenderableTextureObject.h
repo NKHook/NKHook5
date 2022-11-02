@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
 #include "CBasePositionableObject.h"
 
 namespace NKHook5
@@ -8,7 +9,12 @@ namespace NKHook5
     {
         class CRenderableTextureObject : public CBasePositionableObject
         {
+        public:
+            overload_new
+
+        public:
             char pad_00A8[32]; //0x00A8
+
         public:
             CRenderableTextureObject() {};
 

@@ -29,6 +29,11 @@ namespace NKHook5
                 this->Alpha = a;
             }
         };
+
+        namespace Colors {
+            static inline Color white = Color();
+            static inline Color black = Color(0x0,0x0,0x0,0xFF);
+        }
     } // namespace Classes
     
 } // namespace NKHook5

@@ -8,11 +8,15 @@
 #include "SMainButtonStyle.h"
 #include "SSpriteInfo.h"
 
+#include "../../Util/NewFramework.h"
 #include "Macro.h"
 
 namespace NKHook5 {
 	namespace Classes {
 		class CMainButton : public CSpriteButton {
+		public:
+			overload_new
+
 		public:
 			char pad_01D4[24]; //0x01D4
 			class CTextObject* buttonText; //0x01EC
