@@ -4,6 +4,7 @@ target_sources(Common PRIVATE
 	"JsonExtension.cpp"
 )
 
+add_subdirectory(Bloon)
 add_subdirectory(Generic)
 add_subdirectory(Textures)
 add_subdirectory(Tower)

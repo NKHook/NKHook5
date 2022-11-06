@@ -1,5 +1,6 @@
 #include "ExtensionManager.h"
 
+#include "Bloon/BloonFlagsExt.h"
 #include "Generic/FlagsExtension.h"
 #include "Generic/MergeIgnoreExtension.h"
 #include "Textures/SheetsExtension.h"
@@ -11,6 +12,7 @@ static std::vector<Extension*> extensions;
 
 void ExtensionManager::AddAll()
 {
+	ExtensionManager::AddExtension(new Bloon::BloonFlagExt());
 	ExtensionManager::AddExtension(new Generic::MergeIgnoreExtension());
 	ExtensionManager::AddExtension(new Textures::SheetsExtension());
 	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
