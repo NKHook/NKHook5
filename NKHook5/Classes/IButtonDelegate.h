@@ -24,5 +24,7 @@ namespace NKHook5 {
             virtual void AddWatcher(CButtonDelegateWatcher* watcher) {};
             virtual void RemoveWatcher(CButtonDelegateWatcher* watcher) {};
         };
+
+        static_assert(sizeof(IButtonDelegate) == 0x38);
 	}
 }

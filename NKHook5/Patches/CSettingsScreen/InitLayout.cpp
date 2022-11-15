@@ -31,7 +31,7 @@ namespace NKHook5
                 
                 /* Modify the base game ui stuff */
                 //Add the BTD5 text
-                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->pMenuFont, "BTD5");
+                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->screenFont, "BTD5");
                 vanillaText->SetColor(Classes::Colors::white, 0);
                 vanillaText->Scale({ .75, .75 });
                 self->rootObj->AddChild(vanillaText);
@@ -44,7 +44,7 @@ namespace NKHook5
 
                 /* Custom settings ui stuff */
                 //Add the NKHook5 text
-                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->pMenuFont, "NKHook5");
+                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->screenFont, "NKHook5");
                 nkhookText->SetColor(Classes::Colors::white, 0);
                 nkhookText->Scale({ .75, .75 });
                 self->rootObj->AddChild(nkhookText);
@@ -53,7 +53,7 @@ namespace NKHook5
                 Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
                 Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button_wider");
                 Classes::SMainButtonStyle style;
-                style.font = self->pMenuFont;
+                style.font = self->screenFont;
                 self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
                 self->modsButton->SetXY({ 100, 18 });
                 self->rootObj->AddChild(self->modsButton);
