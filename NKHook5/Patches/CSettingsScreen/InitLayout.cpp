@@ -28,6 +28,16 @@ namespace NKHook5
             static void __fastcall cb_hook(ClassesEx::CSettingsScreenExt* self, int pad, int param_1) {
                 //((void(__thiscall*)(void*, int))o_func)(self, param_1);
                 PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
+
+                //Add the NKHook version information text
+                std::string verInfoString("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
+                Classes::CTextObject* verInfoText = new Classes::CTextObject({ 160, -100 }, self->screenFont, verInfoString);
+                Classes::Vec2F textScale(0.5, 0.5);
+                verInfoText->Scale(textScale);
+                verInfoText->SetRotation(40);
+                Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
+                verInfoText->SetColor(c, 0);
+                self->rootObj->AddChild(verInfoText);
                 
                 /* Modify the base game ui stuff */
                 //Add the BTD5 text
