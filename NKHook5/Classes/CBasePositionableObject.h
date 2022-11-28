@@ -29,7 +29,7 @@ namespace NKHook5
             Vec2F size; //0x0020
             Vec2F sizeHalf; //0x0028
             char pad_0030[8]; //0x0030
-            Matrix16F spriteMatrix; //0x0038
+            Matrix16F transform; //0x0038
             bool complete; //0x0078
             bool incompleteChildren; //0x0079
             char pad_007A[2]; //0x007A
@@ -80,19 +80,19 @@ namespace NKHook5
             virtual void SetAlignX(float x) {}
             virtual void SetAlignY(float param_1) {}
             virtual void SetAlignXY(Vec2F alignment) {}
-            virtual class Vec3F* GetLocation(class Vec3F* location) { return nullptr; }
-            virtual float* GetLocationX() { return nullptr; }
-            virtual float* GetLocationX_1() { return nullptr; }
-            virtual float* GetLocationY() { return nullptr; }
-            virtual float* GetLocationZ() { return nullptr; }
-            virtual class Vec2F* GetScale(class Vec2F* scale) { return nullptr; }
+            virtual const class Vec3F& GetLocation(class Vec3F& location) const { return location; };
+            virtual const class Vec3F& GetLocation() const { Vec3F a; return a; };
+            virtual const float& GetLocationX() const { float a; return a; };
+            virtual const float& GetLocationY() const { float a; return a; };
+            virtual const float& GetLocationZ() const { float a; return a; };
+            virtual const class Vec2F& GetScale(class Vec2F& scale) const { return scale; }
             virtual float GetScaleX() { return 0.0f; }
             virtual float GetScaleY() { return 0.0f; }
             virtual void ResetMatrix() {}
             virtual void UpdateMatrix(bool param_1) {}
             virtual void UpdateMatrixRecursive() {}
             virtual void ForceUpdate() {}
-            virtual void SetTransitionAnim(float time, bool unused) {}
+            virtual void SetTransitionAnim(float time, bool permitNegative) {}
             virtual void FUN_009e69d0() {}
             virtual void ForceUpdate_1() {}
             virtual void DrawChildren() {}
