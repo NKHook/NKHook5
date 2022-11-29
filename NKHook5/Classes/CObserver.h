@@ -9,17 +9,19 @@ namespace NKHook5
 		template<typename T>
 		class CObserver : public IObserver
 		{
-			virtual void TypecheckEvent(class IEvent* e, bool& unknown) override {
+		public:
+			virtual ~CObserver() {};
+			virtual void TypecheckEvent(IEvent* e, bool& unknown) override {
 				if (typeid(e) == typeid(T))
 				{
-					return this->HandleEvent(e);
+					return this->TypesafeHandleEvent((T*)e);
 				}
 			};
-			virtual void UnknownUnused(T& e) {
+			virtual void HandleEvent(T* e) {
 				return;
 			};
-			virtual void HandleEvent(T& e) {
-				this->UnknownUnused(e);
+			virtual void TypesafeHandleEvent(T* e) {
+				this->HandleEvent(e);
 			};
 		};
 	}

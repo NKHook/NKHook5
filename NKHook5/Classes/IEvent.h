@@ -6,6 +6,7 @@ namespace NKHook5
 	{
 		class IEvent
 		{
+		public:
 			virtual ~IEvent()
 			{
 
