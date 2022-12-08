@@ -2,6 +2,8 @@
 
 #include "IObserver.h"
 
+#include <typeinfo>
+
 namespace NKHook5
 {
 	namespace Classes

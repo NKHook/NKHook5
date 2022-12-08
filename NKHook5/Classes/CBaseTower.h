@@ -5,6 +5,8 @@
 #include "CObserver.h"
 #include "CTowerRemovedEvent.h"
 
+#include "../Util/NewFramework.h"
+
 namespace NKHook5
 {
     namespace Classes
@@ -15,10 +17,14 @@ namespace NKHook5
             public CObserver<CTowerRemovedEvent>
         {
         public:
+            overload_new;
+
+        public:
             char pad_00B8[52]; //0x00B8
             int32_t popCount; //0x00EC
             char pad_00F0[468]; //0x00F0
 
+        public:
             virtual ~CBaseTower() {};
         };
 
