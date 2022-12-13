@@ -20,12 +20,12 @@ namespace NKHook5
 
             virtual ~CRenderableTextureObject() {}
 
-            virtual void FUN_0069f510() {}
-            virtual void FUN_0069f570() {}
-            virtual void FUN_0069f5d0() {}
-            virtual void FUN_0069f630() {}
-            virtual void FUN_0069f690() {}
-            virtual void FUN_0069f770() {}
+            virtual void GetMinX() {}
+            virtual void GetMinY() {}
+            virtual void GetMaxX() {}
+            virtual void GetMaxY() {}
+            virtual void GetMinXY() {}
+            virtual void GetMaxXY() {}
             virtual void SetShader(int shaderId) {}
             virtual void SetTexture(class CTexture* pCTexture) {}
         };

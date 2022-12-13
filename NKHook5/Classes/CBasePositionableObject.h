@@ -78,7 +78,7 @@ namespace NKHook5
             virtual void SetSizeX(float x) {}
             virtual void SetSizeY(float y) {}
             virtual void SetAlignX(float x) {}
-            virtual void SetAlignY(float param_1) {}
+            virtual void SetAlignY(float y) {}
             virtual void SetAlignXY(Vec2F alignment) {}
             virtual const class Vec3F& GetLocation(class Vec3F& location) const { return location; };
             virtual const class Vec3F& GetLocation() const { Vec3F a; return a; };
@@ -93,8 +93,8 @@ namespace NKHook5
             virtual void UpdateMatrixRecursive() {}
             virtual void ForceUpdate() {}
             virtual void SetTransitionAnim(float time, bool permitNegative) {}
-            virtual void FUN_009e69d0() {}
-            virtual void ForceUpdate_1() {}
+            virtual void ResetDirtyFlag() {}
+            virtual void DeleteChildren_2() {}
             virtual void DrawChildren() {}
         }; // Size 1024 (0x400)
 

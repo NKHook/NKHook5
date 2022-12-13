@@ -51,5 +51,8 @@ float CSpriteStatusEffect::GetBloonSpeed(float base)
 
 void CSpriteStatusEffect::IncreasePops(int amount)
 {
-
+	if (this->tower != nullptr)
+	{
+		this->tower->IncPopCount(amount, nullptr);
+	}
 }
