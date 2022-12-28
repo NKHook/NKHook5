@@ -27,3 +27,12 @@ std::string nfw::typeof(void* object)
     std::string typeName = type_name;
     return typeName;
 }
+
+__declspec(naked) void* __cdecl nfw::mftp(...)
+{
+    __asm
+    {
+        mov eax, [esp+4]
+        ret
+    }
+}

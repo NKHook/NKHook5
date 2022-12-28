@@ -1,6 +1,7 @@
 #include "PatchManager.h"
 #include <iostream>
 
+#include "CApplyStatusEffectTask/Fire.h"
 #include "CBaseFileIO/FileExists.h"
 #include "CBaseFileIO/OpenFile.h"
 #include "CBasePositionableObject/Constructor.h"
@@ -37,6 +38,7 @@ using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
+    PatchManager::ApplyPatch(new CApplyStatusEffectTask::Fire());
     PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
     PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());

@@ -7,6 +7,9 @@ namespace NKHook5 {
 	namespace Signatures {
 		enum class Sigs {
 			/* CApp */
+			/* CApplyStatusEffectTask */
+			CApplyStatusEffectTask_VTable,
+			CApplyStatusEffectTask_Fire,
 			/* CAssetBag */
 			/* CBaseButton */
 			CBaseButton_VTable,

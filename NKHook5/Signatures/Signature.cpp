@@ -7,6 +7,8 @@
 
 #include <rttihelper.h>
 
+#define VT_IDX(SIG_VT, IDX) *(void**)((*(uintptr_t*)pointerMap[SIG_VT]) + (sizeof(void*) * IDX));
+
 using namespace NKHook5;
 using namespace NKHook5::Signatures;
 
@@ -29,6 +31,9 @@ void* Signatures::FindFirst(int count, ...) {
 }
 
 void Signatures::FindAll() {
+	/* CApplyStatusEffectTask */
+	pointerMap[Sigs::CApplyStatusEffectTask_VTable] = h_rtti::get_vtable_pointer("CApplyStatusEffectTask");
+	pointerMap[Sigs::CApplyStatusEffectTask_Fire] = VT_IDX(Sigs::CApplyStatusEffectTask_VTable, 50);
 	/* CBaseButton */
 	pointerMap[Sigs::CBaseButton_VTable] = h_rtti::get_vtable_pointer("CBaseButton");
 	pointerMap[Sigs::CBaseButton_CCTOR] = Signatures::FindFirst(1,
@@ -191,7 +196,7 @@ void Signatures::FindAll() {
 	pointerMap[Sigs::CSettingsScreen_Input] = Signatures::FindFirst(1,
 		"55 8B EC 56 57 8B ?? ?? 8B F1 57 E8 ?? ?? ?? ?? 8B ?? ?? ?? ?? ?? 85 C9 74 ?? 8B ?? ?? ?? ?? ?? 81 C1 ?? ?? ?? ?? 57 ?? ?? ?? 8B ?? ?? ?? ?? ?? 57"
 	);
-	pointerMap[Sigs::CSettingsScreen_Process] = *(void**)((*(uintptr_t*)pointerMap[Sigs::CSettingsScreen_VTable]) + (sizeof(void*) * 16));
+	pointerMap[Sigs::CSettingsScreen_Process] = VT_IDX(Sigs::CSettingsScreen_VTable, 16); //*(void**)((*(uintptr_t*)pointerMap[Sigs::CSettingsScreen_VTable]) + (sizeof(void*) * 16));
 	/* CSprite */
 	pointerMap[Sigs::CSprite_VTable] = h_rtti::get_vtable_pointer("CSprite");
 	/* CTextObject */

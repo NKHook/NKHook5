@@ -3,6 +3,7 @@ target_sources(NKHook5 PRIVATE
     "IPatch.cpp"
 )
 
+add_subdirectory(CApplyStatusEffectTask)
 add_subdirectory(CBaseFileIO)
 add_subdirectory(CBasePositionableObject)
 add_subdirectory(CBloon)

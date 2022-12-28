@@ -104,6 +104,9 @@ namespace nfw {
         newframework_allocator& operator=(const newframework_allocator<U>&) { return *this; }
     };
 
+    /* Member Function to Pointer */
+    void* __cdecl mftp(...);
+
     template<typename K, typename V>
     using map = std::map<K, V, std::less<K>, newframework_allocator<std::pair<const K, V>>>;
 

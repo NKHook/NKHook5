@@ -120,6 +120,13 @@ if(NOT binpack_POPULATED)
     target_include_directories(binpack INTERFACE ${binpack_SOURCE_DIR})
 endif()
 
+FetchContent_Declare(
+    usercall
+    GIT_REPOSITORY https://github.com/widberg/usercall.hpp.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(usercall)
+
 add_subdirectory(Common)
 add_subdirectory(DevKit)
 add_subdirectory(NKHook5)
