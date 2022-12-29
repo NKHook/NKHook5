@@ -62,13 +62,13 @@ namespace nfw {
     class newframework_allocator
     {
     public:
-        typedef size_t    size_type;
+        typedef size_t size_type;
         typedef ptrdiff_t difference_type;
         typedef T* pointer;
         typedef const T* const_pointer;
         typedef T& reference;
         typedef const T& const_reference;
-        typedef T         value_type;
+        typedef T value_type;
 
         newframework_allocator() {}
         newframework_allocator(const newframework_allocator&) {}
