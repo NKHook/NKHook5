@@ -28,6 +28,7 @@ namespace NKHook5 {
 			CBaseScreen_StartUsingAsset,
 			/* CBaseTower */
 			/* CBloon */
+			CBloon_ApplyEffect,
 			CBloon_Update,
 			/* CBloonFactory */
 			CBloonFactory_CCTOR,
@@ -52,6 +53,9 @@ namespace NKHook5 {
 			/* CGameScreen */
 			CGameScreen_Init,
 			/* CGameSystemPointers */
+			/* CGlueStatusEffect */
+			CGlueStatusEffect_VTable,
+			CGlueStatusEffect_CCTOR,
 			/* CLoc */
 			CLoc_FindText,
 			CLoc_GetText,
@@ -85,6 +89,7 @@ namespace NKHook5 {
 			CSettingsScreen_Process,
 			/* CSprite */
 			CSprite_VTable,
+			CSprite_SetTexture,
 			/* CTextObject */
 			CTextObject_VTable,
 			CTextObject_CCTOR_A,

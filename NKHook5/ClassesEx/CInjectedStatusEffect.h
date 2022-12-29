@@ -1,20 +1,22 @@
 #pragma once
 
+#include "../Util/NewFramework.h"
+
 #include "../Classes/CCompoundSprite.h"
-#include "../Classes/CStatusEffect.h"
+#include "../Classes/CGlueStatusEffect.h"
 
 namespace NKHook5
 {
 	using namespace NKHook5::Classes;
 	namespace ClassesEx
 	{
-		class CSpriteStatusEffect :
-			public CStatusEffect,
-			public CCompoundSprite
+		class CInjectedStatusEffect : public CGlueStatusEffect
 		{
 		public:
-			CSpriteStatusEffect();
-			virtual ~CSpriteStatusEffect();
+			overload_new;
+
+			CInjectedStatusEffect(CTextureManager* texMgr, bool unk, float speedScale, float damageRate, float damageTimer = 0.0f);
+			virtual ~CInjectedStatusEffect();
 			virtual CStatusEffect* Clone();
 			virtual int TypeID();
 			virtual void Apply();

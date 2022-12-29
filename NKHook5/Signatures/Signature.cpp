@@ -72,6 +72,9 @@ void Signatures::FindAll() {
 		"55 8B EC 51 56 8B F1 ?? BE ?? ?? ?? ?? ?? 75 ?? 68"
 	);
 	/* CBloon */
+	pointerMap[Sigs::CBloon_ApplyEffect] = Signatures::FindFirst(1,
+		"55 8B EC 83 EC ?? 56 8B ?? ?? 57 8B F9 85"
+	);
 	pointerMap[Sigs::CBloon_Update] = Signatures::FindFirst(1,
 		"55 8B EC 83 EC ?? 53 56 8B ?? ?? 8B D9 56 E8 ?? ?? ?? ?? ?? BB"
 	);
@@ -128,6 +131,11 @@ void Signatures::FindAll() {
 	/* CGameScreen */
 	pointerMap[Sigs::CGameScreen_Init] = Signatures::FindFirst(1,
 		"55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 81 EC ?? ?? ?? ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 53 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B D9 ?? 9D ?? ?? ?? ?? 8B ?? ?? 56"
+	);
+	/* CGlueStatusEffect */
+	pointerMap[Sigs::CBaseButton_VTable] = h_rtti::get_vtable_pointer("CGlueStatusEffect");
+	pointerMap[Sigs::CGlueStatusEffect_CCTOR] = Signatures::FindFirst(1,
+		"55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? 56 57 A1 34 ?? ?? ?? 33 C5 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 0F 28 ?? ?? 0F ?? ?? ?? 8B F9 ?? 7D ?? 8B ?? ?? F3"
 	);
 	/* CLoc */
 	pointerMap[Sigs::CLoc_FindText] = Signatures::FindFirst(2,
@@ -203,6 +211,9 @@ void Signatures::FindAll() {
 	pointerMap[Sigs::CSettingsScreen_Process] = VT_IDX(Sigs::CSettingsScreen_VTable, 16); //*(void**)((*(uintptr_t*)pointerMap[Sigs::CSettingsScreen_VTable]) + (sizeof(void*) * 16));
 	/* CSprite */
 	pointerMap[Sigs::CSprite_VTable] = h_rtti::get_vtable_pointer("CSprite");
+	pointerMap[Sigs::CSprite_SetTexture] = Signatures::FindFirst(1,
+		"55 8B EC 56 8B F1 8B ?? ?? 85 C9 0F"
+	);
 	/* CTextObject */
 	pointerMap[Sigs::CTextObject_VTable] = h_rtti::get_vtable_pointer("CTextObject");
 	pointerMap[Sigs::CTextObject_CCTOR_A] = Signatures::FindFirst(1,

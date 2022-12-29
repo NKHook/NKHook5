@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Macro.h"
 #include "../../Util/NewFramework.h"
 #include "CRenderableTextureObject.h"
+#include "SSpriteInfo.h"
 
 namespace NKHook5 {
 	namespace Classes {
@@ -28,6 +30,8 @@ namespace NKHook5 {
 			virtual void* BindTexture() { return nullptr; }
 			virtual void* SetSecondaryColorMultiplied(uint32_t param_1) { return nullptr; }
 			virtual void* SetSecondaryColorMultipliedRecursive(uint32_t param_1) { return nullptr; }
+
+			void SetTexture(SSpriteInfo* info, bool unk);
 		};
 
 		static_assert(sizeof(CSprite) == 0x104);

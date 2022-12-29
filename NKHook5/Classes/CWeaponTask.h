@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CBasePositionableObject.h"
+#include "CGameSystemPointers.h"
 
 namespace NKHook5 {
 	namespace Classes {
@@ -13,7 +14,9 @@ namespace NKHook5 {
 		public:
 			char pad_00A8[44]; //0x00A8
 			DrawLayer drawLayer; //0x00D4
-			char pad_00D8[76]; //0x00D8
+			char pad_00D8[40]; //0x00D8
+			CGameSystemPointers* gamePtrs; //0x0100
+			char pad_0104[32]; //0x0104
 
 		public:
 			/* CWeapon VT funcs */

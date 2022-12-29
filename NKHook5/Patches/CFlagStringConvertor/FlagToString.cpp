@@ -10,8 +10,9 @@
 #include <intrin.h>
 
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
-extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
 extern NKHook5::Util::FlagManager g_towerFlags;
+extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
+extern NKHook5::Util::FlagManager g_bloonStatusFlags;
 
 namespace NKHook5
 {
@@ -33,6 +34,13 @@ namespace NKHook5
                 }
 
                 //Code for status effect id injections
+                if (self == g_bloonFactory)
+                {
+                    if (categoryId == 1 /*Status effect category*/)
+                    {
+                        resultStr->assign(g_bloonStatusFlags.GetName(numericId));
+                    }
+                }
 
                 return resultStr;
             }

@@ -1,4 +1,4 @@
 target_sources(NKHook5 PRIVATE
 	"CModListScreen.cpp"
-	"CSpriteStatusEffect.cpp"
+	"CInjectedStatusEffect.cpp"
 )

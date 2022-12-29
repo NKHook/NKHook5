@@ -2,8 +2,14 @@
 
 #include "../../Classes/CApplyStatusEffectTask.h"
 #include "../../Classes/CBloon.h"
+#include "../../Classes/CBloonFactory.h"
+#include "../../ClassesEx/CInjectedStatusEffect.h"
 #include "../../Signatures/Signature.h"
 #include "../../Util/NewFramework.h"
+#include "../../Util/FlagManager.h"
+
+extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
+extern NKHook5::Util::FlagManager g_bloonStatusFlags;
 
 namespace NKHook5
 {
@@ -16,8 +22,12 @@ namespace NKHook5
             using namespace NKHook5::Signatures;
 
             static uint64_t o_func = 0;
-            void __fastcall cb_hook(void* task, void* pad, void* bloon, float unk, float unk2, float unk3, float unk4) {
-                return PLH::FnCast(o_func, &cb_hook)(task, pad, bloon, unk, unk2, unk3, unk4);
+            void __fastcall cb_hook(Classes::CApplyStatusEffectTask* task, void* pad, Classes::CBloon* bloon, float unk, float unk2, float unk3, float unk4)
+            {
+                if (g_bloonStatusFlags.IsVanilla(task->effectId))
+                    return PLH::FnCast(o_func, &cb_hook)(task, pad, bloon, unk, unk2, unk3, unk4);
+                else
+                    bloon->ApplyEffect(new ClassesEx::CInjectedStatusEffect(task->gamePtrs->basePointers.textureManager, true, 1.0, 1.0), nullptr);
             }
 
             bool Fire::Apply()
