@@ -21,7 +21,7 @@ namespace NKHook5
             static uint64_t o_func;
             uint64_t __fastcall cb_hook(Classes::CFlagStringConvertor* self, int pad, int categoryId, ghstl::string* textId) {
                 uint64_t result = PLH::FnCast(o_func, &cb_hook)(self, pad, categoryId, textId);
-                if (self == &g_towerFactory->flagStringConvertor) {
+                if (self == g_towerFactory) {
                     if (categoryId == 0) {
                         result = g_towerFlags.GetFlag(textId->cpp_str());
                     }

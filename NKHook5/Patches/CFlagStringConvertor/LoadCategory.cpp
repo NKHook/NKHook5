@@ -23,7 +23,7 @@ namespace NKHook5
 
             static uint64_t o_func;
             void* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, int category, std::string* stringList, int stringCount, int indexMode) {
-                if ((void*)self == (void*)&g_towerFactory->flagStringConvertor) {
+                if (self == g_towerFactory) {
                     if (category == 0) {
                         printf("Hijacking tower registration to inject new types...\n");
                         std::vector<std::string> allTowers;

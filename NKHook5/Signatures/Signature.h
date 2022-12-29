@@ -29,6 +29,8 @@ namespace NKHook5 {
 			/* CBaseTower */
 			/* CBloon */
 			CBloon_Update,
+			/* CBloonFactory */
+			CBloonFactory_CCTOR,
 			/* CBloonsBaseScreen */
 			CBloonsBaseScreen_CCTOR,
 			/* CBloonsTD5Game */

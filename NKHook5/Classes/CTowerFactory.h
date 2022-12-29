@@ -6,6 +6,7 @@
 #include "CFlagStringConvertor.h"
 #include "boost/shared_ptr"
 #include "Vec2F.h"
+#include "STowerInfo.h"
 
 #define MAX_TOWER_ID (static_cast<uint64_t>(NKHook5::Classes::TowerIDs::GameDummy))
 
@@ -88,13 +89,15 @@ namespace NKHook5
             GameDummy = 1ull << 58ull,
         };
 
-        class CTowerFactory : public CBaseFactory<struct STowerInfo, CBaseTower>
+        class CTowerFactory : public CBaseFactory<STowerInfo, CBaseTower>, public CFlagStringConvertor
         {
         public:
-            char pad_0004[76]; //0x0004
-            CFlagStringConvertor flagStringConvertor; //0x0050
-            char pad_0054[236]; //0x0054
-        }; //Size: 0x0140
+            char pad_0060[72]; //0x0060
+        }; //Size: 0x0A4
+
+        static_assert(sizeof(CBaseFactory<STowerInfo, CBaseTower>) == 0x50);
+        static_assert(sizeof(CFlagStringConvertor) == 0xC);
+        static_assert(sizeof(CTowerFactory) == 0xA4);
     } // namespace Classes
 
 } // namespace NKHook5
