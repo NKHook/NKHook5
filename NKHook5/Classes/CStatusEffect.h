@@ -4,6 +4,7 @@
 #include "CBloon.h"
 #include "SGameTime.h"
 
+#include "Macro.h"
 #include "../Util/NewFramework.h"
 
 namespace NKHook5
@@ -34,14 +35,19 @@ namespace NKHook5
 
 		public:
 			virtual ~CStatusEffect() {};
-			virtual CStatusEffect* Clone() = 0;
-			virtual int TypeID() = 0;
-			virtual void Apply() = 0;
-			virtual void Reset() = 0;
-			virtual void Update(SGameTime& time) = 0;
-			virtual void Render() = 0;
+			virtual CStatusEffect* Clone() { return nullptr; };
+			virtual uint64_t TypeID() { return 0; };
+			virtual void Apply() {};
+			virtual void Reset() {};
+			virtual void Update(SGameTime& time) {};
+			virtual void Render() {};
 			virtual float GetBloonSpeed(float base) { return base; };
 			virtual void IncreasePops(int amount) {};
+
+			void IncTowerRef(CBaseTower* tower)
+			{
+				return ThisCall<void, CStatusEffect*, CBaseTower*>(Sigs::CStatusEffect_IncTowerRef, this, tower);
+			}
 		};
 #pragma pack(pop)
 

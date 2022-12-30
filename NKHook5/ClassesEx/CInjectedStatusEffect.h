@@ -15,16 +15,11 @@ namespace NKHook5
 		public:
 			overload_new;
 
-			CInjectedStatusEffect(CTextureManager* texMgr, bool unk, float speedScale, float damageRate, float damageTimer = 0.0f);
-			virtual ~CInjectedStatusEffect();
-			virtual CStatusEffect* Clone();
-			virtual int TypeID();
-			virtual void Apply();
-			virtual void Reset();
-			virtual void Update(SGameTime& time);
-			virtual void Render();
-			virtual float GetBloonSpeed(float base);
-			virtual void IncreasePops(int amount);
+			bool adjustedGraphic = false;
+			uint64_t injectedId = 0;
+			void** pVanillaVTable = nullptr;
+
+			CInjectedStatusEffect(uint64_t injectedId, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f);
 		};
 	}
 }

@@ -15,6 +15,8 @@ namespace NKHook5 {
 			char pad_00C8[60]; //0x00C8
 
 		public:
+			CSprite(void* param_1, bool param_2, Vec2F location, bool vanillaVft = true);
+
 			virtual void* SetColorI(uint8_t param_1, uint8_t param_2, uint8_t param_3, uint32_t param_4) { return nullptr; }
 			virtual void* SetColorF(uint8_t param_1, uint8_t param_2, uint8_t param_3, uint32_t param_4) { return nullptr; }
 			virtual void* SetColorRef(uint32_t param_1, uint32_t param_2) { return nullptr; }

@@ -89,7 +89,10 @@ namespace NKHook5 {
 			CSettingsScreen_Process,
 			/* CSprite */
 			CSprite_VTable,
+			CSprite_CCTOR,
 			CSprite_SetTexture,
+			/* CStatusEffect */
+			CStatusEffect_IncTowerRef,
 			/* CTextObject */
 			CTextObject_VTable,
 			CTextObject_CCTOR_A,

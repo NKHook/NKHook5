@@ -99,6 +99,8 @@ namespace NKHook5
         }; // Size 1024 (0x400)
 
         static_assert(sizeof(CBasePositionableObject) == 0xA8);
+        static_assert(offsetof(CBasePositionableObject, size) == 0x20);
+        static_assert(offsetof(CBasePositionableObject, location) == 0x90);
     } // namespace Classes
     
 } // namespace NKHook5

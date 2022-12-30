@@ -26,8 +26,12 @@ namespace NKHook5
             {
                 if (g_bloonStatusFlags.IsVanilla(task->effectId))
                     return PLH::FnCast(o_func, &cb_hook)(task, pad, bloon, unk, unk2, unk3, unk4);
-                else
-                    bloon->ApplyEffect(new ClassesEx::CInjectedStatusEffect(task->gamePtrs->basePointers.textureManager, true, 1.0, 1.0), nullptr);
+                else {
+                    ClassesEx::CInjectedStatusEffect* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, task->gamePtrs->basePointers.textureManager, false, 0.2, 1.0);
+                    if(task->tower)
+                        effect->IncTowerRef(task->tower);
+                    bloon->ApplyEffect(effect, true);
+                }
             }
 
             bool Fire::Apply()
