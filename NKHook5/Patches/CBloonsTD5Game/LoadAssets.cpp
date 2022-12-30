@@ -3,9 +3,11 @@
 #include "../../Util/NewFramework.h"
 #include "../../Classes/CBloonsTD5Game.h"
 #include "../../Classes/CZipFile.h"
+#include "../../Extensions/StatusEffect/StatusDefinitionsExt.h"
 #include "../../Signatures/Signature.h"
 
 #include <Extensions/ExtensionManager.h>
+#include <Extensions/StatusEffect/StatusFlagsExt.h>
 
 namespace NKHook5
 {
@@ -14,7 +16,10 @@ namespace NKHook5
         namespace CBloonsTD5Game
         {
             using namespace Common::Extensions;
+            using namespace Common::Extensions::StatusEffect;
             using namespace Signatures;
+            using namespace Extensions;
+            using namespace Extensions::StatusEffect;
 
             static uint64_t o_func;
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
@@ -37,6 +42,14 @@ namespace NKHook5
                         doc->UseData(unzipped->fileContent, unzipped->fileSize);
                         delete unzipped;
                     }
+                }
+                auto statusDefs = (StatusDefinitionsExt*)ExtensionManager::GetByName("StatusDefinitions");
+                auto statusFlags = (StatusFlagsExt*)ExtensionManager::GetByName("StatusFlags");
+                for (const std::string& flag : statusFlags->GetFlags())
+                {
+                    std::string effectFile = "Assets/JSON/StatusDefinitions/" + flag + ".status";
+                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(effectFile, error);
+                    statusDefs->UseData(unzipped->fileContent, unzipped->fileSize);
                 }
                 printf("Custom assets loaded!\n");
 

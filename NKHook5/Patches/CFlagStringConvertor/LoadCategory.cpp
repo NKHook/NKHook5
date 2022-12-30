@@ -2,13 +2,16 @@
 
 #include "../../Util/NewFramework.h"
 #include <ghstl/string>
+
 #include "../../Classes/CBloonFactory.h"
 #include "../../Classes/CTowerFactory.h"
+#include "../../Extensions/StatusEffect/StatusDefinitionsExt.h"
+#include "../../Signatures/Signature.h"
+#include "../../Util/FlagManager.h"
+
 #include <Extensions/Tower/TowerFlagsExt.h>
 #include <Extensions/StatusEffect/StatusFlagsExt.h>
 #include <Extensions/ExtensionManager.h>
-#include "../../Signatures/Signature.h"
-#include "../../Util/FlagManager.h"
 
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
 NKHook5::Util::FlagManager g_towerFlags;
@@ -23,6 +26,12 @@ namespace NKHook5
         {
             using namespace Common;
             using namespace Common::Extensions;
+            using namespace Common::Extensions::Generic;
+            using namespace Common::Extensions::StatusEffect;
+            using namespace Common::Extensions::Tower;
+            using namespace NKHook5;
+            using namespace NKHook5::Extensions;
+            using namespace NKHook5::Extensions::StatusEffect;
             using namespace Signatures;
 
             static uint64_t o_func;
@@ -32,7 +41,7 @@ namespace NKHook5
                     if (category == 0) {
                         printf("Hijacking tower registration to inject new types...\n");
                         std::vector<std::string> allTowers;
-                        auto* towerFlagExt = (Extensions::Tower::TowerFlagExt*)Extensions::ExtensionManager::GetByName("TowerFlags");
+                        auto* towerFlagExt = (TowerFlagExt*)ExtensionManager::GetByName("TowerFlags");
                         printf("Copying old types...\n");
                         for (int i = 0; i < stringCount; i++) {
                             uint64_t numericId = static_cast<uint64_t>(1) << i;
@@ -42,7 +51,7 @@ namespace NKHook5
                         }
                         printf("Old types copied!\n");
                         printf("Injecting new types...\n");
-                        for (auto flagDef : towerFlagExt->GetFlags()) {
+                        for (const std::string& flagDef : towerFlagExt->GetFlags()) {
                             uint64_t moddedSlot = g_towerFlags.Register(flagDef);
                             allTowers.push_back(flagDef);
                             printf("Injected '%s' at slot '%llx'\n", flagDef.c_str(), moddedSlot);
@@ -61,7 +70,8 @@ namespace NKHook5
                     {
                         printf("Hijacking bloon status effect registration to inject new types...\n");
                         std::vector<std::string> allEffects;
-                        auto* statusFlagExt = (Extensions::StatusEffect::StatusFlagExt*)Extensions::ExtensionManager::GetByName("StatusFlags");
+                        auto* statusFlagExt = (Common::Extensions::StatusEffect::StatusFlagsExt*)ExtensionManager::GetByName("StatusFlags");
+                        auto* statusDefsExt = (StatusDefinitionsExt*)ExtensionManager::GetByName("StatusDefinitions");
                         printf("Copying old types...\n");
                         for (int i = 0; i < stringCount; i++) {
                             uint64_t numericId = static_cast<uint64_t>(1) << i;
@@ -71,12 +81,13 @@ namespace NKHook5
                         }
                         printf("Old types copied!\n");
                         printf("Injecting new types...\n");
-                        for (auto flagDef : statusFlagExt->GetFlags()) {
+                        for (const std::string& flagDef : statusFlagExt->GetFlags()) {
                             uint64_t moddedSlot = g_bloonStatusFlags.Register(flagDef);
                             allEffects.push_back(flagDef);
                             printf("Injected '%s' at slot '%llx'\n", flagDef.c_str(), moddedSlot);
                         }
                         printf("New types injected!\n");
+
                         return ((void* (__thiscall*)(void*, int, void*, int, int))o_func)(self, category, allEffects.data(), allEffects.size(), indexMode);
                     }
                 }

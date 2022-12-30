@@ -5,9 +5,9 @@
 namespace Common {
 	namespace Extensions {
 		namespace StatusEffect {
-			class StatusFlagExt : public Generic::FlagsExtension {
+			class StatusFlagsExt : public Generic::FlagsExtension {
 			public:
-				StatusFlagExt();
+				StatusFlagsExt();
 			};
 		}
 	}

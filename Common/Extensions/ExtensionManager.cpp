@@ -13,7 +13,7 @@ static std::vector<Extension*> extensions;
 void ExtensionManager::AddAll()
 {
 	ExtensionManager::AddExtension(new Generic::MergeIgnoreExtension());
-	ExtensionManager::AddExtension(new StatusEffect::StatusFlagExt());
+	ExtensionManager::AddExtension(new StatusEffect::StatusFlagsExt());
 	ExtensionManager::AddExtension(new Textures::SheetsExtension());
 	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
 }

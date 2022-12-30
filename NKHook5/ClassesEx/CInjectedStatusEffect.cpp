@@ -10,7 +10,7 @@ using namespace NKHook5::ClassesEx;
 
 static CStatusEffect* __fastcall STATIC_Clone(CInjectedStatusEffect* self)
 {
-	CInjectedStatusEffect* clone = new CInjectedStatusEffect(self->injectedId, self->texMgr, false, self->speedScale, self->damageRate);
+	CInjectedStatusEffect* clone = new CInjectedStatusEffect(self->injectedId, self->spriteInfo, self->texture, self->texMgr, false, self->speedScale, self->damageRate);
 	return clone;
 }
 
@@ -26,7 +26,7 @@ static void __fastcall STATIC_Apply(CInjectedStatusEffect* self)
 
 	//Change the sprite to the custom sprite
 	Classes::CSprite* sprite = self;
-	auto spriteInfo = self->texMgr->GetSpriteInfoPtr("InGame", "napalm_01");
+	auto spriteInfo = self->texMgr->GetSpriteInfoPtr(self->texture, self->spriteInfo);
 	sprite->SetTexture(spriteInfo, false);
 	sprite->SetXY({ 0, 0 });
 	sprite->ScaleXY({ 1.25, 1.25 });
@@ -38,7 +38,7 @@ static void __fastcall STATIC_Render(CInjectedStatusEffect* self, void* pad, SGa
 	selfSprite->Render(true);
 }
 
-CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer)
+CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer)
 	: CGlueStatusEffect(texMgr, detach, speedScale, damageRate, damageTimer)
 {
 	//Get the vtables here
@@ -65,4 +65,6 @@ CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, CTextureManage
 
 	//Now we have our own vtable overridden by the game's vtable, and we are free to make changes.
 	this->injectedId = injectedId;
+	this->spriteInfo = spriteInfo;
+	this->texture = texture;
 }

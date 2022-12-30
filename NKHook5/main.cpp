@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <Extensions/ExtensionManager.h>
+#include "Extensions/StatusEffect/StatusDefinitionsExt.h"
 #include "Patches/PatchManager.h"
 #include "Signatures/Signature.h"
 
@@ -45,6 +46,7 @@ auto initialize() -> int {
 
     printf("Loading Extensions...\n");
     Common::Extensions::ExtensionManager::AddAll();
+    Common::Extensions::ExtensionManager::AddExtension(new NKHook5::Extensions::StatusEffect::StatusDefinitionsExt());
     printf("All extensions loaded!\n");
 
     std::cout << "Loading all patches..." << std::endl;

@@ -17,9 +17,11 @@ namespace NKHook5
 
 			bool adjustedGraphic = false;
 			uint64_t injectedId = 0;
+			std::string spriteInfo;
+			std::string texture;
 			void** pVanillaVTable = nullptr;
 
-			CInjectedStatusEffect(uint64_t injectedId, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f);
+			CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f);
 		};
 	}
 }

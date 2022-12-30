@@ -13,6 +13,7 @@ namespace Common {
 				virtual bool IsCustomDocument();
 				virtual void UseJsonData(nlohmann::json content);
 				virtual const std::vector<std::string>& GetFlags();
+				virtual void UseFlagData(const std::vector<std::string>& flags);
 			};
 		}
 	}

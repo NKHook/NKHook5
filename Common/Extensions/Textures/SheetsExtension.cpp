@@ -29,7 +29,7 @@ void SheetsExtension::UseJsonData(nlohmann::json data) {
 	}
 	catch (std::exception& ex) {
 		printf("Error parsing SheetsExtension: %s", ex.what());
-		printf("Is your %s file formatted properly?", this->GetTarget().c_str());
+		printf("Is your file formatted properly?");
 	}
 }
 

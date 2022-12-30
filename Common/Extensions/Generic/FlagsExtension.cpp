@@ -37,10 +37,17 @@ void FlagsExtension::UseJsonData(nlohmann::json data) {
 		printf("Error parsing FlagExtension: %s\n", ex.what());
 		printf("Did you format your %s file properly?\n", this->GetTarget().c_str());
 	}
+
+	this->UseFlagData(this->GetFlags());
 }
 
 //Gives the registered flags
 const std::vector<std::string>& FlagsExtension::GetFlags()
 {
 	return this->registeredFlags;
+}
+
+void FlagsExtension::UseFlagData(const std::vector<std::string>& flags)
+{
+
 }
