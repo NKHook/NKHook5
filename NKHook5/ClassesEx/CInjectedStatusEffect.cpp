@@ -32,14 +32,10 @@ static void __fastcall STATIC_Apply(CInjectedStatusEffect* self)
 	sprite->ScaleXY({ 1.25, 1.25 });
 }
 
-static void __fastcall STATIC_Update(CInjectedStatusEffect* self, void* pad, SGameTime& time)
+static void __fastcall STATIC_Render(CInjectedStatusEffect* self, void* pad, SGameTime& time)
 {
 	CSprite* selfSprite = self;
-	selfSprite->ResetMatrix();
-	selfSprite->location = self->bloon->location;
-
-	auto* mfUpdate = (void(__thiscall*)(CInjectedStatusEffect*, SGameTime&))self->pVanillaVTable[5];
-	mfUpdate(self, time);
+	selfSprite->Render(true);
 }
 
 CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer)
@@ -62,7 +58,10 @@ CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, CTextureManage
 	(*ppCustomVTable)[1] = &STATIC_Clone;
 	(*ppCustomVTable)[2] = &STATIC_TypeID;
 	(*ppCustomVTable)[3] = &STATIC_Apply;
-	//(*ppCustomVTable)[5] = &STATIC_Update;
+	//(*ppCustomVTable)[6] = &STATIC_Render;
+
+	CSprite* selfSprite = this;
+	*(void**)selfSprite = *(void**)Signatures::GetAddressOf(Sigs::CSprite_VTable);
 
 	//Now we have our own vtable overridden by the game's vtable, and we are free to make changes.
 	this->injectedId = injectedId;

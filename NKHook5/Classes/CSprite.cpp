@@ -5,9 +5,9 @@
 using namespace NKHook5;
 using namespace NKHook5::Classes;
 
-CSprite::CSprite(void* param_1, bool param_2, Vec2F location, bool vanillaVft)
+CSprite::CSprite(SSpriteInfo* spriteInfo, bool param_2, Vec2F location, bool vanillaVft)
 {
-	ThisCall<CSprite*, CSprite*, void*, bool, Vec2F>(Sigs::CSprite_CCTOR, this, param_1, param_2, location);
+	ThisCall<CSprite*, CSprite*, SSpriteInfo*, bool, Vec2F>(Sigs::CSprite_CCTOR, this, spriteInfo, param_2, location);
 	if (vanillaVft)
 	{
 		*(void**)this = Signatures::GetAddressOf(Sigs::CSprite_VTable);
