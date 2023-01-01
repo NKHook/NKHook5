@@ -10,7 +10,7 @@ using namespace NKHook5::ClassesEx;
 
 static CStatusEffect* __fastcall STATIC_Clone(CInjectedStatusEffect* self)
 {
-	CInjectedStatusEffect* clone = new CInjectedStatusEffect(self->injectedId, self->spriteInfo, self->texture, self->texMgr, false, self->speedScale, self->damageRate);
+	CInjectedStatusEffect* clone = new CInjectedStatusEffect(self->injectedId, self->spriteInfo, self->texture, self->exceptMoab, self->texMgr, false, self->speedScale, self->damageRate);
 	return clone;
 }
 
@@ -38,7 +38,7 @@ static void __fastcall STATIC_Render(CInjectedStatusEffect* self, void* pad, SGa
 	selfSprite->Render(true);
 }
 
-CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer)
+CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, bool exceptMoab, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer)
 	: CGlueStatusEffect(texMgr, detach, speedScale, damageRate, damageTimer)
 {
 	//Get the vtables here

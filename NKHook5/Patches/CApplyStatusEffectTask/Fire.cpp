@@ -49,10 +49,10 @@ namespace NKHook5
                         printf("Failed to find a status effect with an ID of %llx\n", task->effectId);
                         return;
                     }
-                    ClassesEx::CInjectedStatusEffect* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, def->spriteInfo, def->texture, task->gamePtrs->basePointers.textureManager, false, 0.2, 1.0);
+                    ClassesEx::CInjectedStatusEffect* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, def->spriteInfo, def->texture, def->exceptMoab, task->gamePtrs->basePointers.textureManager, false, 0.2, 1.0);
                     if(task->tower)
                         effect->IncTowerRef(task->tower);
-                    bloon->ApplyEffect(effect, true);
+                    bloon->ApplyEffect(effect, !def->exceptMoab);
                 }
             }
 

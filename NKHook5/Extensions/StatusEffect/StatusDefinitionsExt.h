@@ -19,6 +19,7 @@ namespace NKHook5
 				std::string type;
 				std::string spriteInfo;
 				std::string texture;
+				bool exceptMoab;
 			};
 
 			class StatusDefinitionsExt : public JsonExtension

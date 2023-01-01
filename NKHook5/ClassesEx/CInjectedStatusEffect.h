@@ -19,9 +19,10 @@ namespace NKHook5
 			uint64_t injectedId = 0;
 			std::string spriteInfo;
 			std::string texture;
+			bool exceptMoab = false;
 			void** pVanillaVTable = nullptr;
 
-			CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f);
+			CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, bool exceptMoab, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f);
 		};
 	}
 }

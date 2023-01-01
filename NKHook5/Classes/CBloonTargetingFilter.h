@@ -7,8 +7,10 @@ namespace NKHook5
 		class CBloonTargetingFilter
 		{
 		public:
-			char pad_0004[0x28]; //0x0004
-		}; //Size: 0x0028
-		static_assert(sizeof(CBloonTargetingFilter) == 0x28);
+			char pad_0004[0x18]; //0x0004
+
+			virtual ~CBloonTargetingFilter();
+		}; //Size: 0x001C
+		static_assert(sizeof(CBloonTargetingFilter) == 0x1C);
 	}
 }

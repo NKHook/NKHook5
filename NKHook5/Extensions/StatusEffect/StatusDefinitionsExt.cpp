@@ -33,12 +33,18 @@ void StatusDefinitionsExt::UseJsonData(nlohmann::json content)
 		printf("%s\n", "Received a StatusDefinition without a 'Texture' property!");
 		return;
 	}
+	if (!content.contains("ExceptMOAB"))
+	{
+		printf("%s\n", "Received a StatusDefinition without a 'ExceptMOAB' property!");
+		return;
+	}
 
 	this->definitions.emplace_back(
 		StatusDefinition(
 			content["Type"].get<std::string>(),
 			content["SpriteInfo"].get<std::string>(),
-			content["Texture"].get<std::string>()
+			content["Texture"].get<std::string>(),
+			content["ExceptMOAB"].get<bool>()
 		)
 	);
 }

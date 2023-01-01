@@ -31,14 +31,13 @@ namespace NKHook5 {
 
 		class JsonObject {
 		public:
-			nfw::map<std::string, JsonPropertyValue>* dataMap; //0x0000
-			char pad_0004[4]; //0x0004
+			nfw::map<std::string, JsonPropertyValue> dataMap; //0x0000
 		public:
 			uint32_t ReadBoolProperty(bool* result, ghstl::string propName) {
 				return ThisCall<uint32_t, JsonObject*, bool*, ghstl::string>(Sigs::JsonObject_ReadBoolProperty, this, result, propName);
 			}
-			JsonPropertyValue* Get(std::string key) {
-				for (auto& [prop, value] : *dataMap) {
+			const JsonPropertyValue* Get(std::string key) const {
+				for (const auto& [prop, value] : dataMap) {
 					if (key == prop) {
 						return &value;
 					}
