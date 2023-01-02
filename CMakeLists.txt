@@ -12,7 +12,7 @@ EXECUTE_PROCESS(
       ERROR_QUIET
       OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-add_compile_definitions(NKHOOK_BUILD_TAG=0.4.1)
+add_compile_definitions(NKHOOK_BUILD_TAG=0.5.0)
 add_compile_definitions(NKHOOK_BUILD_VERSION=${NKHOOK_BUILD_VERSION})
 add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
 
