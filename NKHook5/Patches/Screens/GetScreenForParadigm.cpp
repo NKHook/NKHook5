@@ -21,9 +21,9 @@ namespace NKHook5
             using namespace Signatures;
 
             Classes::CBloonsBaseScreen* __cdecl ModdedScreenProxy(std::string& screenName, Classes::eDeviceType deviceType, Classes::CGameSystemPointers* pCGameSystemPointers) {
-                printf("Finding screen \"%s\"", screenName.c_str());
-                printf("Device type: %x", deviceType);
-                printf("pCGSP: %p", pCGameSystemPointers);
+                printf("Finding screen \"%s\"\n", screenName.c_str());
+                printf("Device type: %x\n", deviceType);
+                printf("pCGSP: %p\n", pCGameSystemPointers);
 
                 return nullptr;
             }

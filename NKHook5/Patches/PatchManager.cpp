@@ -7,6 +7,7 @@
 #include "CBasePositionableObject/Constructor.h"
 #include "CBloon/Update.h"
 #include "CBloonFactory/Constructor.h"
+#include "CBloonsBaseScreen/Init.h"
 #include "CBloonsTD5Game/Constructor.h"
 #include "CBloonsTD5Game/LoadAssets.h"
 #include "CCollectableTask/Clone.h"
@@ -14,7 +15,7 @@
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CFlagStringConvertor/LoadCategory.h"
 #include "CFlagStringConvertor/StringToFlag.h"
-#include "CGameScreen/Init.h"
+//#include "CGameScreen/Init.h"
 #include "CLoc/FindText.h"
 #include "CLoc/GetText.h"
 #include "CPlayerProfileV1/InternalLoad.h"
@@ -24,6 +25,7 @@
 #include "CSettingsScreen/InitLayout.h"
 #include "CSettingsScreen/Input.h"
 #include "CSettingsScreen/Process.h"
+#include "CTextureManager/GetSpriteInfoPtr.h"
 #include "CTowerFactory/Constructor.h"
 #include "CWeapon/Fire.h"
 #include "CWeaponFactory/ParseTask.h"
@@ -45,6 +47,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloon::Update());
     PatchManager::ApplyPatch(new CBloonFactory::Constructor());
+    PatchManager::ApplyPatch(new CBloonsBaseScreen::Init());
     PatchManager::ApplyPatch(new CBloonsTD5Game::Constructor());
     PatchManager::ApplyPatch(new CBloonsTD5Game::LoadAssets());
     PatchManager::ApplyPatch(new CCollectableTask::Clone());
@@ -52,7 +55,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
-    PatchManager::ApplyPatch(new CGameScreen::Init());
+    //PatchManager::ApplyPatch(new CGameScreen::Init());
     //PatchManager::ApplyPatch(new CLoc::FindText());
     //PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
@@ -62,6 +65,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CSettingsScreen::InitLayout());
     //PatchManager::ApplyPatch(new CSettingsScreen::Input());
     //PatchManager::ApplyPatch(new CSettingsScreen::Process());
+    PatchManager::ApplyPatch(new CTextureManager::GetSpriteInfoPtr());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     //PatchManager::ApplyPatch(new CWeapon::Fire());
     PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());
