@@ -76,12 +76,10 @@ FrameInfo* FrameInfo::FromNode(fs::path docPath, rapidxml::xml_node<>* frameNode
 	}
 
 	if (frameName != tableName) {
-		Print(LogLevel::WARNING, "Mismatch between the name defined in the SpriteTable and FrameInfo, returning empty FrameInfo.");
-		return new FrameInfo();
+		Print(LogLevel::WARNING, "Mismatch between the name defined in the SpriteTable and FrameInfo");
 	}
 	if (type != tableType) {
-		Print(LogLevel::WARNING, "Mismatch between the type defined in the SpriteTable and FrameInfo, returning empty FrameInfo.");
-		return new FrameInfo();
+		Print(LogLevel::WARNING, "Mismatch between the type defined in the SpriteTable and FrameInfo");
 	}
 
 	fs::path qualityDir = docPath.parent_path();

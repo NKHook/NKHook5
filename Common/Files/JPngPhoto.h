@@ -9,8 +9,7 @@ namespace Common {
 		using namespace Common::Sprites;
 
 		class JPngPhoto : public Photo {
-			CLImage* pngImage = nullptr;
-			CLImage* jpegImage = nullptr;
+			CLImage* jpngImage = nullptr;
 		public:
 			JPngPhoto();
 			JPngPhoto(std::filesystem::path path);
