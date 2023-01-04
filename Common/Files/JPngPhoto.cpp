@@ -8,6 +8,8 @@ using namespace Common::Files;
 constexpr int JPNG_JFIF_PTR = 0x1C;
 constexpr int JPNG_PNG_PTR = 0x10;
 
+static std::mutex openmtx;
+
 JPngPhoto::JPngPhoto()
 {
 }
@@ -24,6 +26,7 @@ bool JPngPhoto::Open(std::filesystem::path path)
 
 bool JPngPhoto::OpenRead(std::filesystem::path path)
 {
+	std::lock_guard<std::mutex> lock(openmtx);
 	File::OpenRead(path);
 	std::ifstream imageStream;
 	imageStream.open(this->GetPath(), std::ios::in | std::ios::binary);
@@ -100,6 +103,7 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 
 bool JPngPhoto::OpenWrite(std::filesystem::path)
 {
+	std::lock_guard<std::mutex> lock(openmtx);
 	return false;
 }
 

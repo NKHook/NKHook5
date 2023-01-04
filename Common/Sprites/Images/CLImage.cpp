@@ -2,6 +2,7 @@
 
 #include "../../Logging/Logger.h"
 
+#include <mutex>
 #include <string>
 
 using namespace Common;
@@ -14,6 +15,7 @@ static bool inited = false;
 static std::vector<cl_device_id> computeDevices;
 static cl_context context;
 static cl_command_queue queue;
+static std::mutex clmtx;
 
 #pragma region NativeOpenCL
 
@@ -23,6 +25,7 @@ static const cl_image_format imageFormat = {
 };
 
 bool SetupCL() {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (inited) {
 		return true;
 	}
@@ -78,11 +81,13 @@ bool SetupCL() {
 }
 
 bool StopCL() {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	return true;
 }
 
 
 cl_sampler MakeSampler(bool normalized) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -97,6 +102,7 @@ cl_sampler MakeSampler(bool normalized) {
 }
 
 cl_mem MakeImage(size_t width, size_t height) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -117,6 +123,7 @@ cl_mem MakeImage(size_t width, size_t height) {
 }
 
 cl_mem MakeImage(const std::vector<uint32_t>& colors, size_t width, size_t height) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -139,6 +146,7 @@ cl_mem MakeImage(const std::vector<uint32_t>& colors, size_t width, size_t heigh
 }
 
 cl_program MakeProgram(std::string source) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -153,6 +161,7 @@ cl_program MakeProgram(std::string source) {
 }
 
 bool BuildProgram(cl_program toBuild) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -178,6 +187,7 @@ bool BuildProgram(cl_program toBuild) {
 }
 
 cl_kernel MakeKernel(cl_program program, std::string kernelName) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -192,6 +202,7 @@ cl_kernel MakeKernel(cl_program program, std::string kernelName) {
 }
 
 void RunKernel(cl_kernel kernel, size_t width, size_t height) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}

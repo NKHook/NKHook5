@@ -16,6 +16,8 @@ using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
 namespace fs = std::filesystem;
 
+static std::mutex openmtx;
+
 PngPhoto::PngPhoto() : Photo() {
 	this->image = nullptr;
 }
@@ -28,6 +30,7 @@ bool PngPhoto::Open(fs::path path) {
 	return this->OpenRead(path);
 }
 bool PngPhoto::OpenRead(fs::path path) {
+	std::lock_guard<std::mutex> lock(openmtx);
 	Photo::OpenRead(path);
 
 	int width = 0;
@@ -42,6 +45,7 @@ bool PngPhoto::OpenRead(fs::path path) {
 	return true;
 }
 bool PngPhoto::OpenWrite(fs::path path) {
+	std::lock_guard<std::mutex> lock(openmtx);
 	return Photo::OpenWrite(path);;
 }
 
@@ -50,6 +54,7 @@ Images::Image* PngPhoto::ReadImg() {
 }
 
 void PngPhoto::WriteImg(Images::Image* image) {
+	std::lock_guard<std::mutex> lock(openmtx);
 	Photo::WriteImg(image);
 
 	size_t width = image->GetWidth();
