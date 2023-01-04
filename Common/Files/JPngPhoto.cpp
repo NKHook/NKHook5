@@ -31,6 +31,11 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 		return false;
 	std::vector<uint8_t> imageBytes((std::istreambuf_iterator<char>(imageStream)), std::istreambuf_iterator<char>());
 	uint8_t* imageRaw = imageBytes.data();
+	if (memcmp(imageRaw, "\x89\x50\x4E\x47", 4) == 0)
+	{
+		printf("Tried to read a JPNG image from a PNG file!\n");
+		return false;
+	}
 	uint32_t imageSize = imageBytes.size();
 
 	//The jpeg is the start, so just point to the beginning

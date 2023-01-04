@@ -40,15 +40,18 @@ void SpriteExtract::ExtractAll()
 		for (auto* frame : frames) {
 			fs::path imagePath = frame->GetImagePath();
 			CLImage* image = nullptr;
-			if (type == TexType::PNG)
-			{
-				PngPhoto imageFile;
-				imageFile.OpenRead(imagePath);
-				image = (CLImage*)imageFile.ReadImg();
-			}
 			if (type == TexType::JPNG)
 			{
 				JPngPhoto imageFile;
+				if (!imageFile.OpenRead(imagePath))
+				{
+					type = TexType::PNG;
+				}
+				image = (CLImage*)imageFile.ReadImg();
+			}
+			if (type == TexType::PNG)
+			{
+				PngPhoto imageFile;
 				imageFile.OpenRead(imagePath);
 				image = (CLImage*)imageFile.ReadImg();
 			}
