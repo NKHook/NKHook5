@@ -102,6 +102,8 @@ namespace NKHook5 {
 			CTextureManager_GetSpriteInfoPtr,
 			/* CTowerFactory */
 			CTowerFactory_CCTOR,
+			CTowerFactory_GetTowerInfo,
+			CTowerFactory_GetTowerName,
 			/* CUnzippedFile */
 			CUnzippedFile_CCTOR,
 			/* CWeapon */

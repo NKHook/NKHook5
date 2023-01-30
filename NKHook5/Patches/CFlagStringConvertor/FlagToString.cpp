@@ -6,7 +6,6 @@
 #include "../../Classes/CTowerFactory.h"
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
-#include <ghstl/string>
 #include <intrin.h>
 
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
@@ -23,8 +22,8 @@ namespace NKHook5
             using namespace Signatures;
 
             static uint64_t o_func;
-            ghstl::string* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, ghstl::string* result, uint32_t categoryId, uint64_t numericId) {
-                ghstl::string* resultStr = PLH::FnCast(o_func, &cb_hook)(self, pad, result, categoryId, numericId);
+            nfw::string* __fastcall cb_hook(Classes::CFlagStringConvertor* self, uint32_t pad, nfw::string* result, uint32_t categoryId, uint64_t numericId) {
+                nfw::string* resultStr = PLH::FnCast(o_func, &cb_hook)(self, pad, result, categoryId, numericId);
                 //Code for tower id injections
                 if (self == g_towerFactory) {
                     if (categoryId == 0) {

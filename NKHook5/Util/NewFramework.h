@@ -112,4 +112,12 @@ namespace nfw {
 
     template<typename T>
     using list = std::list<T, newframework_allocator<T>>;
+
+    template<typename T>
+    using basic_string_view = std::basic_string_view<T, newframework_allocator<T>>;
+    template<typename T>
+    using basic_string = std::basic_string<T, std::char_traits<T>, newframework_allocator<T>>;
+
+    using string = basic_string<char>;
+    using string_view = basic_string_view<char>;
 }
