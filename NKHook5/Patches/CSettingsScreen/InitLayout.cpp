@@ -40,6 +40,7 @@ namespace NKHook5
                 self->rootObj->AddChild(verInfoText);
                 
                 /* Modify the base game ui stuff */
+                /*
                 //Add the BTD5 text
                 Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->screenFont, "BTD5");
                 vanillaText->SetColor(Classes::Colors::white, 0);
@@ -51,8 +52,9 @@ namespace NKHook5
                 self->languageGroup->ForceUpdate();
                 self->controlsGroup->SetXY({ -100, 60});
                 self->controlsGroup->ForceUpdate();
-
+                */
                 /* Custom settings ui stuff */
+                /*
                 //Add the NKHook5 text
                 Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->screenFont, "NKHook5");
                 nkhookText->SetColor(Classes::Colors::white, 0);
@@ -67,6 +69,7 @@ namespace NKHook5
                 self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
                 self->modsButton->SetXY({ 100, 18 });
                 self->rootObj->AddChild(self->modsButton);
+                */
             }
 
             auto InitLayout::Apply() -> bool
