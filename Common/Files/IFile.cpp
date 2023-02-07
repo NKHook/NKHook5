@@ -1,7 +1,10 @@
 #include "IFile.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common;
 using namespace Common::Files;
+using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 Common::Files::IFile::IFile()
@@ -12,7 +15,7 @@ Common::Files::IFile::IFile()
 IFile::IFile(std::filesystem::path path, size_t size)
 {
 	if (!this->Open(path)) {
-		printf("Failed to open IFile: %s", path.string().c_str());
+		Print(LogLevel::ERR, "Failed to open IFile: %s", path.string().c_str());
 		return;
 	}
 	this->size = size;

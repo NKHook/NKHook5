@@ -10,6 +10,8 @@
 #include "../../ClassesEx/CModListScreen.h"
 #include "../../Signatures/Signature.h"
 
+#include <Logging/Logger.h>
+
 #include <string>
 
 namespace NKHook5
@@ -19,11 +21,16 @@ namespace NKHook5
         namespace Screens
         {
             using namespace Signatures;
+            using namespace Common;
+            using namespace Common::Logging;
+            using namespace Common::Logging::Logger;
 
             Classes::CBloonsBaseScreen* __cdecl ModdedScreenProxy(std::string& screenName, Classes::eDeviceType deviceType, Classes::CGameSystemPointers* pCGameSystemPointers) {
-                printf("Finding screen \"%s\"\n", screenName.c_str());
-                printf("Device type: %x\n", deviceType);
-                printf("pCGSP: %p\n", pCGameSystemPointers);
+#ifdef DEBUG
+                Print(LogLevel::DEBUG, "Finding screen \"%s\"", screenName.c_str());
+                Print(LogLevel::DEBUG, "Device type: %x", deviceType);
+                Print(LogLevel::DEBUG, "pCGSP: %p", pCGameSystemPointers);
+#endif
 
                 return nullptr;
             }

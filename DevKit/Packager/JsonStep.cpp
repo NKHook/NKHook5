@@ -29,11 +29,11 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 {
 	fs::path modAssets = proj.GetModPath() / "JSON";
 	if (!fs::exists(modAssets)) {
-		Print("No json files, skipping...");
+		Print(LogLevel::INFO, "No json files, skipping...");
 		return true;
 	}
 	fs::path vanillaAssets = proj.GetVanillaPath() / "JSON";
-	Logger::Print("Indexing mod files...");
+	Print(LogLevel::INFO, "Indexing mod files...");
 	size_t numModFiles = 0;
 	for (const auto& filePath : fs::recursive_directory_iterator(modAssets)) {
 		if (filePath.is_directory()) {
@@ -69,13 +69,13 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 
 		File theAsset;
 		if (!theAsset.OpenRead(assetFile)) {
-			Logger::Print("Failed to read file '%s'", entryPath.string().c_str());
+			Print(LogLevel::ERR, "Failed to read file '%s'", entryPath.string().c_str());
 			continue;
 		}
 		std::vector<uint8_t> dataBytes = theAsset.ReadBytes();
 		if (dataBytes.empty()) {
 			theAsset.Close();
-			Logger::Print("File read was empty for '%s', skipping...", entryPath.string().c_str());
+			Print(LogLevel::INFO, "File read was empty for '%s', skipping...", entryPath.string().c_str());
 			continue;
 		}
 		theAsset.Close();
@@ -84,13 +84,13 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 			if (fs::exists(vanillaFile)) {
 				File vanillaAsset;
 				if (!vanillaAsset.Open(vanillaFile)) {
-					Logger::Print("Failed to open '%s', skipping merge step", vanillaFile.string().c_str());
+					Print(LogLevel::INFO, "Failed to open '%s', skipping merge step", vanillaFile.string().c_str());
 				}
 				else {
 					std::string modStr = std::string((char*)dataBytes.data(), dataBytes.size());
 					std::string vanillaStr = vanillaAsset.ReadStr();
 					if (vanillaStr.empty()) {
-						Logger::Print("The content of '%s' was empty, skipping merge", vanillaFile.string().c_str());
+						Print(LogLevel::INFO, "The content of '%s' was empty, skipping merge", vanillaFile.string().c_str());
 					}
 					else {
 						try {
@@ -121,7 +121,7 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 							dataBytes = std::vector<uint8_t>(resultStr.begin(), resultStr.end());
 						}
 						catch (std::exception& ex) {
-							Logger::Print("Failed to merge '%s' and '%s' asset: %s", onDisk.string().c_str(), vanillaFile.string().c_str(), ex.what());
+							Print(LogLevel::ERR, "Failed to merge '%s' and '%s' asset: %s", onDisk.string().c_str(), vanillaFile.string().c_str(), ex.what());
 						}
 					}
 				}
@@ -129,7 +129,7 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 		}
 
 		if (!arch.WriteEntry(entryPath.string(), dataBytes)) {
-			printf("Failed to save entry '%s'", entryPath.string().c_str());
+			Print(LogLevel::ERR, "Failed to save entry '%s'", entryPath.string().c_str());
 			continue;
 		}
 	}

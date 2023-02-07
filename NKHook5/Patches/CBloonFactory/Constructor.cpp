@@ -1,9 +1,15 @@
 #include "Constructor.h"
 
+#include <Logging/Logger.h>
+
 #include "../../Classes/CBloonFactory.h"
 #include "../../Signatures/Signature.h"
 
 NKHook5::Classes::CBloonFactory* g_bloonFactory = nullptr;
+
+using namespace Common;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 
 namespace NKHook5
 {
@@ -17,7 +23,7 @@ namespace NKHook5
             Classes::CBloonFactory* __fastcall cb_hook(Classes::CBloonFactory* self)
             {    
                 g_bloonFactory = self;
-                printf("g_bloonFactory: %p\n", g_bloonFactory);
+                Print(LogLevel::INFO, "g_bloonFactory: %p", g_bloonFactory);
                 return PLH::FnCast(o_func, &cb_hook)(self);
             }
 

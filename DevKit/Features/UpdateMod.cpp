@@ -13,6 +13,7 @@ using namespace Common;
 using namespace Common::Files;
 using namespace Common::Mod;
 using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace DevKit;
 using namespace DevKit::Features;
 using namespace DevKit::Proj;
@@ -29,15 +30,15 @@ std::string UpdateMod::ActivatorArgs()
 
 void UpdateMod::Run(std::vector<std::string> args) {
 	std::string modName = args[0];
-	printf("Updating vanilla assets for '%s'...\n", modName.c_str());
+	Print(LogLevel::INFO, "Updating vanilla assets for '%s'...", modName.c_str());
 	if (!fs::exists(modName)) {
-		printf("No mod exists with name '%s'\n", modName.c_str());
+		Print(LogLevel::ERR, "No mod exists with name '%s'", modName.c_str());
 		return;
 	}
 	Project modProj(modName);
 	nlohmann::json settings = Settings::ReadSettings();
 	if (!Settings::HasSetting("gameDir")) {
-		printf("Please setup the MDK before creating/updating a mod!\n");
+		Print(LogLevel::ERR, "Please setup the MDK before creating/updating a mod!");
 		return;
 	}
 	std::string gameDir = settings["gameDir"];
@@ -47,7 +48,7 @@ void UpdateMod::Run(std::vector<std::string> args) {
 	if (!fs::exists(modVanillaPath)) {
 		fs::create_directory(modVanillaPath);
 	}
-	Logger::Print("Indexing game files...\n");
+	Print(LogLevel::INFO, "Indexing game files...");
 	size_t vanillaFileCount = 0;
 	for (const auto& vanillaAsset : fs::recursive_directory_iterator(assetsPath)) {
 		vanillaFileCount++;
@@ -86,7 +87,7 @@ void UpdateMod::Run(std::vector<std::string> args) {
 			}
 			File extractedFile;
 			if (!extractedFile.OpenWrite(extractLoc)) {
-				printf("Failed to extract '%s'", entryName.c_str());
+				Print(LogLevel::ERR, "Failed to extract '%s'", entryName.c_str());
 				continue;
 			}
 			extractedFile.WriteStr(jsonStr);
@@ -95,5 +96,5 @@ void UpdateMod::Run(std::vector<std::string> args) {
 		jetFile.Close();
 		fs::remove(jetPath);
 	}
-	printf("Updated assets\n");
+	Print(LogLevel::INFO, "Updated assets");
 }

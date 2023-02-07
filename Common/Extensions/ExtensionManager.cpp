@@ -6,7 +6,10 @@
 #include "Textures/SheetsExtension.h"
 #include "Tower/TowerFlagsExt.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common::Extensions;
+using namespace Common::Logging::Logger;
 
 static std::vector<Extension*> extensions;
 
@@ -20,12 +23,12 @@ void ExtensionManager::AddAll()
 
 void ExtensionManager::AddExtension(Extension* toAdd)
 {
-	printf("Adding extension '%s' for target '%s'\n", toAdd->GetName().c_str(), toAdd->GetTarget().c_str());
+	Print(LogLevel::INFO, "Adding extension '%s' for target '%s'", toAdd->GetName().c_str(), toAdd->GetTarget().c_str());
 	if (GetByName(toAdd->GetName())) {
-		printf("Cannot add extension '%s', the name is not unique!\n", toAdd->GetName().c_str());
+		Print(LogLevel::ERR, "Cannot add extension '%s', the name is not unique!", toAdd->GetName().c_str());
 	}
 	extensions.push_back(toAdd);
-	printf("Added!\n");
+	Print(LogLevel::INFO, "Added!");
 }
 
 Extension* ExtensionManager::GetByName(std::string name) {

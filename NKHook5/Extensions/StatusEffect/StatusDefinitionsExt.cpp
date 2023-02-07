@@ -1,7 +1,10 @@
 #include "StatusDefinitionsExt.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common;
 using namespace Common::Extensions;
+using namespace Common::Logging::Logger;
 using namespace NKHook5;
 using namespace NKHook5::Extensions;
 using namespace NKHook5::Extensions::StatusEffect;
@@ -15,27 +18,27 @@ void StatusDefinitionsExt::UseJsonData(nlohmann::json content)
 {
 	if (content.empty())
 	{
-		printf("%s\n", "Received empty json data for a StatusDefinition");
+		Print(LogLevel::ERR, "%s", "Received empty json data for a StatusDefinition");
 		return;
 	}
 	if (!content.contains("Type"))
 	{
-		printf("%s\n", "Received a StatusDefinition without a 'Type' property!");
+		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'Type' property!");
 		return;
 	}
 	if (!content.contains("SpriteInfo"))
 	{
-		printf("%s\n", "Received a StatusDefinition without a 'SpriteInfo' property!");
+		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'SpriteInfo' property!");
 		return;
 	}
 	if (!content.contains("Texture"))
 	{
-		printf("%s\n", "Received a StatusDefinition without a 'Texture' property!");
+		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'Texture' property!");
 		return;
 	}
 	if (!content.contains("ExceptMOAB"))
 	{
-		printf("%s\n", "Received a StatusDefinition without a 'ExceptMOAB' property!");
+		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'ExceptMOAB' property!");
 		return;
 	}
 

@@ -1,6 +1,9 @@
 #include "MergedDocument.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common::Util::Json;
+using namespace Common::Logging::Logger;
 
 MergedDocument::MergedDocument()
 {
@@ -10,7 +13,7 @@ nlohmann::ordered_json Merge(nlohmann::ordered_json base, nlohmann::ordered_json
 	nlohmann::json result = base;
 	if (next.is_null()) {
 		if (result.is_null()) {
-			printf("Please don't merge null documents!");
+			Print(LogLevel::WARNING, "Please don't merge null documents!");
 #ifdef _DEBUG
 			throw std::exception("Attempted to merge 2 null documents");
 #endif
@@ -21,7 +24,7 @@ nlohmann::ordered_json Merge(nlohmann::ordered_json base, nlohmann::ordered_json
 		return next;
 	}
 	if (result.type() != next.type()) {
-		printf("Please don't try to merge documents of differing types!");
+		Print(LogLevel::ERR, "Please don't try to merge documents of differing types!");
 #ifdef _DEBUG
 		throw std::exception("Attempted to merge documents of differing types");
 #endif

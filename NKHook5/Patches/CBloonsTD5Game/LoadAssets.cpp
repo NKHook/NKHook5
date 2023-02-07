@@ -8,6 +8,7 @@
 
 #include <Extensions/ExtensionManager.h>
 #include <Extensions/StatusEffect/StatusFlagsExt.h>
+#include <Logging/Logger.h>
 
 namespace NKHook5
 {
@@ -17,14 +18,17 @@ namespace NKHook5
         {
             using namespace Common::Extensions;
             using namespace Common::Extensions::StatusEffect;
+            using namespace Common;
+            using namespace Common::Logging;
+            using namespace Common::Logging::Logger;
             using namespace Signatures;
             using namespace Extensions;
             using namespace Extensions::StatusEffect;
 
             static uint64_t o_func;
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
-                printf("Loading custom assets...\n");
-                printf("CWD: %s\n", std::filesystem::current_path().string().c_str());
+                Print(LogLevel::INFO, "Loading custom assets...");
+                Print(LogLevel::INFO, "CWD: %s", std::filesystem::current_path().string().c_str());
                 std::string archivePath = "./Assets/BTD5.jet";
                 Classes::CZipFile* assetsArchive = new Classes::CZipFile();
                 assetsArchive->Open(archivePath);
@@ -36,7 +40,7 @@ namespace NKHook5
 
                     Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(assetPath, error);
                     if (error.length() > 0) {
-                        printf("%s\n", error.c_str());
+                        Print(LogLevel::ERR, "%s", error.c_str());
                     }
                     if (unzipped) {
                         doc->UseData(unzipped->fileContent, unzipped->fileSize);
@@ -51,11 +55,11 @@ namespace NKHook5
                     Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(effectFile, error);
                     statusDefs->UseData(unzipped->fileContent, unzipped->fileSize);
                 }
-                printf("Custom assets loaded!\n");
+                Print(LogLevel::INFO, "Custom assets loaded!");
 
-                printf("BTD5 began loading assets...\n");
+                Print(LogLevel::INFO, "BTD5 began loading assets...");
                 ((void(__thiscall*)(void*))o_func)(gameInstance);
-                printf("BTD5 assets loaded!\n");
+                Print(LogLevel::INFO, "BTD5 assets loaded!");
             }
 
             auto LoadAssets::Apply() -> bool

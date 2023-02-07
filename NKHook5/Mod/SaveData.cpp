@@ -1,11 +1,16 @@
 #include "SaveData.h"
 
+#include <Logging/Logger.h>
+
 #include <fstream>
 #include <nlohmann/json.hpp>
 
 #include "../Util/FlagManager.h"
 
 using namespace NKHook5::Mod;
+using namespace Common;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 extern NKHook5::Util::FlagManager g_towerFlags;
@@ -28,9 +33,9 @@ SaveData* SaveData::GetInstance()
 
 bool SaveData::Load(fs::path saveFile)
 {
-	printf("Loading custom save data...");
+	Print(LogLevel::INFO, "Loading custom save data...");
 	if (!fs::exists(saveFile)) {
-		printf("Save file '%s' does not exist!", saveFile.string().c_str());
+		Print(LogLevel::WARNING, "Save file '%s' does not exist!", saveFile.string().c_str());
 		return false;
 	}
 	std::ifstream saveStream(saveFile);
@@ -38,25 +43,25 @@ bool SaveData::Load(fs::path saveFile)
 	saveStream.close();
 	nlohmann::json saveData = nlohmann::json::parse(str);
 	if (!saveData.is_object()) {
-		printf("Couldn't load save file: saveData is not an object!");
+		Print(LogLevel::ERR, "Couldn't load save file: saveData is not an object!");
 		return false;
 	}
 	nlohmann::json& towerUnlocks = saveData["towerUnlocks"];
 	if (!towerUnlocks.is_array()) {
-		printf("Couldn't load save file: towerUnlocks is not an array!");
+		Print(LogLevel::ERR, "Couldn't load save file: towerUnlocks is not an array!");
 		return false;
 	}
 	for (const auto& unlock : towerUnlocks) {
 		if (!unlock.is_object()) {
-			printf("Failed to read a tower unlock: it was not an object");
+			Print(LogLevel::WARNING, "Failed to read a tower unlock: it was not an object");
 			continue;
 		}
 		if (!unlock["towerName"].is_string()) {
-			printf("Failed to read a tower unlock: the name is not a string!");
+			Print(LogLevel::WARNING, "Failed to read a tower unlock: the name is not a string!");
 			continue;
 		}
 		if (!unlock["unlocked"].is_boolean()) {
-			printf("Failed to read a tower unlock: the status is not a boolean!");
+			Print(LogLevel::WARNING, "Failed to read a tower unlock: the status is not a boolean!");
 			continue;
 		}
 		std::string towerName = unlock["towerName"];
@@ -64,13 +69,13 @@ bool SaveData::Load(fs::path saveFile)
 
 		this->towerUnlocks[towerName] = unlocked;
 	}
-	printf("Custom save data loaded successfully!");
+	Print(LogLevel::INFO, "Custom save data loaded successfully!");
 	return true;
 }
 
 bool SaveData::Save(fs::path saveFile)
 {
-	printf("Saving custom save data...\n");
+	Print(LogLevel::INFO, "Saving custom save data...");
 	nlohmann::json saveData = nlohmann::json::object();
 
 	saveData["towerUnlocks"] = nlohmann::json::array();
@@ -87,7 +92,7 @@ bool SaveData::Save(fs::path saveFile)
 	file << saveData;
 	file.close();
 
-	printf("Custom save data successfully saved!\n");
+	Print(LogLevel::INFO, "Custom save data successfully saved!");
 	return true;
 }
 

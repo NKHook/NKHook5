@@ -1,9 +1,12 @@
 #include "JPngPhoto.h"
 
+#include <Logging/Logger.h>
+
 #include <stb_image.h>
 
 using namespace Common;
 using namespace Common::Files;
+using namespace Common::Logging::Logger;
 
 constexpr int JPNG_JFIF_PTR = 0x1C;
 constexpr int JPNG_PNG_PTR = 0x10;
@@ -36,7 +39,7 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 	uint8_t* imageRaw = imageBytes.data();
 	if (memcmp(imageRaw, "\x89\x50\x4E\x47", 4) == 0)
 	{
-		printf("Tried to read a JPNG image from a PNG file!\n");
+		Print(LogLevel::ERR, "Tried to read a JPNG image from a PNG file!");
 		return false;
 	}
 	uint32_t imageSize = imageBytes.size();

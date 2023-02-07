@@ -1,12 +1,17 @@
 #include "RunMod.h"
 #include "../Settings.h"
 
-#include <Windows.h>
-#include <nlohmann/json.hpp>
+#include <Logging/Logger.h>
 
 #include <filesystem>
 
+#include <Windows.h>
+#include <nlohmann/json.hpp>
+
 using namespace DevKit::Features;
+using namespace Common;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 RunMod::RunMod() : Feature("run_mod", "Runs BTD5 with a given mod")
@@ -25,24 +30,24 @@ void RunMod::Run(std::vector<std::string> args)
 	fs::path cd = fs::current_path();
 	nlohmann::json settings = Settings::ReadSettings();
 	if (settings.is_null()) {
-		printf("Please run 'devkit.exe --setup' before running a mod!\n");
+		Print(LogLevel::INFO, "Please run 'devkit.exe --setup' before running a mod!");
 		return;
 	}
 	if (settings["gameDir"].is_null()) {
-		printf("No gameDir set! Did you run 'devkit.exe --setup'?\n");
+		Print(LogLevel::ERR, "No gameDir set! Did you run 'devkit.exe --setup'?");
 		return;
 	}
 	if (settings["exeName"].is_null()) {
-		printf("No exeName set! Did you run 'devkit.exe --setup'?\n");
+		Print(LogLevel::ERR, "No exeName set! Did you run 'devkit.exe --setup'?");
 		return;
 	}
 	fs::path gameDir = settings["gameDir"];
 	fs::path modDir = fs::canonical(modName);
 	std::string exeName = settings["exeName"];
-	printf("Launching '%s' with mod '%s'\n", exeName.c_str(), modName.c_str());
+	Print(LogLevel::INFO, "Launching '%s' with mod '%s'", exeName.c_str(), modName.c_str());
 	SetCurrentDirectoryA(gameDir.string().c_str());
 	std::string launchCmd = exeName + " --LaunchMod " + modDir.string();
 	system(launchCmd.c_str());
 	SetCurrentDirectoryA(cd.string().c_str());
-	printf("Game termination detected, exiting...\n");
+	Print(LogLevel::INFO, "Game termination detected, exiting...");
 }

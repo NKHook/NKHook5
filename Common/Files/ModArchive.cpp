@@ -1,9 +1,13 @@
 #include "ModArchive.h"
 
+#include <Logging/Logger.h>
+
 #include <nlohmann/json.hpp>
 
 using namespace Common::Files;
 using namespace Common::Mod;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 
 namespace fs = std::filesystem;
 
@@ -26,7 +30,7 @@ bool ModArchive::OpenRead(fs::path path) {
 		return true;
 	}
 	catch (std::exception& ex) {
-		printf("Error whilst opening mod: %s", ex.what());
+		Print(LogLevel::ERR, "Error whilst opening mod: %s", ex.what());
 	}
 	return false;
 }

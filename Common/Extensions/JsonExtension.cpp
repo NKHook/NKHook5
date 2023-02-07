@@ -1,6 +1,9 @@
 #include "JsonExtension.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common::Extensions;
+using namespace Common::Logging::Logger;
 
 JsonExtension::JsonExtension(std::string name, std::string target) : Extension(name, target)
 {
@@ -14,7 +17,7 @@ void JsonExtension::UseData(void* content, size_t contentLen)
 		this->UseJsonData(jsonContent);
 	}
 	catch (std::exception& ex) {
-		printf("Failed to read a JsonExtension: %s\n", ex.what());
+		Print(LogLevel::ERR, "Failed to read a JsonExtension: %s", ex.what());
 	}
 }
 

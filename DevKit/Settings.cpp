@@ -1,11 +1,14 @@
 #include "Settings.h"
 
 #include <Files/File.h>
+#include <Logging/Logger.h>
 
 #include <filesystem>
 
 using namespace Common;
 using namespace Common::Files;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace DevKit;
 namespace fs = std::filesystem;
 
@@ -23,7 +26,7 @@ nlohmann::json& Settings::ReadSettings() {
 	}
 	catch (std::exception& ex) {
 #ifdef _DEBUG
-		printf("Error reading config: %s\n", ex.what());
+		Print(LogLevel::ERR, "Error reading config: %s", ex.what());
 #endif
 	}
 	return settings;
@@ -33,11 +36,11 @@ void Settings::SaveSettings() {
 	try {
 		File confFile = File(fs::path("mdkconf.json"));
 		confFile.WriteStr(settings.dump(4));
-		printf("Settings saved!");
+		Print(LogLevel::INFO, "Settings saved!");
 	}
 	catch (std::exception& ex) {
 #ifdef _DEBUG
-		printf("Error reading config: %s\n", ex.what());
+		Print(LogLevel::ERR, "Error reading config: %s", ex.what());
 #endif
 	}
 }

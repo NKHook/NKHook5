@@ -2,6 +2,8 @@
 
 #include "../Utils.h"
 
+#include <Logging/Logger.h>
+
 #include <map>
 #include <cstdarg>
 
@@ -11,6 +13,9 @@
 
 using namespace NKHook5;
 using namespace NKHook5::Signatures;
+using namespace Common;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 
 static std::map<Sigs, void*> pointerMap;
 
@@ -347,7 +352,7 @@ void Signatures::FindAll() {
 	for (int i = 0; i < (int)Sigs::SIGNATURE_COUNT; i++) {
 		if (!GetAddressOf((Sigs)i)) {
 			std::string_view enumName = magic_enum::enum_name((Sigs)i);
-			printf("Failed to find sig '%s'\n", enumName.data());
+			Print(LogLevel::ERR, "Failed to find sig '%s'", enumName.data());
 		}
 	}
 }
@@ -356,7 +361,7 @@ void* Signatures::GetAddressOf(Sigs sig)
 {
 	if (!pointerMap.count(sig)) {
 		std::string_view enumName = magic_enum::enum_name(sig);
-		printf("Sig '%s' not registered in table\n", enumName.data());
+		Print(LogLevel::WARNING, "Sig '%s' not registered in table", enumName.data());
 		return nullptr;
 	}
 	return pointerMap[sig];

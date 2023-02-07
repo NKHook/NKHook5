@@ -10,6 +10,7 @@
 #include "../../Util/FlagManager.h"
 
 #include <Extensions/ExtensionManager.h>
+#include <Logging/Logger.h>
 
 extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
 extern NKHook5::Util::FlagManager g_bloonStatusFlags;
@@ -22,6 +23,7 @@ namespace NKHook5
         {
             using namespace Common;
             using namespace Common::Extensions;
+            using namespace Common::Logging::Logger;
             using namespace NKHook5;
             using namespace NKHook5::Extensions;
             using namespace NKHook5::Extensions::StatusEffect;
@@ -46,7 +48,7 @@ namespace NKHook5
                     }
                     if (def == nullptr)
                     {
-                        printf("Failed to find a status effect with an ID of %llx\n", task->effectId);
+                        Print(LogLevel::ERR, "Failed to find a status effect with an ID of %llx", task->effectId);
                         return;
                     }
                     ClassesEx::CInjectedStatusEffect* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, def->spriteInfo, def->texture, def->exceptMoab, task->gamePtrs->basePointers.textureManager, false, 0.2, 1.0);

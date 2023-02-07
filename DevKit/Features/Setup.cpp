@@ -1,9 +1,14 @@
 #include "Setup.h"
 #include "../Settings.h"
 
+#include <Logging/Logger.h>
+
 #include <iostream>
 #include <filesystem>
 
+using namespace Common;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace DevKit;
 using namespace DevKit::Features;
 namespace fs = std::filesystem;
@@ -47,16 +52,16 @@ std::string AskStr(std::string question) {
 void Setup::Run(std::vector<std::string> args) {
 	nlohmann::json& settings = Settings::ReadSettings();
 
-	printf("Welcome to the NKHook5 MDK setup!\n");
+	Print(LogLevel::INFO, "Welcome to the NKHook5 MDK setup!");
 	bool noSettings = false;
 	if (!settings.is_null()) {
-		printf("Current settings:\n");
+		Print(LogLevel::INFO, "Current settings:");
 		SETUP_SETTING_CHECK("Game Directory", "gameDir");
 		SETUP_SETTING_CHECK("Executable Name", "exeName");
 		SETUP_SETTING_CHECK("DRM Variant", "drm");
 	}
 	else {
-		printf("No settings found\n");
+		Print(LogLevel::ERR, "No settings found");
 		noSettings = true;
 	}
 
@@ -75,7 +80,7 @@ void Setup::Run(std::vector<std::string> args) {
 				retry = false;
 			}
 			else {
-				printf("Couldn't find file '%s'\n", exeStrPath.c_str());
+				Print(LogLevel::ERR, "Couldn't find file '%s'", exeStrPath.c_str());
 			}
 		} while (retry);
 	}

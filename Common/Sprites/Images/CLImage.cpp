@@ -1,15 +1,14 @@
 #include "CLImage.h"
 
-#include "../../Logging/Logger.h"
+#include <Logging/Logger.h>
 
 #include <mutex>
 #include <string>
 
 using namespace Common;
-using namespace Common::Logging;
-using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
+using namespace Common::Logging::Logger;
 
 static bool inited = false;
 static std::vector<cl_device_id> computeDevices;
@@ -436,7 +435,7 @@ bool CLImage::PasteChannel(CLImage* other, int channel)
 		argResult |= clSetKernelArg(copychannel_krn, 3, sizeof(cl_mem), &resultPixels);
 		if (argResult != CL_SUCCESS)
 		{
-			printf("Error: Failed to set kernel arguments! %x (%d)\n", argResult, argResult);
+			Print(LogLevel::ERR, "Failed to set kernel arguments! %x (%d)", argResult, argResult);
 			return false;
 		}
 
