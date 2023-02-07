@@ -85,11 +85,11 @@ namespace h_rtti
 		return false;
 	}
 
-	uintptr_t* get_vtable_pointer(const std::string& table_name)
+	size_t get_vtable(const std::string& table_name)
 	{
 		uintptr_t base_address = (uintptr_t)GetModuleHandleA(NULL);
 		if (!base_address)
-			return nullptr;
+			return 0;
 
 		// Type descriptor names look like this: .?AVC_CSPlayer@@ (so: ".?AV" + table_name + "@@")
 		const std::string type_descriptor_name = ".?AV" + table_name + "@@";
@@ -107,7 +107,7 @@ namespace h_rtti
 
 			rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern.c_str());
 			if (!rtti_type_descriptor) {
-				return nullptr;
+				return 0;
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace h_rtti
 		// We only need to get xrefs that are inside the .rdata section (there sometimes are xrefs in .text, so we have to filter them out)
 		uintptr_t rdata_start = 0, rdata_size = 0;
 		if (!get_section_info(base_address, ".rdata", rdata_start, rdata_size))
-			return nullptr;
+			return 0;
 
 		// Get all xrefs to the type_descriptor
 		const std::vector<uintptr_t> xrefs = get_xrefs_to(rtti_type_descriptor, rdata_start, rdata_size);
@@ -137,16 +137,19 @@ namespace h_rtti
 				// Convert the object locator address to an IDA pattern
 				ida_pattern = bytes_to_ida_pattern((byte*)&object_locator, 4);
 
-				const uintptr_t vtable_address = (uintptr_t)NKHook5::Utils::FindPattern(rdata_start, rdata_start + rdata_size, ida_pattern.c_str()) + 0x4;
+				const size_t vtable_address = NKHook5::Utils::FindPattern(rdata_start, rdata_start + rdata_size, ida_pattern.c_str()) + 0x4;
 
 				// Here I'm checking for <= 4 as we're adding 0x4 to it. So if the pattern scan returns 0 we still head the fuck out
 				if (vtable_address <= 4)
-					return nullptr;
+					return 0;
 
 				// We've now found the vtable address, however, we probably want a pointer to the vtable (which is in .text).
 				// To do this, we're going to find a reference to the vtable address, and use that as pointer.
 
 				// If you don't need a pointer to the vtable in your implementation however, just return vtable_address
+				return vtable_address;
+				// I don't need this, so I will just return it
+				/*
 				uintptr_t text_start = 0, text_size = 0;
 				if (!get_section_info(base_address, ".text", text_start, text_size))
 					return nullptr;
@@ -154,10 +157,11 @@ namespace h_rtti
 				// Convert the vtable address to an IDA pattern
 				ida_pattern = bytes_to_ida_pattern((byte*)&vtable_address, 4);
 				return (uintptr_t*)NKHook5::Utils::FindPattern(text_start, text_start + text_size, ida_pattern.c_str());
+				*/
 			}
 		}
 
 		// We for some odd reason didn't find any valid xrefs
-		return nullptr;
+		return 0;
 	}
 }

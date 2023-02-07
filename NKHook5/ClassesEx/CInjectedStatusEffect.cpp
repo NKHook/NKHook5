@@ -42,8 +42,8 @@ CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, std::string sp
 	: CGlueStatusEffect(texMgr, detach, speedScale, damageRate, damageTimer)
 {
 	//Get the vtables here
-	void*** ppVanillaVTable = (void***)Signatures::GetAddressOf(Sigs::CGlueStatusEffect_VTable);
-	this->pVanillaVTable = *ppVanillaVTable;
+	void** ppVanillaVTable = (void**)Signatures::GetAddressOf(Sigs::CGlueStatusEffect_VTable);
+	this->pVanillaVTable = ppVanillaVTable;
 
 	void*** ppCustomVTable = (void***)this;
 

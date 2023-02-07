@@ -75,8 +75,7 @@ namespace NKHook5
                     {
                         Print(LogLevel::INFO, "Hijacking bloon registration to inject new types...");
                         std::vector<std::string> allBloons;
-                        auto* statusFlagExt = (BloonFlagExt*)ExtensionManager::GetByName("BloonFlags");
-                        auto* statusDefsExt = (BloonFlagExt*)ExtensionManager::GetByName("StatusDefinitions");
+                        auto* bloonFlagExt = (BloonFlagExt*)ExtensionManager::GetByName("BloonFlags");
                         Print(LogLevel::INFO, "Copying old types...");
                         for (int i = 0; i < stringCount; i++) {
                             uint64_t numericId = static_cast<uint64_t>(1) << i;
@@ -86,8 +85,8 @@ namespace NKHook5
                         }
                         Print(LogLevel::INFO, "Old types copied!");
                         Print(LogLevel::INFO, "Injecting new types...");
-                        for (const std::string& flagDef : statusFlagExt->GetFlags()) {
-                            uint64_t moddedSlot = g_bloonStatusFlags.Register(flagDef);
+                        for (const std::string& flagDef : bloonFlagExt->GetFlags()) {
+                            uint64_t moddedSlot = g_bloonFlags.Register(flagDef);
                             allBloons.push_back(flagDef);
                             Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
                         }
