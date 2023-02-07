@@ -5,6 +5,7 @@
 #include "Generic/MergeIgnoreExtension.h"
 #include "Textures/SheetsExtension.h"
 #include "Tower/TowerFlagsExt.h"
+#include "StatusEffect/StatusFlagsExt.h"
 
 using namespace Common::Extensions;
 
@@ -14,6 +15,7 @@ void ExtensionManager::AddAll()
 {
 	ExtensionManager::AddExtension(new Bloon::BloonFlagExt());
 	ExtensionManager::AddExtension(new Generic::MergeIgnoreExtension());
+	ExtensionManager::AddExtension(new StatusEffect::StatusFlagsExt());
 	ExtensionManager::AddExtension(new Textures::SheetsExtension());
 	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
 }

@@ -1,6 +1,7 @@
 #include "Features/CreateMod.h"
 #include "Features/Feature.h"
 #include "Features/Package.h"
+#include "Features/RunMerge.h"
 #include "Features/RunMod.h"
 #include "Features/Setup.h"
 #include "Features/SplitSprite.h"
@@ -34,7 +35,8 @@ int main(int argc, const char* argv[]) {
 	FeatureMgr::RegisterFeature(new Setup());
 	FeatureMgr::RegisterFeature(new CreateMod());
 	FeatureMgr::RegisterFeature(new UpdateMod());
-	FeatureMgr::RegisterFeature(new RunMod());
+	//FeatureMgr::RegisterFeature(new RunMod());
+	FeatureMgr::RegisterFeature(new RunMerge());
 	FeatureMgr::RegisterFeature(new Package());
 	FeatureMgr::RegisterFeature(new SplitSprite());
 #ifdef _DEBUG
