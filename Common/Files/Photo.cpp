@@ -1,9 +1,12 @@
 #include "Photo.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
+using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 Photo::Photo() : File() {
@@ -15,7 +18,7 @@ Photo::Photo(fs::path path) : File() {
 	this->image = nullptr;
 	this->writeMode = false;
 	if (!this->Open(path)) {
-		printf("Failed to open photo %s\n", path.string().c_str());
+		Print(LogLevel::ERR, "Failed to open photo %s", path.string().c_str());
 	}
 }
 

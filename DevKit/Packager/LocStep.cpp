@@ -25,6 +25,7 @@ bool LocStep::Execute(Project& proj, ZipBase& arch)
 		fs::path locDir = proj.GetModPath() / "Loc";
 		if (!fs::exists(locDir)) {
 			Print("No locale to pack, skipping...");
+			return true;
 		}
 
 		fs::path entryLoc = "Assets/Loc";

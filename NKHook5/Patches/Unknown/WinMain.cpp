@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <filesystem>
 
+#include <Logging/Logger.h>
+
 namespace NKHook5
 {
     namespace Patches
@@ -11,17 +13,18 @@ namespace NKHook5
         namespace Unknown
         {
             using namespace Signatures;
+            using namespace Common::Logging::Logger;
 
             uint64_t o_func;
             void __stdcall hkWinMain(HINSTANCE param_1, HINSTANCE param_2, char* argv, int nShowCmd) {
                 if (argv != nullptr) {
-                    printf("CMDLINE: %s\n", argv);
+                    Print(LogLevel::DEBUG, "CMDLINE: %s", argv);
                     argv[0] = 0;
                     argv[1] = 0;
-                    printf("Cleared CMDLINE\n");
+                    Print(LogLevel::DEBUG, "Cleared CMDLINE");
                 }
                 else {
-                    printf("CMDLINE has not been cleared\n");
+                    Print(LogLevel::DEBUG, "CMDLINE has not been cleared");
                 }
                 return PLH::FnCast(o_func, &hkWinMain)(param_1, param_2, argv, nShowCmd);
             }

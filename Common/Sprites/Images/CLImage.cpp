@@ -1,19 +1,20 @@
 #include "CLImage.h"
 
-#include "../../Logging/Logger.h"
+#include <Logging/Logger.h>
 
+#include <mutex>
 #include <string>
 
 using namespace Common;
-using namespace Common::Logging;
-using namespace Common::Logging::Logger;
 using namespace Common::Sprites;
 using namespace Common::Sprites::Images;
+using namespace Common::Logging::Logger;
 
 static bool inited = false;
 static std::vector<cl_device_id> computeDevices;
 static cl_context context;
 static cl_command_queue queue;
+static std::mutex clmtx;
 
 #pragma region NativeOpenCL
 
@@ -23,6 +24,7 @@ static const cl_image_format imageFormat = {
 };
 
 bool SetupCL() {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (inited) {
 		return true;
 	}
@@ -78,11 +80,13 @@ bool SetupCL() {
 }
 
 bool StopCL() {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	return true;
 }
 
 
 cl_sampler MakeSampler(bool normalized) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -97,6 +101,7 @@ cl_sampler MakeSampler(bool normalized) {
 }
 
 cl_mem MakeImage(size_t width, size_t height) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -117,6 +122,7 @@ cl_mem MakeImage(size_t width, size_t height) {
 }
 
 cl_mem MakeImage(const std::vector<uint32_t>& colors, size_t width, size_t height) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -139,6 +145,7 @@ cl_mem MakeImage(const std::vector<uint32_t>& colors, size_t width, size_t heigh
 }
 
 cl_program MakeProgram(std::string source) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -153,6 +160,7 @@ cl_program MakeProgram(std::string source) {
 }
 
 bool BuildProgram(cl_program toBuild) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -178,6 +186,7 @@ bool BuildProgram(cl_program toBuild) {
 }
 
 cl_kernel MakeKernel(cl_program program, std::string kernelName) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
@@ -192,10 +201,14 @@ cl_kernel MakeKernel(cl_program program, std::string kernelName) {
 }
 
 void RunKernel(cl_kernel kernel, size_t width, size_t height) {
+	const std::lock_guard<std::mutex> cllock(clmtx);
 	if (!inited) {
 		SetupCL();
 	}
-	cl_int error = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &width, &height, 0, NULL, NULL);
+	constexpr int work_dim = 2;
+	size_t global[work_dim] = { width, height };
+	size_t local[work_dim] = { 1, 1 };
+	cl_int error = clEnqueueNDRangeKernel(queue, kernel, work_dim, NULL, global, local, 0, NULL, NULL);
 	if (error != CL_SUCCESS) {
 		Print(LogLevel::ERR, "Error executing kernel: %d (%x)", error, error);
 	}
@@ -363,4 +376,84 @@ bool CLImage::PasteImage(CLImage* other, size_t x, size_t y, int32_t width, int3
 	}
 
 	return true;
+}
+
+constexpr const char krn_copychannel[] = R"(
+uint get_component(uint4 vec, int index)
+{
+	if(index == 0) return vec.x;
+	if(index == 1) return vec.y;
+	if(index == 2) return vec.z;
+	if(index == 3) return vec.w;
+	return 0;
+}
+
+void set_component(uint4 vec, int index, uint value)
+{
+	if(index == 0) vec.x = value;
+	if(index == 1) vec.y = value;
+	if(index == 2) vec.z = value;
+	if(index == 3) vec.w = value;
+}
+
+__kernel void copychannel(__read_only image2d_t baseImage, __read_only image2d_t channelImage, __read_only int channel, __write_only image2d_t resultImage)
+{
+	int2 coord = (int2)(get_global_id(0), get_global_id(1));
+	uint4 colorBase = read_imageui(baseImage, coord);
+	uint channelNew = get_component(read_imageui(channelImage, coord), channel);
+	uint4 mix = (uint4)(channelNew, colorBase.x, colorBase.y, colorBase.z);
+	write_imageui(resultImage, coord, mix);
+}
+)";
+
+bool CLImage::PasteChannel(CLImage* other, int channel)
+{
+	if (!inited) {
+		SetupCL();
+	}
+
+	cl_int resultBuff_error;
+	cl_mem resultPixels = clCreateImage2D(
+		context,
+		CL_MEM_READ_WRITE,
+		&imageFormat,
+		this->GetWidth(),
+		this->GetHeight(),
+		1,
+		nullptr,
+		&resultBuff_error
+	);
+
+	cl_program copychannel_prg = MakeProgram(krn_copychannel);
+	if (BuildProgram(copychannel_prg))
+	{
+		cl_kernel copychannel_krn = MakeKernel(copychannel_prg, "copychannel");
+		cl_int argResult = 0;
+		argResult |= clSetKernelArg(copychannel_krn, 0, sizeof(cl_mem), &this->gpuImage);
+		argResult |= clSetKernelArg(copychannel_krn, 1, sizeof(cl_mem), &other->gpuImage);
+		argResult |= clSetKernelArg(copychannel_krn, 2, sizeof(cl_int), &channel);
+		argResult |= clSetKernelArg(copychannel_krn, 3, sizeof(cl_mem), &resultPixels);
+		if (argResult != CL_SUCCESS)
+		{
+			Print(LogLevel::ERR, "Failed to set kernel arguments! %x (%d)", argResult, argResult);
+			return false;
+		}
+
+		RunKernel(copychannel_krn, this->GetWidth(), this->GetHeight());
+		clFinish(queue);
+
+		size_t src_origin[3] = { 0, 0, 0 };
+		size_t src_region[3] = { this->GetWidth(), this->GetHeight(), 0 };
+		size_t dst_origin[3] = { 0, 0, 0 };
+		size_t dst_region[3] = { this->GetWidth(), this->GetHeight(), 1 };
+		cl_int error = clEnqueueCopyImage(queue, resultPixels, this->gpuImage, src_origin, dst_origin, dst_region, 0, nullptr, nullptr);
+		if (error != CL_SUCCESS) {
+			Print(LogLevel::ERR, "Failed to copy CLImage* on to CLImage: %d (%x)", error, error);
+			return false;
+		}
+
+		return true;
+	}
+
+	return false;
 }

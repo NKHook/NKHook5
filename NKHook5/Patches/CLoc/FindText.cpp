@@ -1,11 +1,12 @@
 #include "FindText.h"
 
-#include <ghstl/string>
 #include <string>
 #include "../../Classes/CLoc.h"
 #include "../../Classes/Texts.h"
-#include <Extensions/ExtensionManager.h>
 #include "../../Signatures/Signature.h"
+
+#include <Extensions/ExtensionManager.h>
+#include <Logging/Logger.h>
 
 namespace NKHook5
 {
@@ -14,28 +15,20 @@ namespace NKHook5
         namespace CLoc
         {
             using namespace Signatures;
+            using namespace Common;
+            using namespace Common::Logging;
+            using namespace Common::Logging::Logger;
 
             static uint64_t o_func;
             static std::map<std::string, Classes::SLang*> generatedTexts;
-            Classes::SLang* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, ghstl::string* textKey, Classes::SLangDef* desiredLang) {
-                /*if (generatedTexts.count(textKey->cpp_str())) {
-                    return generatedTexts[textKey->cpp_str()];
-                }
-                Extensions::Extension* pLocExt = Extensions::ExtensionManager::GetByName("EnglishLocs");
-                Extensions::Generic::LocExtension* locExt = (Extensions::Generic::LocExtension*)pLocExt;
-                auto locs = locExt->GetLocs();
-                for (auto loc : locs) {
-                    if (loc.id == textKey->cpp_str()) {
-                        Classes::SLang* generatedLoc = new Classes::SLang();
-                        generatedLoc->key = 0;
-                        generatedLoc->id = loc.id;
-                        generatedLoc->l = loc.l;
-                        generatedLoc->val = loc.value;
-                        generatedTexts[textKey->cpp_str()] = generatedLoc;
-                        return generatedLoc;
-                    }
-                }*/
-                return PLH::FnCast(o_func, &cb_hook)(pCLoc, pad, textKey, desiredLang);
+            Classes::SLang* __fastcall cb_hook(Classes::CLoc* pCLoc, uint32_t pad, std::string* textKey, Classes::SLangDef* desiredLang) {
+                Classes::SLang* result = PLH::FnCast(o_func, &cb_hook)(pCLoc, pad, textKey, desiredLang);
+#ifdef DEBUG
+                if (result == nullptr)
+                    return result;
+                Print(LogLevel::DEBUG, "ID: %s Result: %s", textKey->c_str(), result->val.c_str());
+#endif
+                return result;
             }
 
             auto FindText::Apply() -> bool

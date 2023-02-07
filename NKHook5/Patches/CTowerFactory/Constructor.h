@@ -18,8 +18,6 @@ namespace NKHook5
                 }
                 auto Apply() -> bool override;
             };
-        } // namespace FlagToString
-        
-    } // namespace Patches
-    
-} // namespace NKHook5
+        }
+    }
+}

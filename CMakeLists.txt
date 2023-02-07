@@ -12,9 +12,17 @@ EXECUTE_PROCESS(
       ERROR_QUIET
       OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-add_compile_definitions(NKHOOK_BUILD_TAG=0.3.0)
+add_compile_definitions(NKHOOK_BUILD_TAG=0.6.1)
 add_compile_definitions(NKHOOK_BUILD_VERSION=${NKHOOK_BUILD_VERSION})
 add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
+
+if(MSVC)
+    add_compile_options(
+            $<$<CONFIG:>:/MT> #---------|
+            $<$<CONFIG:Debug>:/MTd> #---|-- Statically link the runtime libraries
+            $<$<CONFIG:Release>:/MT> #--|
+    )
+endif()
 
 #Fetch & Install PolyHook2
 FetchContent_Declare(
@@ -118,6 +126,28 @@ if(NOT binpack_POPULATED)
     FetchContent_Populate(binpack)
     add_library(binpack INTERFACE)
     target_include_directories(binpack INTERFACE ${binpack_SOURCE_DIR})
+endif()
+
+FetchContent_Declare(
+    usercall
+    GIT_REPOSITORY https://github.com/widberg/usercall.hpp.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(usercall)
+
+FetchContent_Declare(
+    loguru
+    GIT_REPOSITORY https://github.com/emilk/loguru.git
+    GIT_TAG master
+)
+FetchContent_GetProperties(loguru)
+if(NOT loguru_POPULATED)
+    FetchContent_Populate(loguru)
+    add_library(loguru STATIC)
+    target_sources(loguru PRIVATE
+        "${loguru_SOURCE_DIR}/loguru.cpp"
+    )
+    target_include_directories(loguru PUBLIC ${loguru_SOURCE_DIR})
 endif()
 
 add_subdirectory(Common)

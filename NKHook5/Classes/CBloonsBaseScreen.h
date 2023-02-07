@@ -22,9 +22,10 @@ namespace NKHook5
 		class CBloonsBaseScreen : public CBaseScreen
 		{
 		public:
-			CGameSystemPointers* pCGameSystemPointers; //0x00BC
-			char pad_00C0[12]; //0x00C0
-			boost::shared_ptr<CFont> pMenuFont; //0x00CC
+			CGameSystemPointers* pCGameSystemPointers; //0x00B8
+			char pad_00BC[12]; //0x00BC
+			boost::shared_ptr<CFont> screenFont; //0x00C8
+
 		public:
 			CBloonsBaseScreen() : CBaseScreen() {
 
@@ -35,8 +36,8 @@ namespace NKHook5
 			virtual ~CBloonsBaseScreen() {};
 		};
 
-		static_assert(sizeof(CBloonsBaseScreen) == 0x00D4);
-		static_assert(offsetof(CBloonsBaseScreen, pMenuFont) == 0x00CC);
+		static_assert(sizeof(CBloonsBaseScreen) == 0x00D0);
+		static_assert(offsetof(CBloonsBaseScreen, screenFont) == 0x00C8);
 	} // namespace Classes
 
 } // namespace NKHook5

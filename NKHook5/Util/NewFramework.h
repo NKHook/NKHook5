@@ -62,13 +62,13 @@ namespace nfw {
     class newframework_allocator
     {
     public:
-        typedef size_t    size_type;
+        typedef size_t size_type;
         typedef ptrdiff_t difference_type;
         typedef T* pointer;
         typedef const T* const_pointer;
         typedef T& reference;
         typedef const T& const_reference;
-        typedef T         value_type;
+        typedef T value_type;
 
         newframework_allocator() {}
         newframework_allocator(const newframework_allocator&) {}
@@ -104,9 +104,20 @@ namespace nfw {
         newframework_allocator& operator=(const newframework_allocator<U>&) { return *this; }
     };
 
+    /* Member Function to Pointer */
+    void* __cdecl mftp(...);
+
     template<typename K, typename V>
     using map = std::map<K, V, std::less<K>, newframework_allocator<std::pair<const K, V>>>;
 
     template<typename T>
     using list = std::list<T, newframework_allocator<T>>;
+
+    template<typename T>
+    using basic_string_view = std::basic_string_view<T, newframework_allocator<T>>;
+    template<typename T>
+    using basic_string = std::basic_string<T, std::char_traits<T>, newframework_allocator<T>>;
+
+    using string = basic_string<char>;
+    using string_view = basic_string_view<char>;
 }

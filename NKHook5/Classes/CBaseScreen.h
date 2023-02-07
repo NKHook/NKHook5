@@ -42,15 +42,16 @@ namespace NKHook5
 		public:
 			//Commented for vtable char pad_0000[4]; //0x0000
 			IBasePointers basePointers; //0x0004
-			char pad_0070[12]; //0x0070
-			std::vector<CBaseScreen*> children; //0x007C
-			char pad_0088[4]; //0x0088
-			std::string screenName; //0x008C
-			CBaseScreen* parentScreen; //0x00A4
-			eScreenState screenState; //0x00A8
-			char pad_00AC[4]; //0x00AC
+			void* unknown_constructed; //0x0070
+			char pad_0074[4]; //0x0074
+			std::vector<CBaseScreen*> children; //0x0078
+			char pad_0084[4]; //0x0084
+			std::string screenName; //0x0088
+			CBaseScreen* parentScreen; //0x00A0
+			eScreenState screenState; //0x00A4
+			char pad_00A8[8]; //0x00A8
 			boost::shared_ptr<CAssetBag> pAssetBag; //0x00B0
-			char pad_00B8[4]; //0x00B8
+
 
 		public:
 			CBaseScreen() {}
@@ -89,7 +90,7 @@ namespace NKHook5
 		};
 
 		static_assert(sizeof(boost::shared_ptr<CAssetBag>) == 0x8);
-		static_assert(sizeof(CBaseScreen) == 0x00BC);
+		static_assert(sizeof(CBaseScreen) == 0x00B8);
 	} // namespace Classes
 
 } // namespace NKHook5

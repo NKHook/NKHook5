@@ -2,12 +2,12 @@
 
 #include <stdint.h>
 #include <string>
-#include <vector>
+#include <map>
 
 namespace NKHook5 {
 	namespace Util {
 		class FlagManager {
-			std::vector<std::pair<uint64_t, std::string>> flags;
+			std::map<uint64_t, std::string> flags;
 		public:
 			FlagManager();
 			//Registers at a specific ID
@@ -16,9 +16,10 @@ namespace NKHook5 {
 			uint64_t Register(std::string text);
 			//Slowly check if the id is available
 			bool IsIDAvailable(uint64_t id);
+			bool IsVanilla(uint64_t id);
 			uint64_t GetFlag(std::string name);
 			std::string GetName(uint64_t flag);
-			const std::vector<std::pair<uint64_t, std::string>>& GetAll();
+			const std::map<uint64_t, std::string>& GetAll();
 		};
 	}
 }

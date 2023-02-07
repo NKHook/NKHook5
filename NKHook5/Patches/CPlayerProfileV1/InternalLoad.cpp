@@ -5,6 +5,8 @@
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
 
+#include <Logging/Logger.h>
+
 extern NKHook5::Util::FlagManager g_towerFlags;
 
 namespace NKHook5
@@ -15,6 +17,9 @@ namespace NKHook5
         {
             using namespace Mod;
             using namespace Signatures;
+            using namespace Common;
+            using namespace Common::Logging;
+            using namespace Common::Logging::Logger;
 
             static uint64_t o_func;
             bool __fastcall cb_hook(Classes::CPlayerProfileV1* profile, int pad, class CBaseFileIO* pFileIO, ghstl::string fileName, bool param_3) {
@@ -22,13 +27,13 @@ namespace NKHook5
                 /*SaveData* customData = SaveData::GetInstance();
                 customData->Load("./Modded.save");*/
                 //Add all towers to the profile
-                printf("Adding all towers to save...\n");
+                Print("Adding all towers to save...");
                 const auto& allTowerFlags = g_towerFlags.GetAll();
                 for (const auto& pair : allTowerFlags) {
                     profile->towerUnlocks[pair.first] = true;// customData->IsTowerUnlocked(pair.second);
-                    printf("Added tower with ID '%llx' to save\n", pair.first);
+                    Print("Added tower with ID '%llx' to save", pair.first);
                 }
-                printf("Done!\n");
+                Print("Done!");
                 return result;
             }
 

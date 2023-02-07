@@ -116,7 +116,7 @@ void Package::Run(std::vector<std::string> args)
 				break;
 			printf("\nWhich format would you like to use? (1-4): ");
 			if (!(std::cin >> choice)) {
-				printf("Error, please try again.");
+				Print(LogLevel::ERR, "Please try again.");
 				std::cin.clear();
 				std::cin.ignore();
 			}
@@ -125,7 +125,7 @@ void Package::Run(std::vector<std::string> args)
 	}
 
 	if (modFmt == ModFmt::NONE) {
-		printf("Please specify a valid mod format!\n");
+		Print(LogLevel::ERR, "Please specify a valid mod format!");
 		return;
 	}
 
@@ -133,10 +133,10 @@ void Package::Run(std::vector<std::string> args)
 	modProj.Open(modName);
 
 	if (modFmt == ModFmt::UNPACKED) {
-		printf("Creating unpacked package...\n");
+		Print(LogLevel::INFO, "Creating unpacked package...");
 		ZipBase unpackedArch;
 		if (!unpackedArch.Open(modName + "_sources.zip")) {
-			printf("Failed to open archive to unpack\n");
+			Print(LogLevel::ERR, "Failed to open archive to unpack");
 			return;
 		}
 		size_t idx = -1;
@@ -148,31 +148,31 @@ void Package::Run(std::vector<std::string> args)
 			fs::path entryPath = dirEntry.path();
 			File entryFile;
 			if (!entryFile.OpenRead(entryPath)) {
-				printf("Failed to read file '%s'\n", entryPath.string().c_str());
+				Print(LogLevel::ERR, "Failed to read file '%s'", entryPath.string().c_str());
 				continue;
 			}
 			std::vector<uint8_t> dataBytes = entryFile.ReadBytes();
 			if (dataBytes.empty()) {
-				printf("File read was empty for '%s', skipping...\n", entryPath.string().c_str());
+				Print(LogLevel::ERR, "File read was empty for '%s', skipping...", entryPath.string().c_str());
 				continue;
 			}
 			entryFile.Close();
 			if (!unpackedArch.WriteEntry(entryPath.string(), dataBytes)) {
-				printf("Failed to save entry '%s'", entryPath.string().c_str());
+				Print(LogLevel::ERR, "Failed to save entry '%s'", entryPath.string().c_str());
 				continue;
 			}
 			//Logger::Print("Packed file '%s'\n", entryPath.string().c_str());
 			Logger::Progress(idx, 0, "Packaged files: ");
 		}
 		unpackedArch.Close();
-		printf("Done!\n");
+		Print(LogLevel::INFO, "Done!");
 	}
 
 	if (modFmt == ModFmt::JET) {
-		Logger::Print("Creating jet package...");
+		Print(LogLevel::INFO, "Creating jet package...");
 		JetFile jetFile;
 		if (!jetFile.Open(modName + ".jet")) {
-			Logger::Print("Failed to create jet file");
+			Print(LogLevel::ERR, "Failed to create jet file");
 			return;
 		}
 
@@ -193,14 +193,14 @@ void Package::Run(std::vector<std::string> args)
 		locStep.Execute(modProj, jetFile);
 
 		jetFile.Close();
-		Logger::Print("Done!");
+		Print(LogLevel::INFO, "Done!");
 	}
 
 	if (modFmt == ModFmt::ASSETBUNDLES) {
-		Logger::Print("Creating jet package...");
+		Print(LogLevel::INFO, "Creating jet package...");
 		JetFile jetFile;
 		if (!jetFile.Open(modName + ".jet")) {
-			Logger::Print("Failed to create jet file");
+			Print(LogLevel::ERR, "Failed to create jet file");
 			return;
 		}
 		
@@ -217,10 +217,10 @@ void Package::Run(std::vector<std::string> args)
 
 		jetFile.Close();
 
-		Logger::Print("Creating AssetBundles package...");
+		Print(LogLevel::INFO, "Creating AssetBundles package...");
 		ZipBase assetBundle;
 		if (!assetBundle.Open(modName + ".zip")) {
-			Logger::Print("Failed to create zip file");
+			Print(LogLevel::ERR, "Failed to create zip file");
 			return;
 		}
 
@@ -235,7 +235,7 @@ void Package::Run(std::vector<std::string> args)
 		//Write jet bundle to file
 		File fJetFile;
 		if (!fJetFile.OpenRead(modName + ".jet")) {
-			Logger::Print("Failed to open jet file");
+			Print(LogLevel::ERR, "Failed to open jet file");
 			return;
 		}
 		assetBundle.WriteEntry("AssetBundles/" + modName + ".jet", fJetFile.ReadBytes());
@@ -243,19 +243,19 @@ void Package::Run(std::vector<std::string> args)
 		fJetFile.Close();
 		fs::remove(fJetFile.GetPath());
 
-		Logger::Print("Done!");
+		Print(LogLevel::INFO, "Done!");
 	}
 
 	if (modFmt == ModFmt::NKH) {
-		printf("Creating NKH package...\n");
+		Print(LogLevel::INFO, "Creating NKH package...");
 		fs::path resultPath = modName + ".nkh";
 		if (fs::exists(resultPath)) {
-			Print("Deleting existing .nkh file...");
+			Print(LogLevel::INFO, "Deleting existing .nkh file...");
 			fs::remove(resultPath);
 		}
 		ModArchive modFile;
 		if (!modFile.OpenWrite(resultPath)) {
-			printf("Failed to open archive to unpack\n");
+			Print(LogLevel::ERR, "Failed to open archive to unpack");
 			return;
 		}
 		
@@ -278,6 +278,6 @@ void Package::Run(std::vector<std::string> args)
 		modFile.SetInfo(modProj.GetInfo());
 
 		modFile.Close();
-		printf("Done!\n");
+		Print(LogLevel::INFO, "Done!");
 	}
 }

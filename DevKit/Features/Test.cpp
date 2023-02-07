@@ -79,5 +79,5 @@ void Test::Run(std::vector<std::string> args) {
 
 	std::string finalXml;
 	rapidxml::internal::print_node(std::back_inserter(finalXml), spriteXmlDoc, 0, 0);
-	printf("%s", finalXml.c_str());
+	Print(LogLevel::INFO, "%s", finalXml.c_str());
 }

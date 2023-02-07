@@ -7,6 +7,9 @@ namespace NKHook5 {
 	namespace Signatures {
 		enum class Sigs {
 			/* CApp */
+			/* CApplyStatusEffectTask */
+			CApplyStatusEffectTask_VTable,
+			CApplyStatusEffectTask_Fire,
 			/* CAssetBag */
 			/* CBaseButton */
 			CBaseButton_VTable,
@@ -25,7 +28,10 @@ namespace NKHook5 {
 			CBaseScreen_StartUsingAsset,
 			/* CBaseTower */
 			/* CBloon */
+			CBloon_ApplyEffect,
 			CBloon_Update,
+			/* CBloonFactory */
+			CBloonFactory_CCTOR,
 			/* CBloonsBaseScreen */
 			CBloonsBaseScreen_CCTOR,
 			/* CBloonsTD5Game */
@@ -47,6 +53,9 @@ namespace NKHook5 {
 			/* CGameScreen */
 			CGameScreen_Init,
 			/* CGameSystemPointers */
+			/* CGlueStatusEffect */
+			CGlueStatusEffect_VTable,
+			CGlueStatusEffect_CCTOR,
 			/* CLoc */
 			CLoc_FindText,
 			CLoc_GetText,
@@ -80,6 +89,10 @@ namespace NKHook5 {
 			CSettingsScreen_Process,
 			/* CSprite */
 			CSprite_VTable,
+			CSprite_CCTOR,
+			CSprite_SetTexture,
+			/* CStatusEffect */
+			CStatusEffect_IncTowerRef,
 			/* CTextObject */
 			CTextObject_VTable,
 			CTextObject_CCTOR_A,
@@ -89,6 +102,8 @@ namespace NKHook5 {
 			CTextureManager_GetSpriteInfoPtr,
 			/* CTowerFactory */
 			CTowerFactory_CCTOR,
+			CTowerFactory_GetTowerInfo,
+			CTowerFactory_GetTowerName,
 			/* CUnzippedFile */
 			CUnzippedFile_CCTOR,
 			/* CWeapon */

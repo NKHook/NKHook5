@@ -28,11 +28,21 @@ namespace NKHook5
             static void __fastcall cb_hook(ClassesEx::CSettingsScreenExt* self, int pad, int param_1) {
                 //((void(__thiscall*)(void*, int))o_func)(self, param_1);
                 PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
+
+                //Add the NKHook version information text
+                std::string verInfoString("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
+                Classes::CTextObject* verInfoText = new Classes::CTextObject({ 160, -100 }, self->screenFont, verInfoString);
+                Classes::Vec2F textScale(0.5, 0.5);
+                verInfoText->Scale(textScale);
+                verInfoText->SetRotation(40);
+                Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
+                verInfoText->SetColor(c, 0);
+                self->rootObj->AddChild(verInfoText);
                 
                 /* Modify the base game ui stuff */
                 /*
                 //Add the BTD5 text
-                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->pMenuFont, "BTD5");
+                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->screenFont, "BTD5");
                 vanillaText->SetColor(Classes::Colors::white, 0);
                 vanillaText->Scale({ .75, .75 });
                 self->rootObj->AddChild(vanillaText);
@@ -46,7 +56,7 @@ namespace NKHook5
                 /* Custom settings ui stuff */
                 /*
                 //Add the NKHook5 text
-                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->pMenuFont, "NKHook5");
+                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->screenFont, "NKHook5");
                 nkhookText->SetColor(Classes::Colors::white, 0);
                 nkhookText->Scale({ .75, .75 });
                 self->rootObj->AddChild(nkhookText);
@@ -55,7 +65,7 @@ namespace NKHook5
                 Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
                 Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button_wider");
                 Classes::SMainButtonStyle style;
-                style.font = self->pMenuFont;
+                style.font = self->screenFont;
                 self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
                 self->modsButton->SetXY({ 100, 18 });
                 self->rootObj->AddChild(self->modsButton);

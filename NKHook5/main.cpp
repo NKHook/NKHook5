@@ -1,18 +1,26 @@
 #include <Windows.h>
 #include <string>
 #include <iostream>
+
 #include <Extensions/ExtensionManager.h>
+#include <Logging/Logger.h>
+
+#include "Extensions/StatusEffect/StatusDefinitionsExt.h"
 #include "Patches/PatchManager.h"
 #include "Signatures/Signature.h"
 
 std::string* testModDir = nullptr;
 
+using namespace Common;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
+
 auto initialize() -> int {
 #ifdef _DEBUG
-    printf("Press enter to launch NKH...\n");
+    Print(LogLevel::INFO, "Press enter to launch NKH...");
     std::cin.get();
 #endif
-    std::cout << "Loading NKHook5..." << std::endl;
+    Print(LogLevel::INFO, "Loading NKHook5...");
 
     wchar_t* cmdLine = GetCommandLineW();
     int argc;
@@ -36,24 +44,25 @@ auto initialize() -> int {
     if (wcModDir) {
         std::wstring modWStr(wcModDir);
         testModDir = new std::string(modWStr.begin(), modWStr.end());
-        printf("Launching mod: %s\n", testModDir->c_str());
+        Print(LogLevel::INFO, "Launching mod: %s", testModDir->c_str());
     }
 
-    printf("Searching signatures...\n");
+    Print(LogLevel::INFO, "Searching signatures...");
     NKHook5::Signatures::FindAll();
-    printf("Search complete! (Please report any search issues!!!)\n");
+    Print(LogLevel::INFO, "Search complete! (Please report any search issues!!!)");
 
-    printf("Loading Extensions...\n");
+    Print(LogLevel::INFO, "Loading Extensions...");
     Common::Extensions::ExtensionManager::AddAll();
-    printf("All extensions loaded!\n");
+    Common::Extensions::ExtensionManager::AddExtension(new NKHook5::Extensions::StatusEffect::StatusDefinitionsExt());
+    Print(LogLevel::INFO, "All extensions loaded!");
 
-    std::cout << "Loading all patches..." << std::endl;
+    Print(LogLevel::INFO, "Loading all patches...");
     NKHook5::Patches::PatchManager::ApplyAll();
-    std::cout << "All patches loaded!" << std::endl;
+    Print(LogLevel::INFO, "All patches loaded!");
 
-    std::cout << "Loaded NKHook5!" << std::endl;
+    Print(LogLevel::INFO, "Loaded NKHook5!");
 #ifdef _DEBUG
-    printf("Press enter to boot game...\n");
+    Print(LogLevel::INFO, "Press enter to boot game...");
     std::cin.get();
 #endif
 

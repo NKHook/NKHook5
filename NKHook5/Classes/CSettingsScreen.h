@@ -15,14 +15,14 @@ namespace NKHook5
 		class CSettingsScreen : public CPopupScreenBase
 		{
 		public:
-			char pad_0258[40]; //0x0258
-			class CBaseButton* displayButton; //0x0280
-			char pad_0284[8]; //0x0284
-			class CSpriteButton* controlsButton; //0x028C
-			class CTextObject* controlsButtonText; //0x0290
-			class CMainButton* languageButton; //0x0294
-			class CBasePositionableObject* languageGroup; //0x0298
-			class CBasePositionableObject* controlsGroup; //0x029C
+			char pad_0254[44]; //0x0254
+			CBaseButton* displayButton; //0x0280
+			char pad_0284[4]; //0x0284
+			CSpriteButton* controlsButton; //0x0288
+			CTextObject* controlsButtonText; //0x028C
+			CMainButton* languageButton; //0x0290
+			CBasePositionableObject* languageGroup; //0x0294
+			CBasePositionableObject* controlsGroup; //0x0298
 
 		public:
 			CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) {
@@ -32,8 +32,8 @@ namespace NKHook5
 			virtual ~CSettingsScreen() {};
 		};
 
-		static_assert(sizeof(CSettingsScreen) == 0x2A0);
-		static_assert(offsetof(CSettingsScreen, controlsGroup) == 0x29C);
+		static_assert(sizeof(CSettingsScreen) == 0x29C);
+		static_assert(offsetof(CSettingsScreen, controlsGroup) == 0x298);
 	} // namespace Classes
 
 } // namespace NKHook5

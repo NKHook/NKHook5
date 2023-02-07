@@ -1,5 +1,6 @@
 #include "ParseTask.h"
 #include "../../Signatures/Signature.h"
+#include "../../Classes/CApplyStatusEffectTask.h"
 #include "../../Classes/CWeaponFactory.h"
 #include "../../Classes/CProjectile.h"
 #include "../../ClassesEx/CProjectileExt.h"
@@ -22,11 +23,19 @@ struct parseResult_t {
 };
 
 static uint64_t o_func;
-void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, parseResult_t* parseResults, bool param_3, int param_4) {
-    //Get the parsed json document handle
-    Classes::JsonObject documentHandle = self->currentDocument;
+void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, const Classes::JsonObject& documentHandle, parseResult_t* parseResults, bool hasSubtasks, int param_4) {
+    bool overrideHasSubtasks = hasSubtasks;
+    /*if (documentHandle.Get("Type") != nullptr)
+    {
+        const Classes::JsonPropertyValue* taskType = documentHandle.Get("Type");
+        if ((taskType->value.stringValue == "StatusEffect") || (taskType->value.stringValue == "Effect") && documentHandle.Get("Tasks") != nullptr)
+        {
+            overrideHasSubtasks = true;
+        }
+    }*/
+
     //Call the original CWeaponFactory::ParseTask function
-    void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, param_1, parseResults, param_3, param_4);
+    void* result = PLH::FnCast(o_func, &cb_hook)(self, pad, documentHandle, parseResults, overrideHasSubtasks, param_4);
     //Get the resulting tasl
     Classes::CWeaponTask* baseTask = parseResults->resultTask;
 
@@ -39,16 +48,16 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
         //Parse our custom json properties
         projectileTask->NO_CLEANUP = false;
         projectileTask->ALWAYS_UPDATE = false;
-        if (documentHandle.dataMap != nullptr) {
-            Classes::JsonPropertyValue* noCleanup = documentHandle.Get("NO_CLEANUP");
+        if (!documentHandle.dataMap.empty()) {
+            const Classes::JsonPropertyValue* noCleanup = documentHandle.Get("NO_CLEANUP");
             if (noCleanup != nullptr) {
                 projectileTask->NO_CLEANUP = noCleanup->value.boolValue;
             }
-            Classes::JsonPropertyValue* alwaysUpdate = documentHandle.Get("ALWAYS_UPDATE");
+            const Classes::JsonPropertyValue* alwaysUpdate = documentHandle.Get("ALWAYS_UPDATE");
             if (alwaysUpdate != nullptr) {
                 projectileTask->ALWAYS_UPDATE = alwaysUpdate->value.boolValue;
             }
-            Classes::JsonPropertyValue* noOgc = documentHandle.Get("NO_OGC");
+            const Classes::JsonPropertyValue* noOgc = documentHandle.Get("NO_OGC");
             if (noOgc != nullptr) {
                 projectileTask->NO_OGC = noOgc->value.boolValue;
             }
@@ -59,8 +68,8 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
     if (typeName.find("CCollectableTask") != std::string::npos) {
         ClassesEx::CCollectableTaskExt* collectableExt = (ClassesEx::CCollectableTaskExt*)baseTask;
         collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
-        if (documentHandle.dataMap != nullptr) {
-            Classes::JsonPropertyValue* collectMethod = documentHandle.Get("COLLECT_METHOD");
+        if (!documentHandle.dataMap.empty()) {
+            const Classes::JsonPropertyValue* collectMethod = documentHandle.Get("COLLECT_METHOD");
             if (collectMethod) {
                 if (collectMethod->value.stringValue == "DEFAULT") {
                     collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::DEFAULT;
@@ -71,6 +80,7 @@ void* __fastcall cb_hook(Classes::CWeaponFactory* self, int pad, void* param_1, 
             }
         }
     }
+
     return result;
 }
 

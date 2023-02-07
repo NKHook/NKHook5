@@ -27,9 +27,9 @@ namespace NKHook5
 
             static uint64_t o_func;
             static void* __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
-                Print("Game Instance: %p\n", gameInstance);
+                Print("Game Instance: %p", gameInstance);
                 g_appPtr = gameInstance;
-                Print("Game load started\n");
+                Print("Game load started");
                 Print("Loading Mods...");
                 fs::path cwd = fs::current_path();
                 fs::path modsDir = cwd / "Mods";

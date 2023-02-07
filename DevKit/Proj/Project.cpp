@@ -1,9 +1,12 @@
 #include "Project.h"
 
 #include <Files/File.h>
+#include <Logging/Logger.h>
 
 using namespace Common;
 using namespace Common::Files;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 using namespace DevKit;
 using namespace DevKit::Proj;
 namespace fs = std::filesystem;
@@ -42,7 +45,7 @@ Project::Project(fs::path path)
 		std::string jsonDump = serialized.dump(4);
 		File infoFile(this->modInfoPath);
 		infoFile.WriteStr(jsonDump);
-		printf("Saved mod info at '%s'\n", this->modInfoPath.string().c_str());
+		Print(LogLevel::INFO, "Saved mod info at '%s'", this->modInfoPath.string().c_str());
 	}
 }
 
@@ -53,12 +56,12 @@ bool Project::Open(fs::path path)
 	this->modAssetsPath = path / "Mod";
 
 	if (!fs::exists(path)) {
-		printf("Failed to open project '%s' since it does not exist\n", path.string().c_str());
+		Print(LogLevel::ERR, "Failed to open project '%s' since it does not exist", path.string().c_str());
 		return false;
 	}
 	fs::path modInfo(this->modInfoPath);
 	if (!fs::exists(modInfo)) {
-		printf("Failed to open project '%s' as it doesn't have a modinfo.json file\n", path.string().c_str());
+		Print(LogLevel::ERR, "Failed to open project '%s' as it doesn't have a modinfo.json file", path.string().c_str());
 		return false;
 	}
 	File modInfoFile(modInfo);

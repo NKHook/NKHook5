@@ -8,7 +8,7 @@ FlagManager::FlagManager()
 
 void FlagManager::Register(uint64_t numeric, std::string text)
 {
-	flags.emplace_back(numeric, text);
+	flags.emplace(numeric, text);
 }
 
 uint64_t FlagManager::Register(std::string text)
@@ -41,6 +41,18 @@ bool FlagManager::IsIDAvailable(uint64_t id)
 	return true;
 }
 
+bool FlagManager::IsVanilla(uint64_t id)
+{
+	for (int i = 0; i < 100; i++) {
+		uint64_t numericId = static_cast<uint64_t>(1) << i;
+		if (numericId == id)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 uint64_t FlagManager::GetFlag(std::string name)
 {
 	for (auto flagData : flags) {
@@ -61,7 +73,7 @@ std::string FlagManager::GetName(uint64_t flag)
 	return "INVALID";
 }
 
-const std::vector<std::pair<uint64_t, std::string>>& FlagManager::GetAll()
+const std::map<uint64_t, std::string>& FlagManager::GetAll()
 {
 	return this->flags;
 }

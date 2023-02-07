@@ -1,7 +1,11 @@
 #include "ModInfo.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common;
 using namespace Common::Mod;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 
 ModInfo::ModInfo()
 {
@@ -18,14 +22,14 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 		if (infoJson["authors"].is_array()) {
 			for (const auto& author : infoJson["authors"]) {
 				if (!author.is_string()) {
-					printf("'authors' must be a list of strings!");
+					Print(LogLevel::ERR, "'authors' must be a list of strings!");
 					break;
 				}
 				this->authors.push_back(author);
 			}
 		}
 		else {
-			printf("'authors' MUST be an array!");
+			Print(LogLevel::ERR, "'authors' MUST be an array!");
 		}
 	}
 	if (infoJson.contains("description")) {
@@ -33,7 +37,7 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			this->description = infoJson["description"];
 		}
 		else {
-			printf("'description' must be a string!");
+			Print(LogLevel::ERR, "'description' must be a string!");
 		}
 	}
 	if (infoJson.contains("discord")) {
@@ -41,7 +45,7 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			this->discord = infoJson["discord"];
 		}
 		else {
-			printf("'discord' must be a string!");
+			Print(LogLevel::ERR, "'discord' must be a string!");
 		}
 	}
 	if (infoJson.contains("github")) {
@@ -49,7 +53,7 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			this->github = infoJson["github"];
 		}
 		else {
-			printf("'github' must be a string!");
+			Print(LogLevel::ERR, "'github' must be a string!");
 		}
 	}
 	if (infoJson.contains("name")) {
@@ -57,7 +61,7 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			this->name = infoJson["name"];
 		}
 		else {
-			printf("'name' must be a string!");
+			Print(LogLevel::ERR, "'name' must be a string!");
 		}
 	}
 	if (infoJson.contains("version")) {
@@ -65,7 +69,7 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			this->version = infoJson["version"];
 		}
 		else {
-			printf("'version' must be a string!");
+			Print(LogLevel::ERR, "'version' must be a string!");
 		}
 	}
 	if (infoJson.contains("website")) {
@@ -73,7 +77,7 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			this->website = infoJson["website"];
 		}
 		else {
-			printf("'website' must be a string!");
+			Print(LogLevel::ERR, "'website' must be a string!");
 		}
 	}
 }

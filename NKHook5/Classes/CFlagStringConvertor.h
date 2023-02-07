@@ -7,7 +7,9 @@ namespace NKHook5 {
 		class CFlagStringConvertor
 		{
 		public:
-			char pad_0000[4]; //0x0000
-		}; //Size: 0x0004
+			char pad_0000[12]; //0x0000
+		}; //Size: 0x000C
+
+		static_assert(sizeof(CFlagStringConvertor) == 0xC);
 	}
 }

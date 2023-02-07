@@ -12,7 +12,7 @@ namespace NKHook5 {
 			overload_new
 
 		public:
-			CSpriteButton() {
+			CSpriteButton() : CSprite(nullptr, false, Vec2F(0, 0), true) {
 
 			}
 		};

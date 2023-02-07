@@ -1,9 +1,13 @@
 #include "ZipBase.h"
 
+#include <Logging/Logger.h>
+
 #include <Util/memstream>
 
 using namespace Common;
 using namespace Common::Files;
+using namespace Common::Logging;
+using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 ZipBase::ZipBase() : IFile() {
@@ -101,7 +105,7 @@ bool ZipBase::WriteEntry(std::string entry, std::vector<uint8_t> data)
 {
 	std::replace(entry.begin(), entry.end(), '/', '\\');
 	if (this->archive == nullptr) {
-		printf("Error: pArchive was null in write");
+		Print(LogLevel::ERR, "pArchive was null in write");
 		return false;
 	}
 	ZipArchiveEntry::Ptr pEntry;

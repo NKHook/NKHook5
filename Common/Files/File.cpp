@@ -1,6 +1,9 @@
 #include "File.h"
 
+#include <Logging/Logger.h>
+
 using namespace Common::Files;
+using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 File::File() {
@@ -10,7 +13,7 @@ File::File() {
 File::File(fs::path path) : IFile(path, 0)
 {
 	if (!this->Open(path)) {
-		printf("Failed to open file %s\n", path.string().c_str());
+		Print(LogLevel::ERR, "Failed to open file %s", path.string().c_str());
 	}
 }
 

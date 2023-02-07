@@ -25,11 +25,11 @@ namespace NKHook5
             static uint64_t o_func;
             void __fastcall cb_hook(Classes::CGameScreen* pCGameScreen, int pad, Classes::IScreenData* pScreenData) {
                 PLH::FnCast(o_func, &cb_hook)(pCGameScreen, pad, pScreenData);
-                SheetsExtension* sheetsExt = (SheetsExtension*)ExtensionManager::GetByName("SheetsExtension");
+                /*SheetsExtension* sheetsExt = (SheetsExtension*)ExtensionManager::GetByName("SheetsExtension");
                 const std::vector<std::string>& sheetNames = sheetsExt->GetSheetNames();
                 for (std::string textureName : sheetNames) {
                     pCGameScreen->StartUsingAsset(Classes::eAssetType::TEXTURE, textureName);
-                }
+                }*/
             }
 
             auto Init::Apply() -> bool

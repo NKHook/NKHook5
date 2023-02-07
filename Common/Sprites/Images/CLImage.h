@@ -29,6 +29,7 @@ namespace Common {
 				virtual CLImage* CopyImage(size_t width, size_t height);
 				virtual CLImage* CopyImage(size_t x, size_t y, size_t width, size_t height);
 				virtual bool PasteImage(CLImage* other, size_t x = 0, size_t y = 0, int32_t width = -1, int32_t height = -1);
+				virtual bool PasteChannel(CLImage* other, int channel);
 			};
 		}
 	}
