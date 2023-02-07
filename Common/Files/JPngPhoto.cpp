@@ -39,7 +39,7 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 	uint8_t* imageRaw = imageBytes.data();
 	if (memcmp(imageRaw, "\x89\x50\x4E\x47", 4) == 0)
 	{
-		Print(LogLevel::ERR, "Tried to read a JPNG image from a PNG file!");
+		Print(LogLevel::DEBUG, "Tried to read a JPNG image from a PNG file!");
 		return false;
 	}
 	uint32_t imageSize = imageBytes.size();
