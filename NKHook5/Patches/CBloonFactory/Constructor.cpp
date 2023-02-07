@@ -23,7 +23,9 @@ namespace NKHook5
             Classes::CBloonFactory* __fastcall cb_hook(Classes::CBloonFactory* self)
             {    
                 g_bloonFactory = self;
+#ifdef DEBUG
                 Print(LogLevel::INFO, "g_bloonFactory: %p", g_bloonFactory);
+#endif
                 return PLH::FnCast(o_func, &cb_hook)(self);
             }
 

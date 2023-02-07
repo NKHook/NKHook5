@@ -11,6 +11,7 @@
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
 extern NKHook5::Util::FlagManager g_towerFlags;
 extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
+extern NKHook5::Util::FlagManager g_bloonFlags;
 extern NKHook5::Util::FlagManager g_bloonStatusFlags;
 
 namespace NKHook5
@@ -31,6 +32,10 @@ namespace NKHook5
                 }
                 if (self == g_bloonFactory)
                 {
+                    if (categoryId == 0)
+                    {
+                        result = g_bloonFlags.GetFlag(textId->cpp_str());
+                    }
                     if (categoryId == 1)
                     {
                         result = g_bloonStatusFlags.GetFlag(textId->cpp_str());

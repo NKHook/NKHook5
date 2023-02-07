@@ -9,6 +9,7 @@
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
 
+#include <Extensions/Bloon/BloonFlagsExt.h>
 #include <Extensions/Tower/TowerFlagsExt.h>
 #include <Extensions/StatusEffect/StatusFlagsExt.h>
 #include <Extensions/ExtensionManager.h>
@@ -17,6 +18,7 @@
 extern NKHook5::Classes::CTowerFactory* g_towerFactory;
 NKHook5::Util::FlagManager g_towerFlags;
 extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
+NKHook5::Util::FlagManager g_bloonFlags;
 NKHook5::Util::FlagManager g_bloonStatusFlags;
 
 namespace NKHook5
@@ -27,6 +29,7 @@ namespace NKHook5
         {
             using namespace Common;
             using namespace Common::Extensions;
+            using namespace Common::Extensions::Bloon;
             using namespace Common::Extensions::Generic;
             using namespace Common::Extensions::StatusEffect;
             using namespace Common::Extensions::Tower;
@@ -67,6 +70,28 @@ namespace NKHook5
                 //Hijack and load new status effect ids
                 if (self == g_bloonFactory)
                 {
+                    //Bloon types category
+                    if (category == 0)
+                    {
+                        Print(LogLevel::INFO, "Hijacking bloon registration to inject new types...");
+                        std::vector<std::string> allBloons;
+                        auto* bloonFlagExt = (BloonFlagExt*)ExtensionManager::GetByName("BloonFlags");
+                        Print(LogLevel::INFO, "Copying old types...");
+                        for (int i = 0; i < stringCount; i++) {
+                            uint64_t numericId = static_cast<uint64_t>(1) << i;
+                            g_bloonFlags.Register(numericId, stringList[i]);
+                            allBloons.push_back(stringList[i]);
+                            Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
+                        }
+                        Print(LogLevel::INFO, "Old types copied!");
+                        Print(LogLevel::INFO, "Injecting new types...");
+                        for (const std::string& flagDef : bloonFlagExt->GetFlags()) {
+                            uint64_t moddedSlot = g_bloonFlags.Register(flagDef);
+                            allBloons.push_back(flagDef);
+                            Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
+                        }
+                        Print(LogLevel::INFO, "New types injected!");
+                    }
                     //Status effect category
                     if (category == 1)
                     {

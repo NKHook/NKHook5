@@ -3,6 +3,7 @@ target_sources(DevKit PRIVATE
 	"Feature.cpp"
 	"Package.cpp"
 	"PackSprite.cpp"
+	"RunMerge.cpp"
 	"RunMod.cpp"
     "Setup.cpp"
 	"SplitSprite.cpp"
