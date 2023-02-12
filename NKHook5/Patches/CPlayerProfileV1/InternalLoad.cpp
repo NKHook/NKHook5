@@ -29,9 +29,12 @@ namespace NKHook5
                 //Add all towers to the profile
                 Print("Adding all towers to save...");
                 const auto& allTowerFlags = g_towerFlags.GetAll();
-                for (const auto& pair : allTowerFlags) {
-                    profile->towerUnlocks[pair.first] = true;// customData->IsTowerUnlocked(pair.second);
-                    Print("Added tower with ID '%llx' to save", pair.first);
+                for (const auto& [flag, str] : allTowerFlags) {
+                    if (!g_towerFlags.IsVanilla(flag))
+                    {
+                        profile->towerUnlocks[flag] = true;// customData->IsTowerUnlocked(pair.second);
+                        Print("Added tower with ID '%llx' to save", flag);
+                    }
                 }
                 Print("Done!");
                 return result;
