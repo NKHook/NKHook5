@@ -80,6 +80,51 @@ void ModInfo::Initialize(nlohmann::json infoJson)
 			Print(LogLevel::ERR, "'website' must be a string!");
 		}
 	}
+	if (infoJson.contains("load_order"))
+	{
+		if (infoJson["load_order"].is_string())
+		{
+			std::string orderStr = infoJson["load_order"];
+			if (orderStr == "BASE")
+			{
+				this->loadOrder = LoadOrder::BASE;
+			}
+			if (orderStr == "FIRST")
+			{
+				this->loadOrder = LoadOrder::FIRST;
+			}
+			if (orderStr == "ANY")
+			{
+				this->loadOrder = LoadOrder::ANY;
+			}
+			if (orderStr == "LAST")
+			{
+				this->loadOrder = LoadOrder::LAST;
+			}
+		}
+		else {
+			Print(LogLevel::ERR, "'load_order' must be a string!");
+		}
+	}
+	else {
+		this->loadOrder = LoadOrder::ANY;
+	}
+	if (infoJson.contains("incompatibilities"))
+	{
+		if (infoJson["incompatibilities"].is_array())
+		{
+			try {
+				for (const std::string& incompat : infoJson["incompatibilities"])
+				{
+					this->incompatibilites.push_back(incompat);
+				}
+			}
+			catch (std::exception& ex)
+			{
+				Print(LogLevel::ERR, "Unknown error '%s' while parsing 'incompatibilities' field in modinfo!");
+			}
+		}
+	}
 }
 nlohmann::json ModInfo::Serialize() {
 	nlohmann::json result;
@@ -136,6 +181,16 @@ const std::string& ModInfo::GetGithub() const
 	return this->github;
 }
 
+const std::optional<LoadOrder> ModInfo::GetLoadOrder() const
+{
+	return this->loadOrder;
+}
+
+const std::optional<std::vector<std::string>> ModInfo::GetIncompatibilites() const
+{
+	return this->incompatibilites;
+}
+
 void ModInfo::SetName(std::string value) {
 	this->name = value;
 }
@@ -156,4 +211,14 @@ void ModInfo::SetDiscord(std::string value) {
 }
 void ModInfo::SetGithub(std::string value) {
 	this->github = value;
+}
+
+void ModInfo::SetLoadOrder(LoadOrder value)
+{
+	this->loadOrder = value;
+}
+
+void ModInfo::SetIncompatibilities(std::vector<std::string> value)
+{
+	this->incompatibilites = value;
 }

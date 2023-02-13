@@ -1,6 +1,7 @@
 #include "Constructor.h"
 
 #include <Logging/Logger.h>
+#include <Extensions/ExtensionManager.h>
 
 #include "../../Assets/AssetServer.h"
 #include "../../Assets/ModAssetSource.h"
@@ -20,6 +21,7 @@ namespace NKHook5
             using namespace Common;
             using namespace Common::Logging;
             using namespace Common::Logging::Logger;
+            using namespace Common::Extensions;
             using namespace NKHook5;
             using namespace NKHook5::Assets;
             using namespace NKHook5::Signatures;
@@ -37,16 +39,50 @@ namespace NKHook5
                     fs::create_directories(modsDir);
                 }
                 AssetServer* server = AssetServer::GetServer();
-                for (const auto& mod : fs::directory_iterator(modsDir)) {
+                std::map<LoadOrder, std::vector<ModAssetSource*>> sources;
+                for (const auto& mod : fs::directory_iterator(modsDir))
+                {
                     try {
                         ModAssetSource* source = new ModAssetSource(mod);
-                        server->AddSource(source);
                         std::shared_ptr<ModArchive> modArch = source->GetModArch();
                         const ModInfo& modInfo = modArch->GetInfo();
-                        Print("Loading %s", modInfo.GetName().c_str());
+                        const std::optional<LoadOrder>& order = modInfo.GetLoadOrder();
+                        if (order.has_value())
+                            sources[*order].push_back(source);
+                        else
+                            sources[LoadOrder::ANY].push_back(source);
                     }
                     catch (std::exception& ex) {
-                        Print("An error occured while loading a mod: %s", ex.what());
+                        Print("An error occured while preparing mod initialization: %s", ex.what());
+                    }
+                }
+                LoadOrder priorityList[] = {
+                    LoadOrder::BASE,
+                    LoadOrder::FIRST,
+                    LoadOrder::ANY,
+                    LoadOrder::LAST
+                };
+                for (LoadOrder currentTime : priorityList)
+                {
+                    for (const auto& modSource : sources[currentTime])
+                    {
+                        try {
+                            server->AddSource(modSource);
+                            std::shared_ptr<ModArchive> modArch = modSource->GetModArch();
+                            if (modSource->Has(ExtensionManager::GetByName("MergeIgnore")->GetTarget()))
+                            {
+                                if (currentTime != LoadOrder::BASE)
+                                {
+                                    Print(LogLevel::ERR, "'%s' uses MergeIgnore, but without 'BASE' load_order!", modArch->GetInfo().GetName().c_str());
+                                    Print(LogLevel::SUCCESS, "Add a 'load_order' entry to the mod's modinfo.json file with the value 'BASE'");
+                                }
+                            }
+                            const ModInfo& modInfo = modArch->GetInfo();
+                            Print("Loading %s", modInfo.GetName().c_str());
+                        }
+                        catch (std::exception& ex) {
+                            Print("An error occured while loading a mod: %s", ex.what());
+                        }
                     }
                 }
                 Print("Mods loaded!");

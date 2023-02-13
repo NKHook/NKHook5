@@ -41,6 +41,8 @@ Project::Project(fs::path path)
 		info.SetWebsite("https://nkhook.github.io/");
 		info.SetDiscord("NO DISCORD LINK");
 		info.SetGithub("https://github.com/NKHook/NKHook5");
+		info.SetLoadOrder(LoadOrder::ANY);
+		info.SetIncompatibilities({});
 		nlohmann::json serialized = info.Serialize();
 		std::string jsonDump = serialized.dump(4);
 		File infoFile(this->modInfoPath);

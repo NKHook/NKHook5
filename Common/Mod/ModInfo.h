@@ -4,9 +4,17 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace Common {
 	namespace Mod {
+		enum class LoadOrder {
+			BASE,
+			FIRST,
+			ANY,
+			LAST
+		};
+
 		class ModInfo {
 			std::string name;
 			std::string description;
@@ -15,6 +23,8 @@ namespace Common {
 			std::string website;
 			std::string discord;
 			std::string github;
+			std::optional<LoadOrder> loadOrder;
+			std::vector<std::string> incompatibilites;
 		public:
 			ModInfo();
 			ModInfo(nlohmann::json);
@@ -28,6 +38,8 @@ namespace Common {
 			const std::string& GetWebsite() const;
 			const std::string& GetDiscord() const;
 			const std::string& GetGithub() const;
+			const std::optional<LoadOrder> GetLoadOrder() const;
+			const std::optional<std::vector<std::string>> GetIncompatibilites() const;
 
 			void SetName(std::string);
 			void SetDescription(std::string);
@@ -36,6 +48,8 @@ namespace Common {
 			void SetWebsite(std::string);
 			void SetDiscord(std::string);
 			void SetGithub(std::string);
+			void SetLoadOrder(LoadOrder);
+			void SetIncompatibilities(std::vector<std::string>);
 		};
 	}
 }
