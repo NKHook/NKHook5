@@ -56,6 +56,21 @@ namespace NKHook5
                         Print("An error occured while preparing mod initialization: %s", ex.what());
                     }
                 }
+                //Compatibility check
+                if (sources[LoadOrder::BASE].size() > 1)
+                {
+                    Print(LogLevel::ERR, "Multiple mods tried to have a BASE load order! Below are the incompatible mods:");
+                    for (ModAssetSource* source : sources[LoadOrder::BASE])
+                    {
+                        Print(LogLevel::ERR, "%s", source->GetModArch()->GetInfo().GetName().c_str());
+                    }
+                    Print(LogLevel::ERR, "You may only have ONE of these mods at a time.");
+
+                    MessageBoxA(nullptr, "You have incompatible mods! Read the console for more information.", "Compatibility check", MB_OK);
+                    Print("Press enter to quit...");
+                    std::cin.get();
+                    exit(-1);
+                }
                 LoadOrder priorityList[] = {
                     LoadOrder::BASE,
                     LoadOrder::FIRST,
@@ -75,6 +90,11 @@ namespace NKHook5
                                 {
                                     Print(LogLevel::ERR, "'%s' uses MergeIgnore, but without 'BASE' load_order!", modArch->GetInfo().GetName().c_str());
                                     Print(LogLevel::SUCCESS, "Add a 'load_order' entry to the mod's modinfo.json file with the value 'BASE'");
+
+                                    MessageBoxA(nullptr, "A compatibility check failed, read the console for more info.", "Compatibility check", MB_OK);
+                                    Print("Press enter to quit...");
+                                    std::cin.get();
+                                    exit(-1);
                                 }
                             }
                             const ModInfo& modInfo = modArch->GetInfo();

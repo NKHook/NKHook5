@@ -149,6 +149,27 @@ nlohmann::json ModInfo::Serialize() {
 	if (this->website.length() > 0) {
 		result["website"] = this->website;
 	}
+	if (this->loadOrder.has_value()) {
+		if (this->loadOrder == LoadOrder::BASE)
+		{
+			result["load_order"] = "BASE";
+		}
+		if (this->loadOrder == LoadOrder::FIRST)
+		{
+			result["load_order"] = "FIRST";
+		}
+		if (this->loadOrder == LoadOrder::ANY)
+		{
+			result["load_order"] = "ANY";
+		}
+		if (this->loadOrder == LoadOrder::LAST)
+		{
+			result["load_order"] = "LAST";
+		}
+	}
+	if (!this->incompatibilites.empty()) {
+		result["incompatibilities"] = this->incompatibilites;
+	}
 	return result;
 }
 

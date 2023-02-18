@@ -66,7 +66,7 @@ std::shared_ptr<Asset> AssetServer::Serve(fs::path assetPath, std::vector<uint8_
 	AssetBin theBin = FromPath(assetPath);
 
 	//JSON files are only found in the json bin
-	if (theBin == AssetBin::JSON) {
+	if (theBin == AssetBin::JSON || assetPath.filename().string().ends_with(".json")) {
 		auto toCache = this->ServeJSON(assetPath, vanilla);
 		this->cache.push_back(toCache);
 		return toCache;
@@ -126,12 +126,15 @@ std::shared_ptr<Asset> AssetServer::ServeJSON(fs::path assetPath, std::vector<ui
 			nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaStr, nullptr, true, true);
 			merged.Add(vanillaJson);
 		}
-
+		
 		for (std::shared_ptr<Asset> find : finds) {
 			const std::vector<uint8_t>& findData = find->GetData();
 			std::string findStr(findData.begin(), findData.end());
 			nlohmann::ordered_json findJson = nlohmann::ordered_json::parse(findStr, nullptr, true, true);
-			merged.Add(findJson);
+			if (ExtensionManager::GetByTarget(assetPath.string()).empty())
+				merged.Add(findJson);
+			else
+				merged.Add(findJson, MergeMode::INSERTIVE);
 		}
 
 		nlohmann::ordered_json mergedJson = merged.GetMerged();
