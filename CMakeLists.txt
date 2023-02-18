@@ -135,21 +135,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(usercall)
 
-FetchContent_Declare(
-    loguru
-    GIT_REPOSITORY https://github.com/emilk/loguru.git
-    GIT_TAG master
-)
-FetchContent_GetProperties(loguru)
-if(NOT loguru_POPULATED)
-    FetchContent_Populate(loguru)
-    add_library(loguru STATIC)
-    target_sources(loguru PRIVATE
-        "${loguru_SOURCE_DIR}/loguru.cpp"
-    )
-    target_include_directories(loguru PUBLIC ${loguru_SOURCE_DIR})
-endif()
-
 add_subdirectory(Common)
 add_subdirectory(DevKit)
 add_subdirectory(NKHook5)
