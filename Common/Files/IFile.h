@@ -13,8 +13,8 @@ namespace Common {
 			IFile(std::filesystem::path path, size_t size);
 			virtual bool Open(std::filesystem::path);
 			virtual void Close();
-			virtual const std::filesystem::path& GetPath();
-			virtual size_t GetSize();
+			virtual const std::filesystem::path& GetPath() const;
+			virtual size_t GetSize() const;
 			virtual std::vector<uint8_t> ReadBytes();
 			virtual void WriteBytes(std::vector<uint8_t> data);
 		};

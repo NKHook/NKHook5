@@ -43,7 +43,7 @@ void ZipBase::Close() {
 	this->closed = true;
 }
 
-size_t ZipBase::GetSize()
+size_t ZipBase::GetSize() const
 {
 	return this->archive->GetEntriesCount();
 }

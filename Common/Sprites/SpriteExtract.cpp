@@ -2,7 +2,7 @@
 #include "../Files/PngPhoto.h"
 #include "../Files/JPngPhoto.h"
 #include "../Logging/Logger.h"
-#include "../Sprites/Images/CLImage.h"
+#include "../Sprites/Images/MTImage.h"
 #include "../Threading/WorkerThread.h"
 #include "../Threading/WorkGroup.h"
 
@@ -27,72 +27,69 @@ void SpriteExtract::ExtractAll()
 {
 	auto& xmls = table->GetXmls();
 	fs::path resultDir = this->resultDir;
-	WorkGroup workers(64);
 	for (auto* xmlInfo : xmls) {
-		workers.DoWork([xmlInfo, resultDir]()
-		{
-			TexType type = xmlInfo->GetTexType();
-			if (type != TexType::PNG && type != TexType::JPNG) {
-				Print(LogLevel::WARNING, "Skipping XML with a texType that is not PNG or JPNG");
-				return;
+		TexType type = xmlInfo->GetTexType();
+		if (type != TexType::PNG && type != TexType::JPNG) {
+			Print(LogLevel::WARNING, "Skipping XML with a texType that is not PNG or JPNG");
+			return;
+		}
+
+		std::string xmlName = xmlInfo->GetName();
+		fs::path xmlOutDir = resultDir / xmlName;
+
+		auto& frames = xmlInfo->GetFrames();
+		for (auto* frame : frames) {
+			fs::path imagePath = frame->GetImagePath();
+			MTImage image;
+			JPngPhoto imageFile;
+			if (!imageFile.OpenRead(imagePath))
+			{
+				PngPhoto imageFile;
+				imageFile.OpenRead(imagePath);
+				image = imageFile.ReadImg();
+			}
+			else
+			{
+				image = imageFile.ReadImg();
 			}
 
-			std::string xmlName = xmlInfo->GetName();
-			fs::path xmlOutDir = resultDir / xmlName;
+			for (auto* anim : frame->GetAnimations()) {
+				fs::path animOutDir = xmlOutDir / anim->GetName();
 
-			auto& frames = xmlInfo->GetFrames();
-			for (auto* frame : frames) {
-				fs::path imagePath = frame->GetImagePath();
-				CLImage* image = nullptr;
-				JPngPhoto imageFile;
-				if (!imageFile.OpenRead(imagePath))
-				{
-					PngPhoto imageFile;
-					imageFile.OpenRead(imagePath);
-					image = (CLImage*)imageFile.ReadImg();
-				}
-				else
-				{
-					image = (CLImage*)imageFile.ReadImg();
-				}
-
-				for (auto* anim : frame->GetAnimations()) {
-					fs::path animOutDir = xmlOutDir / anim->GetName();
-
-					for (auto* cell : anim->GetCells()) {
+				WorkGroup cellWorkers(64);
+				for (auto* cell : anim->GetCells()) {
+					cellWorkers.DoWork([animOutDir, cell, &image]() {
 						fs::path cellFilePath = animOutDir / std::string(cell->GetName() + ".png");
 						//Make necessary parent dirs
 						fs::create_directories(cellFilePath.parent_path());
 
-						CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+						MTImage splitImage = image.CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
 						PngPhoto cellPhoto;
 						cellPhoto.OpenWrite(cellFilePath);
 						cellPhoto.WriteImg(splitImage);
 						cellPhoto.Close();
-
-						delete splitImage;
-					}
+					});
 				}
-				for (auto* cell : frame->GetCells()) {
+				cellWorkers.AwaitQueue();
+			}
+			WorkGroup cellWorkers(64);
+			for (auto* cell : frame->GetCells()) {
+				cellWorkers.DoWork([xmlOutDir, cell, &image]() {
 					fs::path cellFilePath = xmlOutDir / std::string(cell->GetName() + ".png");
 					//Make necessary parent dirs
 					fs::create_directories(cellFilePath.parent_path());
 
-					CLImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+					MTImage splitImage = image.CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
 					PngPhoto cellPhoto;
 					cellPhoto.OpenWrite(cellFilePath);
 					cellPhoto.WriteImg(splitImage);
 					cellPhoto.Close();
-
-					delete splitImage;
-				}
-
-				Print("Saved %s!", frame->GetName().c_str());
-
-				delete image;
+				});
 			}
-		});
+			cellWorkers.AwaitQueue();
+
+			Print("Saved %s!", frame->GetName().c_str());
+		}
 	}
-	workers.AwaitQueue();
 }
 

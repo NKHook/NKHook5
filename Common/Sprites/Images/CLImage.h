@@ -21,9 +21,9 @@ namespace Common {
 				CLImage(cl_mem gpuImage, size_t width, size_t height);
 				virtual ~CLImage();
 
-				virtual size_t GetWidth() override;
-				virtual size_t GetHeight() override;
-				virtual uint32_t At(size_t x, size_t y) override;
+				virtual size_t GetWidth() const override;
+				virtual size_t GetHeight() const override;
+				virtual uint32_t At(size_t x, size_t y) const override;
 				virtual std::vector<uint32_t> ColorBytes() override;
 				virtual CLImage* CopyImage();
 				virtual CLImage* CopyImage(size_t width, size_t height);

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(NKHook5 VERSION 1.0 LANGUAGES CXX)
 
 include(FetchContent)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 #Get the git diff ID thing and make a compile def for it
 EXECUTE_PROCESS(
@@ -127,13 +127,6 @@ if(NOT binpack_POPULATED)
     add_library(binpack INTERFACE)
     target_include_directories(binpack INTERFACE ${binpack_SOURCE_DIR})
 endif()
-
-FetchContent_Declare(
-    usercall
-    GIT_REPOSITORY https://github.com/widberg/usercall.hpp.git
-    GIT_TAG master
-)
-FetchContent_MakeAvailable(usercall)
 
 add_subdirectory(Common)
 add_subdirectory(DevKit)

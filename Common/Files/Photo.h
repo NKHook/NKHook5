@@ -1,7 +1,7 @@
 #pragma once
 
 #include "File.h"
-#include "../Sprites/Images/Image.h"
+#include <Sprites/Images/MTImage.h>
 
 namespace Common {
 	namespace Files {
@@ -9,7 +9,7 @@ namespace Common {
 		using namespace Sprites::Images;
 
 		class Photo : public File {
-			Image* image;
+			MTImage image;
 			bool writeMode;
 		public:
 			Photo();
@@ -19,8 +19,8 @@ namespace Common {
 			virtual bool OpenRead(std::filesystem::path) override;
 			virtual bool OpenWrite(std::filesystem::path) override;
 
-			virtual Image* ReadImg();
-			virtual void WriteImg(Image*);
+			virtual MTImage ReadImg();
+			virtual void WriteImg(MTImage image);
 		};
 	}
 }

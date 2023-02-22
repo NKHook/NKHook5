@@ -14,28 +14,36 @@ WorkerThread::WorkerThread() {
 }
 
 WorkerThread::~WorkerThread() {
-	delete this->innerThread;
+	if(this->innerThread != nullptr)
+		delete this->innerThread;
 }
 
 void WorkerThread::DoWork(std::function<void()> work)
 {
 	if (this->innerThread == nullptr) {
-		this->innerThread = new std::thread([&] {
-			while (true) {
-				lock.lock();
-				if (workQueue.empty()) {
-					lock.unlock();
-					Sleep(10);
-					continue;
-				}
+		try {
+			this->innerThread = new std::thread([&] {
+				while (true) {
+					lock.lock();
+					if (workQueue.empty()) {
+						lock.unlock();
+						Sleep(10);
+						continue;
+					}
 
-				std::function<void()> nextJob = workQueue.front();
-				nextJob();
-				workQueue.pop_front();
-				lock.unlock();
-			}
-			});
-		this->innerThread->detach();
+					std::function<void()> nextJob = workQueue.front();
+					nextJob();
+					workQueue.pop_front();
+					lock.unlock();
+				}
+				});
+			this->innerThread->detach();
+		}
+		catch (std::exception& ex)
+		{
+			Sleep(1000);
+			this->DoWork(work);
+		}
 	}
 	this->lock.lock();
 	this->workQueue.push_back(work);

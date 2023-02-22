@@ -10,12 +10,10 @@ using namespace Common::Logging::Logger;
 namespace fs = std::filesystem;
 
 Photo::Photo() : File() {
-	this->image = nullptr;
 	this->writeMode = false;
 }
 
 Photo::Photo(fs::path path) : File() {
-	this->image = nullptr;
 	this->writeMode = false;
 	if (!this->Open(path)) {
 		Print(LogLevel::ERR, "Failed to open photo %s", path.string().c_str());
@@ -37,13 +35,10 @@ bool Photo::OpenWrite(fs::path path) {
 	return true;
 };
 
-Image* Photo::ReadImg() {
+MTImage Photo::ReadImg() {
 	return this->image;
 }
 
-void Photo::WriteImg(Image* image) {
-	if (this->image != nullptr) {
-		delete this->image;
-	}
+void Photo::WriteImg(MTImage image) {
 	this->image = image;
 }

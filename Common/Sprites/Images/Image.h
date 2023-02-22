@@ -8,9 +8,9 @@ namespace Common {
 			class Image {
 			public:
 				Image();
-				virtual size_t GetWidth();
-				virtual size_t GetHeight();
-				virtual uint32_t At(size_t x, size_t y);
+				virtual size_t GetWidth() const;
+				virtual size_t GetHeight() const;
+				virtual uint32_t At(size_t x, size_t y) const;
 				virtual std::vector<uint32_t> ColorBytes();
 			};
 		}

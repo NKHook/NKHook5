@@ -270,7 +270,7 @@ CLImage::~CLImage()
 		clReleaseMemObject(this->gpuImage);
 }
 
-size_t CLImage::GetWidth()
+size_t CLImage::GetWidth() const
 {
 	if (!inited) {
 		SetupCL();
@@ -278,7 +278,7 @@ size_t CLImage::GetWidth()
 	return this->width;
 }
 
-size_t CLImage::GetHeight()
+size_t CLImage::GetHeight() const
 {
 	if (!inited) {
 		SetupCL();
@@ -286,7 +286,7 @@ size_t CLImage::GetHeight()
 	return this->height;
 }
 
-uint32_t CLImage::At(size_t x, size_t y)
+uint32_t CLImage::At(size_t x, size_t y) const
 {
 	if (!inited) {
 		SetupCL();

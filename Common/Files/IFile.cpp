@@ -29,12 +29,12 @@ bool IFile::Open(std::filesystem::path path)
 
 void IFile::Close() {}
 
-const fs::path& IFile::GetPath()
+const fs::path& IFile::GetPath() const
 {
 	return this->path;
 }
 
-size_t IFile::GetSize()
+size_t IFile::GetSize() const
 {
 	return this->size;
 }

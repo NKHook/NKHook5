@@ -64,7 +64,7 @@ void File::Close()
 	this->stream.close();
 }
 
-size_t File::GetSize()
+size_t File::GetSize() const
 {
 	return fs::file_size(this->GetPath());
 }

@@ -88,10 +88,10 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 		jpngColors.push_back(color);
 	}
 
-	this->jpngImage = new CLImage(jpngColors, jfifWidth, jfifHeight);
+	this->jpngImage = MTImage(jpngColors, jfifWidth, jfifHeight);
 
-	/*CLImage* jpegImage = new CLImage(jfifColorVec, jfifWidth, jfifHeight);
-	CLImage* pngImage = new CLImage(pngColorVec, pngWidth, pngHeight);
+	/*MTImage* jpegImage = new MTImage(jfifColorVec, jfifWidth, jfifHeight);
+	MTImage* pngImage = new MTImage(pngColorVec, pngWidth, pngHeight);
 
 	this->jpngImage = jpegImage->CopyImage();
 	this->jpngImage->PasteChannel(pngImage, 1);*/
@@ -110,11 +110,11 @@ bool JPngPhoto::OpenWrite(std::filesystem::path)
 	return false;
 }
 
-Image* JPngPhoto::ReadImg()
+MTImage JPngPhoto::ReadImg()
 {
 	return this->jpngImage;
 }
 
-void JPngPhoto::WriteImg(Image*)
+void JPngPhoto::WriteImg(MTImage)
 {
 }

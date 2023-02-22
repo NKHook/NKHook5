@@ -8,15 +8,15 @@ Image::Image() {
 
 }
 
-size_t Image::GetWidth() {
+size_t Image::GetWidth() const {
 	return 0;
 }
 
-size_t Image::GetHeight() {
+size_t Image::GetHeight() const {
 	return 0;
 }
 
-uint32_t Image::At(size_t x, size_t y) {
+uint32_t Image::At(size_t x, size_t y) const {
 	return 0;
 }
 

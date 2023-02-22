@@ -21,7 +21,7 @@ namespace Common {
 			virtual ~ZipBase();
 			virtual bool Open(std::filesystem::path path) override;
 			virtual void Close() override;
-			virtual size_t GetSize() override;
+			virtual size_t GetSize() const override;
 			virtual void SetPassword(std::string password);
 			virtual void SetCompressionLevel(size_t level);
 			std::vector<std::string> const GetEntries() const;

@@ -20,7 +20,7 @@ namespace Common {
 			virtual bool OpenWrite(std::filesystem::path);
 			virtual ~File();
 			virtual void Close();
-			virtual size_t GetSize() override;
+			virtual size_t GetSize() const override;
 			virtual std::vector<uint8_t> ReadBytes() override;
 			virtual void WriteBytes(std::vector<uint8_t> data) override;
 			std::string ReadStr();

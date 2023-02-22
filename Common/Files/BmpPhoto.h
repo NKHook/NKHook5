@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Photo.h"
-#include "../Sprites/Images/CLImage.h"
+#include "../Sprites/Images/MTImage.h"
 
 namespace Common {
 	namespace Files {
@@ -9,7 +9,7 @@ namespace Common {
 		using namespace Common::Sprites;
 
 		class BmpPhoto : public Photo {
-			CLImage* image = nullptr;
+			MTImage image;
 		public:
 			BmpPhoto();
 			BmpPhoto(std::filesystem::path path);
@@ -18,8 +18,8 @@ namespace Common {
 			virtual bool OpenRead(std::filesystem::path) override;
 			virtual bool OpenWrite(std::filesystem::path) override;
 
-			virtual Image* ReadImg() override;
-			virtual void WriteImg(Image*) override;
+			virtual MTImage ReadImg() override;
+			virtual void WriteImg(MTImage) override;
 		};
 	}
 }
