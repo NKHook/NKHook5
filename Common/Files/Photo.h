@@ -9,7 +9,6 @@ namespace Common {
 		using namespace Sprites::Images;
 
 		class Photo : public File {
-			MTImage image;
 			bool writeMode;
 		public:
 			Photo();
@@ -19,8 +18,8 @@ namespace Common {
 			virtual bool OpenRead(std::filesystem::path) override;
 			virtual bool OpenWrite(std::filesystem::path) override;
 
-			virtual MTImage ReadImg();
-			virtual void WriteImg(MTImage image);
+			virtual MTImage* ReadImg();
+			virtual void WriteImg(MTImage* image);
 		};
 	}
 }

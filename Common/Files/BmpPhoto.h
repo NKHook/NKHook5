@@ -9,7 +9,7 @@ namespace Common {
 		using namespace Common::Sprites;
 
 		class BmpPhoto : public Photo {
-			MTImage image;
+			MTImage* image = nullptr;
 		public:
 			BmpPhoto();
 			BmpPhoto(std::filesystem::path path);
@@ -18,8 +18,8 @@ namespace Common {
 			virtual bool OpenRead(std::filesystem::path) override;
 			virtual bool OpenWrite(std::filesystem::path) override;
 
-			virtual MTImage ReadImg() override;
-			virtual void WriteImg(MTImage) override;
+			virtual MTImage* ReadImg() override;
+			virtual void WriteImg(MTImage*) override;
 		};
 	}
 }

@@ -37,7 +37,7 @@ bool BmpPhoto::OpenRead(fs::path path) {
 		imgData.push_back(colorBytes[i]);
 	}
 	//Create a new MTImage with the image data on the GPU
-	this->image = MTImage(imgData, width, height);
+	this->image = new MTImage(imgData, width, height);
 
 	return true;
 }
@@ -45,19 +45,19 @@ bool BmpPhoto::OpenWrite(fs::path path) {
 	return Photo::OpenWrite(path);;
 }
 
-Images::MTImage BmpPhoto::ReadImg() {
+Images::MTImage* BmpPhoto::ReadImg() {
 	return this->image;
 }
 
-void BmpPhoto::WriteImg(Images::MTImage image) {
+void BmpPhoto::WriteImg(Images::MTImage* image) {
 	//Call the base Photo::WriteImage function
 	Photo::WriteImg(image);
 
 	//Get the image width/height
-	size_t width = image.GetWidth();
-	size_t height = image.GetHeight();
+	size_t width = image->GetWidth();
+	size_t height = image->GetHeight();
 	//Get the image colors vector
-	std::vector<uint32_t> colors = image.ColorBytes();
+	std::vector<uint32_t> colors = image->ColorBytes();
 
 	//Store the photo into a file
 	stbi_write_bmp(this->GetPath().string().c_str(), width, height, 4, colors.data());

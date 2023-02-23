@@ -35,10 +35,9 @@ bool PngPhoto::OpenRead(fs::path path) {
 	int height = 0;
 	int channels = 0;
 	uint32_t* colorBytes = (uint32_t*)stbi_load(path.string().c_str(), &width, &height, &channels, 4);
-	std::vector<uint32_t> imgData;
-	imgData.assign(colorBytes, colorBytes + (width * height));
+	std::vector<uint32_t> imgData(colorBytes, colorBytes + (width * height));
 
-	this->image = MTImage(imgData, width, height);
+	this->image = new MTImage(imgData, width, height);
 
 	return true;
 }
@@ -47,17 +46,17 @@ bool PngPhoto::OpenWrite(fs::path path) {
 	return Photo::OpenWrite(path);;
 }
 
-Images::MTImage PngPhoto::ReadImg() {
+Images::MTImage* PngPhoto::ReadImg() {
 	return this->image;
 }
 
-void PngPhoto::WriteImg(Images::MTImage image) {
+void PngPhoto::WriteImg(Images::MTImage* image) {
 	std::lock_guard<std::mutex> lock(openmtx);
 	Photo::WriteImg(image);
 
-	size_t width = image.GetWidth();
-	size_t height = image.GetHeight();
-	const std::vector<uint32_t>& colors = image.ColorBytes();
+	size_t width = image->GetWidth();
+	size_t height = image->GetHeight();
+	const std::vector<uint32_t>& colors = image->ColorBytes();
 
 	stbi_write_png(this->GetPath().string().c_str(), width, height, 4, colors.data(), width * 4);
 }

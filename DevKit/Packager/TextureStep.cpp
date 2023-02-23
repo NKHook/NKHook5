@@ -80,12 +80,12 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 
 			//We need to calculate the size the atlas needs to be
 			BinPack2D::CanvasArray<
-				std::pair<std::string, MTImage>
+				std::pair<std::string, MTImage*>
 			> atlasArray = BinPack2D::UniformCanvasArrayBuilder<
-				std::pair<std::string, MTImage>
+				std::pair<std::string, MTImage*>
 			>(0x1000, 0x1000, 1).Build();
 
-			BinPack2D::ContentAccumulator<std::pair<std::string, MTImage>> inputContent;
+			BinPack2D::ContentAccumulator<std::pair<std::string, MTImage*>> inputContent;
 			for (const auto& dirEntry : fs::directory_iterator(sourceDir)) {
 				fs::path entryPath = dirEntry;
 				//If the entry is a directory, its an animation
@@ -97,16 +97,16 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 					std::string imageName = entryPath.stem().string();
 					PngPhoto spriteFile;
 					spriteFile.OpenRead(dirEntry);
-					MTImage spriteMTImage = spriteFile.ReadImg();
-					inputContent += BinPack2D::Content<std::pair<std::string, MTImage>>(
+					MTImage* spriteMTImage = spriteFile.ReadImg();
+					inputContent += BinPack2D::Content<std::pair<std::string, MTImage*>>(
 						{
 							imageName,
 							spriteMTImage
 						},
 						BinPack2D::Coord(),
 						BinPack2D::Size(
-							spriteMTImage.GetWidth(),
-							spriteMTImage.GetHeight()
+							spriteMTImage->GetWidth(),
+							spriteMTImage->GetHeight()
 						),
 						false);
 					spriteFile.Close();
@@ -117,7 +117,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			//Place the content into the canvas
 			atlasArray.Place(inputContent);
 			//Get the output content
-			BinPack2D::ContentAccumulator<std::pair<std::string, MTImage>> outputContent;
+			BinPack2D::ContentAccumulator<std::pair<std::string, MTImage*>> outputContent;
 			atlasArray.CollectContent(outputContent);
 			//Find the width and height after sort
 			size_t furthestX = 0;
@@ -143,7 +143,7 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 			//Create array of empty color data
 			std::vector<uint32_t> colorData(furthestX * furthestY);
 			//Create image with empty color data with size
-			MTImage atlas(colorData, furthestX, furthestY);
+			MTImage* atlas = new MTImage(colorData, furthestX, furthestY);
 
 			//Iterate the content again and draw the images at locations
 			for (const auto& content : outputContent.Get()) {
@@ -154,9 +154,9 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 				size_t height = content.size.h;
 
 				//Get the texture image
-				MTImage texMTImage = content.content.second;
+				MTImage* texMTImage = content.content.second;
 				//Paste it in the atlas
-				atlas.PasteImage(texMTImage, posX, posY, width, height);
+				atlas->PasteImage(texMTImage, posX, posY, width, height);
 			}
 
 			//Export the atlas to an image file

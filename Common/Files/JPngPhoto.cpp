@@ -80,15 +80,16 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 		throw std::exception("jfifWidth and pngWidth DO NOT MATCH!");
 	}
 
-	std::vector<uint32_t> jpngColors;
+	std::vector<uint32_t> jpngColors(jfifColorVec.size());
+#pragma omp parallel for
 	for (size_t i = 0; i < jfifColorVec.size(); i++)
 	{
 		uint32_t color = jfifColorVec[i];
 		((uint8_t*)&color)[3] = ((uint8_t*)&(pngColorVec[i]))[0];
-		jpngColors.push_back(color);
+		jpngColors[i] = color;
 	}
 
-	this->jpngImage = MTImage(jpngColors, jfifWidth, jfifHeight);
+	this->jpngImage = new MTImage(jpngColors, jfifWidth, jfifHeight);
 
 	/*MTImage* jpegImage = new MTImage(jfifColorVec, jfifWidth, jfifHeight);
 	MTImage* pngImage = new MTImage(pngColorVec, pngWidth, pngHeight);
@@ -110,11 +111,11 @@ bool JPngPhoto::OpenWrite(std::filesystem::path)
 	return false;
 }
 
-MTImage JPngPhoto::ReadImg()
+MTImage* JPngPhoto::ReadImg()
 {
 	return this->jpngImage;
 }
 
-void JPngPhoto::WriteImg(MTImage)
+void JPngPhoto::WriteImg(MTImage*)
 {
 }

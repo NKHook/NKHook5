@@ -21,11 +21,11 @@ namespace Common {
 				virtual size_t GetHeight() const override;
 				virtual uint32_t At(size_t x, size_t y) const override;
 				virtual std::vector<uint32_t> ColorBytes() override;
-				virtual MTImage CopyImage();
-				virtual MTImage CopyImage(size_t width, size_t height);
-				virtual MTImage CopyImage(size_t x, size_t y, size_t width, size_t height);
-				virtual bool PasteImage(const MTImage& other, size_t x = 0, size_t y = 0, int32_t width = -1, int32_t height = -1);
-				virtual bool PasteChannel(const MTImage& other, int channel);
+				virtual MTImage* CopyImage();
+				virtual MTImage* CopyImage(size_t width, size_t height);
+				virtual MTImage* CopyImage(size_t x, size_t y, size_t width, size_t height);
+				virtual bool PasteImage(const MTImage* other, size_t x = 0, size_t y = 0, int32_t width = -1, int32_t height = -1);
+				virtual bool PasteChannel(const MTImage* other, int channel);
 			};
 		}
 	}

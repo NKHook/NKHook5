@@ -35,10 +35,9 @@ bool Photo::OpenWrite(fs::path path) {
 	return true;
 };
 
-MTImage Photo::ReadImg() {
-	return this->image;
+MTImage* Photo::ReadImg() {
+	return nullptr;
 }
 
-void Photo::WriteImg(MTImage image) {
-	this->image = image;
+void Photo::WriteImg(MTImage* image) {
 }

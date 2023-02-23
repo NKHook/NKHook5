@@ -12,6 +12,8 @@ using namespace Common::Sprites::Images;
 using namespace Common::Logging::Logger;
 using namespace Common::Threading;
 
+#define _AT(x, y) (x) + ((y) * width)
+
 MTImage::MTImage()
 {
 	this->width = 0;
@@ -54,7 +56,7 @@ size_t MTImage::GetHeight() const
 
 uint32_t MTImage::At(size_t x, size_t y) const
 {
-	return this->colors.at((x * width) + y);
+	return this->colors.at(_AT(x, y));
 }
 
 std::vector<uint32_t> MTImage::ColorBytes()
@@ -62,59 +64,61 @@ std::vector<uint32_t> MTImage::ColorBytes()
 	return this->colors;
 }
 
-MTImage MTImage::CopyImage() {
+MTImage* MTImage::CopyImage() {
 	return this->CopyImage(this->GetWidth(), this->GetHeight());
 }
-MTImage MTImage::CopyImage(size_t width, size_t height) {
+MTImage* MTImage::CopyImage(size_t width, size_t height) {
 	return this->CopyImage(0, 0, width, height);
 }
-MTImage MTImage::CopyImage(size_t x, size_t y, size_t width, size_t height) {
-	std::vector<uint32_t> colors(width * height);
-	for (size_t ix = x; ix < width; ix++)
-	{
-		for (size_t iy = y; iy < height; iy++)
-		{
-			colors[(iy - y) + ((ix - x) * width)] = this->At(ix, iy);
-		}
+MTImage* MTImage::CopyImage(size_t x, size_t y, size_t width, size_t height) {
+	std::vector<uint32_t> resultBytes(width * height);
+#pragma omp parallel for
+	for (size_t row = 0; row < height; row++) {
+		uint32_t* row_ptr = &this->colors[_AT(x, y + row)];
+		memcpy(&resultBytes[_AT(0, row)], row_ptr, width * sizeof(uint32_t));
 	}
-	return MTImage(colors, width - x, height - y);
+	return new MTImage(resultBytes, width, height);
 }
 
-bool MTImage::PasteImage(const MTImage& other, size_t x, size_t y, int32_t width, int32_t height) {
-	for (size_t ix = x; ix < width; ix++)
-	{
-		for (size_t iy = y; iy < height; iy++)
-		{
-			this->colors[(iy - y) + ((ix - x) * width)] = other.At(ix, iy);
-		}
+bool MTImage::PasteImage(const MTImage* other, size_t x, size_t y, int32_t width, int32_t height) {
+	if (width == -1)
+		width = other->GetWidth();
+	if (height == -1)
+		height = other->GetHeight();
+
+	if (this->colors.size() < width * height)
+		this->colors = std::vector<uint32_t>(width * height);
+
+#pragma omp parallel for
+	for (size_t row = 0; row < height; row++) {
+		uint32_t* dest_ptr = &this->colors[_AT(x, y + row)];
+		memcpy(dest_ptr, &other->colors[_AT(0, row)], width * sizeof(uint32_t));
 	}
 	return true;
 }
 
-bool MTImage::PasteChannel(const MTImage& other, int channel)
+bool MTImage::PasteChannel(const MTImage* other, int channel)
 {
-	if (this->GetWidth() != other.GetWidth())
+	if (this->GetWidth() != other->GetWidth())
 	{
 		throw std::exception("Width of source and target images do not match in PasteChannel!");
 	}
-	if (this->GetHeight() != other.GetHeight())
+	if (this->GetHeight() != other->GetHeight())
 	{
 		throw std::exception("Height of source and target images do not match in PasteChannel!");
 	}
 
-	for (size_t x = 0; x < this->GetWidth(); x++)
+#pragma omp parallel for
+	for (int i = 0; i < this->colors.size(); i++)
 	{
-		for (size_t y = 0; y < this->GetHeight(); y++)
-		{
-			uint32_t otherCol = other.At(x, y);
-			char* otherChans = (char*)&otherCol;
+		uint32_t otherCol = other->colors[i];
+		char* otherChans = (char*)&otherCol;
 
-			uint32_t thisCol = this->At(x, y);
-			char* thisChans = (char*)&thisCol;
+		uint32_t thisCol = this->colors[i];
+		char* thisChans = (char*)&thisCol;
 
-			thisChans[channel] = otherChans[channel];
+		thisChans[channel] = otherChans[channel];
 
-			this->colors[y + (x * width)] = thisCol;
-		}
+		this->colors[i] = thisCol;
 	}
 }

@@ -40,7 +40,7 @@ void SpriteExtract::ExtractAll()
 		auto& frames = xmlInfo->GetFrames();
 		for (auto* frame : frames) {
 			fs::path imagePath = frame->GetImagePath();
-			MTImage image;
+			MTImage* image = nullptr;
 			JPngPhoto imageFile;
 			if (!imageFile.OpenRead(imagePath))
 			{
@@ -56,37 +56,29 @@ void SpriteExtract::ExtractAll()
 			for (auto* anim : frame->GetAnimations()) {
 				fs::path animOutDir = xmlOutDir / anim->GetName();
 
-				WorkGroup cellWorkers(64);
 				for (auto* cell : anim->GetCells()) {
-					cellWorkers.DoWork([animOutDir, cell, &image]() {
-						fs::path cellFilePath = animOutDir / std::string(cell->GetName() + ".png");
-						//Make necessary parent dirs
-						fs::create_directories(cellFilePath.parent_path());
-
-						MTImage splitImage = image.CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
-						PngPhoto cellPhoto;
-						cellPhoto.OpenWrite(cellFilePath);
-						cellPhoto.WriteImg(splitImage);
-						cellPhoto.Close();
-					});
-				}
-				cellWorkers.AwaitQueue();
-			}
-			WorkGroup cellWorkers(64);
-			for (auto* cell : frame->GetCells()) {
-				cellWorkers.DoWork([xmlOutDir, cell, &image]() {
-					fs::path cellFilePath = xmlOutDir / std::string(cell->GetName() + ".png");
+					fs::path cellFilePath = animOutDir / std::string(cell->GetName() + ".png");
 					//Make necessary parent dirs
 					fs::create_directories(cellFilePath.parent_path());
 
-					MTImage splitImage = image.CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+					MTImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
 					PngPhoto cellPhoto;
 					cellPhoto.OpenWrite(cellFilePath);
 					cellPhoto.WriteImg(splitImage);
 					cellPhoto.Close();
-				});
+				}
 			}
-			cellWorkers.AwaitQueue();
+			for (auto* cell : frame->GetCells()) {
+				fs::path cellFilePath = xmlOutDir / std::string(cell->GetName() + ".png");
+				//Make necessary parent dirs
+				fs::create_directories(cellFilePath.parent_path());
+
+				MTImage* splitImage = image->CopyImage(cell->GetX(), cell->GetY(), cell->GetWidth(), cell->GetHeight());
+				PngPhoto cellPhoto;
+				cellPhoto.OpenWrite(cellFilePath);
+				cellPhoto.WriteImg(splitImage);
+				cellPhoto.Close();
+			}
 
 			Print("Saved %s!", frame->GetName().c_str());
 		}
