@@ -74,7 +74,7 @@ MTImage* MTImage::CopyImage(size_t width, size_t height) {
 MTImage* MTImage::CopyImage(size_t x, size_t y, size_t width, size_t height) {
 	std::vector<uint32_t> resultBytes(width * height);
 #pragma omp parallel for
-	for (size_t row = 0; row < height; row++) {
+	for (int64_t row = 0; row < height; row++) {
 		uint32_t* row_ptr = &this->colors[_ATW(x, y + row, this->width)];
 		memcpy(&resultBytes[_AT(0, row)], row_ptr, width * sizeof(uint32_t));
 	}
@@ -91,7 +91,7 @@ bool MTImage::PasteImage(const MTImage* other, size_t x, size_t y, int32_t width
 		this->colors = std::vector<uint32_t>(width * height);
 
 #pragma omp parallel for
-	for (size_t row = 0; row < height; row++) {
+	for (int64_t row = 0; row < height; row++) {
 		uint32_t* dest_ptr = &this->colors[_AT(x, y + row)];
 		memcpy(dest_ptr, &other->colors[_AT(0, row)], width * sizeof(uint32_t));
 	}

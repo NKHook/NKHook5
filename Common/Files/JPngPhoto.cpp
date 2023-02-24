@@ -82,7 +82,7 @@ bool JPngPhoto::OpenRead(std::filesystem::path path)
 
 	std::vector<uint32_t> jpngColors(jfifColorVec.size());
 #pragma omp parallel for
-	for (size_t i = 0; i < jfifColorVec.size(); i++)
+	for (int64_t i = 0; i < jfifColorVec.size(); i++)
 	{
 		uint32_t color = jfifColorVec[i];
 		((uint8_t*)&color)[3] = ((uint8_t*)&(pngColorVec[i]))[0];
