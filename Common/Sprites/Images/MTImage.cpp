@@ -13,6 +13,7 @@ using namespace Common::Logging::Logger;
 using namespace Common::Threading;
 
 #define _AT(x, y) (x) + ((y) * width)
+#define _ATW(x, y, wid) (x) + ((y) * wid)
 
 MTImage::MTImage()
 {
@@ -74,7 +75,7 @@ MTImage* MTImage::CopyImage(size_t x, size_t y, size_t width, size_t height) {
 	std::vector<uint32_t> resultBytes(width * height);
 #pragma omp parallel for
 	for (size_t row = 0; row < height; row++) {
-		uint32_t* row_ptr = &this->colors[_AT(x, y + row)];
+		uint32_t* row_ptr = &this->colors[_ATW(x, y + row, this->width)];
 		memcpy(&resultBytes[_AT(0, row)], row_ptr, width * sizeof(uint32_t));
 	}
 	return new MTImage(resultBytes, width, height);
