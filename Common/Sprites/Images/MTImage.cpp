@@ -30,10 +30,11 @@ MTImage::MTImage(const std::vector<uint32_t>& bmpColors, size_t width, size_t he
 
 MTImage::MTImage(const std::vector<std::vector<uint32_t>>& bmpColors, size_t width, size_t height)
 {
-	std::vector<uint32_t> colorBytes;
-	for (size_t y = 0; y < height; y++) {
-		for (size_t x = 0; x < width; x++) {
-			colorBytes.push_back(bmpColors[x][y]);
+	std::vector<uint32_t> colorBytes(width * height);
+#pragma omp parallel for collapse(2)
+	for (int64_t y = 0; y < height; y++) {
+		for (int64_t x = 0; x < width; x++) {
+			colorBytes[_ATW(x, y, width)] = bmpColors[x][y];
 		}
 	}
 	this->colors = colorBytes;
@@ -92,7 +93,7 @@ bool MTImage::PasteImage(const MTImage* other, size_t x, size_t y, int32_t width
 
 #pragma omp parallel for
 	for (int64_t row = 0; row < height; row++) {
-		uint32_t* dest_ptr = &this->colors[_AT(x, y + row)];
+		uint32_t* dest_ptr = &this->colors[_ATW(x, y + row, this->width)];
 		memcpy(dest_ptr, &other->colors[_AT(0, row)], width * sizeof(uint32_t));
 	}
 	return true;
