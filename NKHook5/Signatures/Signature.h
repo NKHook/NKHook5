@@ -126,6 +126,11 @@ namespace NKHook5 {
 			/* JsonObject */
 			JsonObject_ReadBoolProperty,
 			JsonObject_ReadIntProperty,
+			/* lua */
+			luaL_checkversion_,
+			lua_createtable,
+			luaL_error,
+			luaL_setfuncs,
 			/* Matrix16F */
 			/* Screens */
 			Screens_GetScreenForParadigm,
