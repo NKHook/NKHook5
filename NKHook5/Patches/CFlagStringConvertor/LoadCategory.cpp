@@ -5,12 +5,14 @@
 
 #include "../../Classes/CBloonFactory.h"
 #include "../../Classes/CTowerFactory.h"
+#include "../../Classes/CWeaponFactory.h"
 #include "../../Extensions/StatusEffect/StatusDefinitionsExt.h"
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
 
 #include <Extensions/Bloon/BloonFlagsExt.h>
 #include <Extensions/Tower/TowerFlagsExt.h>
+#include <Extensions/Weapon/WeaponFlagsExt.h>
 #include <Extensions/StatusEffect/StatusFlagsExt.h>
 #include <Extensions/ExtensionManager.h>
 #include <Logging/Logger.h>
@@ -20,6 +22,8 @@ NKHook5::Util::FlagManager g_towerFlags;
 extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
 NKHook5::Util::FlagManager g_bloonFlags;
 NKHook5::Util::FlagManager g_bloonStatusFlags;
+extern NKHook5::Classes::CWeaponFactory* g_weaponFactory;
+NKHook5::Util::FlagManager g_weaponFlags;
 
 namespace NKHook5
 {
@@ -33,6 +37,7 @@ namespace NKHook5
             using namespace Common::Extensions::Generic;
             using namespace Common::Extensions::StatusEffect;
             using namespace Common::Extensions::Tower;
+            using namespace Common::Extensions::Weapon;
             using namespace Common::Logging::Logger;
             using namespace NKHook5;
             using namespace NKHook5::Extensions;
@@ -67,7 +72,7 @@ namespace NKHook5
                     }
                 }
 
-                //Hijack and load new status effect ids
+                //Hijack bloonFactory ids
                 if (self == g_bloonFactory)
                 {
                     //Bloon types category
@@ -116,6 +121,33 @@ namespace NKHook5
                         Print(LogLevel::INFO, "New types injected!");
 
                         return ((void* (__thiscall*)(void*, int, void*, int, int))o_func)(self, category, allEffects.data(), allEffects.size(), indexMode);
+                    }
+                }
+
+                //Hijack weaponFactory ids
+                if (self == g_weaponFactory)
+                {
+                    //Weapon types category
+                    if (category == 0)
+                    {
+                        Print(LogLevel::INFO, "Hijacking weapon registration to inject new types...");
+                        std::vector<std::string> allWeapons;
+                        auto* weaponFlagExt = (WeaponFlagsExt*)ExtensionManager::GetByName("WeaponFlags");
+                        Print(LogLevel::INFO, "Copying old types...");
+                        for (int i = 0; i < stringCount; i++) {
+                            //We want all slots to use the custom slot system since there are more than can fit in the flag system
+                            uint64_t numericId = g_bloonFlags.Register(stringList[i]);
+                            allWeapons.push_back(stringList[i]);
+                            Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
+                        }
+                        Print(LogLevel::INFO, "Old types copied!");
+                        Print(LogLevel::INFO, "Injecting new types...");
+                        for (const std::string& flagDef : weaponFlagExt->GetFlags()) {
+                            uint64_t moddedSlot = g_bloonFlags.Register(flagDef);
+                            allWeapons.push_back(flagDef);
+                            Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
+                        }
+                        Print(LogLevel::INFO, "New types injected!");
                     }
                 }
 

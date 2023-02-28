@@ -7,6 +7,7 @@
 #include "Textures/SheetsExtension.h"
 #include "Tower/TowerFlagsExt.h"
 #include "StatusEffect/StatusFlagsExt.h"
+#include "Weapon/WeaponFlagsExt.h"
 
 #include <Logging/Logger.h>
 
@@ -22,6 +23,7 @@ void ExtensionManager::AddAll()
 	ExtensionManager::AddExtension(new StatusEffect::StatusFlagsExt());
 	ExtensionManager::AddExtension(new Textures::SheetsExtension());
 	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
+	ExtensionManager::AddExtension(new Weapon::WeaponFlagsExt());
 }
 
 void ExtensionManager::AddExtension(Extension* toAdd)

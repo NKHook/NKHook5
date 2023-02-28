@@ -4,6 +4,7 @@
 #include "../../Classes/CBloonFactory.h"
 #include "../../Classes/CFlagStringConvertor.h"
 #include "../../Classes/CTowerFactory.h"
+#include "../../Classes/CWeaponFactory.h"
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
 #include <intrin.h>
@@ -13,6 +14,7 @@ extern NKHook5::Util::FlagManager g_towerFlags;
 extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
 extern NKHook5::Util::FlagManager g_bloonFlags;
 extern NKHook5::Util::FlagManager g_bloonStatusFlags;
+extern NKHook5::Classes::CWeaponFactory* g_weaponFactory;
 
 namespace NKHook5
 {

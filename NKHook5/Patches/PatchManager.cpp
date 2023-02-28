@@ -30,6 +30,7 @@
 #include "CTowerFactory/GetTowerInfo.h"
 #include "CTowerFactory/GetTowerName.h"
 #include "CWeapon/Fire.h"
+#include "CWeaponFactory/Constructor.h"
 #include "CWeaponFactory/ParseTask.h"
 #include "CZipFile/LoadFrom.h"
 #include "GLRenderLayer/Draw.h"
@@ -72,6 +73,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CTowerFactory::GetTowerInfo());
     PatchManager::ApplyPatch(new CTowerFactory::GetTowerName());
     //PatchManager::ApplyPatch(new CWeapon::Fire());
+    PatchManager::ApplyPatch(new CWeaponFactory::Constructor());
     PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
     //PatchManager::ApplyPatch(new GLRenderLayer::Draw());

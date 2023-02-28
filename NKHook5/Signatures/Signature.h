@@ -109,6 +109,7 @@ namespace NKHook5 {
 			/* CWeapon */
 			CWeapon_Fire,
 			/* CWeaponFactory */
+			CWeaponFactory_CCTOR,
 			CWeaponFactory_ParseTask,
 			/* CWeaponTask */
 			/* CXmlFontImporter */
