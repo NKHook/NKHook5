@@ -136,14 +136,14 @@ namespace NKHook5
                         Print(LogLevel::INFO, "Copying old types...");
                         for (int i = 0; i < stringCount; i++) {
                             //We want all slots to use the custom slot system since there are more than can fit in the flag system
-                            uint64_t numericId = g_bloonFlags.Register(stringList[i]);
+                            uint64_t numericId = g_weaponFlags.Register(stringList[i]);
                             allWeapons.push_back(stringList[i]);
                             Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
                         }
                         Print(LogLevel::INFO, "Old types copied!");
                         Print(LogLevel::INFO, "Injecting new types...");
                         for (const std::string& flagDef : weaponFlagExt->GetFlags()) {
-                            uint64_t moddedSlot = g_bloonFlags.Register(flagDef);
+                            uint64_t moddedSlot = g_weaponFlags.Register(flagDef);
                             allWeapons.push_back(flagDef);
                             Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
                         }

@@ -4,6 +4,7 @@
 #include "../../Classes/CBloonFactory.h"
 #include "../../Classes/CTowerFactory.h"
 #include "../../Classes/CFlagStringConvertor.h"
+#include "../../Classes/CWeaponFactory.h"
 #include "../../Signatures/Signature.h"
 #include "../../Util/FlagManager.h"
 #include <ghstl/string>
@@ -13,6 +14,8 @@ extern NKHook5::Util::FlagManager g_towerFlags;
 extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
 extern NKHook5::Util::FlagManager g_bloonFlags;
 extern NKHook5::Util::FlagManager g_bloonStatusFlags;
+extern NKHook5::Classes::CWeaponFactory* g_weaponFactory;
+extern NKHook5::Util::FlagManager g_weaponFlags;
 
 namespace NKHook5
 {
@@ -30,6 +33,7 @@ namespace NKHook5
                         result = g_towerFlags.GetFlag(textId->cpp_str());
                     }
                 }
+
                 if (self == g_bloonFactory)
                 {
                     if (categoryId == 0)
@@ -41,6 +45,15 @@ namespace NKHook5
                         result = g_bloonStatusFlags.GetFlag(textId->cpp_str());
                     }
                 }
+
+                if (self == g_weaponFactory)
+                {
+                    if (categoryId == 0)
+                    {
+                        result = g_weaponFlags.GetFlag(textId->cpp_str());
+                    }
+                }
+
                 return result;
             }
 

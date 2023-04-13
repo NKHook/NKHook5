@@ -15,6 +15,7 @@ extern NKHook5::Classes::CBloonFactory* g_bloonFactory;
 extern NKHook5::Util::FlagManager g_bloonFlags;
 extern NKHook5::Util::FlagManager g_bloonStatusFlags;
 extern NKHook5::Classes::CWeaponFactory* g_weaponFactory;
+extern NKHook5::Util::FlagManager g_weaponFlags;
 
 namespace NKHook5
 {
@@ -45,6 +46,15 @@ namespace NKHook5
                     if (categoryId == 1 /*Status effect category*/)
                     {
                         resultStr->assign(g_bloonStatusFlags.GetName(numericId));
+                    }
+                }
+
+                if (self == g_weaponFactory)
+                {
+                    //Weapon types category
+                    if (categoryId == 0)
+                    {
+                        resultStr->assign(g_weaponFlags.GetName(numericId));
                     }
                 }
 
