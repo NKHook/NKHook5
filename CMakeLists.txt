@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 23)
 EXECUTE_PROCESS(
       COMMAND git rev-parse --short HEAD
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-      OUTPUT_VARIABLE "NKHOOK_BUILD_VERSION"
+      OUTPUT_VARIABLE "NKHOOK_BUILD_zVERSION"
       ERROR_QUIET
       OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -29,7 +29,7 @@ endif()
 FetchContent_Declare(
     plh
     GIT_REPOSITORY https://github.com/stevemk14ebr/PolyHook_2_0.git
-    GIT_TAG master
+    GIT_TAG 4d1b3e3fe258d1d30fce91f4b360ce88da96d332
 )
 FetchContent_GetProperties(plh)
 if(NOT plh_POPULATED)

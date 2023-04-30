@@ -15,7 +15,8 @@ namespace NKHook5 {
 		public:
 			char pad_00A8[4]; //0x00A8
 			CBaseTower* tower; //0x00AC
-			char pad_00B0[36]; //0x00B0
+			char pad_00B0[32]; //0x00B0
+			uint32_t taskType; //0x00D0
 			DrawLayer drawLayer; //0x00D4
 			char pad_00D8[40]; //0x00D8
 			CGameSystemPointers* gamePtrs; //0x0100
