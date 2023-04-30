@@ -8,11 +8,11 @@ set(CMAKE_CXX_STANDARD 23)
 EXECUTE_PROCESS(
       COMMAND git rev-parse --short HEAD
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-      OUTPUT_VARIABLE "NKHOOK_BUILD_zVERSION"
+      OUTPUT_VARIABLE "NKHOOK_BUILD_VERSION"
       ERROR_QUIET
       OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-add_compile_definitions(NKHOOK_BUILD_TAG=0.8.1)
+add_compile_definitions(NKHOOK_BUILD_TAG=0.8.2)
 add_compile_definitions(NKHOOK_BUILD_VERSION=${NKHOOK_BUILD_VERSION})
 add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
 add_compile_options(/openmp)

@@ -46,6 +46,7 @@ size_t Logger::Print(LogLevel level, const char* fmt, ...)
 
 size_t Logger::VPrint(LogLevel level, const char* fmt, va_list lst)
 {
+    std::ostream* tgtStream = &std::cout;
     size_t required = vsnprintf(nullptr, 0, fmt, lst) + 1;
     if (required < 2) {
         return 0;
@@ -65,10 +66,12 @@ size_t Logger::VPrint(LogLevel level, const char* fmt, va_list lst)
     }
 #endif
     case LogLevel::WARNING: {
+        tgtStream = &std::cerr;
         SetConsoleTextAttribute(hConsole, 14);
         break;
     }
     case LogLevel::ERR: {
+        tgtStream = &std::cerr;
         SetConsoleTextAttribute(hConsole, 12);
         break;
     }
@@ -78,7 +81,7 @@ size_t Logger::VPrint(LogLevel level, const char* fmt, va_list lst)
         break;
     }
     }
-    std::cout << buffer << std::endl << std::flush;
+    *tgtStream << buffer << std::endl << std::flush;
     return required;
 }
 
