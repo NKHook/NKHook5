@@ -32,7 +32,7 @@ void FlagsExtension::UseJsonData(nlohmann::json data) {
 			//Add the flag string to the registeredFlags list
 			std::string flagStr = customFlag;
 			this->registeredFlags.push_back(flagStr);
-			Print(LogLevel::INFO, "Registered a custom flag '%s'!", flagStr.c_str());
+			Print(LogLevel::INFO, "[%s] Registered a custom flag '%s'!", this->GetName().c_str(), flagStr.c_str());
 		}
 	}
 	//Error handling
