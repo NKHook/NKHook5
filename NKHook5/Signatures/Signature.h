@@ -72,6 +72,7 @@ namespace NKHook5 {
 			CPopupScreenBase_AddNavButton,
 			CPopupScreenBase_AddToPoppingList,
 			/* CProjectile */
+			CProjectile_VTable,
 			CProjectile_CCTOR_A,
 			CProjectile_CCTOR_B,
 			CProjectile_CCTOR_C,

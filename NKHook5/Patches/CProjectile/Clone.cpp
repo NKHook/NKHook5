@@ -5,6 +5,7 @@
 #include "../../Signatures/Signature.h"
 #include "../../Util/NewFramework.h"
 
+#include <iostream>
 #include <Logging/Logger.h>
 
 namespace NKHook5
@@ -25,6 +26,8 @@ namespace NKHook5
                 auto* clone = PLH::FnCast(o_func, &cb_hook)(self);
                 /*Copy extended properties*/
                 clone->NO_CLEANUP = self->NO_CLEANUP;
+                clone->ALWAYS_UPDATE = self->ALWAYS_UPDATE;
+                clone->NO_OGC = self->NO_OGC;
                 return clone;
             }
 
