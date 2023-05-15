@@ -202,8 +202,8 @@ bool TextureStep::Execute(Project& proj, ZipBase& arch)
 					//Get the size from calculations
 					size_t posX = content.coord.x;
 					size_t posY = content.coord.y;
-					size_t width = content.size.w;
-					size_t height = content.size.h;
+					size_t width = content.size.w-1;
+					size_t height = content.size.h-1;
 
 					Cell* imageCell = Cell::Create(
 						content.content.first,
