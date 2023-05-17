@@ -80,56 +80,65 @@ bool JsonStep::Execute(Project& proj, ZipBase& arch)
 		}
 		theAsset.Close();
 
-		if (this->rule != JsonPkgRule::REPLACE) {
-			if (fs::exists(vanillaFile)) {
-				File vanillaAsset;
-				if (!vanillaAsset.Open(vanillaFile)) {
-					Print(LogLevel::INFO, "Failed to open '%s', skipping merge step", vanillaFile.string().c_str());
-				}
-				else {
-					std::string modStr = std::string((char*)dataBytes.data(), dataBytes.size());
-					std::string vanillaStr = vanillaAsset.ReadStr();
-					if (vanillaStr.empty()) {
-						Print(LogLevel::INFO, "The content of '%s' was empty, skipping merge", vanillaFile.string().c_str());
+		/* Check integrity of the document */
+		std::string modStr = std::string((char*)dataBytes.data(), dataBytes.size());
+		try {
+			nlohmann::ordered_json modJson = nlohmann::ordered_json::parse(modStr, nullptr, true, true);
+
+
+			if (this->rule != JsonPkgRule::REPLACE) {
+				if (fs::exists(vanillaFile)) {
+					File vanillaAsset;
+					if (!vanillaAsset.Open(vanillaFile)) {
+						Print(LogLevel::INFO, "Failed to open '%s', skipping merge step", vanillaFile.string().c_str());
 					}
 					else {
-						try {
-							nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaStr, nullptr, true, true);
-							nlohmann::ordered_json modJson = nlohmann::ordered_json::parse(modStr, nullptr, true, true);
-
-							nlohmann::ordered_json result;
-							if (this->rule == JsonPkgRule::MERGE) {
-								MergedDocument merger;
-								if(!ignoreMerge)
-									merger.Add(vanillaJson);
-								merger.Add(modJson);
-								result = merger.GetMerged();
-							}
-							else if (this->rule == JsonPkgRule::STRIP) {
-								StrippedDocument stripper; //Hehehe
-								if(!ignoreMerge)
-									stripper.Add(vanillaJson);
-								stripper.Add(modJson);
-								result = stripper.GetStripped();
-							}
-							else {
-								Print(LogLevel::ERR, "Unknown merge rule for file! This should have been unreachable!");
-								return false;
-							}
-
-							std::string resultStr = result.dump();
-							dataBytes = std::vector<uint8_t>(resultStr.begin(), resultStr.end());
+						std::string vanillaStr = vanillaAsset.ReadStr();
+						if (vanillaStr.empty()) {
+							Print(LogLevel::INFO, "The content of '%s' was empty, skipping merge", vanillaFile.string().c_str());
 						}
-						catch (std::exception& ex) {
-							Print(LogLevel::ERR, "Failed to merge '%s' and '%s' asset: %s", onDisk.string().c_str(), vanillaFile.string().c_str(), ex.what());
+						else {
+							try {
+								nlohmann::ordered_json vanillaJson = nlohmann::ordered_json::parse(vanillaStr, nullptr, true, true);
+
+								nlohmann::ordered_json result;
+								if (this->rule == JsonPkgRule::MERGE) {
+									MergedDocument merger;
+									if (!ignoreMerge)
+										merger.Add(vanillaJson);
+									merger.Add(modJson);
+									result = merger.GetMerged();
+								}
+								else if (this->rule == JsonPkgRule::STRIP) {
+									StrippedDocument stripper; //Hehehe
+									if (!ignoreMerge)
+										stripper.Add(vanillaJson);
+									stripper.Add(modJson);
+									result = stripper.GetStripped();
+								}
+								else {
+									Print(LogLevel::ERR, "Unknown merge rule for file! This should have been unreachable!\n");
+									return false;
+								}
+
+								std::string resultStr = result.dump();
+								dataBytes = std::vector<uint8_t>(resultStr.begin(), resultStr.end());
+							}
+							catch (std::exception& ex) {
+								Print(LogLevel::ERR, "Failed to merge '%s' and '%s' asset: %s\n", onDisk.string().c_str(), vanillaFile.string().c_str(), ex.what());
+							}
 						}
 					}
 				}
 			}
 		}
+		catch (std::exception& ex)
+		{
+			Print(LogLevel::ERR, "Failed to parse '%s': %s\n", onDisk.string().c_str(), ex.what());
+		}
 
 		if (!arch.WriteEntry(entryPath.string(), dataBytes)) {
-			Print(LogLevel::ERR, "Failed to save entry '%s'", entryPath.string().c_str());
+			Print(LogLevel::ERR, "Failed to save entry '%s'\n", entryPath.string().c_str());
 			continue;
 		}
 	}
