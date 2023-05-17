@@ -12,6 +12,7 @@
 #include "CBloonsTD5Game/LoadAssets.h"
 #include "CCollectableTask/Clone.h"
 #include "CCollectableTask/Update.h"
+#include "CDGSplashScreen/Init.h"
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CFlagStringConvertor/LoadCategory.h"
 #include "CFlagStringConvertor/StringToFlag.h"
@@ -55,6 +56,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CBloonsTD5Game::LoadAssets());
     PatchManager::ApplyPatch(new CCollectableTask::Clone());
     PatchManager::ApplyPatch(new CCollectableTask::Update());
+    PatchManager::ApplyPatch(new CDGSplashScreen::Init());
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());

@@ -41,6 +41,10 @@ namespace NKHook5 {
 			CCollectableTask_Clone,
 			CCollectableTask_GiveContentsAndDie,
 			CCollectableTask_Update,
+			/* CDGSplashScreen */
+			CDGSplashScreen_VTable,
+			CDGSplashScreen_Init,
+			CDGSplashScreen_Hide,
 			/* CFile */
 			CFile_ReadBytes,
 			/* CFlagStringConvertor */
