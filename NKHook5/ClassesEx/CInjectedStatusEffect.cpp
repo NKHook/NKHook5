@@ -61,7 +61,7 @@ CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, std::string sp
 	//(*ppCustomVTable)[6] = &STATIC_Render;
 
 	CSprite* selfSprite = this;
-	*(void**)selfSprite = *(void**)Signatures::GetAddressOf(Sigs::CSprite_VTable);
+	*(void**)selfSprite = (void*)Signatures::GetAddressOf(Sigs::CSprite_VTable);
 
 	//Now we have our own vtable overridden by the game's vtable, and we are free to make changes.
 	this->injectedId = injectedId;
