@@ -73,7 +73,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CTextureManager::GetSpriteInfoPtr());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
     PatchManager::ApplyPatch(new CTowerFactory::GetTowerInfo());
-    PatchManager::ApplyPatch(new CTowerFactory::GetTowerName());
+    //PatchManager::ApplyPatch(new CTowerFactory::GetTowerName());
     //PatchManager::ApplyPatch(new CWeapon::Fire());
     PatchManager::ApplyPatch(new CWeaponFactory::Constructor());
     PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());
