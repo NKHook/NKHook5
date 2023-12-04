@@ -5,25 +5,39 @@
 #include "Matrix16F.h"
 #include "Vec2F.h"
 #include "Vec3F.h"
+#include "CBloonEscapedEvent.h"
+#include "CObserver.h"
 #include "Color.h"
+#include "CTowerRemovedEvent.h"
+
+#include <boost/intrusive/list.hpp>
+#include <boost/intrusive/list_hook.hpp>
 
 namespace NKHook5::Classes
 {
 	using namespace Signatures;
 
-#pragma pack(push, 1)
+	namespace _BasePositionableObjectDetail
+	{
+		struct SBasePositionableObjectListTag
+		{
+		};
+	}
+
+	using tag = boost::intrusive::tag<_BasePositionableObjectDetail::SBasePositionableObjectListTag>;
+	using link_mode = boost::intrusive::link_mode<boost::intrusive::link_mode_type::auto_unlink>;
+
 	class CBasePositionableObject
+		: public boost::intrusive::list_base_hook<tag, link_mode, void>
 	{
 	public:
 		/* Somehow prevented some heap corruption bug... */
 		overload_allocators
 
 	public:
-		char pad_0004[8]{};
-		bool visible{}; //0xC
-		char pad_000D[3]{};
-		CBasePositionableObject* parent{}; //0x0010
-		nfw::set<CBasePositionableObject*> children; //0x0014
+		bool visible = false;
+		CBasePositionableObject* parent = nullptr;
+		std::list<CBasePositionableObject*> children;
 		Vec2F size; //0x0020
 		Vec2F sizeHalf; //0x0028
 		char pad_0030[8]{}; //0x0030
@@ -95,9 +109,7 @@ namespace NKHook5::Classes
 		virtual void DeleteChildren_2() {}
 		virtual void DrawChildren() {}
 	};
-#pragma pack(pop)
 
-	static_assert(sizeof(nfw::set<CBasePositionableObject*>) == 0xC);
 	static_assert(sizeof(CBasePositionableObject) == 0xA8);
 	static_assert(offsetof(CBasePositionableObject, size) == 0x20);
 	static_assert(offsetof(CBasePositionableObject, location) == 0x90);

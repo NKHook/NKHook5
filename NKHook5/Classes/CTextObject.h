@@ -4,8 +4,9 @@
 #include "Macro.h"
 #include "CRenderableTextureObject.h"
 #include "CFont.h"
-#include "boost/shared_ptr"
 #include "Vec2F.h"
+
+#include <boost/shared_ptr.hpp>
 
 namespace NKHook5
 {

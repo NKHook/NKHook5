@@ -2,7 +2,7 @@
 #define NKHOOK5_CLASSES_CBLOONSBASESCREEN
 
 #include "../../Util/NewFramework.h"
-#include "boost/shared_ptr"
+#include <boost/shared_ptr.hpp>
 #include "CAssetBag.h"
 #include "CBaseScreen.h"
 #include "CBasePositionableObject.h"

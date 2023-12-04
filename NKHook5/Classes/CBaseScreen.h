@@ -2,7 +2,7 @@
 
 #include "../Utils.h"
 
-#include "boost/shared_ptr"
+#include <boost/shared_ptr.hpp>
 
 #include "AssetType.h"
 #include "CAssetBag.h"

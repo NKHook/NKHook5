@@ -4,6 +4,11 @@ project(NKHook5 VERSION 1.0 LANGUAGES CXX)
 include(FetchContent)
 set(CMAKE_CXX_STANDARD 23)
 
+# Only Visual Studio platforms are supported
+if (NOT CMAKE_GENERATOR_PLATFORM STREQUAL Win32)
+    message(FATAL_ERROR "NKHook5 can only be build on Win32 using the Visual Studio 17 2022 or newer generator.")
+endif ()
+
 #Get the git diff ID thing and make a compile def for it
 EXECUTE_PROCESS(
       COMMAND git rev-parse --short HEAD
@@ -103,7 +108,7 @@ if(NOT binpack_POPULATED)
     target_include_directories(binpack INTERFACE ${binpack_SOURCE_DIR})
 endif()
 
-set(BOOST_INCLUDE_LIBRARIES Intrusive SmartPtr)
+set(BOOST_INCLUDE_LIBRARIES container intrusive smart_ptr)
 set(BOOST_ENABLE_CMAKE ON)
 FetchContent_Declare(
         Boost

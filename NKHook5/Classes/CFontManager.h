@@ -3,7 +3,7 @@
 #include "Macro.h"
 #include "IFontImporter.h"
 #include "CFont.h"
-#include "boost/shared_ptr"
+#include <boost/shared_ptr.hpp>
 #include <ghstl/string>
 
 namespace NKHook5 {

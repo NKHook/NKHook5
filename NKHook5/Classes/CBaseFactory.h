@@ -1,6 +1,6 @@
 #pragma once
 
-#include "boost/shared_ptr"
+#include <boost/shared_ptr.hpp>
 #include "CBaseFileIO.h"
 #include "SFactoryData.h"
 #include <string>
