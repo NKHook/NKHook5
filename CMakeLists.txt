@@ -6,8 +6,13 @@ set(CMAKE_CXX_STANDARD 23)
 
 # Only Visual Studio platforms are supported
 if (NOT CMAKE_GENERATOR_PLATFORM STREQUAL Win32)
-    message(FATAL_ERROR "NKHook5 can only be build on Win32 using the Visual Studio 17 2022 or newer generator.")
+    message(FATAL_ERROR "NKHook5 can only be built on Win32 using the Visual Studio 17 2022 or newer generator.")
 endif ()
+
+message("BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+if (NOT (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Release"))
+    message(FATAL_ERROR "NKHook5 can only be built in Debug or Release mode.")
+endif()
 
 #Get the git diff ID thing and make a compile def for it
 EXECUTE_PROCESS(

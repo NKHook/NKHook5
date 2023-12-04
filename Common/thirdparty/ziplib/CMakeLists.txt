@@ -1,3 +1,5 @@
+message("BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
+
 add_library(bzip2 STATIC IMPORTED)
 set_target_properties(bzip2 PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/${CMAKE_BUILD_TYPE}/bzip2.lib")
 

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "boost/shared_ptr"
 #include "CAssetBag.h"
 #include "CFont.h"
 #include "CGameSystemPointers.h"
 #include "IBasePointers.h"
+
 #include <ghstl/string>
+#include <boost/shared_ptr.hpp>
 
 namespace NKHook5 {
 	namespace Classes {

@@ -24,11 +24,12 @@ namespace NKHook5::Classes
 		};
 	}
 
-	using tag = boost::intrusive::tag<_BasePositionableObjectDetail::SBasePositionableObjectListTag>;
+	using base_tag = boost::intrusive::tag<_BasePositionableObjectDetail::SBasePositionableObjectListTag>;
+	using member_tag = boost::intrusive::tag<_BasePositionableObjectDetail::SBasePositionableObjectListTag>;
 	using link_mode = boost::intrusive::link_mode<boost::intrusive::link_mode_type::auto_unlink>;
 
 	class CBasePositionableObject
-		: public boost::intrusive::list_base_hook<tag, link_mode, void>
+		: public boost::intrusive::list_base_hook<base_tag, link_mode, void>
 	{
 	public:
 		/* Somehow prevented some heap corruption bug... */
@@ -37,7 +38,8 @@ namespace NKHook5::Classes
 	public:
 		bool visible = false;
 		CBasePositionableObject* parent = nullptr;
-		std::list<CBasePositionableObject*> children;
+		boost::intrusive::list_member_hook<member_tag, link_mode, void> children;
+		char pad_001C[4]{};
 		Vec2F size; //0x0020
 		Vec2F sizeHalf; //0x0028
 		char pad_0030[8]{}; //0x0030
@@ -111,6 +113,7 @@ namespace NKHook5::Classes
 	};
 
 	static_assert(sizeof(CBasePositionableObject) == 0xA8);
+	static_assert(offsetof(CBasePositionableObject, visible) == 0xC);
 	static_assert(offsetof(CBasePositionableObject, size) == 0x20);
 	static_assert(offsetof(CBasePositionableObject, location) == 0x90);
 } // namespace NKHook5::Classes

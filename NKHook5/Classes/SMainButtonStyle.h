@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Util/NewFramework.h"
-#include "boost/shared_ptr"
+#include <boost/shared_ptr.hpp>
 #include "CFont.h"
 #include "Macro.h"
 
