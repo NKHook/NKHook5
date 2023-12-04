@@ -13,7 +13,7 @@ namespace NKHook5 {
 	namespace Classes {
 		class CBaseButton : public IInput {
 		public:
-			overload_new
+			overload_allocators
 
 		public:
 			char pad_0004[4]; //0x0004

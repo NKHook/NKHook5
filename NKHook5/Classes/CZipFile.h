@@ -11,7 +11,7 @@ namespace NKHook5 {
 	namespace Classes {
 		class CZipFile {
 		public:
-			overload_new
+			overload_allocators
 		public:
 			ghstl::string archivePath;
 			char pad_0018[36]; //0x0018

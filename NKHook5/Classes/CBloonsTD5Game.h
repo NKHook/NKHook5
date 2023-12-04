@@ -1,5 +1,4 @@
-#ifndef NKHOOK5_CLASSES_CBLOONSTD5GAME
-#define NKHOOK5_CLASSES_CBLOONSTD5GAME
+#pragma once
 
 #include "CApp.h"
 
@@ -17,6 +16,3 @@ namespace NKHook5
 	} // namespace Classes
 	
 } // namespace NKHook5
-
-
-#endif /* NKHOOK5_CLASSES_CBLOONSTD5GAME */

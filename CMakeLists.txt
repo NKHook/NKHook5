@@ -103,6 +103,17 @@ if(NOT binpack_POPULATED)
     target_include_directories(binpack INTERFACE ${binpack_SOURCE_DIR})
 endif()
 
+set(BOOST_INCLUDE_LIBRARIES Intrusive SmartPtr)
+set(BOOST_ENABLE_CMAKE ON)
+FetchContent_Declare(
+        Boost
+        GIT_REPOSITORY https://github.com/boostorg/boost.git
+        GIT_TAG boost-1.80.0
+)
+FetchContent_MakeAvailable(Boost)
+
+
+
 add_subdirectory(Common)
 add_subdirectory(DevKit)
 add_subdirectory(NKHook5)

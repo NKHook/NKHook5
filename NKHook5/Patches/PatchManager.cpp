@@ -48,7 +48,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CApplyStatusEffectTask::Fire());
     PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
     PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
-    PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
+    //PatchManager::ApplyPatch(new CBasePositionableObject::Constructor());
     PatchManager::ApplyPatch(new CBloon::Update());
     PatchManager::ApplyPatch(new CBloonFactory::Constructor());
     PatchManager::ApplyPatch(new CBloonsBaseScreen::Init());

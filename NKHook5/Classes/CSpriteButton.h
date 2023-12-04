@@ -9,7 +9,7 @@ namespace NKHook5 {
 	namespace Classes {
 		class CSpriteButton : public CBaseButton, public CSprite {
 		public:
-			overload_new
+			overload_allocators
 
 		public:
 			CSpriteButton() : CSprite(nullptr, false, Vec2F(0, 0), true) {

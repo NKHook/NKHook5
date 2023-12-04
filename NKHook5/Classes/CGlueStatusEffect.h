@@ -15,7 +15,7 @@ namespace NKHook5
 		class CGlueStatusEffect : public CModifySpeedStatusEffect, public CSprite
 		{
 		public:
-			overload_new;
+			overload_allocators;
 
 			CTextureManager* texMgr; //0x0138
 			char pad_013C[4]; //0x013C

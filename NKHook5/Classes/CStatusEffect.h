@@ -15,7 +15,7 @@ namespace NKHook5
 		class CStatusEffect
 		{
 		public:
-			overload_new;
+			overload_allocators;
 
 		public:
 			//char pad_0000[4]; //0x0000

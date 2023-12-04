@@ -15,7 +15,7 @@ using namespace Common;
 using namespace Common::Logging;
 using namespace Common::Logging::Logger;
 
-auto initialize() -> int {
+int initialize() {
 #ifdef _DEBUG
     Print(LogLevel::INFO, "Press enter to launch NKH...");
     std::cin.get();

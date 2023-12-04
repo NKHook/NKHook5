@@ -4,6 +4,8 @@
 
 #include <stb_image.h>
 
+#include <mutex>
+
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Logging::Logger;

@@ -6,7 +6,7 @@ namespace NKHook5 {
 	namespace Classes {
 		class IInput {
 		public:
-			overload_new
+			overload_allocators
 
 		public:
 			virtual ~IInput() {};

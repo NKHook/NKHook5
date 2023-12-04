@@ -1,5 +1,5 @@
-#ifndef NKHOOK5_CLASSES_MATRIX16F
-#define NKHOOK5_CLASSES_MATRIX16F
+#pragma once
+
 namespace NKHook5
 {
     namespace Classes
@@ -30,7 +30,8 @@ namespace NKHook5
                 float arr[16];
             };
         };
+
+		static_assert(sizeof(Matrix16F) == 0x40);
     } // namespace Classes
     
 } // namespace NKHook5
-#endif /* NKHOOK5_CLASSES_MATRIX16F */

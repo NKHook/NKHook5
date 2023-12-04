@@ -17,7 +17,7 @@ namespace NKHook5
         {
         public:
             /* Somehow prevented some heap corruption bug... */
-            overload_new
+			overload_allocators
 
         public:
             ghstl::string text; //0x00C8

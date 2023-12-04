@@ -1,0 +1,10 @@
+#pragma once
+
+namespace boost
+{
+	template<typename T>
+	class list
+	{
+
+	};
+}

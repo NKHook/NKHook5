@@ -9,7 +9,7 @@ namespace NKHook5 {
 	namespace Classes {
 		class CSprite : public CRenderableTextureObject {
 		public:
-			overload_new
+			overload_allocators
 
 		public:
 			char pad_00C8[60]; //0x00C8

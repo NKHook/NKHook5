@@ -10,7 +10,7 @@
 namespace NKHook5 {
 	namespace Classes {
 		struct SMainButtonStyle {
-			overload_new
+			overload_allocators
 
 		public:
 			boost::shared_ptr<CFont> font;

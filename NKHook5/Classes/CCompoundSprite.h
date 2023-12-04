@@ -10,7 +10,7 @@ namespace NKHook5 {
 		class CCompoundSprite : public CSprite
 		{
 		public:
-			overload_new
+			overload_allocators
 
 		public:
 			CBasePositionableObject* N00001ABB; //0x0104

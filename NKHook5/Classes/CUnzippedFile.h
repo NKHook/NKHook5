@@ -25,7 +25,7 @@ namespace NKHook5 {
 
 		class CUnzippedFile : public IFile {
 		public:
-			overload_new
+			overload_allocators
 		public:
 			void* fileContent;
 			FileReadResult readResult;

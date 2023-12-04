@@ -9,7 +9,7 @@
 namespace NKHook5 {
 	namespace Classes {
 		class CBloon : public CCompoundSprite {
-			overload_new;
+			overload_allocators;
 
 		public:
 			void ApplyEffect(class CStatusEffect* effect, bool damageMoabs)

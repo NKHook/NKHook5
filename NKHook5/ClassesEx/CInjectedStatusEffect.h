@@ -13,7 +13,7 @@ namespace NKHook5
 		class CInjectedStatusEffect : public CGlueStatusEffect
 		{
 		public:
-			overload_new;
+			overload_allocators;
 
 			bool adjustedGraphic = false;
 			uint64_t injectedId = 0;

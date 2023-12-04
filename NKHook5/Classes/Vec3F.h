@@ -1,23 +1,20 @@
-#ifndef NKHOOK5_CLASSES_VEC3F
-#define NKHOOK5_CLASSES_VEC3F
-namespace NKHook5
+#pragma once
+
+namespace NKHook5::Classes
 {
-    namespace Classes
-    {
-        struct Vec3F
-        {
-            union
-            {
-                struct
-                {
-                    float x;
-                    float y;
-                    float z;
-                };
-                float arr[3];
-            };
-        };
-    } // namespace Classes
-    
-} // namespace NKHook5
-#endif /* NKHOOK5_CLASSES_VEC3F */
+	struct Vec3F
+	{
+		union
+		{
+			struct
+			{
+				float x;
+				float y;
+				float z;
+			};
+			float arr[3];
+		};
+	};
+
+	static_assert(sizeof(Vec3F) == 0xC);
+} // namespace NKHook5::Classes
