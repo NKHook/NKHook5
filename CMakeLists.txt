@@ -115,8 +115,8 @@ endif()
 
 FetchContent_Declare(
     libhat
-    GIT_REPOSITORY https://github.com/BasedInc/libhat.git
-    GIT_TAG 224fd84f37bb5ebcfb65d45db9af438ee68bac59
+    GIT_REPOSITORY https://github.com/DisabledMallis/libhat.git
+    GIT_TAG master
 )
 FetchContent_GetProperties(libhat)
 if(NOT libhat_POPULATED)

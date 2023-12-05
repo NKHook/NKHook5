@@ -1,7 +1,11 @@
 #include "Utils.h"
 
+#include "Logging/Logger.h"
+
 #include <Windows.h>
 #include <Psapi.h>
+
+#include <magic_enum.hpp>
 
 #include <libhat/Scanner.hpp>
 
@@ -14,6 +18,7 @@
 
 
 using namespace NKHook5;
+using namespace Common::Logging::Logger;
 
 size_t Utils::GetModuleBase()
 {
@@ -32,21 +37,27 @@ size_t Utils::GetBaseModuleEnd()
 size_t Utils::FindPattern(std::string_view pattern)
 {
 	auto sig = hat::parse_signature(pattern);
-	assert(sig.has_value());
-	auto result = hat::find_pattern(sig.value(), ".text");
-	return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
+	if (sig.has_value()) {
+		const auto result = hat::find_pattern(sig.value());
+		return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
+	} else {
+		Print(LogLevel::ERR, "Sig failed with '%s' (%s)", pattern.data(), magic_enum::enum_name<hat::signature_parse_error>(sig.error()).data());
+	}
+	return 0;
 }
 
 size_t Utils::FindPattern(size_t rangeStart, size_t rangeEnd, std::string_view pattern) {
 	auto sig = hat::parse_signature(pattern);
-	assert(sig.has_value());
-
-	auto result = hat::find_pattern(
-			reinterpret_cast<const std::byte*>(rangeStart),
-			reinterpret_cast<const std::byte*>(rangeEnd),
-			sig.value()
-	);
-	return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
+	if (sig.has_value()) {
+		const auto result = hat::find_pattern(
+				reinterpret_cast<const std::byte *>(rangeStart),
+				reinterpret_cast<const std::byte *>(rangeEnd),
+				sig.value());
+		return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
+	} else {
+		Print(LogLevel::ERR, "Sig failed with '%s' (%s)", pattern.data(), magic_enum::enum_name<hat::signature_parse_error>(sig.error()).data());
+	}
+	return 0;
 }
 
 std::string Utils::GetTypeName(void* object)
