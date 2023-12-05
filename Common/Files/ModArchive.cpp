@@ -56,7 +56,7 @@ bool ModArchive::OpenWrite(fs::path path) {
 	return false;
 }
 
-const ModInfo& const ModArchive::GetInfo() const
+const ModInfo& ModArchive::GetInfo() const
 {
 	return this->info;
 }

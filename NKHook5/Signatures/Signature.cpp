@@ -4,6 +4,9 @@
 
 #include <Logging/Logger.h>
 
+#include <magic_enum.hpp>
+#include <magic_enum_utility.hpp>
+
 #include <map>
 #include <cstdarg>
 
@@ -57,7 +60,7 @@ void Signatures::FindAll() {
 	pointerMap[Sigs::CBasePositionableObject_AssignParent] = Signatures::FindFirst(1,
 		"55 8b ec 56 8b f1 57 8b 7d ?? 8b 46 ?? 3b c7 74 ?? 85 c0 74 ?? e8 ?? ?? ?? ?? 85 ff 74 ?? 56 8b cf e8 ?? ?? ?? ?? 80 7f ?? ?? 75 ?? 8b 06 8b ce 6a ?? ff 90 ?? ?? ?? ?? 8b ce e8 ?? ?? ?? ?? 5f 5e 5d c2 ?? ?? cc cc cc cc cc cc cc cc cc cc cc 80 79"
 	);
-	pointerMap[Sigs::CBasePositionableObject_SetComplete] = Signatures::FindFirst(1,
+	pointerMap[Sigs::CBasePositionableObject_MakeDirty] = Signatures::FindFirst(1,
 		"?? 79 ?? ?? 75 ?? 56 57 8D"
 	);
 	/* CBaseScreen */
@@ -358,12 +361,12 @@ void Signatures::FindAll() {
 		"55 8b ec ff 75 08 e8 f0 ff ff ff 59 5d c3"
 	);
 
-	for (int i = 0; i < (int)Sigs::SIGNATURE_COUNT; i++) {
-		if (!GetAddressOf((Sigs)i)) {
-			std::string_view enumName = magic_enum::enum_name((Sigs)i);
+	magic_enum::enum_for_each<Sigs>([](auto val){
+		if (!GetAddressOf(val)) {
+			std::string_view enumName = magic_enum::enum_name<Sigs>(val);
 			Print(LogLevel::ERR, "Failed to find sig '%s'", enumName.data());
 		}
-	}
+	});
 }
 
 void* Signatures::GetAddressOf(Sigs sig)

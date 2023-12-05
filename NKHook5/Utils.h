@@ -1,23 +1,16 @@
-#ifndef NKHOOK5_UTILS
-#define NKHOOK5_UTILS
+#pragma once
 
-#include <Windows.h>
-#include <Psapi.h>
-#include <tlhelp32.h>
 #include <string>
 
 namespace NKHook5
 {
 	class Utils {
 	public:
-		static auto GetModuleBase() -> int;
-		static auto GetModuleBaseHandle() -> HMODULE;
-		static auto GetBaseModuleSize() -> int;
-		static auto GetBaseModuleEnd() -> int;
-		static auto GetThisModule() -> HMODULE;
-		static auto FindPattern(const char* pattern) -> int;
-		static auto FindPattern(size_t rangeStart, size_t rangeEnd, const char* pattern) -> size_t;
-		static auto GetTypeName(void* object) -> std::string;
+		static size_t GetModuleBase();
+		static size_t GetBaseModuleSize();
+		static size_t GetBaseModuleEnd();
+		static size_t FindPattern(std::string_view pattern);
+		static size_t FindPattern(size_t rangeStart, size_t rangeEnd, std::string_view pattern);
+		static std::string GetTypeName(void* object);
 	};
 }
-#endif /* NKHOOK5_UTILS */

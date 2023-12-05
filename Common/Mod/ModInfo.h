@@ -27,19 +27,19 @@ namespace Common {
 			std::vector<std::string> incompatibilites;
 		public:
 			ModInfo();
-			ModInfo(nlohmann::json);
+			explicit ModInfo(nlohmann::json);
 			void Initialize(nlohmann::json);
 			nlohmann::json Serialize();
 
-			const std::string& GetName() const;
-			const std::string& GetDescription() const;
-			const std::string& GetVersion() const;
-			const std::vector<std::string>& GetAuthors() const;
-			const std::string& GetWebsite() const;
-			const std::string& GetDiscord() const;
-			const std::string& GetGithub() const;
-			const std::optional<LoadOrder> GetLoadOrder() const;
-			const std::optional<std::vector<std::string>> GetIncompatibilites() const;
+			[[nodiscard]] const std::string& GetName() const;
+			[[nodiscard]] const std::string& GetDescription() const;
+			[[nodiscard]] const std::string& GetVersion() const;
+			[[nodiscard]] const std::vector<std::string>& GetAuthors() const;
+			[[nodiscard]] const std::string& GetWebsite() const;
+			[[nodiscard]] const std::string& GetDiscord() const;
+			[[nodiscard]] const std::string& GetGithub() const;
+			[[nodiscard]] const std::optional<LoadOrder> GetLoadOrder() const;
+			[[nodiscard]] const std::optional<std::vector<std::string>> GetIncompatibilites() const;
 
 			void SetName(std::string);
 			void SetDescription(std::string);

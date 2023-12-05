@@ -4,6 +4,9 @@
 
 #include "../Util/NewFramework.h"
 
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
 using namespace NKHook5;
 using namespace NKHook5::Classes;
 using namespace NKHook5::ClassesEx;

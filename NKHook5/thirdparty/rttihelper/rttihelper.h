@@ -2,21 +2,25 @@
 
 #include "../../Utils.h"
 
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
+#include <cstdint>
 #include <iomanip>
-#include <stdint.h>
 #include <sstream>
 #include <string>
 #include <vector>
 
 namespace h_rtti
 {
-	std::string bytes_to_ida_pattern(byte* bytes, int32_t size)
+	using byte = unsigned char;
+	std::string bytes_to_ida_pattern(const byte* bytes, size_t size)
 	{
 		std::stringstream ida_pattern;
 		ida_pattern << std::hex << std::setfill('0');
 		for (size_t i = 0; i < size; i++)
 		{
-			const int32_t current_byte = bytes[i];
+			const size_t current_byte = bytes[i];
 			if (current_byte != 255)
 				ida_pattern << std::setw(2) << current_byte;
 			else
@@ -40,7 +44,7 @@ namespace h_rtti
 		const uintptr_t end = start + size;
 		while (start && start < end)
 		{
-			uintptr_t xref = (uintptr_t)NKHook5::Utils::FindPattern(start, start + size, ida_pattern.c_str());
+			auto xref = (uintptr_t)NKHook5::Utils::FindPattern(start, start + size, ida_pattern);
 
 			// If the xref is 0 it means that there either were no xrefs, or there are no remaining xrefs.
 			// So we should break out of our loop, otherwise it will keep on trying to look for xrefs.
@@ -58,11 +62,11 @@ namespace h_rtti
 
 	bool get_section_info(uintptr_t base_address, const std::string& section_name, uintptr_t& section_start, uintptr_t& section_size)
 	{
-		const PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)base_address;
+		const auto dos_header = (PIMAGE_DOS_HEADER)base_address;
 		if (dos_header->e_magic != IMAGE_DOS_SIGNATURE)
 			return false;
 
-		const PIMAGE_NT_HEADERS32 nt_headers = (PIMAGE_NT_HEADERS32)(base_address + dos_header->e_lfanew);
+		const auto nt_headers = (PIMAGE_NT_HEADERS32)(base_address + dos_header->e_lfanew);
 		if (nt_headers->Signature != IMAGE_NT_SIGNATURE)
 			return false;
 
@@ -87,25 +91,25 @@ namespace h_rtti
 
 	size_t get_vtable(const std::string& table_name)
 	{
-		uintptr_t base_address = (uintptr_t)GetModuleHandleA(NULL);
+		auto base_address = (uintptr_t)GetModuleHandleA(NULL);
 		if (!base_address)
 			return 0;
 
 		// Type descriptor names look like this: .?AVC_CSPlayer@@ (so: ".?AV" + table_name + "@@")
-		const std::string type_descriptor_name = ".?AV" + table_name + "@@";
+		std::string type_descriptor_name = ".?AV" + table_name + "@@";
 
 		// Convert the string to an IDA pattern so that we can pattern scan it
 		std::string ida_pattern = bytes_to_ida_pattern((byte*)type_descriptor_name.data(), type_descriptor_name.size());
 
-		uintptr_t rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern.c_str());
+		auto rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern);
 		if (!rtti_type_descriptor) {
 			// If we fail, try again with AU
-			const std::string type_descriptor_name = ".?AU" + table_name + "@@";
+			type_descriptor_name = ".?AU" + table_name + "@@";
 
 			// Convert the string to an IDA pattern so that we can pattern scan it
-			std::string ida_pattern = bytes_to_ida_pattern((byte*)type_descriptor_name.data(), type_descriptor_name.size());
+			ida_pattern = bytes_to_ida_pattern((byte*)type_descriptor_name.data(), type_descriptor_name.size());
 
-			rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern.c_str());
+			rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern);
 			if (!rtti_type_descriptor) {
 				return 0;
 			}

@@ -1,96 +1,59 @@
 #include "Utils.h"
+
+#include <Windows.h>
+#include <Psapi.h>
+
+#include <libhat/Scanner.hpp>
+
+#include <cassert>
 #include <vector>
-#include <Util/Macro.h>
 
 #define INRANGE(x,a,b)	(x >= a && x <= b) 
 #define getBits( x )	(INRANGE((x&(~0x20)),'A','F') ? ((x&(~0x20)) - 'A' + 0xa) : (INRANGE(x,'0','9') ? x - '0' : 0))
 #define getByte( x )	(getBits(x[0]) << 4 | getBits(x[1]))
 
-auto NKHook5::Utils::GetModuleBase() -> int
+
+using namespace NKHook5;
+
+size_t Utils::GetModuleBase()
 {
-	return (int)GetModuleHandle(NULL);
+	return (size_t)GetModuleHandle(nullptr);
 }
-auto NKHook5::Utils::GetModuleBaseHandle() -> HMODULE
-{
-	return GetModuleHandle(NULL);
-}
-auto NKHook5::Utils::GetBaseModuleSize() -> int
+size_t Utils::GetBaseModuleSize()
 {
 	MODULEINFO info;
-	GetModuleInformation(GetCurrentProcess(), GetModuleBaseHandle(), &info, sizeof(info));
+	GetModuleInformation(GetCurrentProcess(), GetModuleHandle(nullptr), &info, sizeof(info));
 	return info.SizeOfImage;
 }
-auto NKHook5::Utils::GetBaseModuleEnd() -> int
+size_t Utils::GetBaseModuleEnd()
 {
 	return GetModuleBase() + GetBaseModuleSize();
 }
-auto NKHook5::Utils::GetThisModule() -> HMODULE
+size_t Utils::FindPattern(std::string_view pattern)
 {
-	return GetModuleHandleA("NKHook5.dll");
+	auto sig = hat::parse_signature(pattern);
+	assert(sig.has_value());
+	auto result = hat::find_pattern(sig.value(), ".text");
+	return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
 }
 
-auto NKHook5::Utils::FindPattern(const char* pattern) -> int
-{
-	return FindPattern(GetModuleBase(), GetBaseModuleEnd(), pattern);
+size_t Utils::FindPattern(size_t rangeStart, size_t rangeEnd, std::string_view pattern) {
+	auto sig = hat::parse_signature(pattern);
+	assert(sig.has_value());
+
+	auto result = hat::find_pattern(
+			reinterpret_cast<const std::byte*>(rangeStart),
+			reinterpret_cast<const std::byte*>(rangeEnd),
+			sig.value()
+	);
+	return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
 }
 
-struct SearchedSig {
-	size_t rangeStart;
-	size_t rangeEnd;
-	std::string pattern;
-	uintptr_t result;
-	SearchedSig(size_t rangeStart, size_t rangeEnd, std::string pattern, uintptr_t result) {
-		this->rangeStart = rangeStart;
-		this->rangeEnd = rangeEnd;
-		this->pattern = pattern;
-		this->result = result;
-	}
-};
-
-static std::vector<SearchedSig> alreadySearched = std::vector<SearchedSig>();
-auto NKHook5::Utils::FindPattern(size_t rangeStart, size_t rangeEnd, const char* pattern) -> size_t {
-	for (int i = 0; i < alreadySearched.size(); i++) {
-		SearchedSig searched = alreadySearched[i];
-		if (searched.pattern == std::string(pattern) && searched.rangeStart == rangeStart && searched.rangeEnd == rangeEnd) {
-			return searched.result;
-		}
-	}
-	std::string sanitizedPat = pattern;
-	int skips = 0;
-	while (sanitizedPat[0] == '?' && sanitizedPat[1] == '?') {
-		sanitizedPat = sanitizedPat.substr(3);
-		skips++;
-		///printf("Sig skips: %d\n", skips);
-		//printf("Current sig: %s\n", sanitizedPat.c_str());
-	}
-	const char* pat = sanitizedPat.c_str();
-	long long firstMatch = 0;
-	for (long long pCur = rangeStart; pCur < rangeEnd; pCur++) {
-		if (!*pat) return firstMatch;
-		if (*(PBYTE)pat == '\?' || *(BYTE*)pCur == getByte(pat)) {
-			if (!firstMatch) firstMatch = pCur;
-			if (!pat[2]) {
-				firstMatch += -skips;
-				alreadySearched.push_back(SearchedSig(rangeStart, rangeEnd, std::string(pattern), firstMatch));
-				return firstMatch;
-			};
-			if (*(PWORD)pat == '\?\?' || *(PBYTE)pat != '\?') pat += 3;
-			else pat += 2;
-		}
-		else {
-			pat = sanitizedPat.c_str();
-			firstMatch = 0;
-		}
-	}
-	//printf("Signature failure: %s\n", pattern);
-	return 0;
-}
-
-auto NKHook5::Utils::GetTypeName(void* object) -> std::string
+std::string Utils::GetTypeName(void* object)
 {
 	void* vtable = *(void**)object;
 	void** metaPtr = (void**)((size_t)vtable-(size_t)sizeof(void*));
 	void** typeDesc = (void**)((size_t)*metaPtr+(sizeof(void*)*3));
 	char* name = (char*)((size_t)*typeDesc+(sizeof(void*)*3));
-	return std::string(name);
+	return { name };
 }

@@ -12,7 +12,7 @@ using namespace NKHook5::MenuEditor;
 extern Classes::CBloonsTD5Game* g_appPtr;
 
 void ElementEditor(Classes::CBasePositionableObject* object) {
-	ImGui::PushID(object);
+	/*ImGui::PushID(object);
 	if (ImGui::TreeNode("Object")) {
 		char addrBuf[64];
 		sprintf_s(addrBuf, 64, "%p", object);
@@ -25,7 +25,7 @@ void ElementEditor(Classes::CBasePositionableObject* object) {
 		}
 		ImGui::TreePop();
 	}
-	ImGui::PopID();
+	ImGui::PopID();*/
 }
 
 void ScreenTree(Classes::CBaseScreen* screen) {

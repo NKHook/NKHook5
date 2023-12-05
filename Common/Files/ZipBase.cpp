@@ -48,7 +48,7 @@ size_t ZipBase::GetSize() const
 	return this->archive->GetEntriesCount();
 }
 
-void ZipBase::SetPassword(std::string password)
+void ZipBase::SetPassword(const std::string& password)
 {
 	this->password = password;
 }
@@ -58,7 +58,7 @@ void ZipBase::SetCompressionLevel(size_t level)
 	this->compressionLevel = level;
 }
 
-std::vector<std::string> const ZipBase::GetEntries() const
+std::vector<std::string> ZipBase::GetEntries() const
 {
 	std::vector<std::string> result;
 	for (size_t i = 0; i < this->archive->GetEntriesCount(); i++) {
@@ -68,16 +68,13 @@ std::vector<std::string> const ZipBase::GetEntries() const
 	return result;
 }
 
-bool const ZipBase::HasEntry(std::string entry) const {
-	for (const std::string& e : this->GetEntries()) {
-		if (e == entry) {
-			return true;
-		}
-	}
-	return false;
+bool ZipBase::HasEntry(const std::string& entry) const {
+	return std::ranges::any_of(this->GetEntries(), [entry](const auto& e) -> bool {
+		return e == entry;
+	});
 }
 
-std::vector<uint8_t> ZipBase::ReadEntry(std::string entry)
+std::vector<uint8_t> ZipBase::ReadEntry(const std::string& entry)
 {
 	std::vector<uint8_t> result;
 	if (this->archive == nullptr) {

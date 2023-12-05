@@ -17,6 +17,7 @@ namespace NKHook5::Classes
 {
 	using namespace Signatures;
 
+	class CBasePositionableObject;
 	namespace _BasePositionableObjectDetail
 	{
 		struct SBasePositionableObjectListTag
@@ -25,45 +26,44 @@ namespace NKHook5::Classes
 	}
 
 	using base_tag = boost::intrusive::tag<_BasePositionableObjectDetail::SBasePositionableObjectListTag>;
-	using member_tag = boost::intrusive::tag<_BasePositionableObjectDetail::SBasePositionableObjectListTag>;
-	using link_mode = boost::intrusive::link_mode<boost::intrusive::link_mode_type::auto_unlink>;
+	using base_link_mode = boost::intrusive::link_mode<boost::intrusive::link_mode_type::auto_unlink>;
+	using member_link_mode = boost::intrusive::link_mode<boost::intrusive::link_mode_type::safe_link>;
+	using container_ptr = void;
+	using member_hook = boost::intrusive::list_member_hook<member_link_mode, container_ptr>;
 
 	class CBasePositionableObject
-		: public boost::intrusive::list_base_hook<base_tag, link_mode, void>
+		: public boost::intrusive::list_base_hook<base_tag, base_link_mode, container_ptr>
 	{
 	public:
 		/* Somehow prevented some heap corruption bug... */
 		overload_allocators
 
 	public:
-		bool visible = false;
-		CBasePositionableObject* parent = nullptr;
-		boost::intrusive::list_member_hook<member_tag, link_mode, void> children;
+		bool mVisible = false;
+		CBasePositionableObject* mParent = nullptr;
+		member_hook mChildren;
 		char pad_001C[4]{};
-		Vec2F size; //0x0020
-		Vec2F sizeHalf; //0x0028
+		Vec2F mSize; //0x0020
+		Vec2F mSizeHalf; //0x0028
 		char pad_0030[8]{}; //0x0030
-		Matrix16F transform{}; //0x0038
-		bool complete{}; //0x0078
-		bool incompleteChildren{}; //0x0079
+		Matrix16F mTransform{}; //0x0038
+		bool mDirty{}; //0x0078
+		bool mDefaultDirtyState{}; //0x0079
 		char pad_007A[2]{}; //0x007A
-		Vec2F alignment; //0x007C
+		Vec2F mAlignment; //0x007C
 		char pad_0084[12]{}; //0x0084
-		Vec3F location{}; //0x0090
-		float rotAngle{}; //0x009C
-		Vec2F scale; //0x00A0
+		Vec3F mLocation{}; //0x0090
+		float mRotAngle{}; //0x009C
+		Vec2F mScale; //0x00A0
 	public:
 		CBasePositionableObject() = default;
 
-		void AssignParent(CBasePositionableObject* parent) {
-			return ThisCall<void, CBasePositionableObject*, CBasePositionableObject*>(Sigs::CBasePositionableObject_AssignParent, this, parent);
-		}
-		void SetComplete() {
-			return ThisCall<void, CBasePositionableObject*>(Signatures::Sigs::CBasePositionableObject_SetComplete, this);
-		}
+		void AssignParent(CBasePositionableObject* parent);
+		void RemoveParent();
+		void AppendChild(CBasePositionableObject* child);
+		void MakeDirty();
 
 		virtual ~CBasePositionableObject() = default;
-
 		virtual void Render(bool animate) {}
 		virtual void Update(class SGameTime* pSGameTime) {}
 		virtual void UpdateRecursive(class SGameTime* param_1) {}
@@ -107,13 +107,15 @@ namespace NKHook5::Classes
 		virtual void UpdateMatrixRecursive() {}
 		virtual void ForceUpdate() {}
 		virtual void SetTransitionAnim(float time, bool permitNegative) {}
-		virtual void ResetDirtyFlag() {}
+		virtual void SetDefaultDirtyState(bool) {}
 		virtual void DeleteChildren_2() {}
 		virtual void DrawChildren() {}
 	};
 
+	using member_list = boost::intrusive::list<CBasePositionableObject, boost::intrusive::member_hook<CBasePositionableObject, member_hook, &CBasePositionableObject::mChildren>>;
+
 	static_assert(sizeof(CBasePositionableObject) == 0xA8);
-	static_assert(offsetof(CBasePositionableObject, visible) == 0xC);
-	static_assert(offsetof(CBasePositionableObject, size) == 0x20);
-	static_assert(offsetof(CBasePositionableObject, location) == 0x90);
+	static_assert(offsetof(CBasePositionableObject, mVisible) == 0xC);
+	static_assert(offsetof(CBasePositionableObject, mSize) == 0x20);
+	static_assert(offsetof(CBasePositionableObject, mLocation) == 0x90);
 } // namespace NKHook5::Classes

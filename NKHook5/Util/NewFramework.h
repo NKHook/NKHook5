@@ -7,6 +7,7 @@
 
 #include "../Classes/Macro.h"
 #include "../Signatures/Signature.h"
+
 #include <list>
 #include <map>
 #include <set>
