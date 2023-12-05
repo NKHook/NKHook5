@@ -48,9 +48,9 @@ namespace NKHook5
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui::NewFrame();
 
-                //MenuEditor::Editor::Render();
-
 #ifdef _DEBUG
+                MenuEditor::Editor::Render();
+
                 ImGui::Begin("Update cap test");
                 ImGui::InputInt("Projectile count cap", &maxProjectilesTotal, 1, 50);
                 ImGui::InputInt("Projectile update cap", &maxProjectileUpdates, 1, 50);

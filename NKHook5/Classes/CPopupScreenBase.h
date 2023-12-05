@@ -18,6 +18,15 @@ namespace NKHook5
 
 	namespace Classes
 	{
+		enum class ePopupType
+		{
+			UNINITIALIZED = 0,
+			LOADING = 1,
+			STATIC = 2,
+			UNKNOWN_1 = 3,
+			CLOSING = 4,
+			TRANSITIONING = 5
+		};
 		enum class eNavButtonType {
 			CLOSE = 0xF,
 		};
@@ -30,26 +39,26 @@ namespace NKHook5
 			overload_allocators
 
 		public:
-			char pad_0108[20]; //0x0108
-			CBasePositionableObject* rootObj; //0x011C
-			CBasePositionableObject* N00000182; //0x0120
-			CBasePositionableObject* N00000183; //0x0124
-			CBasePositionableObject* popObj; //0x0128
-			char pad_012C[12]; //0x012C
-			CBasePositionableObject* ui_root; //0x0138
-			class CBuildingName* screenTitle; //0x013C
-			char pad_0140[44]; //0x0140
-			eScreenState popupState; //0x016C
-			float timeLoaded; //0x0170
-			char pad_0174[16]; //0x0174
-			boost::shared_ptr<CFont> mainMenuFont; //0x0184
-			boost::shared_ptr<CFont> font24; //0x018C
-			boost::shared_ptr<CFont> font30; //0x0194
-			char pad_019C[36]; //0x019C
-			CSpriteButton* closeButton; //0x01C0
-			char pad_01C4[48]; //0x01C4
-			SMainButtonStyle buttonStyle; //0x01F4
-			char pad_024C[8]; //0x024C
+			char pad_0108[20]{}; //0x0108
+			class CBasePositionableObject* mRoot = nullptr; //0x011C
+			class CBasePositionableObject* N00000182 = nullptr; //0x0120
+			class CBasePositionableObject* mPopupControls = nullptr; //0x0124
+			class CBasePositionableObject* mMidContent = nullptr; //0x0128
+			class CColouredQuad* mBackgroundQuads[4]{}; //0x012C
+			class CBuildingName* mTitle = nullptr; //0x013C
+			char pad_0140[40]{}; //0x0140
+			ePopupType mPopupState{}; //0x0168
+			float mTimeOpened = 0.0f; //0x016C
+			char pad_0170[20]{}; //0x0170
+			boost::shared_ptr<CFont> mPrimaryFont; //0x0184
+			boost::shared_ptr<CFont> mSecondaryFont; //0x018C
+			boost::shared_ptr<CFont> mTertiaryFont; //0x0194
+			char pad_019C[36]{}; //0x019C
+			class CSpriteButton* mCloseButton = nullptr; //0x01C0
+			char pad_01C4[48]{}; //0x01C4
+			SMainButtonStyle mButtonStyle; //0x01F4
+			char pad_024C[8]{}; //0x024C
+
 
 		public:
 			CPopupScreenBase() : CBloonsBaseScreen() {
@@ -82,7 +91,7 @@ namespace NKHook5
 		};
 
 		static_assert(sizeof(CPopupScreenBase) == 0x0254);
-		static_assert(offsetof(CPopupScreenBase, ui_root) == 0x138);
+		static_assert(offsetof(CPopupScreenBase, mRoot) == 0x11C);
 	} // namespace Classes
 
 } // namespace NKHook5

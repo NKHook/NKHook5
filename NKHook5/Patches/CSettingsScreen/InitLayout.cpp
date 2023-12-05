@@ -16,82 +16,78 @@
 
 #include <Util/Macro.h>
 
-namespace NKHook5
+
+namespace NKHook5::Patches::CSettingsScreen
 {
-    namespace Patches
-    {
-        namespace CSettingsScreen
-        {
-            using namespace Signatures;
+	using namespace Signatures;
 
-            static uint64_t o_func;
-            static void __fastcall cb_hook(ClassesEx::CSettingsScreenExt* self, int pad, int param_1) {
-                //((void(__thiscall*)(void*, int))o_func)(self, param_1);
-                PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
+	static uint64_t o_func;
+	static void __fastcall cb_hook(ClassesEx::CSettingsScreenExt* self, int pad, int param_1)
+	{
+		//((void(__thiscall*)(void*, int))o_func)(self, param_1);
+		PLH::FnCast(o_func, &cb_hook)(self, pad, param_1);
 
-                //Add the NKHook version information text
-                std::string verInfoString("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
-                Classes::CTextObject* verInfoText = new Classes::CTextObject({ 160, -100 }, self->screenFont, verInfoString);
-                Classes::Vec2F textScale(0.5, 0.5);
-                verInfoText->Scale(textScale);
-                verInfoText->SetRotation(40);
-                Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
-                verInfoText->SetColor(c, 0);
-                self->rootObj->AddChild(verInfoText);
-                
-                /* Modify the base game ui stuff */
-                /*
-                //Add the BTD5 text
-                Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->screenFont, "BTD5");
-                vanillaText->SetColor(Classes::Colors::white, 0);
-                vanillaText->Scale({ .75, .75 });
-                self->rootObj->AddChild(vanillaText);
+		//Add the NKHook version information text
+		std::string verInfoString("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
+		auto* verInfoText = new Classes::CTextObject({ 160, -100 }, self->screenFont, verInfoString);
+		Classes::Vec2F textScale(0.5, 0.5);
+		verInfoText->Scale(textScale);
+		verInfoText->SetRotation(40);
+		Classes::Color c(0xFF, 0xFF, 0xFF, 0xFF);
+		verInfoText->SetColor(c, 0);
+		self->mControlsGroup->AddChild(verInfoText);
 
-                //Move the vanilla UI elements
-                self->languageGroup->SetXY({ -100, 0 });
-                self->languageGroup->ForceUpdate();
-                self->controlsGroup->SetXY({ -100, 60});
-                self->controlsGroup->ForceUpdate();
-                */
-                /* Custom settings ui stuff */
-                /*
-                //Add the NKHook5 text
-                Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->screenFont, "NKHook5");
-                nkhookText->SetColor(Classes::Colors::white, 0);
-                nkhookText->Scale({ .75, .75 });
-                self->rootObj->AddChild(nkhookText);
+		/* Modify the base game ui stuff */
+		/*
+		//Add the BTD5 text
+		Classes::CTextObject* vanillaText = new Classes::CTextObject({ -100, -15 }, self->screenFont, "BTD5");
+		vanillaText->SetColor(Classes::Colors::white, 0);
+		vanillaText->Scale({ .75, .75 });
+		self->rootObj->AddChild(vanillaText);
 
-                //Add the Mods button
-                Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
-                Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button_wider");
-                Classes::SMainButtonStyle style;
-                style.font = self->screenFont;
-                self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
-                self->modsButton->SetXY({ 100, 18 });
-                self->rootObj->AddChild(self->modsButton);
-                */
-            }
+		//Move the vanilla UI elements
+		self->languageGroup->SetXY({ -100, 0 });
+		self->languageGroup->ForceUpdate();
+		self->controlsGroup->SetXY({ -100, 60});
+		self->controlsGroup->ForceUpdate();
+		*/
+		/* Custom settings ui stuff */
+		/*
+		//Add the NKHook5 text
+		Classes::CTextObject* nkhookText = new Classes::CTextObject({ 100, -15 }, self->screenFont, "NKHook5");
+		nkhookText->SetColor(Classes::Colors::white, 0);
+		nkhookText->Scale({ .75, .75 });
+		self->rootObj->AddChild(nkhookText);
 
-            auto InitLayout::Apply() -> bool
-            {
-                const void* address = Signatures::GetAddressOf(Sigs::CSettingsScreen_InitLayout);
-                if(address)
-                {
-                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
-                    if(detour->hook())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        } // namespace CBasePositionableObject
-    }
-}
+		//Add the Mods button
+		Classes::CTextureManager* textureMgr = self->basePointers.textureManager;
+		Classes::SSpriteInfo* buttonSprite = textureMgr->GetSpriteInfoPtr("newshared", "newshared_button_wider");
+		Classes::SMainButtonStyle style;
+		style.font = self->screenFont;
+		self->modsButton = new Classes::CMainButton(self->basePointers.pCInput, self, "mods", "Mods", buttonSprite, nullptr, style);
+		self->modsButton->SetXY({ 100, 18 });
+		self->rootObj->AddChild(self->modsButton);
+		*/
+	}
+
+	auto InitLayout::Apply() -> bool
+	{
+		const void* address = Signatures::GetAddressOf(Sigs::CSettingsScreen_InitLayout);
+		if(address)
+		{
+			auto* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
+			if(detour->hook())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+} // namespace CBasePositionableObject

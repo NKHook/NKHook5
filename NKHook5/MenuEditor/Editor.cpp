@@ -12,24 +12,33 @@ using namespace NKHook5::MenuEditor;
 extern Classes::CBloonsTD5Game* g_appPtr;
 
 void ElementEditor(Classes::CBasePositionableObject* object) {
-	/*ImGui::PushID(object);
+	ImGui::PushID(object);
 	if (ImGui::TreeNode("Object")) {
 		char addrBuf[64];
 		sprintf_s(addrBuf, 64, "%p", object);
 		bool needsUpdate = ImGui::InputText("Address", addrBuf, 64, ImGuiInputTextFlags_ReadOnly);
-		needsUpdate |= ImGui::SliderFloat("X", &object->location.x, -1000, 1000);
-		needsUpdate |= ImGui::SliderFloat("Y", &object->location.y, -1000, 1000);
-		needsUpdate |= ImGui::SliderFloat("Z", &object->location.z, -1000, 1000);
+		needsUpdate |= ImGui::SliderFloat("X", &object->mLocation.x, -1000, 1000);
+		needsUpdate |= ImGui::SliderFloat("Y", &object->mLocation.y, -1000, 1000);
+		needsUpdate |= ImGui::SliderFloat("Z", &object->mLocation.z, -1000, 1000);
 		if (needsUpdate) {
-			object->complete = false;
+			object->mDirty = false;
 		}
 		ImGui::TreePop();
 	}
-	ImGui::PopID();*/
+	ImGui::PopID();
 }
 
 void ScreenTree(Classes::CBaseScreen* screen) {
+	if(screen->screenName.empty())
+		return;
+
 	if (ImGui::TreeNode(screen->screenName.c_str())) {
+		//Display the screen's memory address
+		char addrBuf[64];
+		sprintf_s(addrBuf, 64, "%p", screen);
+		ImGui::InputText("Address", addrBuf, 64, ImGuiInputTextFlags_ReadOnly);
+
+		//Display the screen tree
 		int maxIter = 15;
 		for (Classes::CBaseScreen* childScreen : screen->children) {
 			ScreenTree(childScreen);
@@ -38,8 +47,10 @@ void ScreenTree(Classes::CBaseScreen* screen) {
 				break;
 			}
 		}
-		Classes::CBloonsBaseScreen* bScreen = (Classes::CBloonsBaseScreen*)screen;
-		/*for (Classes::CBasePositionableObject* object : bScreen->elements) {
+
+		//Display the screen objects
+		auto* bScreen = reinterpret_cast<Classes::CBloonsBaseScreen*>(screen);
+		/*for (Classes::CBasePositionableObject* object : bScreen->) {
 			ElementEditor(object);
 		}*/
 		ImGui::TreePop();
@@ -52,15 +63,9 @@ void Editor::Render() {
 	ImGui::Begin("UI Inspector");
 	Classes::CScreenManager* screenManager = g_appPtr->basePointers.pCScreenManager;
 	if (screenManager) {
-		//printf("screenManager: %p", screenManager);
-		//printf("pChildren: %p", &screenManager->children);
-		//printf("screenManager has %d children", screenManager->children.count());
-		//std::cin.get();
 		for (Classes::CBaseScreen* childScreen : screenManager->children) {
 			ScreenTree(childScreen);
-			//printf("Child screen: %p", childScreen);
 		}
-		//std::cin.get();
 	}
 	ImGui::End();
 }

@@ -52,7 +52,7 @@ namespace NKHook5::Classes
 		char pad_007A[2]{}; //0x007A
 		Vec2F mAlignment; //0x007C
 		char pad_0084[12]{}; //0x0084
-		Vec3F mLocation{}; //0x0090
+		Vec3F mLocation{}; //0x0090 //1266DC98
 		float mRotAngle{}; //0x009C
 		Vec2F mScale; //0x00A0
 	public:
