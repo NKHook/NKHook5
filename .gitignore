@@ -25,3 +25,4 @@ mdkconf.json
 !**/ziplib/Debug/*.lib
 !**/ziplib/Release/*.lib
 cmake-build-debug/
+cmake-build-release/
