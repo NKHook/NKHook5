@@ -5,16 +5,13 @@
 #include "CFlagStringConvertor.h"
 #include "SBloonInfo.h"
 
-namespace NKHook5
+namespace NKHook5::Classes
 {
-	namespace Classes
+	class CBloonFactory : public CBaseFactory<SBloonInfo, CBloon>, public CFlagStringConvertor
 	{
-		class CBloonFactory : public CBaseFactory<SBloonInfo, CBloon>, public CFlagStringConvertor
-		{
-		public:
-		};
-		static_assert(sizeof(CBaseFactory<SBloonInfo, CBloon>) == 0x50);
-		static_assert(sizeof(CFlagStringConvertor) == 0xC);
-		static_assert(sizeof(CBloonFactory) == 0x5C);
-	}
+	public:
+	};
+	static_assert(sizeof(CBaseFactory<SBloonInfo, CBloon>) == 0x50);
+	static_assert(sizeof(CFlagStringConvertor) == 0xC);
+	static_assert(sizeof(CBloonFactory) == 0x5C);
 }

@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include "../Classes/CBloonManager.h"
+#include "../Classes/CBloonFactory.h"
 #include "../Classes/CBloonsBaseScreen.h"
 #include "../Classes/CBloonsTD5Game.h"
 #include "../Classes/CScreenManager.h"
@@ -14,21 +16,12 @@ using namespace NKHook5::MenuEditor;
 
 extern Classes::CBloonsTD5Game* g_appPtr;
 
-void ElementEditor(Classes::CBasePositionableObject* object) {
-	ImGui::PushID(object);
-	if (ImGui::TreeNode("Object")) {
-		char addrBuf[64];
-		sprintf_s(addrBuf, 64, "%p", object);
-		bool needsUpdate = ImGui::InputText("Address", addrBuf, 64, ImGuiInputTextFlags_ReadOnly);
-		needsUpdate |= ImGui::SliderFloat("X", &object->mLocation.x, -1000, 1000);
-		needsUpdate |= ImGui::SliderFloat("Y", &object->mLocation.y, -1000, 1000);
-		needsUpdate |= ImGui::SliderFloat("Z", &object->mLocation.z, -1000, 1000);
-		if (needsUpdate) {
-			object->mDirty = false;
-		}
-		ImGui::TreePop();
-	}
-	ImGui::PopID();
+void ElementEditor(Classes::CBasePositionableObject* object)
+{
+	auto addrStr = std::format("{:#010x}", reinterpret_cast<size_t>(object));
+	ImGui::InputText("Address", const_cast<char*>(addrStr.c_str()), addrStr.size(), ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputFloat("Position X", &object->mLocation.x);
+	ImGui::InputFloat("Position Y", &object->mLocation.y);
 }
 
 void ScreenTree(Classes::CBaseScreen* screen) {
@@ -75,7 +68,7 @@ void Editor::Render() {
 	}
 	if(ImGui::CollapsingHeader("Game Data"))
 	{
-		if(ImGui::CollapsingHeader("Towers"))
+		if(ImGui::TreeNode("Towers"))
 		{
 			auto* towerMgr = g_appPtr->mGameSystemPointers->mTowerMgr;
 			auto* towerFactory = g_appPtr->mGameSystemPointers->mTowerFactory;
@@ -85,11 +78,9 @@ void Editor::Render() {
 				{
 					auto addrStr = std::format("{:#010x}", reinterpret_cast<size_t>(tower));
 					auto formatted = std::format("Tower @ {0}", addrStr);
-					if(ImGui::CollapsingHeader(formatted.c_str()))
+					if(ImGui::TreeNode(formatted.c_str()))
 					{
-						ImGui::InputText("Address", const_cast<char*>(addrStr.c_str()), addrStr.size(), ImGuiInputTextFlags_ReadOnly);
-						ImGui::InputFloat("Position X", &tower->mLocation.x);
-						ImGui::InputFloat("Position Y", &tower->mLocation.y);
+						ElementEditor(tower);
 						ImGui::InputInt("Reference Count", &tower->mRefCount, ImGuiInputTextFlags_ReadOnly);
 						auto flagStr = std::format("{0} ({1})", tower->mTypeFlags, towerFactory->FlagToString(0, tower->mTypeFlags));
 						ImGui::InputText("Type Flags", const_cast<char*>(flagStr.c_str()), flagStr.size(), ImGuiInputTextFlags_ReadOnly);
@@ -110,13 +101,64 @@ void Editor::Render() {
 						auto targetStr = std::format("{0} ({1})", tower->mTargetingFlags, towerFactory->FlagToString(1, tower->mTargetingFlags));
 						ImGui::InputScalar(std::format("Target {0}", targetStr).c_str(), ImGuiDataType_U64, &tower->mTargetingFlags);
 						ImGui::Checkbox("Hovered", &tower->mHovered);
+						ImGui::TreePop();
 					}
 				}
 			}
+			ImGui::TreePop();
 		}
-		if(ImGui::CollapsingHeader("Bloons"))
+		if(ImGui::TreeNode("Bloons"))
 		{
-
+			auto* bloonMgr = g_appPtr->mGameSystemPointers->mBloonMgr;
+			auto* bloonFactory = g_appPtr->mGameSystemPointers->mBloonFactory;
+			if(bloonMgr != nullptr)
+			{
+				for (const auto& bloon : bloonMgr->objects)
+				{
+					auto addrStr = std::format("{:#010x}", reinterpret_cast<size_t>(bloon));
+					auto formatted = std::format("Bloon @ {0}", addrStr);
+					if(ImGui::TreeNode(formatted.c_str()))
+					{
+						ElementEditor(bloon);
+						if(ImGui::TreeNode("Definition"))
+						{
+							auto* definition = bloon->mBloonDefinition;
+							if(ImGui::TreeNode("ChildBloons"))
+							{
+								for(const auto& child : definition->mChildBloons)
+								{
+									ImGui::Text("%s", child.c_str());
+								}
+								ImGui::TreePop();
+							}
+							ImGui::InputText("SpriteFile", const_cast<char*>(definition->mSpriteFile.c_str()), definition->mSpriteFile.size(), ImGuiInputTextFlags_ReadOnly);
+							auto statusStr = std::format("{0} ({1})", definition->mStatusImmunity, bloonFactory->FlagToString(1, definition->mStatusImmunity));
+							ImGui::InputScalar(std::format("Status Immunity {0}", statusStr).c_str(), ImGuiDataType_U32, &definition->mStatusImmunity);
+							ImGui::InputInt("RBE", &definition->mRBE);
+							ImGui::InputFloat("Radius", &definition->mRadius);
+							ImGui::InputFloat("Speed Multiplier", &definition->mSpeedMultiplier);
+							ImGui::Checkbox("Can Go Underground", &definition->mCanGoUnderground);
+							ImGui::Checkbox("Rotate To Path Direction", &definition->mRotateToPathDirection);
+							ImGui::InputFloat("Initial Health", &definition->mInitialHealth);
+							ImGui::TreePop();
+						}
+						auto statusStr = std::format("{0} ({1})", bloon->mStatusImmunity, bloonFactory->FlagToString(1, bloon->mStatusImmunity));
+						ImGui::InputScalar(std::format("Status Immunity {0}", statusStr).c_str(), ImGuiDataType_U32, &bloon->mStatusImmunity);
+						auto drawLayerStr = std::format("{0} ({1})", bloon->mDrawLayer, bloonFactory->FlagToString(3, bloon->mDrawLayer));
+						ImGui::InputScalar(std::format("Draw Layer {0}", drawLayerStr).c_str(), ImGuiDataType_U32, &bloon->mDrawLayer);
+						ImGui::InputFloat("Health", &bloon->mHealth);
+						ImGui::InputFloat("Progress", &bloon->mProgress);
+						ImGui::InputFloat("Velocity X", &bloon->mVelocity.x);
+						ImGui::InputFloat("Velocity Y", &bloon->mVelocity.y);
+						ImGui::InputFloat("Position X", &bloon->mLocation.x);
+						ImGui::InputFloat("Position Y", &bloon->mLocation.y);
+						ImGui::InputFloat("Turn Timer", &bloon->mTurnTimer);
+						ImGui::InputFloat("Last Progress", &bloon->mLastProgress);
+						ImGui::TreePop();
+					}
+				}
+			}
+			ImGui::TreePop();
 		}
 	}
 	ImGui::End();
