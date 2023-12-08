@@ -29,16 +29,16 @@ namespace NKHook5
             static void __fastcall cb_hook(Classes::CBloonsTD5Game* gameInstance) {
                 Print(LogLevel::INFO, "Loading custom assets...");
                 Print(LogLevel::INFO, "CWD: %s", std::filesystem::current_path().string().c_str());
-                std::string archivePath = "./Assets/BTD5.jet";
-                Classes::CZipFile* assetsArchive = new Classes::CZipFile();
+                nfw::string archivePath = "./Assets/BTD5.jet";
+                auto* assetsArchive = new Classes::CZipFile();
                 assetsArchive->Open(archivePath);
 
                 std::vector<Extension*> customDocuments = ExtensionManager::GetCustomDocuments();
-                ghstl::string error;
+                nfw::string error;
                 for (Extension* doc : customDocuments) {
                     const std::string& assetPath = doc->GetTarget();
 
-                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(assetPath, error);
+                    Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(nfw::string(assetPath), error);
                     if (error.length() > 0) {
                         Print(LogLevel::ERR, "%s", error.c_str());
                     }
@@ -51,7 +51,7 @@ namespace NKHook5
                 auto statusFlags = (StatusFlagsExt*)ExtensionManager::GetByName("StatusFlags");
                 for (const std::string& flag : statusFlags->GetFlags())
                 {
-                    std::string effectFile = "Assets/JSON/StatusDefinitions/" + flag + ".status";
+                    nfw::string effectFile = "Assets/JSON/StatusDefinitions/" + nfw::string(flag) + ".status";
                     Classes::CUnzippedFile* unzipped = assetsArchive->LoadFrom(effectFile, error);
                     statusDefs->UseData(unzipped->fileContent, unzipped->fileSize);
                 }
@@ -67,7 +67,7 @@ namespace NKHook5
                 const void* address = GetAddressOf(Sigs::CBloonsTD5Game_LoadAssets);
                 if(address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
+                    auto* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if(detour->hook())
                     {
                         return true;

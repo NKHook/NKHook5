@@ -26,10 +26,10 @@ namespace NKHook5::Classes
 
 	public:
 		explicit CSettingsScreen(CGameSystemPointers* pCGameSystemPointers) {
-			ThisCall<CSettingsScreen*, CSettingsScreen*, CGameSystemPointers*>(Sigs::CSettingsScreen_CCTOR, this, pCGameSystemPointers);
+			ThisConstruct<Sigs::CSettingsScreen_CCTOR>(this, pCGameSystemPointers);
 		}
 
-		virtual ~CSettingsScreen() {};
+		~CSettingsScreen() override = default;
 	};
 
 	static_assert(sizeof(CSettingsScreen) == 0x29C);

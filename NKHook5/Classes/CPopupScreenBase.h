@@ -65,7 +65,7 @@ namespace NKHook5
 
 			};
 			CPopupScreenBase(CGameSystemPointers* pCGameSystemPointers, std::string screenName) : CBloonsBaseScreen() {
-				ThisCall<CPopupScreenBase*, CPopupScreenBase*, CGameSystemPointers*, std::string>(Sigs::CPopupScreenBase_CCTOR, this, pCGameSystemPointers, screenName);
+				ThisConstruct<Sigs::CPopupScreenBase_CCTOR>(this, pCGameSystemPointers, screenName);
 			}
 
 			//virtual void DrawForeground() {}
@@ -80,13 +80,13 @@ namespace NKHook5
 
 
 			void AddObject(CBasePositionableObject* object, int param_1) {
-				ThisCall<void, CPopupScreenBase*, CBasePositionableObject*, int>(Sigs::CPopupScreenBase_AddObject, this, object, param_1);
+				ThisCall<Sigs::CPopupScreenBase_AddObject>(&CPopupScreenBase::AddObject, this, object, param_1);
 			}
 			void AddNavButton(eNavButtonType type, std::string icon) {
-				ThisCall<void, CPopupScreenBase*, eNavButtonType, std::string>(Sigs::CPopupScreenBase_AddNavButton, this, type, icon);
+				ThisCall<Sigs::CPopupScreenBase_AddNavButton>(&CPopupScreenBase::AddNavButton, this, type, icon);
 			}
 			void* AddToPoppingList(CBasePositionableObject* object, CBasePositionableObject* parent, CBasePositionableObject* object_src, bool param_4) {
-				return ThisCall<void*, CPopupScreenBase*, CBasePositionableObject*, CBasePositionableObject*, CBasePositionableObject*,bool>(Sigs::CPopupScreenBase_AddToPoppingList, this, object, parent, object_src, param_4);
+				return ThisCall<Sigs::CPopupScreenBase_AddToPoppingList>(&CPopupScreenBase::AddToPoppingList, this, object, parent, object_src, param_4);
 			}
 		};
 

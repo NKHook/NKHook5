@@ -46,7 +46,7 @@ namespace NKHook5
 
 			void IncTowerRef(CBaseTower* tower)
 			{
-				return ThisCall<void, CStatusEffect*, CBaseTower*>(Sigs::CStatusEffect_IncTowerRef, this, tower);
+				return ThisCall<Sigs::CStatusEffect_IncTowerRef>(&CStatusEffect::IncTowerRef, this, tower);
 			}
 		};
 #pragma pack(pop)

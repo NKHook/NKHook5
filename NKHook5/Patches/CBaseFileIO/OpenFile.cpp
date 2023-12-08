@@ -17,77 +17,72 @@
 #include <filesystem>
 #include <string>
 
-namespace NKHook5
+
+namespace NKHook5::Patches::CBaseFileIO
 {
-    namespace Patches
-    {
-        namespace CBaseFileIO
-        {
-            using namespace Common;
-            using namespace Common::Extensions;
-            using namespace Common::Files;
-            using namespace Common::Logging;
-            using namespace Common::Logging::Logger;
-            using namespace NKHook5;
-            using namespace NKHook5::Assets;
-            using namespace NKHook5::Signatures;
-            namespace fs = std::filesystem;
+	using namespace Common;
+	using namespace Common::Extensions;
+	using namespace Common::Files;
+	using namespace Common::Logging;
+	using namespace Common::Logging::Logger;
+	using namespace NKHook5;
+	using namespace NKHook5::Assets;
+	using namespace NKHook5::Signatures;
+	namespace fs = std::filesystem;
 
-            static uint64_t o_func;
-            static Classes::CZipFile* assetsArchive;
-            Classes::IFile* __fastcall cb_hook(Classes::CBaseFileIO* pCBaseFileIO, int pad, std::string* assetPath, int policy, int eFileOpenMode) {
-                //return PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, assetPath, policy, eFileOpenMode);
-                /*
-                Because both CFile and CUnzippedFile implement IFile, maybe we can just return a CUnzippedFile?
-                */
+	static uint64_t o_func;
+	static Classes::CZipFile* assetsArchive;
+	Classes::IFile* __fastcall cb_hook(Classes::CBaseFileIO* pCBaseFileIO, int pad, const nfw::string& assetPath, int policy, int eFileOpenMode) {
+		//return PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, assetPath, policy, eFileOpenMode);
+		/*
+		Because both CFile and CUnzippedFile implement IFile, maybe we can just return a CUnzippedFile?
+		*/
 
-                //Get the extensions for the file
-                std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(*assetPath);
+		//Get the extensions for the file
+		std::vector<Extension*> extsForFile = ExtensionManager::GetByTarget(std::string(assetPath));
 
-                Classes::CUnzippedFile* pAsset = nullptr;
+		Classes::CUnzippedFile* pAsset = nullptr;
 
-                std::string archivePath = "./Assets/BTD5.jet";
-                if (assetsArchive == nullptr) {
-                    assetsArchive = new Classes::CZipFile();
-                    assetsArchive->Open(archivePath);
-                }
+		nfw::string archivePath = "./Assets/BTD5.jet";
+		if (assetsArchive == nullptr) {
+			assetsArchive = new Classes::CZipFile();
+			assetsArchive->Open(archivePath);
+		}
 
-                ghstl::string error;
-                pAsset = assetsArchive->LoadFrom(*assetPath, error);
+		nfw::string error;
+		pAsset = assetsArchive->LoadFrom(assetPath, error);
 #ifdef _DEBUG
-                if (error.length() > 0) {
-                    Print(LogLevel::ERR, "%s", error.c_str());
-                }
+		if (error.length() > 0) {
+			Print(LogLevel::ERR, "%s", error.c_str());
+		}
 #endif
 
-                //return pAsset;
+		//return pAsset;
 
-                /* Ok so calling this function un-corrupts the stack? */
-                Classes::CFile* resultFile = (Classes::CFile*)PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, assetPath, policy, eFileOpenMode);
-                /* But result file returns with the data of pAsset ?? which is good but the fuck? */
-                return resultFile;
-            }
+		/* Ok so calling this function un-corrupts the stack? */
+		auto* resultFile = (Classes::CFile*)PLH::FnCast(o_func, cb_hook)(pCBaseFileIO, pad, assetPath, policy, eFileOpenMode);
+		/* But result file returns with the data of pAsset ?? which is good but the fuck? */
+		return resultFile;
+	}
 
-            auto OpenFile::Apply() -> bool
-            {
-                const void* address = Signatures::GetAddressOf(Sigs::CBaseFileIO_OpenFile);
-                if (address)
-                {
-                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
-                    if (detour->hook())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-    }
+	auto OpenFile::Apply() -> bool
+	{
+		const void* address = Signatures::GetAddressOf(Sigs::CBaseFileIO_OpenFile);
+		if (address)
+		{
+			auto* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
+			if (detour->hook())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

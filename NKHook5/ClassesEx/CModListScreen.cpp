@@ -48,7 +48,7 @@ void __fastcall CModListScreen::InitLayout(CModListScreen* self, size_t pad, Cla
 void __fastcall CModListScreen::Hide(CModListScreen* self)
 {
 	self->screenState = Classes::eScreenState::HIDDEN;
-	Classes::CBaseScreen* mainMenu = self->basePointers.pCScreenManager->GetScreen("MainMenuScreen");
+	Classes::CBaseScreen* mainMenu = self->mScreenManager->GetScreen("MainMenuScreen");
 	void** menuvft = *(void***)mainMenu;
 	auto oddfunc = (void(__thiscall*)(CBaseScreen*))menuvft[26];
 	oddfunc(mainMenu);

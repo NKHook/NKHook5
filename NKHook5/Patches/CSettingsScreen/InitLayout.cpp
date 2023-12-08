@@ -29,7 +29,7 @@ namespace NKHook5::Patches::CSettingsScreen
 
 		//Add the NKHook version information text
 		std::string verInfoString("NKHook5 v" STRING(NKHOOK_BUILD_TAG) " (" STRING(NKHOOK_BUILD_VERSION) ")");
-		auto* verInfoText = new Classes::CTextObject({ 160, -100 }, self->screenFont, verInfoString);
+		auto* verInfoText = new Classes::CTextObject({ 160, -100 }, self->mScreenFont, verInfoString);
 		Classes::Vec2F textScale(0.5, 0.5);
 		verInfoText->Scale(textScale);
 		verInfoText->SetRotation(40);

@@ -18,6 +18,7 @@
 #include <stdint.h>
 #include <string>
 #include <sstream>
+#include <utility>
 #include <vector>
 
 namespace NKHook5
@@ -37,33 +38,31 @@ namespace NKHook5
 		};
 		static_assert(sizeof(eScreenState) == 0x4);
 
-		class CBaseScreen
+		class CBaseScreen : public IBasePointers
 		{
 		public:
-			//Commented for vtable char pad_0000[4]; //0x0000
-			IBasePointers basePointers; //0x0004
-			void* unknown_constructed; //0x0070
+			class N00002022* animations = nullptr; //0x0070
 			char pad_0074[4]; //0x0074
 			std::vector<CBaseScreen*> children; //0x0078
 			char pad_0084[4]; //0x0084
-			std::string screenName; //0x0088
-			CBaseScreen* parentScreen; //0x00A0
+			std::string mScreenName; //0x0088
+			class CBaseScreen* mParentScreen = nullptr; //0x00A0
 			eScreenState screenState; //0x00A4
 			char pad_00A8[8]; //0x00A8
-			boost::shared_ptr<CAssetBag> pAssetBag; //0x00B0
+			boost::shared_ptr<CAssetBag> mAssetBag; //0x00B0
 
 
 		public:
 			CBaseScreen() {}
 			CBaseScreen(std::string screenName) {
-				ThisCall<void, CBaseScreen*, std::string&>(Sigs::CBaseScreen_CCTOR, this, screenName);
+				ThisConstruct<Sigs::CBaseScreen_CCTOR>(this, std::move(screenName));
 			};
-			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData);
-			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, uint32_t* param_3);
-			void StartUsingAsset(eAssetType type, std::string& assetName);
-			CBaseScreen* GetScreen(std::string screenName);
+			void OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData, const uint32_t* param_3);
+			void _OpenPopup(class CPopupScreenBase* popupScreen, IScreenData* popupData);
+			void StartUsingAsset(const eAssetType& type, const std::string& assetName);
+			CBaseScreen* GetScreen(const std::string &screenName);
 
-			virtual ~CBaseScreen() {};
+			virtual ~CBaseScreen() = default;
 			virtual void _PreloadAssets() {};
 			virtual void Init(IScreenData* screenData) {};
 			virtual void Uninit() {};
@@ -89,7 +88,6 @@ namespace NKHook5
 			virtual void PrintTree(int param_1, std::stringstream outstream) {};
 		};
 
-		static_assert(sizeof(boost::shared_ptr<CAssetBag>) == 0x8);
 		static_assert(sizeof(CBaseScreen) == 0x00B8);
 	} // namespace Classes
 

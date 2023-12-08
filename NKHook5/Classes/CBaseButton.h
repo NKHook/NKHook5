@@ -29,7 +29,7 @@ namespace NKHook5 {
 
 			}
 			CBaseButton(CInput* input, std::string buttonName, size_t param_3 = 0) {
-				ThisCall<void, CBaseButton*, CInput*, std::string&, size_t>(Sigs::CBaseButton_CCTOR, this, input, buttonName, param_3);
+				ThisConstruct<Sigs::CBaseButton_CCTOR>(this, input, buttonName, param_3);
 			}
 		public:
 			virtual ~CBaseButton() {};

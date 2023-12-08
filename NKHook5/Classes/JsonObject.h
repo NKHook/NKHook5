@@ -33,7 +33,7 @@ namespace NKHook5::Classes {
 		nfw::map<std::string, JsonPropertyValue> dataMap; //0x0000
 	public:
 		uint32_t ReadBoolProperty(bool* result, ghstl::string propName) {
-			return ThisCall<uint32_t, JsonObject*, bool*, ghstl::string>(Sigs::JsonObject_ReadBoolProperty, this, result, propName);
+			return ThisCall<Sigs::JsonObject_ReadBoolProperty>(&JsonObject::ReadBoolProperty, this, result, propName);
 		}
 		[[nodiscard]] const JsonPropertyValue* Get(std::string key) const {
 			for (const auto& [prop, value] : dataMap) {

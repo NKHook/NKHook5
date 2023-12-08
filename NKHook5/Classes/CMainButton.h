@@ -26,7 +26,7 @@ namespace NKHook5::Classes {
 
 		}
 		CMainButton(CInput* input, IButtonDelegate* screen, std::string buttonName, std::string buttonText, SSpriteInfo* param_5, SSpriteInfo* param_6, SMainButtonStyle style) {
-			ThisCall<void, CMainButton*, CInput*, IButtonDelegate*, std::string&, std::string, SSpriteInfo*, SSpriteInfo*, SMainButtonStyle>(Sigs::CMainButton_CCTOR, this, input, screen, buttonName, buttonText, param_5, param_6, style);
+			ThisConstruct<Sigs::CMainButton_CCTOR>(this, input, screen, buttonName, buttonText, param_5, param_6, style);
 		}
 	};
 

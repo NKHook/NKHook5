@@ -2,12 +2,12 @@
 
 void* newframework_crt_malloc(size_t size) {
     //printf("Allocating %d bytes\n", size);
-    return CdeclCall<void*, size_t>(NKHook5::Signatures::Sigs::CRT_operator_new, size);
+    return CdeclCall<NKHook5::Signatures::Sigs::CRT_operator_new, void*>(size);
 }
 
 void newframework_crt_free(void* ptr) {
     //printf("Freeing %p\n", ptr);
-    return CdeclCall<void, void*>(NKHook5::Signatures::Sigs::CRT_free, ptr);
+    return CdeclCall<NKHook5::Signatures::Sigs::CRT_free, void>(ptr);
 }
 
 nfw::vtable_meta* nfw::vtable_get_meta_ptr(void* vtable) {

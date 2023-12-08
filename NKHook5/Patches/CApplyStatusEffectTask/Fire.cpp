@@ -51,7 +51,7 @@ namespace NKHook5
                         Print(LogLevel::ERR, "Failed to find a status effect with an ID of %llx", task->effectId);
                         return;
                     }
-                    ClassesEx::CInjectedStatusEffect* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, def->spriteInfo, def->texture, def->exceptMoab, task->gamePtrs->basePointers.textureManager, false, 0.2, 1.0);
+                    auto* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, def->spriteInfo, def->texture, def->exceptMoab, task->gamePtrs->mTextureManager, false, 0.2, 1.0);
                     if(task->tower)
                         effect->IncTowerRef(task->tower);
                     bloon->ApplyEffect(effect, !def->exceptMoab);
@@ -63,7 +63,7 @@ namespace NKHook5
                 const void* address = Signatures::GetAddressOf(Sigs::CApplyStatusEffectTask_Fire);
                 if (address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour((const uintptr_t)address, (const uintptr_t)&cb_hook, &o_func);
+                    auto* detour = new PLH::x86Detour((const uintptr_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if (detour->hook())
                     {
                         return true;
