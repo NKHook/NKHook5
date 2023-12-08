@@ -91,9 +91,25 @@ void Editor::Render() {
 						ImGui::InputFloat("Position X", &tower->mLocation.x);
 						ImGui::InputFloat("Position Y", &tower->mLocation.y);
 						ImGui::InputInt("Reference Count", &tower->mRefCount, ImGuiInputTextFlags_ReadOnly);
-
 						auto flagStr = std::format("{0} ({1})", tower->mTypeFlags, towerFactory->FlagToString(0, tower->mTypeFlags));
 						ImGui::InputText("Type Flags", const_cast<char*>(flagStr.c_str()), flagStr.size(), ImGuiInputTextFlags_ReadOnly);
+						ImGui::InputInt("Pop Count", &tower->mPopCount);
+						ImGui::Checkbox("Selected", &tower->mSelected);
+						ImGui::Checkbox("Sellable", &tower->mSellable);
+						ImGui::Checkbox("Upgradable", &tower->mUpgradable);
+						ImVec4 color = ImGui::ColorConvertU32ToFloat4(tower->mColor);
+						ImGui::ColorPicker4("Color", &color.x);
+						tower->mColor = ImGui::ColorConvertFloat4ToU32(color);
+						ImGui::Checkbox("Firing", &tower->mFiring);
+						ImGui::InputFloat("Lifetime", &tower->mLifetime);
+						ImGui::InputFloat("Time Alive", &tower->mAliveTime);
+						ImGui::Checkbox("Please Destroy", &tower->mPleaseDestroy);
+						ImGui::InputInt("Left Upgrades", &tower->mLeftUpgrades);
+						ImGui::InputInt("Right Upgrades", &tower->mRightUpgrades);
+						ImGui::InputInt("Sell Price", &tower->mSellPrice);
+						auto targetStr = std::format("{0} ({1})", tower->mTargetingFlags, towerFactory->FlagToString(1, tower->mTargetingFlags));
+						ImGui::InputScalar(std::format("Target {0}", targetStr).c_str(), ImGuiDataType_U64, &tower->mTargetingFlags);
+						ImGui::Checkbox("Hovered", &tower->mHovered);
 					}
 				}
 			}

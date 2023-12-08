@@ -33,7 +33,7 @@ namespace NKHook5::Classes
 		bool mUpgradable; //0x00F3
 		char pad_00F4[16]; //0x00F4
 		class CCompoundSprite* mSprite = nullptr; //0x0104
-		int32_t mColor; //0x0108
+		uint32_t mColor; //0x0108
 		char pad_010C[12]; //0x010C
 		bool mFiring; //0x0118
 		char pad_0119[11]; //0x0119
