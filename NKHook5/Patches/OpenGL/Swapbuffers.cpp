@@ -13,6 +13,8 @@ extern int32_t maxProjectileUpdates;
 extern int32_t maxBloonUpdates;
 extern int32_t bloonPassDenom;
 
+//#define SHOW_CAP_DEBUG
+
 bool g_initedImgui = false;
 uint64_t currentFrame = 0;
 namespace NKHook5
@@ -48,9 +50,8 @@ namespace NKHook5
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui::NewFrame();
 
-#ifdef _DEBUG
                 MenuEditor::Editor::Render();
-
+#if defined _DEBUG and defined SHOW_CAP_DEBUG
                 ImGui::Begin("Update cap test");
                 ImGui::InputInt("Projectile count cap", &maxProjectilesTotal, 1, 50);
                 ImGui::InputInt("Projectile update cap", &maxProjectileUpdates, 1, 50);

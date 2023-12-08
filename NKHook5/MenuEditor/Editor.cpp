@@ -54,9 +54,15 @@ void ScreenTree(Classes::CBaseScreen* screen) {
 }
 
 void Editor::Render() {
-	ImGui::ShowDemoWindow();
+	static bool show = false;
 
-	ImGui::Begin("NKHook5 Runtime Editor");
+	if(ImGui::IsKeyPressed(ImGuiKey_RightShift, false))
+		show = !show;
+
+	if(!show)
+		return;
+
+	ImGui::Begin("NKHook5 Runtime Editor", &show);
 	if(ImGui::CollapsingHeader("Screens"))
 	{
 		auto* screenManager = g_appPtr->mScreenManager;
