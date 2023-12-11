@@ -89,30 +89,18 @@ namespace h_rtti
 		return false;
 	}
 
-	size_t get_vtable(const std::string& table_name)
+	size_t get_vtable_from_descriptor(const std::string& type_descriptor_name)
 	{
 		auto base_address = (uintptr_t)GetModuleHandleA(NULL);
 		if (!base_address)
 			return 0;
-
-		// Type descriptor names look like this: .?AVC_CSPlayer@@ (so: ".?AV" + table_name + "@@")
-		std::string type_descriptor_name = ".?AV" + table_name + "@@";
 
 		// Convert the string to an IDA pattern so that we can pattern scan it
 		std::string ida_pattern = bytes_to_ida_pattern((byte*)type_descriptor_name.data(), type_descriptor_name.size());
 
 		auto rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern);
 		if (!rtti_type_descriptor) {
-			// If we fail, try again with AU
-			type_descriptor_name = ".?AU" + table_name + "@@";
-
-			// Convert the string to an IDA pattern so that we can pattern scan it
-			ida_pattern = bytes_to_ida_pattern((byte*)type_descriptor_name.data(), type_descriptor_name.size());
-
-			rtti_type_descriptor = (uintptr_t)NKHook5::Utils::FindPattern(ida_pattern);
-			if (!rtti_type_descriptor) {
-				return 0;
-			}
+			return 0;
 		}
 
 		// We're doing - 0x8 here, because the location of the rtti_type_descriptor is 0x8 bytes before the string (open up client_panorama.dll in IDA and take a look) 
@@ -167,5 +155,20 @@ namespace h_rtti
 
 		// We for some odd reason didn't find any valid xrefs
 		return 0;
+	}
+
+	size_t get_vtable(const std::string& table_name)
+	{
+		// Type descriptor names look like this: .?AVC_CSPlayer@@ (so: ".?AV" + table_name + "@@")
+		auto result = get_vtable_from_descriptor(".?AV" + table_name + "@@");
+		if(result != 0)
+			return result;
+
+		return get_vtable_from_descriptor(".?AU" + table_name + "@@");
+	}
+	template<typename type_t>
+	size_t get_vtable()
+	{
+		return get_vtable_from_descriptor(typeid(type_t).raw_name());
 	}
 }

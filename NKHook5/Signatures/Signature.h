@@ -36,6 +36,7 @@ namespace NKHook5::Signatures {
 		CBloonsTD5Game_CCTOR,
 		CBloonsTD5Game_LoadAssets,
 		/* CCollectableTask */
+		CCollectableTask_VTable,
 		CCollectableTask_Clone,
 		CCollectableTask_GiveContentsAndDie,
 		CCollectableTask_Update,

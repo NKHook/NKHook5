@@ -1,12 +1,9 @@
 #pragma once
 
-namespace NKHook5
+namespace NKHook5::Classes
 {
-	namespace Classes
+	template<typename T>
+	struct SFactoryData
 	{
-		template<typename T>
-		struct SFactoryData
-		{
-		};
-	}
+	};
 }

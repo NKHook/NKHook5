@@ -6,6 +6,7 @@
 namespace NKHook5::Classes {
 	class CCollectableTask : public CWeaponTask {
 	public:
+		static constexpr Sigs _vtable = Sigs::CCollectableTask_VTable;
 		char pad_0124[92]{}; //0x0124
 	public:
 		void GiveContentsAndDie() {

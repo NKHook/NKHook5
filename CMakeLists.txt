@@ -126,15 +126,34 @@ if(NOT libhat_POPULATED)
     add_subdirectory(${libhat_SOURCE_DIR} ${libhat_BINARY_DIR})
 endif()
 
-set(BOOST_INCLUDE_LIBRARIES container intrusive smart_ptr)
+set(BOOST_INCLUDE_LIBRARIES config container intrusive smart_ptr spirit variant)
 set(BOOST_ENABLE_CMAKE ON)
 FetchContent_Declare(
     Boost
     GIT_REPOSITORY https://github.com/boostorg/boost.git
     GIT_TAG boost-1.80.0
+    OVERRIDE_FIND_PACKAGE
 )
 FetchContent_MakeAvailable(Boost)
+set(Boost_INCLUDE_DIR ${Boost_SOURCE_DIR})
+set(Boost_ROOT ${Boost_SOURCE_DIR})
 
+FetchContent_Declare(
+        jsonspirit
+        GIT_REPOSITORY https://github.com/png85/json_spirit.git
+        GIT_TAG master
+)
+FetchContent_GetProperties(jsonspirit)
+if(NOT jsonspirit_POPULATED)
+    FetchContent_Populate(jsonspirit)
+    set(BUILD_STATIC_LIBRARIES ON)
+    set(BUILD_STATIC_LIBS ON)
+    set(JSON_SPIRIT_DEMOS OFF)
+    set(JSON_SPIRIT_TESTS OFF)
+    add_subdirectory(${jsonspirit_SOURCE_DIR} ${jsonspirit_BINARY_DIR})
+    target_include_directories(json_spirit PUBLIC ${jsonspirit_SOURCE_DIR})
+    target_link_libraries(json_spirit PRIVATE Boost::config Boost::smart_ptr Boost::spirit Boost::variant)
+endif()
 
 add_subdirectory(Common)
 add_subdirectory(DevKit)
