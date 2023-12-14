@@ -30,11 +30,11 @@ namespace NKHook5::Classes
 		CTextObject() {
 			ThisConstruct<Sigs::CTextObject_CCTOR_A>(this);
 		}
-		CTextObject(Vec2F position, boost::shared_ptr<CFont>& font, std::string text) {
-			ThisConstruct<Sigs::CTextObject_CCTOR_B>(this, position, font, std::move(text));
+		CTextObject(const Vec2F& position, const boost::shared_ptr<CFont>& font, const nfw::string& text) {
+			ThisConstruct<Sigs::CTextObject_CCTOR_B>(this, &position, &font, &text);
 		}
-		CTextObject(boost::shared_ptr<CFont>& font, std::string text) {
-			ThisConstruct<Sigs::CTextObject_CCTOR_C>(this, font, std::move(text));
+		CTextObject(const boost::shared_ptr<CFont>& font, const nfw::string& text) {
+			ThisConstruct<Sigs::CTextObject_CCTOR_C>(this, &font, &text);
 		}
 
 		~CTextObject() override = default;

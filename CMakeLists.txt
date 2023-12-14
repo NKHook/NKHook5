@@ -32,6 +32,7 @@ if(MSVC)
             $<$<CONFIG:>:/MT> #---------|
             $<$<CONFIG:Debug>:/MTd> #---|-- Statically link the runtime libraries
             $<$<CONFIG:Release>:/MT> #--|
+            $<$<CONFIG:RelWithDebInfo>:/MT> #--|
     )
 endif()
 
