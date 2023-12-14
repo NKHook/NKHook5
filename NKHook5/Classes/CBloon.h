@@ -39,7 +39,7 @@ namespace NKHook5::Classes {
 	public:
 		void ApplyEffect(class CStatusEffect* effect, bool damageMoabs)
 		{
-			return ThisCall<Sigs::CBloon_ApplyEffect>(&CBloon::ApplyEffect, this, effect, damageMoabs);
+			return ThisCall<Sigs::CBloon_ApplyEffect, &CBloon::ApplyEffect>(this, effect, damageMoabs);
 		}
 	};
 

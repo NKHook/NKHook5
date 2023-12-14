@@ -25,10 +25,10 @@ namespace NKHook5::Classes {
 			ThisConstruct<Sigs::CZipFile_CCTOR>(this);
 		}
 		bool Open(const nfw::string& archivePath, int param_2 = 0, int param_3 = 0) {
-			return ThisCall<Sigs::CZipFile_Open>(&CZipFile::Open, this, archivePath, param_2, param_3);
+			return ThisCall<Sigs::CZipFile_Open, &CZipFile::Open>(this, archivePath, param_2, param_3);
 		}
 		CUnzippedFile* _LoadFrom(const nfw::string& assetPath, const nfw::string& param_2, const nfw::string& archivePassword) {
-			return ThisCall<Sigs::CZipFile_LoadFrom>(&CZipFile::_LoadFrom, this, assetPath, param_2, archivePassword);
+			return ThisCall<Sigs::CZipFile_LoadFrom, &CZipFile::_LoadFrom>(this, assetPath, param_2, archivePassword);
 		}
 		CUnzippedFile* LoadFrom(const nfw::string& assetPath, const nfw::string& param_2) {
 			nfw::string password("Q%_{6#Px]]");

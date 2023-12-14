@@ -10,7 +10,7 @@ namespace NKHook5::Classes {
 		char pad_0124[92]{}; //0x0124
 	public:
 		void GiveContentsAndDie() {
-			return ThisCall<Sigs::CCollectableTask_GiveContentsAndDie>(&CCollectableTask::GiveContentsAndDie, this);
+			return ThisCall<Sigs::CCollectableTask_GiveContentsAndDie, &CCollectableTask::GiveContentsAndDie>(this);
 		}
 	};
 

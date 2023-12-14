@@ -29,9 +29,9 @@ namespace NKHook5 {
                     return resultInfo;
                 }
 
-                SheetsExtension* sheetsExt = (SheetsExtension*)ExtensionManager::GetByName("SheetsExtension");
+                auto* sheetsExt = (SheetsExtension*)ExtensionManager::GetByName("SheetsExtension");
                 const std::vector<std::string>& sheetNames = sheetsExt->GetSheetNames();
-                for (std::string textureName : sheetNames) {
+                for (const auto& textureName : sheetNames) {
                     resultInfo = PLH::FnCast(o_func, cb_hook)(self, pad, textureName, spriteName);
 
                     if (resultInfo->texture != nullptr && resultInfo->texture->texture_name != "error")
@@ -47,7 +47,7 @@ namespace NKHook5 {
                 const void* address = Signatures::GetAddressOf(Sigs::CTextureManager_GetSpriteInfoPtr);
                 if (address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
+                    auto* detour = new PLH::x86Detour((const uint64_t)address, (const uintptr_t)&cb_hook, &o_func);
                     if (detour->hook())
                     {
                         return true;

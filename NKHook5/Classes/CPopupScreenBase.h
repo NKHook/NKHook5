@@ -80,13 +80,13 @@ namespace NKHook5
 
 
 			void AddObject(CBasePositionableObject* object, int param_1) {
-				ThisCall<Sigs::CPopupScreenBase_AddObject>(&CPopupScreenBase::AddObject, this, object, param_1);
+				ThisCall<Sigs::CPopupScreenBase_AddObject, &CPopupScreenBase::AddObject>(this, object, param_1);
 			}
 			void AddNavButton(eNavButtonType type, std::string icon) {
-				ThisCall<Sigs::CPopupScreenBase_AddNavButton>(&CPopupScreenBase::AddNavButton, this, type, icon);
+				ThisCall<Sigs::CPopupScreenBase_AddNavButton, &CPopupScreenBase::AddNavButton>(this, type, icon);
 			}
 			void* AddToPoppingList(CBasePositionableObject* object, CBasePositionableObject* parent, CBasePositionableObject* object_src, bool param_4) {
-				return ThisCall<Sigs::CPopupScreenBase_AddToPoppingList>(&CPopupScreenBase::AddToPoppingList, this, object, parent, object_src, param_4);
+				return ThisCall<Sigs::CPopupScreenBase_AddToPoppingList, &CPopupScreenBase::AddToPoppingList>(this, object, parent, object_src, param_4);
 			}
 		};
 

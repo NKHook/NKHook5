@@ -9,6 +9,7 @@ namespace NKHook5::Signatures {
 		CApplyStatusEffectTask_VTable,
 		CApplyStatusEffectTask_Fire,
 		/* CAssetBag */
+		CAssetBag_StartUsing,
 		/* CBaseButton */
 		CBaseButton_VTable,
 		CBaseButton_CCTOR,

@@ -95,10 +95,10 @@ namespace NKHook5::Classes
 		virtual void SetAlignY(float y) {}
 		virtual void SetAlignXY(Vec2F alignment) {}
 		virtual const class Vec3F& GetLocation(class Vec3F& location) const { return location; };
-		virtual const class Vec3F& GetLocation() const { Vec3F a; return a; };
-		virtual const float& GetLocationX() const { float a; return a; };
-		virtual const float& GetLocationY() const { float a; return a; };
-		virtual const float& GetLocationZ() const { float a; return a; };
+		[[nodiscard]] virtual const class Vec3F& GetLocation() const { return this->mLocation; };
+		[[nodiscard]] virtual const float& GetLocationX() const { return this->mLocation.x; };
+		[[nodiscard]] virtual const float& GetLocationY() const { return this->mLocation.y; };
+		[[nodiscard]] virtual const float& GetLocationZ() const { return this->mLocation.z; };
 		virtual const class Vec2F& GetScale(class Vec2F& scale) const { return scale; }
 		virtual float GetScaleX() { return 0.0f; }
 		virtual float GetScaleY() { return 0.0f; }

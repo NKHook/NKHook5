@@ -42,6 +42,10 @@ void Signatures::FindAll() {
 	/* CApplyStatusEffectTask */
 	pointerMap[Sigs::CApplyStatusEffectTask_VTable] = (void*)h_rtti::get_vtable("CApplyStatusEffectTask");
 	pointerMap[Sigs::CApplyStatusEffectTask_Fire] = VT_IDX(Sigs::CApplyStatusEffectTask_VTable, 50);
+	/* CAssetBag */
+	pointerMap[Sigs::CAssetBag_StartUsing] = Signatures::FindFirst(1,
+		"55 8b ec 6a ?? 68 ?? ?? ?? ?? 64 a1 ?? ?? ?? ?? 50 83 ec ?? a1 ?? ?? ?? ?? 33 c5 89 45 ?? 53 56 57 50 8d 45 ?? 64 a3 ?? ?? ?? ?? 8b f9 8b 5d ?? 8d 47"
+	);
 	/* CBaseButton */
 	pointerMap[Sigs::CBaseButton_VTable] = (void*)h_rtti::get_vtable("CBaseButton");
 	pointerMap[Sigs::CBaseButton_CCTOR] = Signatures::FindFirst(1,

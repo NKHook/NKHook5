@@ -16,5 +16,5 @@ CSprite::CSprite(SSpriteInfo* spriteInfo, bool param_2, Vec2F location, bool van
 
 void CSprite::SetTexture(SSpriteInfo* info, bool unk)
 {
-	ThisCall<Sigs::CSprite_SetTexture>(&CSprite::SetTexture, this, info, unk);
+	ThisCall<Sigs::CSprite_SetTexture, &CSprite::SetTexture>(this, info, unk);
 }

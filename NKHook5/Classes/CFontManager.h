@@ -13,7 +13,7 @@ namespace NKHook5::Classes {
 	class CFontManager : public IFontImporter {
 	public:
 		boost::shared_ptr<CFont>* GetFont(boost::shared_ptr<CFont>* resultFont, const nfw::string& fontName) {
-			return ThisCall<Sigs::CFontManager_GetFont>(&CFontManager::GetFont, this, resultFont, fontName);
+			return ThisCall<Sigs::CFontManager_GetFont, &CFontManager::GetFont>(this, resultFont, fontName);
 		};
 	};
 }

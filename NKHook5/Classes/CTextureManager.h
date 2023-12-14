@@ -17,7 +17,7 @@ namespace NKHook5::Classes {
 		char pad_0004[188]; //0x0004
 	public:
 		SSpriteInfo* GetSpriteInfoPtr(const std::string& spritesheetName, const std::string& spriteName) {
-			return ThisCall<Sigs::CTextureManager_GetSpriteInfoPtr>(&CTextureManager::GetSpriteInfoPtr, this, spritesheetName, spriteName);
+			return ThisCall<Sigs::CTextureManager_GetSpriteInfoPtr, &CTextureManager::GetSpriteInfoPtr>(this, spritesheetName, spriteName);
 		}
 	};
 }

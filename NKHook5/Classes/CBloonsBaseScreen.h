@@ -29,7 +29,7 @@ namespace NKHook5::Classes
 		CBloonsBaseScreen() : CBaseScreen() {
 
 		}
-		CBloonsBaseScreen(const std::string& screenName, CGameSystemPointers* pCGameSystemPointers) : CBaseScreen(screenName)  {
+		CBloonsBaseScreen(const nfw::string& screenName, CGameSystemPointers* pCGameSystemPointers) : CBaseScreen(screenName)  {
 			ThisConstruct<Sigs::CBloonsBaseScreen_CCTOR>(this, screenName, pCGameSystemPointers);
 		}
 		virtual ~CBloonsBaseScreen() {};
