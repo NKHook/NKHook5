@@ -25,7 +25,7 @@ namespace NKHook5::Patches::CBloonsBaseScreen
 		auto ofn = std::bit_cast<decltype(&Init::cb_hook)>(reinterpret_cast<void*>(o_func));
 		(this->*ofn)(pScreenData);
 
-		auto* sheetsExt = dynamic_cast<SheetsExtension*>(ExtensionManager::GetByName("SheetsExtension"));
+		auto* sheetsExt = ExtensionManager::Get<SheetsExtension>();
 		const std::vector<std::string>& sheetNames = sheetsExt->GetSheetNames();
 		for (const auto& textureName : sheetNames) {
 			nfw::string nfwName(textureName);
