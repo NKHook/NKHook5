@@ -1,6 +1,5 @@
 #include "GetTowerName.h"
 
-#include <ghstl/string>
 #include "../../Classes/CTowerFactory.h"
 #include "../../Signatures/Signature.h"
 
@@ -13,7 +12,7 @@ namespace NKHook5
             using namespace Signatures;
 
             static uint64_t o_func;
-            void* __fastcall cb_hook(Classes::CTowerFactory* self, void* pad, std::string* out_name, uint64_t flagId)
+            void* __fastcall cb_hook(Classes::CTowerFactory* self, void* pad, nfw::string* out_name, uint64_t flagId)
             {
                 return PLH::FnCast(o_func, &cb_hook)(self, pad, out_name, flagId);
             }

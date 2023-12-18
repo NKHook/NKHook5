@@ -1,25 +1,24 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
 #include "../IPatch.h"
 #include "../../Utils.h"
 
-namespace NKHook5
+namespace NKHook5::Patches::CBaseFileIO
 {
-    namespace Patches
-    {
-        namespace CBaseFileIO
-        {
-            class FileExists : public IPatch
-            {
-            public:
-                FileExists() : IPatch("CBaseFileIO::FileExists")
-                {
+	class FileExists : public IPatch
+	{
+		bool cb_hook(const nfw::string& assetPath, int policy);
 
-                }
-                auto Apply() -> bool override;
-            };
-        } // namespace CLoc
+	public:
+		FileExists() : IPatch("CBaseFileIO::FileExists")
+		{
 
-    } // namespace Patches
+		}
+		auto Apply() -> bool override;
+	};
+}
 
-} // namespace NKHook5
+
+
+

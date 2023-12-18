@@ -1,25 +1,22 @@
 #pragma once
 
-#include <stdint.h>
-#include <string>
-#include <map>
+#include "NewFramework.h"
 
-namespace NKHook5 {
-	namespace Util {
-		class FlagManager {
-			std::map<uint64_t, std::string> flags;
-		public:
-			FlagManager();
-			//Registers at a specific ID
-			void Register(uint64_t numeric, std::string text);
-			//Registers at the next available ID
-			uint64_t Register(std::string text);
-			//Slowly check if the id is available
-			bool IsIDAvailable(uint64_t id);
-			bool IsVanilla(uint64_t id);
-			uint64_t GetFlag(std::string name);
-			std::string GetName(uint64_t flag);
-			const std::map<uint64_t, std::string>& GetAll();
-		};
-	}
+namespace NKHook5::Util {
+	class FlagManager {
+		nfw::map<uint64_t, nfw::string> flags;
+	public:
+		static bool IsVanilla(uint64_t id);
+
+		FlagManager();
+		//Registers at a specific ID
+		void Register(uint64_t numeric, const nfw::string& text);
+		//Registers at the next available ID
+		uint64_t Register(const nfw::string& text);
+		//Slowly check if the id is available
+		bool IsIDAvailable(uint64_t id);
+		uint64_t GetFlag(const nfw::string& name);
+		nfw::string GetName(uint64_t flag);
+		const nfw::map<uint64_t, nfw::string>& GetAll();
+	};
 }

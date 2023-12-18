@@ -5,7 +5,6 @@
 #include "../../Util/NewFramework.h"
 #include "../../Signatures/Signature.h"
 #include "Macro.h"
-#include <ghstl/string>
 
 namespace NKHook5::Classes {
 	using namespace NKHook5;

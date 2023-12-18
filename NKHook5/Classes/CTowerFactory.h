@@ -92,6 +92,11 @@ namespace NKHook5
         {
         public:
             char pad_0060[72]; //0x0060
+
+			STowerInfo* GetTowerInfo(TowerIDs id)
+			{
+				return ThisCall<Sigs::CTowerFactory_GetTowerInfo, &CTowerFactory::GetTowerInfo>(this, id);
+			}
         }; //Size: 0x0A4
 
         static_assert(sizeof(CBaseFactory<STowerInfo, CBaseTower>) == 0x50);

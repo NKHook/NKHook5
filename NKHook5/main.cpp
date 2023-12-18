@@ -53,7 +53,7 @@ int initialize() {
 
     Print(LogLevel::INFO, "Loading Extensions...");
     Common::Extensions::ExtensionManager::AddAll();
-    Common::Extensions::ExtensionManager::AddExtension(new NKHook5::Extensions::StatusEffect::StatusDefinitionsExt());
+    Common::Extensions::ExtensionManager::AddExtension<NKHook5::Extensions::StatusEffect::StatusDefinitionsExt>();
     Print(LogLevel::INFO, "All extensions loaded!");
 
     Print(LogLevel::INFO, "Loading all patches...");

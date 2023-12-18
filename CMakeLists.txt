@@ -50,17 +50,6 @@ if(NOT plh_POPULATED)
 endif()
 
 FetchContent_Declare(
-    ghstl
-    GIT_REPOSITORY https://github.com/DisabledMallis/GHSTL.git
-    GIT_TAG main
-)
-FetchContent_GetProperties(ghstl)
-if(NOT ghstl_POPULATED)
-    FetchContent_Populate(ghstl)
-    add_subdirectory(${ghstl_SOURCE_DIR} ${ghstl_BINARY_DIR})
-endif()
-
-FetchContent_Declare(
     json
     GIT_REPOSITORY https://github.com/nlohmann/json.git
     GIT_TAG master

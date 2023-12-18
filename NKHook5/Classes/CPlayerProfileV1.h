@@ -2,7 +2,6 @@
 
 #include "Macro.h"
 #include "../../Util/NewFramework.h"
-#include <ghstl/string>
 #include <map>
 
 namespace NKHook5 {

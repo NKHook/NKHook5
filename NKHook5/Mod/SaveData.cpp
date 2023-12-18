@@ -31,7 +31,7 @@ SaveData* SaveData::GetInstance()
 	return instance;
 }
 
-bool SaveData::Load(fs::path saveFile)
+bool SaveData::Load(const fs::path& saveFile)
 {
 	Print(LogLevel::INFO, "Loading custom save data...");
 	if (!fs::exists(saveFile)) {
@@ -46,12 +46,12 @@ bool SaveData::Load(fs::path saveFile)
 		Print(LogLevel::ERR, "Couldn't load save file: saveData is not an object!");
 		return false;
 	}
-	nlohmann::json& towerUnlocks = saveData["towerUnlocks"];
-	if (!towerUnlocks.is_array()) {
+	nlohmann::json& unlocksJson = saveData["towerUnlocks"];
+	if (!unlocksJson.is_array()) {
 		Print(LogLevel::ERR, "Couldn't load save file: towerUnlocks is not an array!");
 		return false;
 	}
-	for (const auto& unlock : towerUnlocks) {
+	for (const auto& unlock : unlocksJson) {
 		if (!unlock.is_object()) {
 			Print(LogLevel::WARNING, "Failed to read a tower unlock: it was not an object");
 			continue;
@@ -64,7 +64,7 @@ bool SaveData::Load(fs::path saveFile)
 			Print(LogLevel::WARNING, "Failed to read a tower unlock: the status is not a boolean!");
 			continue;
 		}
-		std::string towerName = unlock["towerName"];
+		nfw::string towerName = unlock["towerName"];
 		bool unlocked = unlock["unlocked"];
 
 		this->towerUnlocks[towerName] = unlocked;
@@ -73,7 +73,7 @@ bool SaveData::Load(fs::path saveFile)
 	return true;
 }
 
-bool SaveData::Save(fs::path saveFile)
+bool SaveData::Save(const fs::path& saveFile)
 {
 	Print(LogLevel::INFO, "Saving custom save data...");
 	nlohmann::json saveData = nlohmann::json::object();
@@ -96,12 +96,12 @@ bool SaveData::Save(fs::path saveFile)
 	return true;
 }
 
-bool SaveData::IsTowerUnlocked(std::string towerName)
+bool SaveData::IsTowerUnlocked(const nfw::string& towerName)
 {
 	return this->towerUnlocks[towerName];
 }
 
-void SaveData::SetTowerUnlocked(std::string towerName, bool status)
+void SaveData::SetTowerUnlocked(const nfw::string& towerName, bool status)
 {
 	this->towerUnlocks[towerName] = status;
 }

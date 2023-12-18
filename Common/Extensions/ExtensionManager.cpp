@@ -14,30 +14,19 @@
 using namespace Common::Extensions;
 using namespace Common::Logging::Logger;
 
-static std::vector<Extension*> extensions;
-
 void ExtensionManager::AddAll()
 {
-	ExtensionManager::AddExtension(new Bloon::BloonFlagExt());
-	ExtensionManager::AddExtension(new Generic::MergeIgnoreExtension());
-	ExtensionManager::AddExtension(new StatusEffect::StatusFlagsExt());
-	ExtensionManager::AddExtension(new Textures::SheetsExtension());
-	ExtensionManager::AddExtension(new Tower::TowerFlagExt());
-	ExtensionManager::AddExtension(new Weapon::WeaponFlagsExt());
+	ExtensionManager::AddExtension<Bloon::BloonFlagExt>();
+	ExtensionManager::AddExtension<Generic::MergeIgnoreExtension>();
+	ExtensionManager::AddExtension<StatusEffect::StatusFlagsExt>();
+	ExtensionManager::AddExtension<Textures::SheetsExtension>();
+	ExtensionManager::AddExtension<Tower::TowerFlagExt>();
+	ExtensionManager::AddExtension<Weapon::WeaponFlagsExt>();
 }
 
-void ExtensionManager::AddExtension(Extension* toAdd)
-{
-	Print(LogLevel::INFO, "Adding extension '%s' for target '%s'", toAdd->GetName().c_str(), toAdd->GetTarget().c_str());
-	if (GetByName(toAdd->GetName())) {
-		Print(LogLevel::ERR, "Cannot add extension '%s', the name is not unique!", toAdd->GetName().c_str());
-	}
-	extensions.push_back(toAdd);
-	Print(LogLevel::INFO, "Added!");
-}
-
-Extension* ExtensionManager::GetByName(std::string name) {
-	for (Extension* extension : extensions) {
+Extension* ExtensionManager::GetByName(const std::string& name) {
+	for (auto** storage : storages) {
+		auto* extension = *storage;
 		if (extension->GetName() == name) {
 			return extension;
 		}
@@ -45,10 +34,11 @@ Extension* ExtensionManager::GetByName(std::string name) {
 	return nullptr;
 }
 
-std::vector<Extension*> ExtensionManager::GetByTarget(std::string target)
+std::vector<Extension*> ExtensionManager::GetByTarget(const std::string& target)
 {
 	std::vector<Extension*> results;
-	for (Extension* extension : extensions) {
+	for (auto** storage : storages) {
+		auto* extension = *storage;
 		if (extension->GetTarget() == target) {
 			results.push_back(extension);
 		}
@@ -59,7 +49,8 @@ std::vector<Extension*> ExtensionManager::GetByTarget(std::string target)
 std::vector<Extension*> ExtensionManager::GetCustomDocuments()
 {
 	std::vector<Extension*> results;
-	for (Extension* extension : extensions) {
+	for (auto** storage : storages) {
+		auto* extension = *storage;
 		if (extension->IsCustomDocument()) {
 			results.push_back(extension);
 		}

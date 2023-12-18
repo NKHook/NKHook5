@@ -1,23 +1,22 @@
 #pragma once
 
+#include "../../Classes/CTowerFactory.h"
 #include "../IPatch.h"
 #include "../../Utils.h"
 
-namespace NKHook5
+namespace NKHook5::Patches::CTowerFactory
 {
-    namespace Patches
-    {
-        namespace CTowerFactory
-        {
-            class Constructor : public IPatch
-            {
-            public:
-                Constructor() : IPatch("CTowerFactory::Constructor")
-                {
+	using namespace NKHook5;
 
-                }
-                auto Apply() -> bool override;
-            };
-        }
-    }
+	class Constructor : public IPatch
+	{
+		Classes::CTowerFactory* cb_hook(void* param_1, void* param_2);
+	public:
+		Constructor() : IPatch("CTowerFactory::Constructor")
+		{
+
+		}
+		auto Apply() -> bool override;
+	};
 }
+

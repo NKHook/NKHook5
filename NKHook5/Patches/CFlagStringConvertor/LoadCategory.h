@@ -1,25 +1,24 @@
 #pragma once
 
+#include "../../Util/NewFramework.h"
 #include "../IPatch.h"
 #include "../../Utils.h"
 
-namespace NKHook5
+namespace NKHook5::Patches::CFlagStringConvertor
 {
-    namespace Patches
-    {
-        namespace CFlagStringConvertor
-        {
-            class LoadCategory : public IPatch
-            {
-            public:
-                LoadCategory() : IPatch("CFlagStringConvertor::LoadCategory")
-                {
+	class LoadCategory : public IPatch
+	{
+		void* cb_hook(int category, nfw::string* stringList, size_t stringCount, int indexMode);
 
-                }
-                auto Apply() -> bool override;
-            };
-        } // namespace FlagToString
+	public:
+		LoadCategory() : IPatch("CFlagStringConvertor::LoadCategory")
+		{
+
+		}
+		auto Apply() -> bool override;
+	};
+} // namespace FlagToString
         
-    } // namespace Patches
+
     
-} // namespace NKHook5
+

@@ -1,27 +1,19 @@
-#ifndef NKHOOK5_PATCHES_CFLAGSTRINGCONVERTOR_STRINGTOFLAG
-#define NKHOOK5_PATCHES_CFLAGSTRINGCONVERTOR_STRINGTOFLAG
+#pragma once
 
+#include "../../Util/NewFramework.h"
 #include "../IPatch.h"
 #include "../../Utils.h"
 
-namespace NKHook5
+namespace NKHook5::Patches::CFlagStringConvertor
 {
-    namespace Patches
-    {
-        namespace CFlagStringConvertor
-        {
-            class StringToFlag : public IPatch
-            {
-            public:
-                StringToFlag() : IPatch("CFlagStringConvertor::StringToFlag")
-                {
+	class StringToFlag : public IPatch
+	{
+		uint64_t cb_hook(int categoryId, nfw::string* textId);
+	public:
+		StringToFlag() : IPatch("CFlagStringConvertor::StringToFlag")
+		{
 
-                }
-                auto Apply() -> bool override;
-            };
-        } // namespace FlagToString
-        
-    } // namespace Patches
-    
-} // namespace NKHook5
-#endif /* NKHOOK5_PATCHES_CFLAGSTRINGCONVERTOR_STRINGTOFLAG */
+		}
+		auto Apply() -> bool override;
+	};
+} // namespace FlagToString

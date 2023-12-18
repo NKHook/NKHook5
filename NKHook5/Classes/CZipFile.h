@@ -2,7 +2,6 @@
 
 #include "../../Util/NewFramework.h"
 #include "Macro.h"
-#include <ghstl/string>
 
 #include "CUnzippedFile.h"
 #include "../../Signatures/Signature.h"

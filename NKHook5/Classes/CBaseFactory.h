@@ -23,7 +23,7 @@ namespace NKHook5::Classes {
 		std::string definitionsDir; //0x0038
 
 		virtual ~CBaseFactory() = default;
-		virtual void KONG_FUN_005a11c0() = 0;
-		virtual InfoType* GetInfo(std::map<std::string, json_spirit::Value>);
+		virtual InfoType* GetInfo(std::string file) = 0;
+		virtual InfoType* GetInfo(std::map<std::string, json_spirit::Value> json) = 0;
 	}; //Size: 0x0054
 }

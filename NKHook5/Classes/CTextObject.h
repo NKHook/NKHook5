@@ -22,7 +22,7 @@ namespace NKHook5::Classes
 		overload_allocators
 
 	public:
-		ghstl::string mText; //0x00C8
+		nfw::string mText; //0x00C8
 		char pad_00E0[80]{}; //0x00E0
 		int32_t unknownRenderRuleSetZero{}; //0x0130
 		char pad_0134[32]{}; //0x0134

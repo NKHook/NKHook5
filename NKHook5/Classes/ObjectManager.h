@@ -8,7 +8,7 @@ namespace NKHook5::Classes {
 	template<typename T>
 	class ObjectManager {
 	public:
-		std::vector<T> objects;
+		nfw::vector<T> objects;
 		CGameSystemPointers* mPointers = nullptr;
 	public:
 		virtual ~ObjectManager() = default;

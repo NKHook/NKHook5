@@ -22,7 +22,7 @@ namespace NKHook5
             using namespace Common::Logging::Logger;
 
             static uint64_t o_func;
-            bool __fastcall cb_hook(Classes::CPlayerProfileV1* profile, int pad, class CBaseFileIO* pFileIO, ghstl::string fileName, bool param_3) {
+            bool __fastcall cb_hook(Classes::CPlayerProfileV1* profile, int pad, class CBaseFileIO* pFileIO, nfw::string fileName, bool param_3) {
                 bool result = PLH::FnCast(o_func, &cb_hook)(profile, pad, pFileIO, fileName, param_3);
                 /*SaveData* customData = SaveData::GetInstance();
                 customData->Load("./Modded.save");*/
