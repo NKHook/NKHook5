@@ -41,7 +41,7 @@ namespace NKHook5::Patches::CApplyStatusEffectTask
 			const StatusDefinition* def = nullptr;
 			for (const auto& definition : statusDefs->GetDefinitions())
 			{
-				if (task->effectId == g_bloonStatusFlags.GetFlag(nfw::string(definition.type)))
+				if (task->effectId == g_bloonStatusFlags.GetFlag(definition.type))
 				{
 					def = &definition;
 					break;

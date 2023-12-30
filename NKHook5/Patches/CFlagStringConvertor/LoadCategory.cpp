@@ -53,14 +53,14 @@ namespace NKHook5::Patches::CFlagStringConvertor
 				Print(LogLevel::INFO, "Copying old types...");
 				for (int i = 0; i < stringCount; i++) {
 					uint64_t numericId = static_cast<uint64_t>(1) << i;
-					g_towerFlags.Register(numericId, stringList[i]);
-					allTowers.push_back(stringList[i]);
+					g_towerFlags.Register(numericId, std::string(stringList[i]));
+					allTowers.emplace_back(stringList[i]);
 					Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
 				}
 				Print(LogLevel::INFO, "Old types copied!");
 				Print(LogLevel::INFO, "Injecting new types...");
 				for (const std::string& flagDef : towerFlagExt->GetFlags()) {
-					uint64_t moddedSlot = g_towerFlags.Register(nfw::string(flagDef));
+					uint64_t moddedSlot = g_towerFlags.Register(flagDef);
 					allTowers.emplace_back(flagDef);
 					Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
 				}
@@ -85,14 +85,14 @@ namespace NKHook5::Patches::CFlagStringConvertor
 				Print(LogLevel::INFO, "Copying old types...");
 				for (int i = 0; i < stringCount; i++) {
 					uint64_t numericId = static_cast<uint64_t>(1) << i;
-					g_bloonFlags.Register(numericId, stringList[i]);
-					allBloons.push_back(stringList[i]);
+					g_bloonFlags.Register(numericId, std::string(stringList[i]));
+					allBloons.emplace_back(stringList[i]);
 					Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
 				}
 				Print(LogLevel::INFO, "Old types copied!");
 				Print(LogLevel::INFO, "Injecting new types...");
 				for (const std::string& flagDef : bloonFlagExt->GetFlags()) {
-					uint64_t moddedSlot = g_bloonFlags.Register(nfw::string(flagDef));
+					uint64_t moddedSlot = g_bloonFlags.Register(flagDef);
 					allBloons.emplace_back(flagDef);
 					Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
 				}
@@ -108,14 +108,14 @@ namespace NKHook5::Patches::CFlagStringConvertor
 				Print(LogLevel::INFO, "Copying old types...");
 				for (int i = 0; i < stringCount; i++) {
 					uint64_t numericId = static_cast<uint64_t>(1) << i;
-					g_bloonStatusFlags.Register(numericId, stringList[i]);
+					g_bloonStatusFlags.Register(numericId, std::string(stringList[i]));
 					allEffects.emplace_back(stringList[i]);
 					Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
 				}
 				Print(LogLevel::INFO, "Old types copied!");
 				Print(LogLevel::INFO, "Injecting new types...");
 				for (const std::string& flagDef : statusFlagExt->GetFlags()) {
-					uint64_t moddedSlot = g_bloonStatusFlags.Register(nfw::string(flagDef));
+					uint64_t moddedSlot = g_bloonStatusFlags.Register(flagDef);
 					allEffects.emplace_back(flagDef);
 					Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
 				}
@@ -139,14 +139,14 @@ namespace NKHook5::Patches::CFlagStringConvertor
 				Print(LogLevel::INFO, "Copying old types...");
 				for (int i = 0; i < stringCount; i++) {
 					//We want all slots to use the custom slot system since there are more than can fit in the flag system
-					uint64_t numericId = g_weaponFlags.Register(stringList[i]);
+					uint64_t numericId = g_weaponFlags.Register(std::string(stringList[i]));
 					allWeapons.push_back(stringList[i]);
 					Print(LogLevel::INFO, "Copied '%s' to slot '%llx'", stringList[i].c_str(), numericId);
 				}
 				Print(LogLevel::INFO, "Old types copied!");
 				Print(LogLevel::INFO, "Injecting new types...");
 				for (const std::string& flagDef : weaponFlagExt->GetFlags()) {
-					uint64_t moddedSlot = g_weaponFlags.Register(nfw::string(flagDef));
+					uint64_t moddedSlot = g_weaponFlags.Register(flagDef);
 					allWeapons.emplace_back(flagDef);
 					Print(LogLevel::INFO, "Injected '%s' at slot '%llx'", flagDef.c_str(), moddedSlot);
 				}

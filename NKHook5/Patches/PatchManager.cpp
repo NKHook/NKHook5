@@ -17,8 +17,6 @@
 #include "CFlagStringConvertor/LoadCategory.h"
 #include "CFlagStringConvertor/StringToFlag.h"
 //#include "CGameScreen/Init.h"
-#include "CLoc/FindText.h"
-#include "CLoc/GetText.h"
 #include "CPlayerProfileV1/InternalLoad.h"
 #include "CPlayerProfileV1/Save.h"
 #include "CProjectile/Clone.h"
@@ -28,7 +26,6 @@
 #include "CSettingsScreen/Process.h"
 #include "CTextureManager/GetSpriteInfoPtr.h"
 #include "CTowerFactory/Constructor.h"
-#include "CTowerFactory/GetTowerInfo.h"
 #include "CTowerFactory/GetTowerName.h"
 #include "CWeapon/Fire.h"
 #include "CWeaponFactory/Constructor.h"
@@ -61,8 +58,6 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());
     //PatchManager::ApplyPatch(new CGameScreen::Init());
-    PatchManager::ApplyPatch(new CLoc::FindText());
-    PatchManager::ApplyPatch(new CLoc::GetText());
     PatchManager::ApplyPatch(new CPlayerProfileV1::InternalLoad());
     //PatchManager::ApplyPatch(new CPlayerProfileV1::Save());
     PatchManager::ApplyPatch(new CProjectile::Clone());
@@ -72,7 +67,6 @@ void PatchManager::ApplyAll()
     //PatchManager::ApplyPatch(new CSettingsScreen::Process());
     PatchManager::ApplyPatch(new CTextureManager::GetSpriteInfoPtr());
     PatchManager::ApplyPatch(new CTowerFactory::Constructor());
-    PatchManager::ApplyPatch(new CTowerFactory::GetTowerInfo());
     //PatchManager::ApplyPatch(new CTowerFactory::GetTowerName());
     //PatchManager::ApplyPatch(new CWeapon::Fire());
     PatchManager::ApplyPatch(new CWeaponFactory::Constructor());

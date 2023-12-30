@@ -29,7 +29,7 @@ namespace NKHook5::Patches::CFlagStringConvertor
 
 		if (self == g_towerFactory) {
 			if (categoryId == 0) {
-				result = g_towerFlags.GetFlag(*textId);
+				result = g_towerFlags.GetFlag(std::string(*textId));
 			}
 		}
 
@@ -37,11 +37,11 @@ namespace NKHook5::Patches::CFlagStringConvertor
 		{
 			if (categoryId == 0)
 			{
-				result = g_bloonFlags.GetFlag(*textId);
+				result = g_bloonFlags.GetFlag(std::string(*textId));
 			}
 			if (categoryId == 1)
 			{
-				result = g_bloonStatusFlags.GetFlag(*textId);
+				result = g_bloonStatusFlags.GetFlag(std::string(*textId));
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace NKHook5::Patches::CFlagStringConvertor
 		{
 			if (categoryId == 0)
 			{
-				result = g_weaponFlags.GetFlag(*textId);
+				result = g_weaponFlags.GetFlag(std::string(*textId));
 			}
 		}
 

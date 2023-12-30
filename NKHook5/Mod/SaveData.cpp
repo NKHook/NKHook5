@@ -19,7 +19,7 @@ static SaveData* instance;
 SaveData::SaveData()
 {
 	for (const auto& towerFlag : g_towerFlags.GetAll()) {
-		this->towerUnlocks[towerFlag.second] = false;
+		this->towerUnlocks[nfw::string(towerFlag.second)] = false;
 	}
 }
 

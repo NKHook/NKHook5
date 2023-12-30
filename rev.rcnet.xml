@@ -67,7 +67,7 @@
     </enum>
   </enums>
   <classes>
-    <class uuid="29be8d1c-3f92-45b3-8ef8-a50367a8e6be" name="SLang" comment="" address="0E567F98">
+    <class uuid="29be8d1c-3f92-45b3-8ef8-a50367a8e6be" name="SLangEntry" comment="" address="0E567F98">
       <node type="UInt32Node" name="key" comment="" hidden="false" />
       <node type="ClassInstanceNode" name="id" comment="" hidden="false" reference="d284f2bb-096b-4963-ab6a-69880b320251" />
       <node type="Int32Node" name="l" comment="" hidden="false" />
@@ -127,7 +127,7 @@
       <node type="ClassInstanceNode" name="secondFmt" comment="" hidden="false" reference="d284f2bb-096b-4963-ab6a-69880b320251" />
       <node type="ClassInstanceNode" name="dateFmt" comment="" hidden="false" reference="d284f2bb-096b-4963-ab6a-69880b320251" />
     </class>
-    <class uuid="4815e40e-2893-4580-a5db-d7b9ea605f01" name="vector&lt;SLangDef*&gt;" comment="" address="400000">
+    <class uuid="4815e40e-2893-4580-a5db-d7b9ea605f01" name="vector&lt;SLanguage*&gt;" comment="" address="400000">
       <node type="PointerNode" name="first" comment="" hidden="false">
         <node type="ArrayNode" name="N00000248" comment="" hidden="false" count="99">
           <node type="PointerNode" name="N0000026E" comment="" hidden="false">
@@ -138,7 +138,7 @@
       <node type="PointerNode" name="end" comment="" hidden="false" />
       <node type="PointerNode" name="res" comment="" hidden="false" />
     </class>
-    <class uuid="2f8b730b-b658-4e4f-90e7-4c4cceb92621" name="SLangDef" comment="" address="0694F458">
+    <class uuid="2f8b730b-b658-4e4f-90e7-4c4cceb92621" name="SLanguage" comment="" address="0694F458">
       <node type="ClassInstanceNode" name="locale" comment="" hidden="false" reference="d284f2bb-096b-4963-ab6a-69880b320251" />
       <node type="ClassInstanceNode" name="englishName" comment="" hidden="false" reference="d284f2bb-096b-4963-ab6a-69880b320251" />
       <node type="ClassInstanceNode" name="translatedName" comment="" hidden="false" reference="d284f2bb-096b-4963-ab6a-69880b320251" />

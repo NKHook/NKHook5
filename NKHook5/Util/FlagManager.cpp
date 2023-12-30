@@ -6,12 +6,12 @@ FlagManager::FlagManager()
 {
 }
 
-void FlagManager::Register(uint64_t numeric, const nfw::string& text)
+void FlagManager::Register(uint64_t numeric, const std::string& text)
 {
 	flags.emplace(numeric, text);
 }
 
-uint64_t FlagManager::Register(const nfw::string& text)
+uint64_t FlagManager::Register(const std::string& text)
 {
 	uint64_t selectedId = 0;
 	for (size_t i = 0; i < INT_MAX; i++) {
@@ -53,7 +53,7 @@ bool FlagManager::IsVanilla(uint64_t id)
 	return false;
 }
 
-uint64_t FlagManager::GetFlag(const nfw::string& name)
+uint64_t FlagManager::GetFlag(const std::string& name)
 {
 	for (const auto& flagData : flags) {
 		if (flagData.second == name) {
@@ -63,7 +63,7 @@ uint64_t FlagManager::GetFlag(const nfw::string& name)
 	return 0;
 }
 
-nfw::string FlagManager::GetName(uint64_t flag)
+std::string FlagManager::GetName(uint64_t flag)
 {
 	for (const auto& flagData : flags) {
 		if (flagData.first == flag) {
@@ -73,7 +73,7 @@ nfw::string FlagManager::GetName(uint64_t flag)
 	return "INVALID";
 }
 
-const nfw::map<uint64_t, nfw::string>& FlagManager::GetAll()
+const std::map<uint64_t, std::string>& FlagManager::GetAll()
 {
 	return this->flags;
 }

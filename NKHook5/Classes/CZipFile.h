@@ -26,12 +26,11 @@ namespace NKHook5::Classes {
 		bool Open(const nfw::string& archivePath, int param_2 = 0, int param_3 = 0) {
 			return ThisCall<Sigs::CZipFile_Open, &CZipFile::Open>(this, archivePath, param_2, param_3);
 		}
-		CUnzippedFile* _LoadFrom(const nfw::string& assetPath, const nfw::string& param_2, const nfw::string& archivePassword) {
-			return ThisCall<Sigs::CZipFile_LoadFrom, &CZipFile::_LoadFrom>(this, assetPath, param_2, archivePassword);
+		CUnzippedFile* _LoadFrom(nfw::string const& assetPath, nfw::string& error, const char* archivePassword) {
+			return ThisCall<Sigs::CZipFile_LoadFrom, &CZipFile::_LoadFrom>(this, assetPath, error, archivePassword);
 		}
-		CUnzippedFile* LoadFrom(const nfw::string& assetPath, const nfw::string& param_2) {
-			nfw::string password("Q%_{6#Px]]");
-			return this->_LoadFrom(assetPath, param_2, password);
+		CUnzippedFile* LoadFrom(nfw::string const& assetPath, nfw::string& error) {
+			return this->_LoadFrom(assetPath, error, "Q%_{6#Px]]");
 		}
 	};
 }

@@ -33,6 +33,7 @@ namespace NKHook5::Signatures {
 		CBloonFactory_CCTOR,
 		/* CBloonsBaseScreen */
 		CBloonsBaseScreen_CCTOR,
+		CBloonsBaseScreen_Init,
 		/* CBloonsTD5Game */
 		CBloonsTD5Game_CCTOR,
 		CBloonsTD5Game_LoadAssets,

@@ -1,12 +1,5 @@
-if(MSVC)
-    add_compile_options(
-            $<$<CONFIG:>:/MT> #---------|
-            $<$<CONFIG:Debug>:/MTd> #---|-- Statically link the runtime libraries
-            $<$<CONFIG:Release>:/MT> #--|
-    )
-endif()
-
 add_library(NKHook5 SHARED)
+set_target_properties(NKHook5 PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
 target_sources(NKHook5 PRIVATE 
     "main.cpp"

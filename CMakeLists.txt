@@ -40,7 +40,7 @@ endif()
 FetchContent_Declare(
     plh
     GIT_REPOSITORY https://github.com/stevemk14ebr/PolyHook_2_0.git
-    GIT_TAG 4d1b3e3fe258d1d30fce91f4b360ce88da96d332
+    GIT_TAG e8d33f54f9d11943f86fc326dae31dcc8ea7c389
 )
 FetchContent_GetProperties(plh)
 if(NOT plh_POPULATED)

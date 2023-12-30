@@ -20,7 +20,7 @@ namespace NKHook5::Patches::CBloonsBaseScreen
 
 	static uint64_t o_func;
 	void Init::cb_hook(Classes::IScreenData* pScreenData) {
-		auto* self = reinterpret_cast<Classes::CGameScreen*>(this);
+		auto* self = reinterpret_cast<Classes::CBloonsBaseScreen*>(this);
 
 		auto ofn = std::bit_cast<decltype(&Init::cb_hook)>(reinterpret_cast<void*>(o_func));
 		(this->*ofn)(pScreenData);
@@ -35,7 +35,7 @@ namespace NKHook5::Patches::CBloonsBaseScreen
 
 	auto Init::Apply() -> bool
 	{
-		const void* address = Signatures::GetAddressOf(Sigs::CGameScreen_Init);
+		const void* address = Signatures::GetAddressOf(Sigs::CBloonsBaseScreen_Init);
 		if(address)
 		{
 			auto* detour = new PLH::x86Detour((const uintptr_t)address, std::bit_cast<size_t>(&Init::cb_hook), &o_func);
