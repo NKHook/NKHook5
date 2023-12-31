@@ -21,7 +21,7 @@ namespace NKHook5
             static uint64_t updatesThisFrame = 0;
             static uint64_t lastFrame = currentFrame;
             static uint64_t o_func;
-            void __fastcall cb_hook(Classes::CBloon* pBloon, int pad, float* pSGameTime) {
+            void Update::cb_hook(float* pSGameTime) {
                 if (lastFrame != currentFrame) {
                     lastFrame = currentFrame;
                     updatesThisFrame = 0;
@@ -30,7 +30,9 @@ namespace NKHook5
                 if (updatesThisFrame > maxBloonUpdates && updatesThisFrame % 2 == 0) {
                     return;
                 }
-                PLH::FnCast(o_func, &cb_hook)(pBloon, pad, pSGameTime);
+
+				auto ofn = std::bit_cast<decltype(&Update::cb_hook)>(reinterpret_cast<void*>(o_func));
+				(this->*ofn)(pSGameTime);
             }
 
             auto Update::Apply() -> bool
@@ -38,7 +40,7 @@ namespace NKHook5
                 const void* address = Signatures::GetAddressOf(Sigs::CBloon_Update);
                 if(address)
                 {
-                    PLH::x86Detour* detour = new PLH::x86Detour((const uintptr_t)address, (const uintptr_t)&cb_hook, &o_func);
+                    auto* detour = new PLH::x86Detour((const uintptr_t)address, std::bit_cast<size_t>(&Update::cb_hook), &o_func);
                     if(detour->hook())
                     {
                         return true;

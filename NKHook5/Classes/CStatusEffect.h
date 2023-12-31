@@ -19,18 +19,18 @@ namespace NKHook5
 
 		public:
 			//char pad_0000[4]; //0x0000
-			class CBloon* bloon; //0x0004
-			bool frozen; //0x0008
+			class CBloon* mBloon; //0x0004
+			bool mFrozen; //0x0008
 			bool N00001EF0; //0x0009
 			bool N00001EF3; //0x000A
 			bool N00001EF1; //0x000B
-			float duration; //0x000C
-			float timeRemaining; //0x0010
-			bool clear; //0x0014
+			float mDuration; //0x000C
+			float mTimeRemaining; //0x0010
+			bool mClear; //0x0014
 			bool N00001EE9; //0x0015
 			bool N00001EEC; //0x0016
 			bool N00001EEA; //0x0017
-			class CBaseTower* tower; //0x0018
+			class CBaseTower* mTower; //0x0018
 			char pad_001C[12]; //0x001C
 
 		public:

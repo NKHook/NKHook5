@@ -15,12 +15,12 @@ namespace NKHook5
 		public:
 			overload_allocators;
 
-			bool adjustedGraphic = false;
-			uint64_t injectedId = 0;
-			std::string spriteInfo;
-			std::string texture;
-			bool exceptMoab = false;
-			void** pVanillaVTable = nullptr;
+			bool mAdjustedGraphic = false;
+			uint64_t mInjectedId = 0;
+			std::string mSpriteInfo;
+			std::string mTexture;
+			bool mExceptMoab = false;
+			void** mpVanillaVTable = nullptr;
 
 			CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, bool exceptMoab, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f);
 		};

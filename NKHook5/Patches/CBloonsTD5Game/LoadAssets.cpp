@@ -47,8 +47,8 @@ namespace NKHook5
                         delete unzipped;
                     }
                 }
-                auto statusDefs = (StatusDefinitionsExt*)ExtensionManager::GetByName("StatusDefinitions");
-                auto statusFlags = (StatusFlagsExt*)ExtensionManager::GetByName("StatusFlags");
+                auto statusDefs = ExtensionManager::Get<StatusDefinitionsExt>();
+                auto statusFlags = ExtensionManager::Get<StatusFlagsExt>();
                 for (const std::string& flag : statusFlags->GetFlags())
                 {
                     nfw::string effectFile = "Assets/JSON/StatusDefinitions/" + nfw::string(flag) + ".status";

@@ -37,7 +37,7 @@ namespace NKHook5::Patches::CApplyStatusEffectTask
 			return (this->*ofn)(bloon, unk, unk2, unk3, unk4);
 		}
 		else {
-			auto* statusDefs = (StatusDefinitionsExt*)ExtensionManager::GetByName("StatusDefinitions");
+			auto* statusDefs = ExtensionManager::Get<StatusDefinitionsExt>();
 			const StatusDefinition* def = nullptr;
 			for (const auto& definition : statusDefs->GetDefinitions())
 			{

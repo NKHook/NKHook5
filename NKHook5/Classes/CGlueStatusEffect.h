@@ -15,10 +15,10 @@ namespace NKHook5::Classes
 	public:
 		overload_allocators;
 
-		CTextureManager* texMgr{}; //0x0138
+		CTextureManager* mTexMgr{}; //0x0138
 		char pad_013C[4]{}; //0x013C
-		float damageRate{}; //0x0140
-		int32_t damageTimer{}; //0x0144
+		float mDamageRate{}; //0x0140
+		int32_t mDamageTimer{}; //0x0144
 		char pad_0148[4]{}; //0x0148
 
 		CGlueStatusEffect(CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f) : CSprite(nullptr, false, Vec2F(0, 0), true) {

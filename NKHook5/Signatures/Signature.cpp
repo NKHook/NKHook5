@@ -22,6 +22,21 @@ using namespace Common::Logging::Logger;
 
 static std::map<Sigs, void*> pointerMap;
 
+int filter(unsigned int code, struct _EXCEPTION_POINTERS *ep)
+{
+	puts("in filter.");
+	if (code == EXCEPTION_ACCESS_VIOLATION)
+	{
+		puts("caught AV as expected.");
+		return EXCEPTION_EXECUTE_HANDLER;
+	}
+	else
+	{
+		puts("didn't catch AV, unexpected.");
+		return EXCEPTION_CONTINUE_SEARCH;
+	};
+}
+
 void* Signatures::FindFirst(int count, ...) {
 	va_list args;
 	va_start(args, count);
@@ -30,7 +45,14 @@ void* Signatures::FindFirst(int count, ...) {
 	for (size_t i = 0; i < count; i++) {
 		const char* arg = va_arg(args, const char*);
 		if (!result) {
-			result = (void*)Utils::FindPattern(arg);
+			__try
+			{
+				result = (void*)Utils::FindPattern(arg);
+			}
+			__except(filter(GetExceptionCode(), GetExceptionInformation()))
+			{
+				Print(LogLevel::ERR, "Failed sig '%s", arg);
+			};
 		}
 	}
 
