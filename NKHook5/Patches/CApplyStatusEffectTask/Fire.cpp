@@ -52,7 +52,7 @@ namespace NKHook5::Patches::CApplyStatusEffectTask
 				Print(LogLevel::ERR, "Failed to find a status effect with an ID of %llx", task->effectId);
 				return;
 			}
-			auto* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, def->spriteInfo, def->texture, def->exceptMoab, task->gamePtrs->mTextureManager, false, 0.2, 1.0);
+			auto* effect = new ClassesEx::CInjectedStatusEffect(task->effectId, nfw::string{def->graphicName}, def->exceptMoab, task->gamePtrs->mTextureManager, task->damageRate, task->duration, task->speedScale);
 			if(task->tower)
 				effect->IncTowerRef(task->tower);
 			bloon->ApplyEffect(effect, !def->exceptMoab);

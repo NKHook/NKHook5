@@ -26,14 +26,9 @@ void StatusDefinitionsExt::UseJsonData(nlohmann::json content)
 		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'Type' property!");
 		return;
 	}
-	if (!content.contains("SpriteInfo"))
+	if (!content.contains("GraphicName"))
 	{
-		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'SpriteInfo' property!");
-		return;
-	}
-	if (!content.contains("Texture"))
-	{
-		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'Texture' property!");
+		Print(LogLevel::ERR, "%s", "Received a StatusDefinition without a 'GraphicName' property!");
 		return;
 	}
 	if (!content.contains("ExceptMOAB"))
@@ -43,12 +38,9 @@ void StatusDefinitionsExt::UseJsonData(nlohmann::json content)
 	}
 
 	this->definitions.emplace_back(
-		StatusDefinition(
-			content["Type"].get<std::string>(),
-			content["SpriteInfo"].get<std::string>(),
-			content["Texture"].get<std::string>(),
-			content["ExceptMOAB"].get<bool>()
-		)
+		content["Type"].get<std::string>(),
+		content["GraphicName"].get<std::string>(),
+		content["ExceptMOAB"].get<bool>()
 	);
 }
 

@@ -21,7 +21,7 @@ namespace NKHook5::Classes
 		int32_t mDamageTimer{}; //0x0144
 		char pad_0148[4]{}; //0x0148
 
-		CGlueStatusEffect(CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f) : CSprite(nullptr, false, Vec2F(0, 0), true) {
+		CGlueStatusEffect(CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer = 0.0f) : CModifySpeedStatusEffect(speedScale), CSprite(nullptr, false, Vec2F(0, 0), true) {
 			ThisConstruct<Sigs::CGlueStatusEffect_CCTOR>(this, texMgr, detach, speedScale, damageRate, damageTimer);
 		}
 	}; //Size: 0x014C

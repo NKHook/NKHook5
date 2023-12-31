@@ -13,8 +13,8 @@ using namespace NKHook5::ClassesEx;
 
 static CStatusEffect* __fastcall STATIC_Clone(CInjectedStatusEffect* self)
 {
-	CInjectedStatusEffect* clone = new CInjectedStatusEffect(self->mInjectedId, self->mSpriteInfo, self->mTexture, self->mExceptMoab, self->mTexMgr, false, self->mSpeedScale, self->mDamageRate);
-	return clone;
+	auto* clone = new CInjectedStatusEffect(self->mInjectedId, self->mGraphicName, self->mExceptMoab, self->mTexMgr, self->mDamageInterval, self->mDamageTimer, self->mSpeedScale);
+	return reinterpret_cast<CStatusEffect*>(clone);
 }
 
 static uint64_t __fastcall STATIC_TypeID(CInjectedStatusEffect* self)
@@ -28,46 +28,48 @@ static void __fastcall STATIC_Apply(CInjectedStatusEffect* self)
 	mfApply(self);
 
 	//Change the sprite to the custom sprite
-	Classes::CSprite* sprite = self;
-	auto spriteInfo = self->mTexMgr->GetSpriteInfoPtr(self->mTexture, self->mSpriteInfo);
-	sprite->SetTexture(spriteInfo, false);
+	Classes::CCompoundSprite* sprite = self;
+	auto compoundInfo = self->mTexMgr->LoadCompound("Assets/JSON/BloonSprites/", self->mGraphicName);
+	sprite->Load(compoundInfo, true, true);
 	sprite->SetXY({ 0, 0 });
-	sprite->ScaleXY({ 1.25, 1.25 });
+	sprite->ScaleXY({ 1, 1 });
 }
 
-static void __fastcall STATIC_Render(CInjectedStatusEffect* self, void* pad, SGameTime& time)
+static float __fastcall STATIC_GetBloonSpeed(CInjectedStatusEffect* self, void* pad, float base)
 {
-	CSprite* selfSprite = self;
-	selfSprite->Render(true);
+	return self->mSpeedScale * base;
 }
 
-CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, std::string spriteInfo, std::string texture, bool exceptMoab, CTextureManager* texMgr, bool detach, float speedScale, float damageRate, float damageTimer)
-	: CGlueStatusEffect(texMgr, detach, speedScale, damageRate, damageTimer)
+CInjectedStatusEffect::CInjectedStatusEffect(uint64_t injectedId, nfw::string graphicName, bool exceptMoab, CTextureManager* texMgr, float damageInterval, float duration, float speedScale)
+	: CNapalmStatusEffect(texMgr, damageInterval, 0.0f)
 {
 	//Get the vtables here
-	void* pVanillaVTable = (void*)Signatures::GetAddressOf(Sigs::CGlueStatusEffect_VTable);
+	void* pVanillaVTable = (void*)Signatures::GetAddressOf(Sigs::CNapalmStatusEffect_VTable);
 	this->mpVanillaVTable = static_cast<void**>(pVanillaVTable);
 
 	void*** ppCustomVTable = (void***)this;
 
 	//Change our vtable's protection (the 33 is the num of virtual funcs)
 	DWORD oprot = 0;
-	VirtualProtect(*ppCustomVTable, sizeof(size_t) * CGlueStatusEffect_VFuncCount, PAGE_EXECUTE_READWRITE, &oprot);
+	VirtualProtect(*ppCustomVTable, sizeof(size_t) * CNapalmStatusEffect_VFuncCount, PAGE_EXECUTE_READWRITE, &oprot);
 
 	//Write the vanilla vtable to our custom vtable
-	memcpy(*ppCustomVTable, pVanillaVTable, sizeof(size_t) * CGlueStatusEffect_VFuncCount);
+	memcpy(*ppCustomVTable, pVanillaVTable, sizeof(size_t) * CNapalmStatusEffect_VFuncCount);
 
 	//Place back the funcs we dont want replaced
 	(*ppCustomVTable)[1] = &STATIC_Clone;
 	(*ppCustomVTable)[2] = &STATIC_TypeID;
 	(*ppCustomVTable)[3] = &STATIC_Apply;
-	//(*ppCustomVTable)[6] = &STATIC_Render;
+	(*ppCustomVTable)[7] = &STATIC_GetBloonSpeed;
 
-	CSprite* selfSprite = this;
-	*(void**)selfSprite = (void*)Signatures::GetAddressOf(Sigs::CSprite_VTable);
+	CSprite* napalmSprite = static_cast<CNapalmStatusEffect*>(this);
+	*(void**)napalmSprite = (void*)Signatures::GetAddressOf(Sigs::CSprite_VTable);
 
 	//Now we have our own vtable overridden by the game's vtable, and we are free to make changes.
+	this->mDuration = duration;
+	this->mTimer = duration;
+	this->mSpeedScale = speedScale;
 	this->mInjectedId = injectedId;
-	this->mSpriteInfo = spriteInfo;
-	this->mTexture = texture;
+	this->mGraphicName = graphicName;
+	this->mExceptMoab = exceptMoab;
 }

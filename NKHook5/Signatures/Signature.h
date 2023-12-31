@@ -42,6 +42,10 @@ namespace NKHook5::Signatures {
 		CCollectableTask_Clone,
 		CCollectableTask_GiveContentsAndDie,
 		CCollectableTask_Update,
+		/* CCompoundSprite */
+		CCompoundSprite_VTable,
+		CCompoundSprite_CCTOR,
+		CCompoundSprite_Load,
 		/* CDGSplashScreen */
 		CDGSplashScreen_VTable,
 		CDGSplashScreen_Init,
@@ -66,6 +70,8 @@ namespace NKHook5::Signatures {
 		CLoc_GetText,
 		/* CMainButton */
 		CMainButton_CCTOR,
+		/* CNapalmStatusEffect */
+		CNapalmStatusEffect_VTable,
 		/* Color */
 		/* CPlayerProfileV1 */
 		CPlayerProfileV1_InternalLoad,
@@ -106,6 +112,7 @@ namespace NKHook5::Signatures {
 		CTextObject_CCTOR_C,
 		/* CTextureManager */
 		CTextureManager_GetSpriteInfoPtr,
+		CTextureManager_LoadCompound,
 		/* CTowerFactory */
 		CTowerFactory_CCTOR,
 		CTowerFactory_GetTowerInfo,

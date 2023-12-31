@@ -17,8 +17,7 @@ namespace NKHook5
 			struct StatusDefinition
 			{
 				std::string type;
-				std::string spriteInfo;
-				std::string texture;
+				std::string graphicName;
 				bool exceptMoab;
 			};
 
