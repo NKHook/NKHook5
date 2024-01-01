@@ -16,9 +16,10 @@ namespace NKHook5::Classes {
 		CBasePositionableObject* N00001ABB{}; //0x0104
 		char pad_0108[4]{}; //0x0108
 		std::vector<CSprite*> sprites; //0x010C
-		char pad_0118[16]{}; //0x0118
+		char pad_0118[12]; //0x0118
+		class CAnimationSystem* mAnimationSystem = nullptr; //0x0124
 		class SCompoundSprite* mSpriteDef = nullptr; //0x0128
-		char pad_012C[28]{}; //0x012C
+		char pad_012C[28]; //0x012C
 
 		CCompoundSprite(Vec2F v, SCompoundSprite* info, class CEventManager* eventManager) : CSprite(nullptr, false, v, true)
 		{

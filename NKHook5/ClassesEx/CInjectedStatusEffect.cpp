@@ -1,6 +1,6 @@
 #include "CInjectedStatusEffect.h"
 
-#include "../Classes/CTextureLoader.h"
+#include "../Classes/CAnimationSystem.h"
 
 #include "../Util/NewFramework.h"
 
@@ -33,6 +33,8 @@ static void __fastcall STATIC_Apply(CInjectedStatusEffect* self)
 	sprite->Load(compoundInfo, true, true);
 	sprite->SetXY({ 0, 0 });
 	sprite->ScaleXY({ 1, 1 });
+
+	self->mAnimationSystem->mPlayMode = 2;
 }
 
 static float __fastcall STATIC_GetBloonSpeed(CInjectedStatusEffect* self, void* pad, float base)
