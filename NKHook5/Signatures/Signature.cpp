@@ -275,8 +275,9 @@ void Signatures::FindAll() {
 	pointerMap[Sigs::CTextureManager_GetSpriteInfoPtr] = Signatures::FindFirst(1,
 		"55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 81 EC ?? ?? ?? ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 53 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B C1 ?? 45 ?? 8B ?? ?? 8D"
 	);
-	pointerMap[Sigs::CTextureManager_LoadCompound] = Signatures::FindFirst(1,
-		"55 8b ec 6a ? 68 ? ? ? ? 64 a1 ? ? ? ? 50 83 ec ? a1 ? ? ? ? 33 c5 89 45 ? 53 56 57 50 8d 45 ? 64 a3 ? ? ? ? 8b f1 89 75 ? 8b 7d"
+	pointerMap[Sigs::CTextureManager_LoadCompound] = Signatures::FindFirst(2,
+		"55 8b ec 6a ? 68 ? ? ? ? 64 a1 ? ? ? ? 50 83 ec ? a1 ? ? ? ? 33 c5 89 45 ? 53 56 57 50 8d 45 ? 64 a3 ? ? ? ? 8b f1 89 75 ? 8b 7d ? 8b cf", //Steam 4.3
+		"55 8b ec 6a ? 68 ? ? ? ? 64 a1 ? ? ? ? 50 83 ec ? a1 ? ? ? ? 33 c5 89 45 ? 53 56 57 50 8d 45 ? 64 a3 ? ? ? ? 8b f1 89 75 ? 8b 7d" //Kong 4.2
 	);
 	/* CTowerFactory */
 	pointerMap[Sigs::CTowerFactory_CCTOR] = Signatures::FindFirst(2,
@@ -392,7 +393,7 @@ void Signatures::FindAll() {
 
 void* Signatures::GetAddressOf(Sigs sig)
 {
-	if (!pointerMap.count(sig)) {
+	if (!pointerMap.contains(sig)) {
 		std::string_view enumName = magic_enum::enum_name(sig);
 		Print(LogLevel::WARNING, "Sig '%s' not registered in table", enumName.data());
 		return nullptr;
