@@ -3,7 +3,7 @@ rmdir bin
 mkdir bin
 cd bin
 del CMakeCache.txt
-cmake .. -A Win32
+cmake .. -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A Win32
 cmake --build . --config Debug
 cmake --build . --config Release
 

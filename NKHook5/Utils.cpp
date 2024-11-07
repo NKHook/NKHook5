@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <Psapi.h>
 
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 #include <libhat/Scanner.hpp>
 

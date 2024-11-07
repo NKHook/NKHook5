@@ -3,6 +3,7 @@ project(NKHook5 VERSION 1.0 LANGUAGES CXX)
 
 include(FetchContent)
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 
 # Only Visual Studio platforms are supported
 if (NOT CMAKE_GENERATOR_PLATFORM STREQUAL Win32)

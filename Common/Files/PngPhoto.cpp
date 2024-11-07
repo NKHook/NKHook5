@@ -3,6 +3,8 @@
 #include <stb_image.h>
 #include <stb_image_write.h>
 
+#include <mutex>
+
 using namespace Common;
 using namespace Common::Files;
 using namespace Common::Files::Images;
@@ -11,7 +13,6 @@ using namespace Common::Sprites::Images;
 namespace fs = std::filesystem;
 
 static std::mutex openmtx;
-#include <mutex>
 
 PngPhoto::PngPhoto() : Photo() {
 }

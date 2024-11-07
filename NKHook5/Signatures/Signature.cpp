@@ -4,8 +4,8 @@
 
 #include <Logging/Logger.h>
 
-#include <magic_enum.hpp>
-#include <magic_enum_utility.hpp>
+#include <magic_enum/magic_enum.hpp>
+#include <magic_enum/magic_enum_utility.hpp>
 
 #include <map>
 #include <cstdarg>
