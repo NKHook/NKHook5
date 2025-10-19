@@ -12,7 +12,7 @@
 
 #include <rttihelper.h>
 
-#define VT_IDX(SIG_VT, IDX) *(void**)(((uintptr_t)pointerMap[SIG_VT]) + (sizeof(void*) * IDX));
+#define VT_IDX(SIG_VT, IDX) pointerMap.contains(SIG_VT) ? (pointerMap.at(SIG_VT) != nullptr ? *(void**)(((uintptr_t) pointerMap[SIG_VT]) + (sizeof(void*) * IDX)) : nullptr) : nullptr;
 
 using namespace NKHook5;
 using namespace NKHook5::Signatures;
@@ -39,6 +39,8 @@ void* Signatures::FindFirst(int count, ...) {
 }
 
 void Signatures::FindAll() {
+	/* CApp */
+	pointerMap[Sigs::CApp_Init_Debugger_Patch] = Signatures::FindFirst(1, "ff 15 ? ? ? ? 85 c0 74 ? e8");
 	/* CApplyStatusEffectTask */
 	pointerMap[Sigs::CApplyStatusEffectTask_VTable] = (void*)h_rtti::get_vtable("CApplyStatusEffectTask");
 	pointerMap[Sigs::CApplyStatusEffectTask_Fire] = VT_IDX(Sigs::CApplyStatusEffectTask_VTable, 50);
@@ -136,7 +138,10 @@ void Signatures::FindAll() {
 	pointerMap[Sigs::CDGSplashScreen_VTable] = (void*)h_rtti::get_vtable("CDGSplashScreen");
 	pointerMap[Sigs::CDGSplashScreen_Init] = VT_IDX(Sigs::CDGSplashScreen_VTable, 2);
 	pointerMap[Sigs::CDGSplashScreen_Hide] = VT_IDX(Sigs::CDGSplashScreen_VTable, 5);
-
+	/* CEffectTask */
+	pointerMap[Sigs::CEffectTask_ReadTask_Patch] = Signatures::FindFirst(1,
+		"e8 ? ? ? ? 83 c4 ? 85 c0 75 ? 8b 85 ? ? ? ? 83 f8"
+	);
 	/* CFile */
 	pointerMap[Sigs::CFile_ReadBytes] = Signatures::FindFirst(1,
 		"55 8B EC 6A ?? 68 ?? ?? ?? ?? 64 ?? ?? ?? ?? ?? 50 83 EC ?? A1 34 ?? ?? ?? 33 C5 ?? 45 ?? 56 57 50 8D ?? ?? ?? A3 ?? ?? ?? ?? 8B ?? ?? 8B ?? ?? 8B ?? 52"

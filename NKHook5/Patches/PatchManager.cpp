@@ -1,6 +1,7 @@
 #include "PatchManager.h"
 #include <iostream>
 
+#include "CApp/Init_Debugger_Patch.h"
 #include "CApplyStatusEffectTask/Fire.h"
 #include "CBaseFileIO/FileExists.h"
 #include "CBaseFileIO/OpenFile.h"
@@ -13,6 +14,7 @@
 #include "CCollectableTask/Clone.h"
 #include "CCollectableTask/Update.h"
 #include "CDGSplashScreen/Init.h"
+#include "CEffectTask/ReadTask_Patch.h"
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CFlagStringConvertor/LoadCategory.h"
 #include "CFlagStringConvertor/StringToFlag.h"
@@ -42,6 +44,7 @@ using namespace NKHook5::Patches;
 
 void PatchManager::ApplyAll()
 {
+    PatchManager::ApplyPatch(new CApp::Init_Debugger_Patch());
     PatchManager::ApplyPatch(new CApplyStatusEffectTask::Fire());
     PatchManager::ApplyPatch(new CBaseFileIO::FileExists());
     PatchManager::ApplyPatch(new CBaseFileIO::OpenFile());
@@ -54,6 +57,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CCollectableTask::Clone());
     PatchManager::ApplyPatch(new CCollectableTask::Update());
     PatchManager::ApplyPatch(new CDGSplashScreen::Init());
+    PatchManager::ApplyPatch(new CEffectTask::ReadTask_Patch());
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
     PatchManager::ApplyPatch(new CFlagStringConvertor::StringToFlag());

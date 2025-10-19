@@ -3,6 +3,7 @@ target_sources(NKHook5 PRIVATE
     "IPatch.cpp"
 )
 
+add_subdirectory(CApp)
 add_subdirectory(CApplyStatusEffectTask)
 add_subdirectory(CBaseFileIO)
 add_subdirectory(CBasePositionableObject)
@@ -12,6 +13,7 @@ add_subdirectory(CBloonsBaseScreen)
 add_subdirectory(CBloonsTD5Game)
 add_subdirectory(CCollectableTask)
 add_subdirectory(CDGSplashScreen)
+add_subdirectory(CEffectTask)
 add_subdirectory(CFlagStringConvertor)
 add_subdirectory(CGameScreen)
 add_subdirectory(CPlayerProfileV1)

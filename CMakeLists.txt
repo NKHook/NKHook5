@@ -106,7 +106,7 @@ endif()
 
 FetchContent_Declare(
     libhat
-    GIT_REPOSITORY https://github.com/DisabledMallis/libhat.git
+    GIT_REPOSITORY https://github.com/BasedInc/libhat.git
     GIT_TAG master
 )
 FetchContent_GetProperties(libhat)

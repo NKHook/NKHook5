@@ -5,6 +5,7 @@
 namespace NKHook5::Signatures {
 	enum class Sigs {
 		/* CApp */
+		CApp_Init_Debugger_Patch,
 		/* CApplyStatusEffectTask */
 		CApplyStatusEffectTask_VTable,
 		CApplyStatusEffectTask_Fire,
@@ -50,6 +51,8 @@ namespace NKHook5::Signatures {
 		CDGSplashScreen_VTable,
 		CDGSplashScreen_Init,
 		CDGSplashScreen_Hide,
+		/* CEffectTask */
+		CEffectTask_ReadTask_Patch,
 		/* CFile */
 		CFile_ReadBytes,
 		/* CFlagStringConvertor */

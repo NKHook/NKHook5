@@ -38,7 +38,7 @@ size_t Utils::FindPattern(std::string_view pattern)
 {
 	auto sig = hat::parse_signature(pattern);
 	if (sig.has_value()) {
-		const auto result = hat::find_pattern(sig.value());
+		const auto result = hat::find_pattern(sig.value(), ".text");
 		return result.has_result() ? reinterpret_cast<uintptr_t>(result.get()) : NULL;
 	} else {
 		Print(LogLevel::ERR, "Sig failed with '%s' (%s)", pattern.data(), magic_enum::enum_name<hat::signature_parse_error>(sig.error()).data());
