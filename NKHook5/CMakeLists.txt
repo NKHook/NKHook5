@@ -4,7 +4,7 @@ set_target_properties(NKHook5 PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<
 target_sources(NKHook5 PRIVATE 
     "main.cpp"
     "Utils.cpp"
- "Classes/eSFX_Items.h" "Classes/C_GameSFXManager.h")
+)
 
 add_subdirectory(Assets)
 add_subdirectory(Classes)
