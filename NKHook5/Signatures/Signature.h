@@ -64,6 +64,9 @@ namespace NKHook5::Signatures {
 		CFontManager_GetFont,
 		/* CGameScreen */
 		CGameScreen_Init,
+		/* C_GameSFXManager */
+		C_GameSFXManager_GetInstance,
+		C_GameSFXManager_Play,
 		/* CGameSystemPointers */
 		/* CGlueStatusEffect */
 		CGlueStatusEffect_VTable,

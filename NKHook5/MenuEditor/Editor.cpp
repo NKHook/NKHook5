@@ -6,6 +6,7 @@
 #include "../Classes/CBloonFactory.h"
 #include "../Classes/CBloonsBaseScreen.h"
 #include "../Classes/CBloonsTD5Game.h"
+#include "../Classes/C_GameSFXManager.h"
 #include "../Classes/CScreenManager.h"
 #include "../Classes/CTowerManager.h"
 #include "../Classes/eSFX_Items.h"
@@ -14,6 +15,7 @@
 #include <magic_enum/magic_enum.hpp>
 
 using namespace NKHook5;
+using namespace NKHook5::Classes;
 using namespace NKHook5::MenuEditor;
 
 extern Classes::CBloonsTD5Game* g_appPtr;
@@ -170,14 +172,39 @@ void Editor::Render() {
 		}
 	}
 	if (ImGui::CollapsingHeader("Audio")) {
+		auto* pSFXManager = C_GameSFXManager::GetInstance();
+
 		static int32_t selectedID = 0;
 		ImGui::InputInt("Audio ID", &selectedID, 1, 10);
 		ImGui::SameLine();
-		if (ImGui::Button("Play")) {
+		if (ImGui::Button("Play###Main")) {
+			pSFXManager->Play(selectedID);
 		}
 		auto idstr = magic_enum::enum_name<NKHook5::Classes::eSFX_Items>(static_cast<NKHook5::Classes::eSFX_Items>(selectedID));
 		if (not idstr.empty())
-			ImGui::LabelText("Known ID: %s", idstr.data());
+			ImGui::Text("Known ID: %s", idstr.data());
+
+		auto addrStr = std::format("{:#010x}", reinterpret_cast<size_t>(pSFXManager));
+		auto formatted = std::format("{0}", addrStr);
+		ImGui::InputText("C_GameSFXManager @", formatted.data(), formatted.size(), ImGuiInputTextFlags_ReadOnly);
+
+		if (ImGui::CollapsingHeader("Sounds")) {
+			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "NOTE: eSFX_Items and sound IDs are NOT the same!");
+			auto id = 0;
+			for (auto& sound : pSFXManager->mSounds) {
+				ImGui::Text("Sound ID: %d", id);
+				ImGui::SameLine();
+				auto buttonStr = std::format("Play###{}", id);
+				if (ImGui::Button(buttonStr.c_str())) {
+					selectedID = id;
+					pSFXManager->Play(selectedID);
+				}
+				ImGui::InputText("Name", sound.mName.data(), sound.mName.size(), ImGuiInputTextFlags_ReadOnly);
+				ImGui::InputFloat("Cooldown", &sound.mCooldown);
+				ImGui::InputDouble("Played At", &sound.mPlayAt);
+				id++;
+			}
+		}
 	}
 	ImGui::End();
 }

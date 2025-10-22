@@ -3,5 +3,6 @@ target_sources(NKHook5 PRIVATE
 	"CBasePositionableObject.cpp"
 	"CBaseScreen.cpp"
 	"CFlagStringConvertor.cpp"
+	"C_GameSFXManager.cpp"
 	"CSprite.cpp"
 )
