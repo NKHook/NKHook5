@@ -8,8 +8,10 @@
 #include "../Classes/CBloonsTD5Game.h"
 #include "../Classes/CScreenManager.h"
 #include "../Classes/CTowerManager.h"
+#include "../Classes/eSFX_Items.h"
 
 #include <iostream>
+#include <magic_enum/magic_enum.hpp>
 
 using namespace NKHook5;
 using namespace NKHook5::MenuEditor;
@@ -166,6 +168,16 @@ void Editor::Render() {
 			}
 			ImGui::TreePop();
 		}
+	}
+	if (ImGui::CollapsingHeader("Audio")) {
+		static int32_t selectedID = 0;
+		ImGui::InputInt("Audio ID", &selectedID, 1, 10);
+		ImGui::SameLine();
+		if (ImGui::Button("Play")) {
+		}
+		auto idstr = magic_enum::enum_name<NKHook5::Classes::eSFX_Items>(static_cast<NKHook5::Classes::eSFX_Items>(selectedID));
+		if (not idstr.empty())
+			ImGui::LabelText("Known ID: %s", idstr.data());
 	}
 	ImGui::End();
 }
