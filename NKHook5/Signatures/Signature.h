@@ -53,6 +53,7 @@ namespace NKHook5::Signatures {
 		CDGSplashScreen_Hide,
 		/* CEffectTask */
 		CEffectTask_ReadTask_Patch,
+		CEffectTask_FireAt,
 		/* CFile */
 		CFile_ReadBytes,
 		/* CFlagStringConvertor */

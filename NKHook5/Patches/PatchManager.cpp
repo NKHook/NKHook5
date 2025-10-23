@@ -14,6 +14,7 @@
 #include "CCollectableTask/Clone.h"
 #include "CCollectableTask/Update.h"
 #include "CDGSplashScreen/Init.h"
+#include "CEffectTask/FireAt.h"
 #include "CEffectTask/ReadTask_Patch.h"
 #include "CFlagStringConvertor/FlagToString.h"
 #include "CFlagStringConvertor/LoadCategory.h"
@@ -33,6 +34,7 @@
 #include "CWeaponFactory/Constructor.h"
 #include "CWeaponFactory/ParseTask.h"
 #include "CZipFile/LoadFrom.h"
+#include "C_GameSFXManager/Play.h"
 #include "GLRenderLayer/Draw.h"
 #include "OpenGL/Swapbuffers.h"
 #include "Screens/GetScreenForParadigm.h"
@@ -56,7 +58,8 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CBloonsTD5Game::LoadAssets());
     PatchManager::ApplyPatch(new CCollectableTask::Clone());
     PatchManager::ApplyPatch(new CCollectableTask::Update());
-    PatchManager::ApplyPatch(new CDGSplashScreen::Init());
+	PatchManager::ApplyPatch(new CDGSplashScreen::Init());
+	PatchManager::ApplyPatch(new CEffectTask::FireAt());
     PatchManager::ApplyPatch(new CEffectTask::ReadTask_Patch());
     PatchManager::ApplyPatch(new CFlagStringConvertor::FlagToString());
     PatchManager::ApplyPatch(new CFlagStringConvertor::LoadCategory());
@@ -76,6 +79,7 @@ void PatchManager::ApplyAll()
     PatchManager::ApplyPatch(new CWeaponFactory::Constructor());
     PatchManager::ApplyPatch(new CWeaponFactory::ParseTask());
     PatchManager::ApplyPatch(new CZipFile::LoadFrom());
+    PatchManager::ApplyPatch(new C_GameSFXManager::Play());
     //PatchManager::ApplyPatch(new GLRenderLayer::Draw());
     PatchManager::ApplyPatch(new OpenGL::Swapbuffers());
     PatchManager::ApplyPatch(new Screens::GetScreenForParadigm());

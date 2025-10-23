@@ -30,7 +30,7 @@ namespace NKHook5
                 Print(LogLevel::INFO, "Loading custom assets...");
                 Print(LogLevel::INFO, "CWD: %s", std::filesystem::current_path().string().c_str());
                 nfw::string archivePath = "./Assets/BTD5.jet";
-                auto* assetsArchive = new Classes::CZipFile();
+                auto assetsArchive = std::make_unique<Classes::CZipFile>();
                 assetsArchive->Open(archivePath);
 
                 std::vector<Extension*> customDocuments = ExtensionManager::GetCustomDocuments();

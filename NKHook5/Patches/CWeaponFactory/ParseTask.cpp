@@ -8,6 +8,7 @@
 #include "../../Classes/CWeaponFactory.h"
 #include "../../Classes/CProjectile.h"
 #include "../../Classes/CCollectableTask.h"
+#include "../../Classes/CZipFile.h"
 #include "../../Classes/Json.h"
 #include "../../Classes/WeaponTaskHierarchy.h"
 
@@ -84,30 +85,23 @@ void ParseTask::cb_hook(const nfw::map<nfw::string, JsonValue>& jsonData, Weapon
 
     // Sound effect stuff
 	if (typeName.find("CEffectTask") != std::string::npos) {
-		Logger::Print("Patching effect task...");
 		auto* effect = reinterpret_cast<Classes::CEffectTask*>(baseTask);
+
         if (!jsonData.empty()) {
 			const auto& audio = ReadPrimitive<nfw::string>(jsonData, "Audio");
-			Logger::Print("Audio property detected!");
             if (audio.has_value()) {
 				const auto& audioName = audio.value();
 				Logger::Print("Audio property value: %s", audioName.c_str());
 
-                // Lookup the sound effect ID
-				auto* server = AssetServer::GetServer();
-				auto globalSfxJson = server->ServeJSON("Assets/JSON/Audio/global.json");
+                // Zero the extra 2 bytes
+                effect->mAudioExt = 0;
 
-
-				auto* pSFXManager = C_GameSFXManager::GetInstance();
-				const auto& sounds = pSFXManager->mSounds;
-				for (auto i = 0; i < sounds.size(); i++) {
-					auto& sound = sounds.at(i);
-                    if (audioName == sound.mName) {
-                        // Set the effect's audio
-						effect->mAudio = static_cast<eSFX_Items>(i);
-						Logger::Print("Patched effect task audio: %s (%d -> %d)", audioName.c_str(), effect->mAudio, i);
-                    }
-                }
+				// Set the effect's audio
+				auto prev = effect->mAudio;
+				effect->mAudio = static_cast<Classes::eSFX_Items>(std::hash<nfw::string>()(audioName));
+                // Require negative to bypass size check
+				effect->mAudio = static_cast<int16_t>(effect->mAudio) < 0 ? effect->mAudio : static_cast<Classes::eSFX_Items>(static_cast<int16_t>(effect->mAudio) * -1);
+				Logger::Print("Patched effect [%p] task audio: %s (%hd -> %hd)", effect, audioName.c_str(), prev, effect->mAudio);
             }
         }
     }
