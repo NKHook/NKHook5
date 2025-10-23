@@ -1,7 +1,10 @@
 #include "ParseTask.h"
-#include "../../Signatures/Signature.h"
+
+#include "../../Assets/AssetServer.h"
 
 #include "../../Classes/CApplyStatusEffectTask.h"
+#include "../../Classes/CEffectTask.h"
+#include "../../Classes/C_GameSFXManager.h"
 #include "../../Classes/CWeaponFactory.h"
 #include "../../Classes/CProjectile.h"
 #include "../../Classes/CCollectableTask.h"
@@ -11,14 +14,22 @@
 #include "../../ClassesEx/CProjectileExt.h"
 #include "../../ClassesEx/CCollectableTaskExt.h"
 
+#include "../../Signatures/Signature.h"
+
+#include <Logging/Logger.h>
+
 #include <cstdint>
 
 using namespace NKHook5;
+using namespace NKHook5::Assets;
 using namespace NKHook5::Classes;
 using namespace NKHook5::ClassesEx;
 using namespace NKHook5::Patches;
 using namespace NKHook5::Patches::CWeaponFactory;
 using namespace NKHook5::Signatures;
+
+using namespace Common;
+using namespace Common::Logging;
 
 static uint64_t o_func;
 void ParseTask::cb_hook(const nfw::map<nfw::string, JsonValue>& jsonData, WeaponTaskHierarchy::SNode* parseResults, bool hasSubtasks, uint32_t param_4) noexcept
@@ -66,6 +77,36 @@ void ParseTask::cb_hook(const nfw::map<nfw::string, JsonValue>& jsonData, Weapon
                 }
                 if (collectMethod.value() == "AUTOMATIC") {
                     collectableExt->COLLECT_METHOD = ClassesEx::CollectMethod::AUTOMATIC;
+                }
+            }
+        }
+    }
+
+    // Sound effect stuff
+	if (typeName.find("CEffectTask") != std::string::npos) {
+		Logger::Print("Patching effect task...");
+		auto* effect = reinterpret_cast<Classes::CEffectTask*>(baseTask);
+        if (!jsonData.empty()) {
+			const auto& audio = ReadPrimitive<nfw::string>(jsonData, "Audio");
+			Logger::Print("Audio property detected!");
+            if (audio.has_value()) {
+				const auto& audioName = audio.value();
+				Logger::Print("Audio property value: %s", audioName.c_str());
+
+                // Lookup the sound effect ID
+				auto* server = AssetServer::GetServer();
+				auto globalSfxJson = server->ServeJSON("Assets/JSON/Audio/global.json");
+
+
+				auto* pSFXManager = C_GameSFXManager::GetInstance();
+				const auto& sounds = pSFXManager->mSounds;
+				for (auto i = 0; i < sounds.size(); i++) {
+					auto& sound = sounds.at(i);
+                    if (audioName == sound.mName) {
+                        // Set the effect's audio
+						effect->mAudio = static_cast<eSFX_Items>(i);
+						Logger::Print("Patched effect task audio: %s (%d -> %d)", audioName.c_str(), effect->mAudio, i);
+                    }
                 }
             }
         }
